@@ -402,10 +402,8 @@ The fourth assumption is \emph{separation}.
 Two $u$--$v$ paths are \emph{internally vertex-disjoint} if they have no vertex in common except $u$ and $v$.
 The largest number of such paths is the \emph{local vertex-connectivity} $\kap_G(u,v)$.
 Its largest value over all pairs is $\kap_G^{\max}$.
-Internally vertex-disjoint paths are also edge-disjoint, so $\kap_G(u,v)\le\lec_G(u,v)$. 
-In a hypergraph, two Berge paths can share a hyperedge without sharing a vertex.
-So for hypergraphs we also require that vertex-disjoint routes share no hyperedge.
-Then $\kap\le\lec$ holds in every model.
+Internally vertex-disjoint paths are also edge-disjoint, so $\kap_G(u,v)\le\lec_G(u,v)$.
+\Cref{sec:incidence-convention} extends this to multigraphs and hypergraphs.
 \Cref{fig:edge-vs-vertex} shows that the vertex and edge-disjointness can differ.
 
 \begin{figure}[ht]
@@ -441,10 +439,9 @@ Two routes are \emph{separated} if they have no inner node in common.
 In the directed case we use the directed incidence graph: the tail has an arc to the edge copy, and the edge copy has an arc to each head.
 For example, an arc $u\to v$ becomes $u\to e\to v$.
 
-The inner nodes are vertices and edge copies.
-So separated routes share no inner vertex and no edge copy.
-This matters for hypergraphs: two Berge routes can use the same hyperedge without meeting in a vertex.
-Since separated routes share no edge copy, $\kap\le\lec$ also holds here.
+The inner nodes are vertices and edge copies, so separated routes share no inner vertex and no edge copy.
+Sharing no vertex is not enough for hypergraphs, because two Berge routes can use the same hyperedge without meeting in a vertex.
+Since separated routes also share no edge copy, $\kap\le\lec$ holds in every model.
 
 In a multigraph, $q$ parallel copies of $uv$ give $q$ separated routes.
 So the vertex problems for multigraphs, $K_m(n)$ and $K_m^{\mathrm{dir}}(n)$, differ from the simple ones.
