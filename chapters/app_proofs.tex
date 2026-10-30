@@ -588,16 +588,7 @@ Since $\kap\le\lec$, every arc-feasible digraph is vertex-feasible, so \Cref{thm
 so all three are equal.
 \end{proof}
 
-\begin{lemma}[The two directed feasible families at $m=2$]\label{lem:directed-m2-families}
-A digraph satisfies $\lec^{\max}\le1$ if and only if it satisfies $\kap^{\max}\le1$ under the incidence convention.
-\end{lemma}
-\begin{proof}
-One direction follows from $\kap\le\lec$.
-For the other, suppose $P_1$ and $P_2$ are two arc-disjoint directed $u$--$v$ paths.
-Let $w$ be the first vertex after $u$ on $P_1$ that also lies on $P_2$.
-The parts of $P_1$ and $P_2$ from $u$ to $w$ are arc-disjoint and have no inner vertex in common.
-So the pair $(u,w)$ has two internally disjoint routes.
-\end{proof}
+
 
 
 
@@ -1674,13 +1665,10 @@ The splitting of $\kap$ into parallel arcs and longer routes also works for dire
 \Cref{cor:dir-multi-incidence} below gives the exact value at $m=2$ and the leading term for every fixed $m$.
 
 \begin{lemma}[Splitting the directed vertex measure]\label{lem:multi-vertex-split-dir}
-Let $D$ be a multidigraph with multiplicity function $\mu$ and underlying simple
+Let $D$ be a directed multigraph with multiplicity function $\mu$ and underlying simple
 digraph $D_0$. For an ordered pair $u \ne v$, write $\pi(u,v)$ for the largest number
 of pairwise internally disjoint directed $u$--$v$ paths of length at least two in
-$D_0$. Then $\kap_D(u,v) = \mu(u,v) + \pi(u,v)$, and consequently
-\[
-    K_m^{\mathrm{dir}}(n) \;\le\; (m-1)\,k_m^{\mathrm{dir}}(n) .
-\]
+$D_0$. Then $\kap_D(u,v) = \mu(u,v) + \pi(u,v)$.
 \end{lemma}
 
 \begin{proof}
@@ -1689,11 +1677,6 @@ A route of length one is a copy of the arc $u\to v$ and has no inner vertex.
 Longer routes give internally disjoint directed paths in $D_0$, and conversely, using one copy of each arc.
 Copies of the reverse arc $v\to u$ are never used.
 
-For the bound, let $D$ be feasible. The identity gives $\mu(u,v) \le \kap_D(u,v) \le m-1$
-on every ordered pair, so the total multiplicity is at most $(m-1)|A(D_0)|$. And $D_0$
-is itself feasible: on an arc, $\kap_{D_0}(u,v) = 1 + \pi(u,v) \le \mu(u,v) + \pi(u,v)
-\le m-1$, and on a pair with no arc from $u$ to $v$, $\kap_{D_0}(u,v) = \pi(u,v) \le m-1$
-directly. So $|A(D_0)| \le k_m^{\mathrm{dir}}(n)$ by definition.
 \end{proof}
 
 \begin{corollary}[The directed multigraph incidence value]\label{cor:dir-multi-incidence}
