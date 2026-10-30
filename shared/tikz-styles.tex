@@ -1,0 +1,122 @@
+% ============================================================================
+% UNIFIED TIKZ STYLES FOR ERDOS PROBLEM 915 THESIS
+% ============================================================================
+% This file provides consistent TikZ graph styles across thesis, progress
+% report, and presentation. Requires colors.tex to be loaded first.
+% ============================================================================
+
+% --- Vertex Styles ---
+\tikzset{
+    % Basic vertex style (KUL blue)
+    vertex/.style={
+        circle, draw=KULblauw1, fill=KULblauw1!15,
+        minimum size=20pt, inner sep=0pt,
+        font=\small\bfseries, line width=1.5pt
+    },
+    % Small vertex for complex diagrams
+    smallvertex/.style={
+        circle, draw=KULblauw1, fill=KULblauw1!15,
+        minimum size=16pt, inner sep=0pt,
+        font=\scriptsize\bfseries, line width=1.2pt
+    },
+    % Colored variants - semantic naming
+    leftvertex/.style={vertex, draw=KULblauw1, fill=KULblauw1!15},
+    rightvertex/.style={vertex, draw=vertexred, fill=vertexred!15},
+    sharedvertex/.style={vertex, draw=vertexpurple, fill=vertexpurple!20},
+    tailvertex/.style={vertex, draw=vertexgreen, fill=vertexgreen!15},
+    hubvertex/.style={vertex, draw=vertexorange, fill=vertexorange!20},
+    % Small colored variants
+    smallleftvertex/.style={smallvertex, draw=KULblauw1, fill=KULblauw1!15},
+    smallrightvertex/.style={smallvertex, draw=vertexred, fill=vertexred!15},
+    smallsharedvertex/.style={smallvertex, draw=vertexpurple, fill=vertexpurple!20},
+    smalltailvertex/.style={smallvertex, draw=vertexgreen, fill=vertexgreen!15},
+    % Presentation-style aliases (gnode = graph node)
+    gnode/.style={vertex},
+    bluenode/.style={leftvertex},
+    rednode/.style={rightvertex},
+    purplenode/.style={sharedvertex},
+    greennode/.style={tailvertex},
+    orangenode/.style={hubvertex},
+}
+
+% --- Edge Styles ---
+\tikzset{
+    % Basic edge styles
+    edge/.style={line width=1.8pt, KULblauw1!70},
+    thickedge/.style={line width=2.5pt},
+    % Colored edge variants - semantic naming
+    leftedge/.style={line width=1.8pt, KULblauw1},
+    rightedge/.style={line width=1.8pt, vertexred},
+    sharededge/.style={line width=1.8pt, vertexpurple!80},
+    tailedge/.style={line width=1.8pt, vertexgreen!80!black},
+    % Tree edges
+    treeedge/.style={line width=1.8pt, KULblauw3b},
+    lefttreeedge/.style={line width=1.8pt, KULblauw1},
+    righttreeedge/.style={line width=1.8pt, vertexred},
+    % Special edge styles
+    missingedge/.style={line width=1.5pt, dashed, gray},
+    multiedge/.style={line width=1.5pt, draw=KULblauw3b},
+    hyperedge/.style={draw=vertexred, fill=vertexred!10, rounded corners=8pt, line width=1.5pt},
+    % Presentation-style aliases
+    gedge/.style={line width=2pt, KULblauw1!70},
+    blueedge/.style={line width=2pt, KULblauw1},
+    rededge/.style={line width=2pt, vertexred},
+    purpleedge/.style={line width=2pt, vertexpurple!80},
+    greenedge/.style={line width=2pt, vertexgreen!80!black},
+    tedge/.style={treeedge},
+}
+
+% --- Directed arc styles (Stealth arrowheads, thesis blue) ---
+% A global `arc` is safe: figures that set their own `arc/.style` inline
+% (e.g. the Chapter 1 hub figures) shadow this within their own picture.
+\tikzset{
+    arc/.style={-{Stealth[length=2.2mm]}, line width=1.1pt, KULblauw1},
+    faintarc/.style={-{Stealth[length=1.8mm]}, line width=0.7pt, KULblauw1!35},
+    redarc/.style={-{Stealth[length=2.2mm]}, line width=1.1pt, dashed, vertexred},
+    forbiddenedge/.style={line width=1.3pt, dashed, vertexred},
+}
+
+% --- Hyperedge node: a hollow square standing for a hyperedge (e.g. in an
+%     incidence graph), distinct from the `hyperedge` region style above ---
+\tikzset{
+    hnode/.style={
+        rectangle, draw=KULblauw3b, fill=white,
+        minimum size=13pt, inner sep=1pt, line width=1pt,
+        font=\scriptsize\bfseries
+    },
+}
+
+% --- Hyperedge "metro line" styles -------------------------------------------
+% A hyperedge is drawn as a thick coloured line that threads all of its member
+% vertices, exactly like a single line on a metro map. Each hyperedge gets its
+% own colour, and a vertex lying on several hyperedges shows several coloured
+% lines running through it. This reads far better than overlapping shaded blobs
+% once hyperedges start to share vertices: the eye follows a line, not a smear.
+\definecolor{metroA}{RGB}{200,80,80}     % red line
+\definecolor{metroB}{RGB}{29,141,176}    % blue line
+\definecolor{metroC}{RGB}{60,160,80}     % green line
+\definecolor{metroD}{RGB}{220,140,40}    % orange line
+\definecolor{metroE}{RGB}{140,80,160}    % purple line
+\definecolor{metroF}{RGB}{120,120,120}   % grey line
+\tikzset{
+    metro/.style={line width=3.4pt, line cap=round, line join=round,
+                  rounded corners=4pt},
+    % a station dot: white circle that the coloured lines visibly pass through
+    metrostop/.style={circle, draw=black!72, fill=white, line width=1pt,
+                      minimum size=6mm, inner sep=0pt, font=\scriptsize\bfseries},
+}
+
+% --- Label and Weight Styles ---
+\tikzset{
+    treeweight/.style={
+        circle, fill=white, inner sep=1.5pt,
+        font=\scriptsize\bfseries
+    },
+    tweight/.style={
+        circle, fill=white, inner sep=2pt,
+        font=\small\bfseries
+    },
+    edgelabel/.style={
+        font=\scriptsize, fill=white, inner sep=1pt
+    }
+}

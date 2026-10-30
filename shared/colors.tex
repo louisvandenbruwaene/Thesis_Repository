@@ -1,0 +1,34 @@
+% ============================================================================
+% UNIFIED COLOR DEFINITIONS FOR ERDOS PROBLEM 915 THESIS
+% ============================================================================
+% This file provides consistent colors across thesis, progress report, and
+% presentation. All colors are based on KU Leuven institutional branding.
+% ============================================================================
+
+% --- KU Leuven Primary Colors ---
+% Note: In beamer (kulakbeamer), KULblauw1/KULblauw3a/KULblauw3b are predefined
+% For thesis documents, we define them here
+\makeatletter
+\@ifclassloaded{kulakbeamer}{%
+    % Colors already defined by beamer class
+}{%
+    % Define KUL colors for non-beamer documents
+    \definecolor{KULblauw1}{RGB}{29,141,176}     % Main blue
+    \definecolor{KULblauw3a}{RGB}{82,189,236}    % Accent light blue
+    \definecolor{KULblauw3b}{RGB}{30,110,135}    % Accent dark blue
+}
+\makeatother
+
+% --- Graph Vertex Colors ---
+% Primary vertex color uses KUL blue
+\definecolor{vertexblue}{RGB}{29,141,176}        % KULblauw1
+\definecolor{vertexred}{RGB}{200,80,80}          % Matched with presentation
+\definecolor{vertexpurple}{RGB}{140,80,160}      % Matched with presentation
+\definecolor{vertexgreen}{RGB}{60,160,80}        % Matched with presentation
+\definecolor{vertexorange}{RGB}{220,140,40}      % Matched with presentation
+
+% --- Aliases for presentation compatibility ---
+\colorlet{graphred}{vertexred}
+\colorlet{graphpurple}{vertexpurple}
+\colorlet{graphgreen}{vertexgreen}
+\colorlet{graphorange}{vertexorange}

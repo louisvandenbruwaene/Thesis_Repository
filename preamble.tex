@@ -1,0 +1,926 @@
+% ============================================================================
+% COMPREHENSIVE PREAMBLE FOR ERDOS PROBLEM 915 THESIS
+% ============================================================================
+
+\documentclass[kul, 11pt, a4paper, oneside]{kulakreport}
+\usetikzlibrary{calc, arrows.meta, shapes.geometric, decorations.markings}
+
+% KU Leuven metadata
+\faculty{Faculty of Science}
+\group{Department of Mathematics}
+\subtitle{Erd\H{o}s Problem 915, from Proof to Search}
+\institute{Master of Mathematics}
+\emailaddress{louis.vandenbruwaene@student.kuleuven.be}
+\address{
+   \textbf{KU Leuven} \\
+   \textbf{Faculty of Science} \\
+   Celestijnenlaan 200B, 3001 Leuven \\
+   Belgium
+}
+
+% A recorded build may supply revision.tex via record_revision.sh.  Keep an
+% explicit fallback so ordinary working builds remain valid and identify
+% themselves honestly rather than silently looking like recorded snapshots.
+\newcommand{\thesistag}{unrecorded}
+\newcommand{\thesiscommit}{not recorded}
+\InputIfFileExists{revision.tex}{}{}
+
+% ============================================================================
+% BASIC PACKAGES
+% ============================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[scaled=0.95]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{needspace}% keeps each appendix part divider on one page
+% lmodern not available; disable microtype expansion to avoid font errors
+\usepackage[patch=none, expansion=false]{microtype}
+
+% ============================================================================
+% PAGE LAYOUT
+% ============================================================================
+\usepackage[
+    a4paper,
+    inner=25mm,
+    outer=25mm,
+    top=30mm,
+    bottom=30mm,
+    bindingoffset=5mm
+]{geometry}
+
+\usepackage{setspace}
+\onehalfspacing
+
+% Improve line breaking to reduce overfull hbox warnings
+\tolerance=1414
+\emergencystretch=1.5em
+\hfuzz=3pt
+\vfuzz=3pt
+
+% ============================================================================
+% MATHEMATICS
+% ============================================================================
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+
+% ============================================================================
+% GRAPHICS AND COLOR (tikz, graphicx, xcolor already loaded by kulakreport)
+% ============================================================================
+\usetikzlibrary{positioning, arrows.meta, calc, shapes.geometric,
+                decorations.pathmorphing, backgrounds, fit,
+                patterns, shadows, matrix}
+
+% ============================================================================
+% FIGURES AND TABLES
+% ============================================================================
+\usepackage{float}
+% rotating: the sixteen-panel bounds grids need a full sideways page, since at
+% text width their per-panel labels fall under 2pt.
+% figuresleft: every sideways float is turned the opposite way from the package
+% default, so the grids read the other way up on the page (author call,
+% 2026-08-26). Verify by rendering the page, not by reading the option name:
+% the default already behaves as figuresright, so only figuresleft flips it.
+\usepackage[figuresleft]{rotating}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+
+% Uniform caption look for every plot, figure, and table: a bold blue label, a
+% slightly smaller justified body set in from the margins, and a touch of space
+% above so a caption never crowds the artwork it describes.
+\captionsetup{
+    font=small,
+    labelfont={bf,color=KULblauw3b},
+    textfont={color=black!85},
+    labelsep=period,
+    justification=justified,
+    singlelinecheck=true,
+    margin=14pt,
+    skip=8pt,
+}
+\captionsetup[sub]{
+    font=footnotesize,
+    labelfont={bf,color=KULblauw3b},
+    % Ragged right, not justified: sub-captions often sit in narrow boxes
+    % (half-width panels), where justification stretches short lines into
+    % wide word gaps around unbreakable math.
+    justification=raggedright,
+    margin=4pt,
+    skip=5pt,
+}
+
+% ============================================================================
+% LISTS
+% ============================================================================
+\usepackage{enumitem}
+
+% Custom bullet styles using small graph icons
+\newcommand{\prettygrotzsch}{%
+	\tikz[baseline=-0.6ex, scale=0.12]{
+		\definecolor{nodecolor}{RGB}{50, 120, 180}
+		\foreach \i in {0,...,4} {
+			\coordinate (inner\i) at ({1.2*cos(72*\i+18)},{1.2*sin(72*\i+18)});
+		}
+		\coordinate (center) at (0,0);
+		\draw[nodecolor, line width=0.5pt]
+		(center) -- (inner0) (center) -- (inner1) (center) -- (inner2)
+		(center) -- (inner3) (center) -- (inner4)
+		(inner0) -- (inner2) (inner0) -- (inner3) (inner1) -- (inner3)
+		(inner1) -- (inner4) (inner2) -- (inner4);
+		\foreach \i in {0,...,4} { \fill[black] (inner\i) circle (2.5pt); }
+		\fill[black] (center) circle (2.5pt);
+	}
+}
+
+\newcommand{\prettypetersen}{%
+	\tikz[baseline=-0.6ex, scale=0.15]{
+		\definecolor{petersennode}{RGB}{20, 140, 140}
+		\definecolor{petersenedge}{RGB}{100, 100, 100}
+
+		\def\R{1.2}
+		\def\r{0.8}
+
+		\foreach \i in {0,...,4} {
+			\coordinate (outer\i) at ({90+72*\i}:\R);
+			\coordinate (inner\i) at ({90+72*\i}:\r);
+		}
+
+		\foreach \i in {0,...,4} {
+			\fill[petersennode] (outer\i) circle (4pt);
+			\fill[petersennode] (inner\i) circle (4pt);
+		}
+
+		\draw[petersenedge, line width=0.7pt]
+		(outer0) -- (outer1) -- (outer2) -- (outer3) -- (outer4) -- (outer0)
+		(outer0) -- (inner0)
+		(outer1) -- (inner1)
+		(outer2) -- (inner2)
+		(outer3) -- (inner3)
+		(outer4) -- (inner4)
+		(inner0) -- (inner2) -- (inner4) -- (inner1) -- (inner3) -- (inner0);
+
+		\foreach \i in {0,...,4} {
+			\fill[black, opacity=1] (outer\i) circle (3pt);
+			\fill[black, opacity=1] (inner\i) circle (3pt);
+		}
+	}
+}
+
+\setlist[itemize]{label=$\prettygrotzsch$, leftmargin=1.5em}
+\setlist[enumerate]{label=\protect\prettypetersen, leftmargin=2em}
+
+% ============================================================================
+% HYPERLINKS AND REFERENCES
+% ============================================================================
+\usepackage[noabbrev, capitalize, nameinlink]{cleveref}
+
+% ============================================================================
+% BIBLIOGRAPHY
+% ============================================================================
+\usepackage[numbers, sort&compress]{natbib}
+
+% ============================================================================
+% HEADER/FOOTER
+% ============================================================================
+% The page footer ("section mark | page number") is defined by the kulakreport
+% class with oneside-friendly specifiers; nothing to add here.
+
+% ============================================================================
+% CHAPTER STYLING
+% ============================================================================
+\usepackage{titlesec}
+% Chapter: keep the large black title, but brand the "Chapter N" label in the
+% KU Leuven house blue so the heading reads as part of the institutional style.
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{\color{KULblauw1}\chaptertitlename\ \thechapter}{20pt}{\Huge\raggedright}
+\titlespacing*{\chapter}{0pt}{-30pt}{40pt}
+
+% Section headings: black bold title with a blue section number and a thin blue
+% accent rule beneath, matching the chapter branding and easing navigation in
+% the long chapters. Subsection and below stay quieter, with only a blue number.
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\color{KULblauw1}\thesection}{0.7em}{}
+\titlespacing*{\section}{0pt}{1.8ex plus .3ex minus .2ex}{0.9ex}
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\color{KULblauw1}\thesubsection}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{1.4ex plus .2ex minus .2ex}{0.6ex}
+
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries}{\color{KULblauw1}\thesubsubsection}{0.5em}{}
+\titlespacing*{\subsubsection}{0pt}{1.1ex plus .2ex minus .2ex}{0.5ex}
+
+\titleformat{\paragraph}[runin]
+  {\normalfont\normalsize\bfseries\color{KULblauw3b}}{}{0pt}{}
+\titlespacing*{\paragraph}{0pt}{1ex plus .2ex minus .1ex}{0.8em}
+
+% Part openers carry a framing paragraph rather than sitting as an empty page.
+% The "top" class starts a new page with the banner at the top, then lets the
+% following text flow on the same page.
+\titleclass{\part}{top}
+\titleformat{\part}[display]
+  {\normalfont\Huge\bfseries\color{KULblauw3b}}{\partname\ \thepart}{0.4em}{\Huge}
+\titlespacing*{\part}{0pt}{0pt}{1.5em}
+
+% ============================================================================
+% THEOREM ENVIRONMENTS (using aliascnt for proper cleveref support)
+% ============================================================================
+\usepackage{aliascnt}
+
+% Base theorem
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+
+% Theorem-like (italic body) - with aliascnt for cleveref
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+
+\newaliascnt{conjecture}{theorem}
+\newtheorem{conjecture}[conjecture]{Conjecture}
+\aliascntresetthe{conjecture}
+
+\newaliascnt{claim}{theorem}
+\newtheorem{claim}[claim]{Claim}
+\aliascntresetthe{claim}
+
+% Definition-like (upright body)
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+
+\newaliascnt{construction}{theorem}
+\newtheorem{construction}[construction]{Construction}
+\aliascntresetthe{construction}
+
+% Remark-like
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\newaliascnt{notation}{theorem}
+\newtheorem{notation}[notation]{Notation}
+\aliascntresetthe{notation}
+
+\newaliascnt{ques}{theorem}
+\newtheorem{ques}[ques]{Question}
+\aliascntresetthe{ques}
+
+% Unnumbered versions
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{remark*}{Remark}
+
+% Custom proof environment for claims
+\newenvironment{claimproof}[1][\proofname]{\begin{proof}[#1]\renewcommand{\qedsymbol}{$\diamondsuit$}}{\end{proof}}
+
+% Cleveref settings (must be after theorem environment definitions)
+% Every reference in this document goes through \Cref, never \cref, and a mixed-type
+% group such as \Cref{prop:a,thm:b} capitalises only its FIRST group and takes the
+% lowercase name for the rest, printing "Proposition A.37 and theorem 1.11". The
+% lowercase slot is therefore filled with the capitalised name here, exactly as it
+% already is for figure, table, section, chapter and part below. Do not "restore"
+% lowercase forms without first adding a \cref use that needs them.
+\crefname{theorem}{Theorem}{Theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{Proposition}{Propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{conjecture}{Conjecture}{Conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{definition}{Definition}{Definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{example}{Example}{Examples}
+\Crefname{example}{Example}{Examples}
+\crefname{remark}{Remark}{Remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{construction}{Construction}{Constructions}
+\Crefname{construction}{Construction}{Constructions}
+\crefname{ques}{Question}{Questions}
+\Crefname{ques}{Question}{Questions}
+\crefname{chapter}{Chapter}{Chapters}
+\crefname{appendix}{Appendix}{Appendices}
+\Crefname{appendix}{Appendix}{Appendices}
+\crefname{section}{Section}{Sections}
+\crefname{part}{Part}{Parts}
+\crefname{figure}{Figure}{Figures}
+\crefname{table}{Table}{Tables}
+
+% ============================================================================
+% CUSTOM MATHEMATICAL COMMANDS
+% ============================================================================
+
+% Floor and ceiling
+\newcommand*{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand*{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand*{\floorfrac}[2]{\floor{\frac{#1}{#2}}}
+\newcommand*{\ceilfrac}[2]{\ceil{\frac{#1}{#2}}}
+
+% Absolute value and norms
+\newcommand*{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand*{\norm}[1]{\left\lVert #1 \right\rVert}
+
+% Graph theory notation
+\newcommand{\lec}{\lambda}                    % Local edge-connectivity
+\newcommand{\kap}{\kappa}                     % Local vertex-connectivity
+\newcommand{\multigraph}{\mathcal{M}}         % Multigraph
+\newcommand{\HH}{\mathcal{H}}                 % Hypergraph
+\DeclareMathOperator{\dist}{dist}             % Distance
+
+% Probability notation
+\DeclareMathOperator{\Var}{Var}               % Variance
+
+% Common sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+
+% ============================================================================
+% TIKZ STYLES - Unified Colors and Styles (from shared/)
+% ============================================================================
+
+% Import shared color definitions and TikZ styles
+\input{shared/colors.tex}
+\input{shared/tikz-styles.tex}
+
+% Two further metro-line colours, defined thesis-local (the shared file stops at
+% metroF) so the larger hyperedge figures in Chapter 2 can give every one of
+% their eight lines its own distinct hue.
+\definecolor{metroG}{RGB}{200,70,140}   % magenta line
+\definecolor{metroH}{RGB}{30,130,120}   % teal line
+
+% Thesis-local graph polish. These refinements are applied here, after the
+% shared file, so the slides and progress report keep their own look untouched.
+% A faint drop shadow lifts every vertex off the page for a cleaner, more
+% three-dimensional read, and rounded line caps soften the stroke ends of the
+% edges. Both are deliberately subtle so dense incidence diagrams stay legible.
+\usetikzlibrary{shadows}
+\tikzset{
+    vertex/.append style={
+        drop shadow={shadow xshift=0.5pt, shadow yshift=-0.6pt,
+                     fill=black, opacity=0.20}},
+    smallvertex/.append style={
+        drop shadow={shadow xshift=0.4pt, shadow yshift=-0.5pt,
+                     fill=black, opacity=0.18}},
+    hnode/.append style={
+        drop shadow={shadow xshift=0.4pt, shadow yshift=-0.5pt,
+                     fill=black, opacity=0.16}},
+    edge/.append style={line cap=round},
+    thickedge/.append style={line cap=round},
+    leftedge/.append style={line cap=round},
+    rightedge/.append style={line cap=round},
+    sharededge/.append style={line cap=round},
+    tailedge/.append style={line cap=round},
+    treeedge/.append style={line cap=round},
+    lefttreeedge/.append style={line cap=round},
+    righttreeedge/.append style={line cap=round},
+    multiedge/.append style={line cap=round},
+    gedge/.append style={line cap=round},
+    blueedge/.append style={line cap=round},
+    rededge/.append style={line cap=round},
+    purpleedge/.append style={line cap=round},
+    greenedge/.append style={line cap=round},
+}
+
+% ============================================================================
+% CANONICAL THESIS GRAPH VOCABULARY
+% ============================================================================
+% One visual language for every graph in the thesis, body and appendix alike, so
+% the figures read as a family instead of each hand-rolling its own look. It is
+% grouped by the five kinds of drawing the thesis does: SIMPLE graphs, MULTI
+% graphs, DIRECTED graphs, CURVED connections, and the METRO-map hyperedges.
+% A figure may override the size for a dense diagram (e.g. gvertex, minimum
+% size=4.5mm), but the colour, stroke, fill, font, and shadow stay fixed so the
+% family stays coherent. Curves are never removed here: every bend lives in a
+% figure's own \draw ... to[bend ...], and the styles below fix only how a line
+% or arc looks, not whether it bends.
+\tikzset{
+  % ---- SIMPLE: the default blue vertex and the plain undirected edge ----
+  gvertex/.style={circle, draw=KULblauw1, fill=KULblauw1!15, line width=1pt,
+                  minimum size=6mm, inner sep=0pt, font=\small,
+                  drop shadow={shadow xshift=0.4pt, shadow yshift=-0.5pt,
+                               fill=black, opacity=0.18}},
+  gline/.style ={line width=1.3pt, KULblauw1!75, line cap=round},
+  gfaint/.style={line width=0.9pt, KULblauw1!40, line cap=round},
+  % semantic vertex colours: same size and stroke, the colour marks the role
+  gvhub/.style ={gvertex, draw=vertexorange, fill=vertexorange!18},
+  gvsink/.style={gvertex, draw=vertexred,    fill=vertexred!15},
+  gvcut/.style ={gvertex, draw=vertexpurple, fill=vertexpurple!20},
+  gvnew/.style ={gvertex, draw=vertexorange, fill=vertexorange!22},
+  % ---- MULTI: parallel edges are simple edges drawn with a bend (see CURVED) ---
+  gmulti/.style={gline},
+  % ---- DIRECTED: arcs carry a Stealth head; faint background and cut variants --
+  gdir/.style     ={-{Stealth[length=2.2mm]}, line width=1.1pt, KULblauw1!75, line cap=round},
+  gdirfaint/.style={-{Stealth[length=1.8mm]}, line width=0.8pt, KULblauw1!40, line cap=round},
+  gcut/.style     ={-{Stealth[length=2.2mm]}, line width=1.2pt, densely dashed, vertexred},
+  gcutedge/.style ={line width=1.2pt, densely dashed, vertexred},
+  % highlighted routes: three independent routes always read orange, green, purple
+  grA/.style={line width=2.6pt, vertexorange,        line cap=round},
+  grB/.style={line width=2.6pt, vertexgreen!70!black, line cap=round},
+  grC/.style={line width=2.6pt, vertexpurple,         line cap=round},
+  grAd/.style={grA, -{Stealth[length=2.8mm]}},
+  grBd/.style={grB, -{Stealth[length=2.8mm]}},
+  grCd/.style={grC, -{Stealth[length=2.8mm]}},
+  % ---- CURVED: the standard gentle bend for a parallel pair or a 2-cycle ----
+  gcurve/.style ={bend left=14},
+  gcurveR/.style={bend right=14},
+  % ---- METRO: hyperedges as metro lines. The metro, metrostop, and metroA..H
+  %      styles live in shared/tikz-styles.tex and are reused here unchanged, so
+  %      the hyperedge look is already shared across every figure that uses it. --
+  %
+  % Re-point the shared graph names the thesis body already uses (vertex,
+  % smallvertex, edge) onto the canonical look, so Chapter 2, Chapter 3, and any
+  % figure using them cohere with the rest without per-figure edits. This is
+  % thesis-local: the slides load shared/tikz-styles.tex directly and keep their
+  % own sizes. smallvertex holds its size and small font so multi-character split
+  % labels (v^in, v^out) still fit.
+  vertex/.style={gvertex},
+  smallvertex/.style={gvertex, minimum size=16pt, font=\scriptsize},
+  edge/.style={gline},
+  arc/.style={gdir},
+}
+
+% Link appearance. hyperref (loaded by the class) otherwise draws a coloured box
+% around every cross-reference, citation, and table-of-contents entry, which is
+% distracting in print. Switch to coloured text with no boxes, using the dark
+% KU Leuven blue of the chapter headings so links read cleanly on paper and on
+% screen. Placed here because it must come after the KUL colours are defined.
+\hypersetup{
+    colorlinks=true,
+    linkcolor=KULblauw3b,
+    citecolor=KULblauw3b,
+    urlcolor=KULblauw3b,
+    linktoc=all,
+}
+
+% ============================================================================
+% DOCUMENT METADATA
+% ============================================================================
+\title{Maximising Edge Density in Graphs Subject to Connectivity Constraints}
+\author{Louis Vandenbruwaene}
+\date{Academic Year 2026--2027}
+
+% PDF document properties, so the file identifies itself in a reader's title bar,
+% in a library catalogue, and in any tool that reads the metadata rather than the
+% cover page. Without these the fields are blank.
+\hypersetup{
+    pdftitle={Maximising Edge Density in Graphs Subject to Connectivity Constraints},
+    pdfauthor={Louis Vandenbruwaene},
+    pdfsubject={Extremal graph theory: Erdos Problem 915 across sixteen structural variants},
+    pdfkeywords={extremal graph theory, edge-disjoint paths, vertex-disjoint paths,
+                 local connectivity, Menger, Gomory--Hu, hypergraphs, digraphs,
+                 Erdos Problem 915, mixed-integer linear programming, tabu search},
+    pdfcreator={pdfTeX},
+}
+
+% ============================================================================
+% OFFICIAL FACULTY OF SCIENCE COVER
+% ============================================================================
+\definecolor{bluetitle}{RGB}{29,141,176}
+\definecolor{blueaff}{RGB}{0,0,128}
+\definecolor{blueline}{RGB}{82,189,236}
+\setlength{\TPHorizModule}{1mm}
+\setlength{\TPVertModule}{1mm}
+% The faculty-cover coordinates below were written for the standard 1in TeX
+% text origin, but textpos is loaded with [absolute] (origin = physical page
+% corner). Without resetting the origin, the negative-coordinate header row
+% (banner, logo, address) is pushed off the top-left edge of the page. Pin the
+% origin back to the 1in reference so both covers land where they were designed.
+\textblockorigin{1in}{1in}
+
+\newcommand{\makefacultycover}{%
+\thispagestyle{empty}%
+\begingroup
+\hfuzz=40pt
+\sffamily
+\begin{textblock}{191}(-24,-11)
+\colorbox{bluetitle}{\hspace{139mm}\ \parbox[c][18truemm]{52mm}{\textcolor{white}{FACULTY OF SCIENCE}}}
+\end{textblock}
+\begin{textblock}{70}(-18,-19)
+\includegraphics*[height=19.8truemm]{LogoKULeuven}
+\end{textblock}
+\begin{textblock}{160}(8,63)
+\flushleft
+\fontsize{34}{38}\selectfont \textcolor{bluetitle}{\thetitle}\\[2mm]
+\fontsize{18}{22}\selectfont \thesubtitle
+\end{textblock}
+\begin{textblock}{160}(8,153)
+\flushright
+\fontsize{14}{16}\selectfont \textbf{\theauthor}
+\end{textblock}
+\begin{textblock}{80}(8,187)
+\flushleft
+Promotor: Dr.\ Stijn Cambie\\[-2pt]
+Readers: Prof.\ Jan Goedgebeur\\[-2pt]
+\phantom{Readers: }Prof.\ Karel Dekimpe\\[-2pt]
+\textcolor{blueaff}{KU Leuven}\\
+\end{textblock}
+\begin{textblock}{160}(8,191)
+\flushright
+Thesis presented in\\[4.5pt]
+fulfilment of the requirements\\[4.5pt]
+for the degree of Master of Science\\[4.5pt]
+in Mathematics\\
+\end{textblock}
+\begin{textblock}{160}(8,232)
+\flushright
+Academic year 2026--2027
+\end{textblock}
+\begin{textblock}{191}(-24,248)
+{\color{blueline}\rule{550pt}{5.5pt}}
+\end{textblock}
+\mbox{}
+\endgroup
+\clearpage
+}
+
+\newcommand{\makefacultybackcover}{%
+\clearpage
+\ifodd\value{page}\else\mbox{}\thispagestyle{empty}\clearpage\fi
+\thispagestyle{empty}%
+\begingroup
+\hfuzz=40pt
+\sffamily
+\begin{textblock}{191}(113,-11)
+{\color{blueline}\rule{160pt}{5.5pt}}
+\end{textblock}
+\begin{textblock}{191}(168,-11)
+{\color{blueline}\rule{5.5pt}{59pt}}
+\end{textblock}
+\begin{textblock}{183}(-24,-11)
+\flushright
+\fontsize{7}{7.5}\selectfont
+\textbf{DEPARTMENT OF MATHEMATICS}\\
+Celestijnenlaan 200B\\
+3001 Leuven, Belgium\\
+wis.kuleuven.be\\
+\end{textblock}
+\begin{textblock}{191}(154,-7)
+\includegraphics*[height=16.5truemm]{sedes}
+\end{textblock}
+\begin{textblock}{191}(-20,235)
+{\color{bluetitle}\rule{544pt}{55pt}}
+\end{textblock}
+\mbox{}
+\endgroup
+}
+
+% ============================================================================
+% COPYRIGHT AND DISCLAIMER PAGE
+% ----------------------------------------------------------------------------
+% Required by the Faculty of Science layout rules: the first page after the
+% cover carries the copyright notice, and the open-access disclaimer marking
+% the text as student work must follow the title page.
+% https://wet.kuleuven.be/english/mastersthesis/form
+% ============================================================================
+\newcommand{\makecopyrightpage}{%
+\thispagestyle{empty}%
+\begingroup
+\sffamily
+\null\vfill
+\begingroup
+\footnotesize
+\noindent\textbf{Copyright information}\\[2pt]
+Student paper as part of an academic education and examination. No correction
+was made to the paper after examination.
+
+\bigskip
+\noindent\textcopyright\ Copyright by KU Leuven
+
+\medskip
+\noindent Without prior written permission from both the supervisor(s) and the
+author(s), copying, reproducing, using, or realizing this publication or parts
+thereof is prohibited. For requests or information regarding the copying and/or
+use and/or realization of parts of this publication, please contact KU Leuven,
+Faculty of Science, Celestijnenlaan 200H box 2100, 3001 Leuven (Heverlee),
+Telephone +32 16 32 14 01.
+
+\medskip
+\noindent Prior written permission from the supervisor(s) is also required for
+using the (original) methods, products, circuits, and programs described in this
+work for industrial or commercial purposes, and for submitting this publication
+for scientific awards or contests.
+\par
+\endgroup
+\endgroup
+\clearpage
+}
+
+% ============================================================================
+% MISCELLANEOUS
+% ============================================================================
+
+% Paragraph spacing
+\setlength{\parskip}{0.25em}
+\setlength{\parindent}{1.5em}
+\setcounter{tocdepth}{2}
+
+% Better theorem spacing
+\makeatletter
+\def\thm@space@setup{%
+    \thm@preskip=0.75em plus 0.25em minus 0.2em
+    \thm@postskip=0.75em plus 0.25em minus 0.2em
+}
+\makeatother
+
+% Let long display chains break across a page rather than pushing a whole
+% block to the next one, which otherwise leaves half-empty pages.
+\allowdisplaybreaks[2]
+
+% Float separation: the defaults leave more air around figures than this
+% document's dense pages need.
+\setlength{\floatsep}{10pt plus 3pt minus 2pt}
+\setlength{\textfloatsep}{12pt plus 3pt minus 2pt}
+\setlength{\intextsep}{10pt plus 3pt minus 2pt}
+
+% Epigraph for chapter quotes
+\usepackage{epigraph}
+\setlength{\epigraphwidth}{0.7\textwidth}
+
+% For including appendices
+\usepackage{appendix}
+
+% ============================================================================
+% ALGORITHM BOX ENVIRONMENT
+% ============================================================================
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+\newtcolorbox{algorithmbox}[1][]{%
+    enhanced,
+    breakable,
+    colback=KULblauw1!5,
+    colframe=KULblauw1!70,
+    fonttitle=\bfseries,
+    left=2mm, right=2mm, top=1mm, bottom=1mm,
+    before upper={\parindent0pt\ttfamily\small},
+    #1
+}
+
+% ============================================================================
+% PSEUDOCODE (algorithm2e) AND CODE LISTINGS (listings)
+% ============================================================================
+% These power the computational-centerpiece chapters: pseudocode for the
+% oracle / annealing / certifier, and Python listings in the code appendix.
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+% On-brand pseudocode: a blue "Algorithm N" label, keywords in the house blue,
+% comments in the accent blue, and grey line numbers, so the algorithm floats
+% read in the same palette as the code cards and listings. The ruled (KU
+% Leuven-safe) layout is kept; only the typography is recoloured. The style
+% setters take one-argument command names, so we wrap the colours in macros.
+\newcommand{\algokwsty}[1]{\textcolor{KULblauw1}{\textbf{#1}}}
+\newcommand{\algofuncsty}[1]{\textcolor{KULblauw1}{\textbf{#1}}}
+\newcommand{\algocommentsty}[1]{\textcolor{KULblauw3b}{\textit{#1}}}
+\SetAlCapNameFnt{\color{KULblauw3b}\bfseries}
+\SetAlCapFnt{\small}
+\SetKwSty{algokwsty}
+\SetFuncSty{algofuncsty}
+\SetCommentSty{algocommentsty}
+\usepackage{listings}
+
+% A calm, on-brand style for the Python listings of the unified program.
+\lstdefinestyle{pythonkul}{%
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{KULblauw1}\bfseries,
+    commentstyle=\color{KULblauw3b}\itshape,
+    stringstyle=\color{vertexgreen},
+    numberstyle=\ttfamily\scriptsize\color{gray},
+    backgroundcolor=\color{KULblauw1!4},
+    numbers=left,
+    numbersep=8pt,
+    breaklines=true,
+    breakatwhitespace=false,
+    postbreak=\mbox{\textcolor{KULblauw3a}{$\hookrightarrow$}\space},
+    showstringspaces=false,
+    frame=leftline,
+    framerule=1pt,
+    rulecolor=\color{KULblauw3a},
+    xleftmargin=12pt,
+    tabsize=4,
+    captionpos=b,
+    % The program's figure labels contain a few non-ASCII characters (the Greek
+    % sigma and an arrow). When listed verbatim under utf8 inputenc these would
+    % be "characters not set up" and abort the build, so map each to its math
+    % rendering. A handful of related symbols are included for robustness.
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=%
+        {σ}{{$\sigma$}}1 {λ}{{$\lambda$}}1 {κ}{{$\kappa$}}1 {μ}{{$\mu$}}1
+        {α}{{$\alpha$}}1 {Λ}{{$\Lambda$}}1 {→}{{$\rightarrow$}}1
+        {≤}{{$\leq$}}1 {≥}{{$\geq$}}1 {≠}{{$\neq$}}1 {×}{{$\times$}}1
+        {∈}{{$\in$}}1 {∞}{{$\infty$}}1 {·}{{$\cdot$}}1
+        {ő}{{\H{o}}}1 {—}{{---}}1 {–}{{--}}1,
+}
+\lstset{style=pythonkul}
+
+% The complete-source appendix prints several thousand lines, so it uses a
+% tighter variant of the same style: smaller type, no background tint (kinder
+% to a printer over that many pages), and no frame, since the line numbers
+% already mark the left edge. Everything else, including the line-breaking
+% and the character mappings above, is inherited by restating it here.
+\lstdefinestyle{sourcelisting}{%
+    style=pythonkul,
+    basicstyle=\ttfamily\scriptsize,
+    backgroundcolor=\color{white},
+    frame=none,
+    xleftmargin=2.6em,
+    numbersep=6pt,
+    aboveskip=0.6\baselineskip,
+    belowskip=0.4\baselineskip,
+}
+
+% Let cleveref name the new float types.
+\crefname{algocf}{Algorithm}{Algorithms}
+\Crefname{algocf}{Algorithm}{Algorithms}
+\crefname{lstlisting}{Listing}{Listings}
+\Crefname{lstlisting}{Listing}{Listings}
+
+% ============================================================================
+% "WHAT THE PROGRAM CHECKED" CALLOUT
+% ============================================================================
+% The recurring voice of the journey: a visually distinct box that separates
+% narrative plus computational evidence from the formal theorem environments.
+% It deliberately reuses the algorithmbox palette so the document feels unified.
+\newtcolorbox{computernote}[1][Computer note]{%
+    enhanced,
+    breakable,
+    colback=KULblauw3a!8,
+    colframe=KULblauw3b!75,
+    coltitle=white,
+    fonttitle=\bfseries,
+    title={#1},
+    left=2mm, right=2mm, top=1mm, bottom=1mm,
+    arc=2.5pt,
+}
+
+% ============================================================================
+% CODE SIGNATURE CARDS  (the program's interface as the thesis's red wire)
+% ============================================================================
+% The computational architecture is the spine of this thesis, so its routines
+% appear inline as readable, language-agnostic signature cards: a name, its
+% inputs and output, a one-line "how", and an epistemic-role badge. No function
+% bodies live in the running text; the full source accompanies the document.
+\usepackage{tabularx}
+\usepackage{longtable}
+
+% --- epistemic-role palette: the MODEL -> MEASURE -> PROVE/DISCOVER spine
+%     spine, given one colour each so the role is legible at a glance. ----------
+\definecolor{roleModel}{RGB}{82,189,236}      % KULblauw3a : the data model
+\definecolor{roleMeasure}{RGB}{29,141,176}    % KULblauw1  : exact measurement
+\definecolor{roleProve}{RGB}{60,160,80}       % green      : proved upper bounds
+\definecolor{roleDiscover}{RGB}{220,140,40}   % orange     : discovered lowers
+\definecolor{roleDriver}{RGB}{30,110,135}     % KULblauw3b : the single entry point
+
+% A small filled badge; \colorbox keeps it robust inside tcolorbox titles.
+\newcommand{\rb}[2]{{\setlength{\fboxsep}{1.6pt}%
+    \colorbox{#1}{\textcolor{white}{\sffamily\bfseries\fontsize{7}{7}\selectfont #2}}}}
+\newcommand{\rolebadge}[1]{\csname rolebadge@#1\endcsname}
+\expandafter\newcommand\csname rolebadge@MODEL\endcsname{\rb{roleModel}{MODEL}}
+\expandafter\newcommand\csname rolebadge@MEASURE\endcsname{\rb{roleMeasure}{MEASURE}}
+\expandafter\newcommand\csname rolebadge@PROVE\endcsname{\rb{roleProve}{PROVE}}
+\expandafter\newcommand\csname rolebadge@DISCOVER\endcsname{\rb{roleDiscover}{DISCOVER}}
+\expandafter\newcommand\csname rolebadge@DRIVER\endcsname{\rb{roleDriver}{DRIVER}}
+
+% Map each role to its accent colour so a card can tint its own frame, title bar,
+% and left edge to match its badge. This makes the MODEL -> MEASURE -> PROVE /
+% DISCOVER spine scannable down the page at a glance.
+\expandafter\def\csname cardcol@MODEL\endcsname{roleModel}
+\expandafter\def\csname cardcol@MEASURE\endcsname{roleMeasure}
+\expandafter\def\csname cardcol@PROVE\endcsname{roleProve}
+\expandafter\def\csname cardcol@DISCOVER\endcsname{roleDiscover}
+\expandafter\def\csname cardcol@DRIVER\endcsname{roleDriver}
+
+% ============================================================================
+% PRIMER BOX: self-contained background on a standard tool, for a beginner.
+% Visually distinct from the formal theorem environments and from computernote
+% (which carries computational evidence): a soft green "learn this first" panel
+% that an expert may skip, matching the appendix's "how to read this" ethos.
+\newtcolorbox{primer}[1][Primer]{%
+    enhanced, breakable,
+    colback=roleProve!6,
+    colframe=roleProve!55,
+    coltitle=white,
+    colbacktitle=roleProve!72,
+    fonttitle=\bfseries,
+    title={#1},
+    left=2mm, right=2mm, top=1mm, bottom=1mm,
+    arc=2.5pt,
+}
+
+% inline monospace code token
+\newcommand{\code}[1]{{\ttfamily #1}}
+
+% The optional first argument carries per-card colour overrides (set by
+% \codecard from the role), the second is the card title.
+\newtcolorbox{codecardbox}[2][]{%
+    enhanced, breakable,
+    colback=KULblauw1!3,
+    colframe=KULblauw3b!55,
+    boxrule=0.6pt, arc=1.5pt,
+    left=2.5mm, right=2.5mm, top=0.8mm, bottom=0.8mm,
+    colbacktitle=KULblauw3a!16,
+    coltitle=KULblauw3b,
+    fonttitle=\ttfamily\bfseries\small,
+    title={#2},
+    #1,
+}
+\newcommand{\cardlabel}[1]{\textcolor{KULblauw3b}{\sffamily\bfseries\scriptsize #1}}
+% \codecard{signature}{ROLE}{input}{output}{how}
+\newcommand{\codecard}[5]{%
+\colorlet{cardaccent}{\csname cardcol@#2\endcsname}%
+\begin{codecardbox}[%
+    colframe=cardaccent!60,
+    colbacktitle=cardaccent!16,
+    coltitle=cardaccent!70!black,
+    borderline west={2.2pt}{0pt}{cardaccent}]%
+  {\strut #1\hfill\rolebadge{#2}}%
+\setlength{\extrarowheight}{1.5pt}%
+\begin{tabularx}{\linewidth}{@{}p{7mm}@{}X@{}}
+\cardlabel{in}  & #3 \\
+\cardlabel{out} & #4 \\
+\cardlabel{how} & #5 \\
+\end{tabularx}
+\end{codecardbox}}
+
+% --- the architecture spine, drawn once and referred back to throughout -------
+\newcommand{\spinediagram}{%
+\begin{tikzpicture}[>=Stealth,
+  rolenode/.style={rounded corners=2.5pt, draw, very thick, align=center,
+     minimum width=23mm, minimum height=12mm, font=\sffamily\footnotesize},
+  flow/.style={->, thick, KULblauw3b!70}]
+  \node[rolenode, fill=roleModel!16,    draw=roleModel]    (mod) at (0,0)     {\textbf{MODEL}\\[1pt]\scriptsize $\mu$ matrix};
+  \node[rolenode, fill=roleMeasure!16,  draw=roleMeasure]  (mea) at (3.3,0)   {\textbf{MEASURE}\\[1pt]\scriptsize max-flow checker};
+  \node[rolenode, fill=roleProve!18,    draw=roleProve]    (pro) at (7.0,0.85){\textbf{EXACT}\\[1pt]\scriptsize exhaustive search};
+  \node[rolenode, fill=roleDiscover!20, draw=roleDiscover] (dis) at (7.0,-0.85){\textbf{SEARCH}\\[1pt]\scriptsize tabu, greedy growth};
+  \draw[flow] (mod) -- (mea);
+  \draw[flow] (mea) -- (pro);
+  \draw[flow] (mea) -- (dis);
+\end{tikzpicture}}
+
+% --- the variant tree: root -> model (3) -> direction (2) -> separation (2) --
+% Drawn twice, from the same coordinates, so the two figures are visibly one
+% shape: plain in ch1 (a map before anything is proved), tinted by the
+% trichotomy regime in ch3 (the same map, resolved). regimeProved/Conjectured/
+% Open reuse the exact blue/red/amber the data figures already use for proved
+% all-n / conjectured-with-certified-cases / open-lower-bound-only.
+\colorlet{regimeProved}{KULblauw1}
+\colorlet{regimeConjectured}{vertexred}
+\colorlet{regimeOpen}{vertexorange}
+% A fourth regime for fig:variant-tree-status: proved inside a stated range of
+% m and open beyond it, which is where all four undirected vertex problems sit.
+% Purple rather than a fourth tint of blue or red, so the four leaf fills stay
+% apart from one another at the 16 to 28 percent opacity the tree draws them at.
+\colorlet{regimePartial}{vertexpurple}
+
+% --- the sixteen-variant VALUE tables (tab:variant-values-*): the literal hex
+% codes plot_variant_grid() uses in erdos915_unified.py (_KUL_BLUE, _RED,
+% _OPEN, _GREEN, _VIOLET), so a number's colour in the table matches its
+% curve or marker colour in the corresponding figure exactly, not just
+% approximately as regimeConjectured/regimeOpen above do.
+\definecolor{vtProved}{HTML}{1D8DB0}
+\definecolor{vtConjectured}{HTML}{E05050}
+\definecolor{vtOpen}{HTML}{E6B800}
+\definecolor{vtExact}{HTML}{3CA050}
+\definecolor{vtSearch}{HTML}{9B5DE5}
+\tikzset{
+  vtroot/.style={rectangle, rounded corners=3pt, draw=KULblauw3b, very thick,
+                 minimum width=26mm, minimum height=9mm, font=\sffamily\small\bfseries},
+  vtmodel/.style={rectangle, rounded corners=3pt, draw=KULblauw3b, thick,
+                  minimum width=20mm, minimum height=8mm, font=\sffamily\small},
+  vtdir/.style={rectangle, rounded corners=2.5pt, draw=KULblauw3b!70,
+                minimum width=19mm, minimum height=7mm, font=\scriptsize},
+  vtleaf/.style={rectangle, rounded corners=2pt, draw=KULblauw3b!70,
+                 minimum width=12mm, minimum height=6.5mm, font=\scriptsize},
+  vtedge/.style={KULblauw3b!55, line width=0.9pt},
+}
+
+% ============================================================================
+% PROOF STATUS
+% Unchecked AI arguments are conjectures with proofs, marked [AI].
+% Deductions depending on them are conjectures with conditional proofs.
+% Existing author-verified arguments retain their unmarked status.
+\newcommand{\aimedal}{\,[AI]}
+\newcommand{\conditional}{\,[conditional]}
+
+

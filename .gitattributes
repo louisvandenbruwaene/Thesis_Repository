@@ -1,0 +1,6 @@
+# `git archive` builds both distributions: handin/ (build_handin.sh) and the
+# public snapshot (publish.sh). program/CLAUDE.md is the program's development
+# history, not part of the submission, so it is excluded here once rather than
+# deleted again in each consumer. publish.sh keeps its own `rm -f` and its
+# working-notes guard as a second line of defence.
+program/CLAUDE.md export-ignore

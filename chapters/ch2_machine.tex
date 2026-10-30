@@ -1,0 +1,447 @@
+% !TEX root = ../main.tex
+
+Chapter~1 stated the problem and the proved results.
+This chapter explains how a program can measure connectivity in every variant, check small graphs one by one, and search for dense examples.
+No result in this thesis depends on the output of this program.
+\Cref{fig:spine} shows the structure of the program.
+\begin{figure}[ht]
+\centering
+\spinediagram
+\caption{One model feeds the max-flow checker. Exhaustive search uses it to find exact values, and heuristic search uses it to find dense examples.}
+\label{fig:spine}
+\end{figure}
+
+\section{Modelling}
+A graph or digraph is stored as a matrix $\mu$ of multiplicities.
+The matrix is symmetric for undirected graphs and has entries $0$ and $1$ for simple graphs.
+A hypergraph is stored as a list of hyperedges. In the directed case, each hyperedge also records its tail.
+\Cref{fig:matrix-rep} shows both.
+
+
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Stealth]
+% ---- (a) digraph -> multiplicity matrix, diagonal highlighted, asymmetric ----
+\node[vertex] (A) at (0,   0)   {$1$};
+\node[vertex] (B) at (2.0, 0)   {$2$};
+\node[vertex] (C) at (1.0, 1.7) {$3$};
+\draw[arc] (A) to[bend left=15]  (B);
+\draw[arc] (A) to[bend right=15] (B);
+\draw[arc] (B) to[bend left=15]  (C);
+\draw[arc] (C) to[bend left=15] (B);
+\draw[arc] (A) -- (C);
+\node[font=\small] at (1.0, -0.8) {directed multigraph $G$};
+\node at (3.3, 0.55) {$\xrightarrow{\;\mu\;}$};
+\node at (5.4, 0.55) {$\begin{pmatrix} {\color{vertexred}\mathbf 0} & 2 & 1 \\ 0 & {\color{vertexred}\mathbf 0} & 1 \\ 0 & 1 & {\color{vertexred}\mathbf 0} \end{pmatrix}$};
+\node[font=\small] at (5.4, -0.8) {multiplicity matrix $\mu$};
+\node[font=\scriptsize, vertexred] at (5.4, -1.3) {Diag($\mu$)$=0$ (no loops)};
+% ---- (b) directed hypergraph -> list of hyperedges, tail 3 shared by both ----
+\begin{scope}[yshift=-3.5cm]
+  \coordinate (p1) at (0.0, 0.6);
+  \coordinate (p2) at (0.0,-0.6);
+  \coordinate (p3) at (1.1, 0.0);
+  \coordinate (p4) at (2.2, 0.6);
+  \coordinate (p5) at (2.2,-0.6);
+  \begin{scope}[on background layer]
+    \draw[metro, metroA, -{Stealth[length=2.6mm]}, shorten >=2mm, shorten <=1.4mm] (p3) -- (p1);
+    \draw[metro, metroA, -{Stealth[length=2.6mm]}, shorten >=2mm, shorten <=1.4mm] (p3) -- (p2);
+    \draw[metro, metroB, -{Stealth[length=2.6mm]}, shorten >=2mm, shorten <=1.4mm] (p3) -- (p4);
+    \draw[metro, metroB, -{Stealth[length=2.6mm]}, shorten >=2mm, shorten <=1.4mm] (p3) -- (p5);
+  \end{scope}
+  \foreach \p/\lbl in {p1/1,p2/2,p3/3,p4/4,p5/5} {\node[smallvertex] at (\p) {$\lbl$};}
+  \node[font=\small] at (1.1,-1.25) {directed hypergraph $H$};
+  \node at (3.3, 0.0) {$\longrightarrow$};
+  \node[font=\small, align=left] at (5.9, 0.0)
+    {list of hyperedges:\\[3pt] $e_1: \{3\ |\ 1,2\}$\\[1pt] $e_2:\{3\ |\ 4,5\}$};
+\end{scope}
+\end{tikzpicture}
+\caption{The two encodings for directed variants. The multiplicity matrix $\mu$ represents a digraph, with $\mu_{ij}$ arcs from $i$ to $j$. A list of hyperedges represents a directed hypergraph and records each tail separately. A multihypergraph repeats entries in that list. A tensor representation would require $n^r$ entries, almost all zero, and is therefore avoided.}
+\label{fig:matrix-rep}
+\end{figure}
+
+\section{Measuring}
+Every search below needs $\lec^{\max}$ or $\kap^{\max}$ of a candidate graph.
+This section explains how the program computes them.
+
+To compute $\lec(u,v)$ we use a maximum flow.
+In a network every link has a capacity, and a \emph{maximum flow} is the largest amount that can be sent from $u$ to $v$.
+We give each pair of vertices a link with capacity $\mu(u,v)$.
+In a digraph the link has a direction. In an undirected graph it can be used in both directions.
+The max-flow min-cut theorem of Ford and Fulkerson \cite{FordFulkerson56} says that the maximum flow equals the smallest capacity of a cut.
+By Menger's theorem, this is $\lec(u,v)$.
+So computing a maximum flow computes $\lec(u,v)$.
+We call this routine the \emph{checker}.
+
+
+\subsection{Transformations}
+The checker works on directed multigraphs with arc-disjoint routes.
+The other variants are first turned into such a network.
+An undirected multigraph becomes a directed one if we replace each edge by two opposite arcs.
+
+A hyperedge becomes a \emph{gate} (\Cref{fig:hyper-gadget}).
+The gate has an entry node and an exit node, joined by one arc whose capacity is the multiplicity of the hyperedge.
+Each vertex of the hyperedge gets an arc of unlimited capacity to the entry node and one from the exit node.
+So the arc inside the gate is the only bottleneck.
+For a directed hyperedge, only the tail has an arc to the entry, and only the heads have an arc from the exit (\Cref{fig:dir-hyper-gadget}).
+So a route must go from the tail to a head.
+\Cref{thm:menger-hyper} shows that the maximum flow in this network is the number of hyperedge-disjoint Berge routes.
+\Cref{fig:hyper-gadget-example} shows an example.
+
+For vertex separation we split every vertex $v$ into two nodes $v^{\mathrm{in}}$ and $v^{\mathrm{out}}$, joined by one arc of capacity one (\Cref{fig:vertex-split}).
+Each arc $u\to v$ becomes an arc $u^{\mathrm{out}}\to v^{\mathrm{in}}$.
+A route through $v$ must use the arc from $v^{\mathrm{in}}$ to $v^{\mathrm{out}}$, so at most one route can pass through $v$.
+So the maximum flow from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ is $\kap(u,v)$.
+The arcs between different vertices keep their capacity $\mu(u,v)$, and the gates keep theirs.
+So parallel copies still give separate routes, as in the incidence convention of \Cref{sec:incidence-convention}.
+
+\begin{figure}[htbp]
+\centering
+% Printed legibility: this picture holds two 8-unit panels side by side, so
+% every extra centimetre of gap or of resize headroom is paid for twice over in
+% label size. The gap is kept tight, the box is given the full text width, and
+% the station and gate fonts are stepped up, which together lift the smallest
+% label from about 5.4pt to roughly 9pt on paper.
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[scale=0.92, >=Stealth,
+   metro/.append style={line width=3.0pt},
+   metrostop/.append style={font=\small\bfseries, minimum size=6.6mm},
+   faded/.style={metro, opacity=0.35, line width=2.2pt},
+   flow/.style={line width=1.2pt, black!88, line cap=round,
+                preaction={draw, line width=3.0pt, white}},
+   gate/.style={circle, fill=white, draw=black!30, line width=0.6pt,
+                inner sep=0.4pt, minimum size=13.5pt, font=\small}]
+\def\stations{%
+  \coordinate (Sa) at (0,0);  \coordinate (Sc) at (2,2);  \coordinate (Sd) at (6,2);
+  \coordinate (Se) at (0,4);  \coordinate (Sj) at (8,4);  \coordinate (Sl) at (2,6);
+  \coordinate (Sm) at (6,6);  \coordinate (Sn) at (0,8);}
+% Every station carries its own letter, since the captions name hyperedges and
+% routes by those letters.  The chosen pair also carries its role name, u or v,
+% in blue just outside the station.
+\def\drawstops{%
+  \foreach \id/\lab in {Sa/a,Sc/c,Sd/d,Se/e,Sj/j,Sl/l,Sm/m,Sn/n}
+     {\node[metrostop] at (\id) {$\lab$};}
+  \node[font=\small\bfseries, text=KULblauw1] at ($(Se)+(-0.62,0.52)$) {$u$};
+  \node[font=\small\bfseries, text=KULblauw1] at ($(Sm)+(0.62,0.52)$) {$v$};}
+% --- panel (a): the hypergraph, every hyperedge vertex to vertex ---
+\begin{scope}
+  \stations
+  \begin{scope}[on background layer]
+    \draw[metro, metroA] (Se) -- (Sa);
+    \draw[metro, metroA] (Sa) -- (Sd);
+    \draw[metro, metroB] (Sn) -- (Sm);
+    \draw[metro, metroB] (Sm) -- (Sj);
+    \draw[metro, metroC] ($(Se)+(0.14,-0.14)$) -- ($(Sl)+(0.14,-0.14)$);
+    \draw[metro, metroC] (Sl) -- (Sc);
+    \draw[metro, metroD] (Se) -- (Sd);
+    \draw[metro, metroD] (Sd) -- (Sm);
+    \draw[metro, metroF] (Sn) -- (Se);
+    \draw[metro, metroF] (Se) -- (Sl);
+    \draw[metro, metroH] ($(Se)+(-0.14,0.14)$) -- ($(Sl)+(-0.14,0.14)$);
+    \draw[metro, metroH] (Sl) -- (Sm);
+    \draw[metro, metroG] (Sm) -- (Sc);
+    \draw[metro, metroG] (Sc) -- (Sj);
+    \draw[metro, metroE] (Sl) -- (Sd);
+    \draw[metro, metroE] (Sd) -- (Sj);
+  \end{scope}
+  \drawstops
+  \node[font=\small] at (4,-1.4) {(a)};
+\end{scope}
+% --- panel (b): the helper-point flow network for the pair u, v ---
+\begin{scope}[xshift=9.6cm]
+  \stations
+  \coordinate (Helc) at (1,3);
+  \coordinate (Hmcj) at (5,4);
+  \coordinate (Hedm) at (3,3.7);
+  \coordinate (Helm) at (1.6,6.7);
+  \coordinate (Hnel) at (0.50,6.00);
+  \coordinate (Hnmj) at (3.27,7.81);
+  \begin{scope}[on background layer]
+    \draw[faded, metroA] (Se) -- (Sa);
+    \draw[faded, metroA] (Sa) -- (Sd);
+    \draw[faded, metroB] (Sn) -- (Sm);
+    \draw[faded, metroB] (Sm) -- (Sj);
+    \draw[faded, metroC] ($(Se)+(0.14,-0.14)$) -- ($(Sl)+(0.14,-0.14)$);
+    \draw[faded, metroC] (Sl) -- (Sc);
+    \draw[faded, metroD] (Se) -- (Sd);
+    \draw[faded, metroD] (Sd) -- (Sm);
+    \draw[faded, metroF] (Sn) -- (Se);
+    \draw[faded, metroF] (Se) -- (Sl);
+    \draw[faded, metroH] ($(Se)+(-0.14,0.14)$) -- ($(Sl)+(-0.14,0.14)$);
+    \draw[faded, metroH] (Sl) -- (Sm);
+    \draw[faded, metroG] (Sm) -- (Sc);
+    \draw[faded, metroG] (Sc) -- (Sj);
+    \draw[faded, metroE] (Sl) -- (Sd);
+    \draw[faded, metroE] (Sd) -- (Sj);
+  \end{scope}
+  \draw[flow] (Se) -- (Helc);
+  \draw[flow] (Helc) -- (Sc);
+  \draw[flow] (Sc) -- (Hmcj);
+  \draw[flow] (Hmcj) -- (Sm);
+  \draw[flow] (Se) -- (Hedm);
+  \draw[flow] (Hedm) -- (Sm);
+  \draw[flow] (Se) -- (Helm);
+  \draw[flow] (Helm) -- (Sm);
+  \draw[flow] (Se) -- (Hnel);
+  \draw[flow] (Hnel) -- (Sn);
+  \draw[flow] (Sn) -- (Hnmj);
+  \draw[flow] (Hnmj) -- (Sm);
+  % dotted leg from each gate to the hyperedge's unused third member
+  \draw[densely dotted, line width=1pt, opacity=0.7, shorten >=3mm, metroC] (Helc) -- (Sl);
+  \draw[densely dotted, line width=1pt, opacity=0.7, shorten >=3mm, metroG] (Hmcj) -- (Sj);
+  \draw[densely dotted, line width=1pt, opacity=0.7, shorten >=3mm, metroD] (Hedm) -- (Sd);
+  \draw[densely dotted, line width=1pt, opacity=0.7, shorten >=3mm, metroH] (Helm) -- (Sl);
+  \draw[densely dotted, line width=1pt, opacity=0.7, shorten >=3mm, metroF] (Hnel) -- (Sl);
+  \draw[densely dotted, line width=1pt, opacity=0.7, shorten >=3mm, metroB] (Hnmj) -- (Sj);
+  \node[gate] at (Helc) {$h_{\textcolor{metroC}{\bullet}}$};
+  \node[gate] at (Hmcj) {$h_{\textcolor{metroG}{\bullet}}$};
+  \node[gate] at (Hedm) {$h_{\textcolor{metroD}{\bullet}}$};
+  \node[gate] at (Helm) {$h_{\textcolor{metroH}{\bullet}}$};
+  \node[gate] at (Hnel) {$h_{\textcolor{metroF}{\bullet}}$};
+  \node[gate] at (Hnmj) {$h_{\textcolor{metroB}{\bullet}}$};
+  \drawstops
+  \node[font=\small] at (4,-1.4) {(b)};
+\end{scope}
+\end{tikzpicture}}
+\caption[The gate network of a hypergraph]{(a) An undirected $3$-uniform hypergraph. (b) Its gate network for the pair $u,v$. The four black routes use four different gates, so $\lec(u,v)=4$. The vertex $v$ lies in only four hyperedges, so these four gates form a cut and no fifth route exists. Each gate is drawn as one point. Dotted lines join it to the third vertex of its hyperedge.}
+\label{fig:hyper-gadget-example}
+\end{figure}
+
+% Printed legibility: three panels across at 0.32\textwidth shrank each picture
+% to roughly 0.58 of natural size and its labels to under 5pt. Stacking them
+% one per row at 0.70\textwidth reverses that, drawing each slightly larger
+% than natural instead.
+\begin{figure}[ht]
+\centering
+\begin{subfigure}[b]{0.70\textwidth}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[>=Stealth]
+\node[vertex] (v) at (1.0, 0) {$v$};
+\draw[->, edge] (0.0,  0.6) -- (v);
+\draw[->, edge] (0.0, -0.6) -- (v);
+\draw[->, edge] (v) -- (2.0,  0.6);
+\draw[->, edge] (v) -- (2.0, -0.6);
+\draw[->, very thick, color=KULblauw3b] (2.8, 0) -- (3.8, 0);
+\node[smallvertex, minimum size=8mm] (vi) at (5.0, 0) {$v^{\mathrm{in}}$};
+\node[smallvertex, minimum size=8mm] (vo) at (7.0, 0) {$v^{\mathrm{out}}$};
+\draw[->, edge, color=KULblauw3b] (vi) -- node[above, font=\scriptsize]{capacity $1$} (vo);
+\draw[->, edge] (4.0,  0.6) -- (vi);
+\draw[->, edge] (4.0, -0.6) -- (vi);
+\draw[->, edge] (vo) -- (8.0,  0.6);
+\draw[->, edge] (vo) -- (8.0, -0.6);
+\end{tikzpicture}}
+\caption{Splitting each vertex $v$ into $v^{\mathrm{in}}$ and $v^{\mathrm{out}}$, joined by an arc of capacity one, turns vertex-disjoint routes into arc-disjoint routes. Only this inner arc has capacity one.}
+\label{fig:vertex-split}
+\end{subfigure}
+
+\bigskip
+\begin{subfigure}[b]{0.70\textwidth}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[>=Stealth]
+\coordinate (a) at (0.0, 0.0); \coordinate (b) at (1.0, 0.0); \coordinate (c) at (2.0, 0.0);
+\begin{scope}[on background layer]\draw[metro, metroA] (a)--(b)--(c);\end{scope}
+\node[smallvertex] at (a) {$a$}; \node[smallvertex] at (b) {$b$}; \node[smallvertex] at (c) {$c$};
+\draw[->, very thick, color=KULblauw3b] (2.85, 0.0) -- (3.95, 0.0);
+\begin{scope}[xshift=4.6cm]
+% members in a column, gate pair beside them: every member sends one uncapped
+% arc into e^- and receives one uncapped arc out of e^+.
+\node[smallvertex] (a2) at (0.0,  1.30) {$a$};
+\node[smallvertex] (b2) at (0.0,  0.00) {$b$};
+\node[smallvertex] (c2) at (0.0, -1.30) {$c$};
+\node[hnode, fill=metroA!70, minimum size=15pt] (em) at (2.05,  0.62) {$e^-$};
+\node[hnode, fill=metroA!70, minimum size=15pt] (ep) at (2.05, -0.62) {$e^+$};
+% into the gate
+\draw[gdirfaint] (a2) to[bend left=8]  node[above, font=\scriptsize, text=black!55, pos=0.55]{$\infty$} (em);
+\draw[gdirfaint] (b2) to[bend left=10] (em);
+\draw[gdirfaint] (c2) to[bend left=22] (em);
+% out of the gate
+\draw[gdirfaint] (ep) to[bend left=22] (a2);
+\draw[gdirfaint] (ep) to[bend left=10] (b2);
+\draw[gdirfaint] (ep) to[bend left=8]  node[below, font=\scriptsize, text=black!55, pos=0.45]{$\infty$} (c2);
+% the one bottleneck
+\draw[gdir, line width=1.6pt, color=KULblauw3b] (em) -- node[right, font=\scriptsize]{capacity $\mu$} (ep);
+\end{scope}
+\end{tikzpicture}}
+\caption{Transform a hyperedge into a gate with capacity equal to the multiplicity of the hyperedge.}
+\label{fig:hyper-gadget}
+\end{subfigure}
+
+\bigskip
+\begin{subfigure}[b]{0.70\textwidth}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[>=Stealth, gatearc/.style={gdir}]
+\node[smallvertex] (a) at (0.0, 1.05) {$a$}; \node[smallvertex] (b) at (-0.85, -0.55) {$b$}; \node[smallvertex] (c) at (0.85, -0.55) {$c$};
+\begin{scope}[on background layer]
+  \draw[metro, metroB, -{Stealth[length=2.8mm]}, shorten >=2mm, shorten <=1.4mm] (a) -- (b);
+  \draw[metro, metroB, -{Stealth[length=2.8mm]}, shorten >=2mm, shorten <=1.4mm] (a) -- (c);
+\end{scope}
+\draw[->, very thick, color=KULblauw3b] (2.4, 0.1) -- (3.5, 0.1);
+\begin{scope}[xshift=5.4cm]
+  \node[smallvertex] (a2) at (0.0, 1.55) {$a$};
+  \node[hnode, fill=metroB!70, minimum size=15pt] (gm) at (0.0,  0.52) {$e^-$};
+  \node[hnode, fill=metroB!70, minimum size=15pt] (gp) at (0.0, -0.62) {$e^+$};
+  \node[smallvertex] (b2) at (-1.05, -1.55) {$b$}; \node[smallvertex] (c2) at (1.05, -1.55) {$c$};
+  \draw[gdirfaint] (a2) -- node[right, font=\scriptsize, text=black!60]{$\infty$} (gm);
+  \draw[gdir, line width=1.6pt, color=KULblauw3b] (gm) -- node[right, font=\scriptsize]{capacity $\mu$} (gp);
+  \draw[gdirfaint] (gp) -- node[left, pos = 0.3, font=\scriptsize, text=black!60]{$\infty$} (b2);
+  \draw[gdirfaint] (gp) -- node[right, pos = 0.3, font=\scriptsize, text=black!60]{$\infty$} (c2);
+\end{scope}
+\end{tikzpicture}}
+\caption{The directed hyperedge is transformed into a gate with one tail and two heads. This gate has capacity equal to the multiplicity of the hyperedge and every route must enter at the tail and leave at a head.}
+\label{fig:dir-hyper-gadget}
+\end{subfigure}
+\caption{The building blocks of the connectivity checker: vertex splitting, hyperedge gates and directed hyperedge gates.}
+\label{fig:checker-gadgets}
+\end{figure}
+
+\section{Checking every graph of a fixed order}\label{sec:certification-standard}
+To find an exact value, the program must check every graph, or exclude it by a correct pruning rule.
+A simple graph on $n$ vertices is a choice of $\mu(u,v)\in\{0,1\}$ for each pair, and a multigraph is a choice in $\{0,\dots,m-1\}$.
+A digraph makes this choice for each ordered pair.
+A hypergraph is a choice of some of the $\binom nr$ possible hyperedges. A multihypergraph also chooses a multiplicity for each.
+A directed hypergraph has $r$ possible hyperedges on each $r$-set, one for each choice of tail, and chooses some of these $r\binom nr$ hyperedges.
+The program goes through all choices, checks each one, and keeps the densest feasible graph.
+If the search is stopped early, it gives only a lower bound.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{figures/complexity_growth.png}
+    \caption{The number of candidates for blind enumeration, on a logarithmic scale. Every model passes $10^9$ candidates before $n=10$. Directed models grow fastest, because they have more entries to choose.}
+    \label{fig:complexity}
+\end{figure}
+
+The number of vertices matters most.
+The number of candidates is (values per entry) to the power (number of entries).
+For graphs the number of entries grows like $n^2$, and for $r$-uniform hypergraphs like $n^r$.
+A larger $m$ gives more values per entry.
+Direction gives more entries, since both directions of a pair are chosen separately.
+Directed hypergraphs have the most candidates, because each $r$-set carries $r$ possible hyperedges, one for each tail.
+The separation does not change the candidates. It only changes the test for each candidate.
+
+
+So there are $2^{\binom n2}$ simple graphs and $2^{n(n-1)}$ simple digraphs on $n$ labelled vertices.
+With multiplicities at most $m-1$ there are $m^{\binom n2}$ multigraphs and $m^{n(n-1)}$ directed multigraphs.
+\Cref{fig:complexity} shows how fast this grows.
+
+\subsection{Pruned search}
+A pruned search skips whole families of graphs.
+Fix an order on the possible edges and decide them one at a time.
+A partly built graph stands for all graphs that agree with it so far.
+A pruning rule can discard this whole family.
+
+The first rule uses that adding an edge never lowers connectivity.
+If a partly built graph already breaks the condition, so does every way to complete it, and the branch is dropped.
+
+The second rule bounds the size of every completion: the edges already placed, plus the number of undecided edges times the largest allowed multiplicity.
+If this cannot beat the best graph found so far, the branch is dropped (\Cref{fig:prune}).
+
+Both rules only drop graphs that are infeasible or cannot beat the best one.
+So a finished pruned search gives the same answer as the full search.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Stealth,
+   live/.style={gvertex, minimum size=5.5mm},
+   dead/.style={gvsink, minimum size=5.5mm},
+   bnd/.style={gvhub, minimum size=5.5mm},
+   best/.style={gvertex, draw=vertexgreen!70!black, fill=vertexgreen!18, minimum size=5.5mm},
+   br/.style={gline}]
+  \node[live] (r) at (0,0) {};
+  \node[live] (l) at (-2.2,-1.3) {};
+  \node[live] (rr) at (2.2,-1.3) {};
+  \draw[br] (r) -- node[above left, font=\scriptsize, pos=0.55]{add arc} (l);
+  \draw[br] (r) -- node[above right, font=\scriptsize, pos=0.55]{skip arc} (rr);
+  \node[best] (l1) at (-3.1,-2.7) {};
+  \node[dead] (l2) at (-1.4,-2.7) {};
+  \draw[br] (l)--(l1);
+  \draw[line width=1pt, vertexred!60] (l)--(l2);
+  \node[dead] (r1) at (1.3,-2.7) {};
+  \node[bnd]  (r2) at (3.1,-2.7) {};
+  \draw[line width=1pt, vertexred!60] (rr)--(r1);
+  \draw[line width=1pt, vertexorange!70] (rr)--(r2);
+  \node[font=\scriptsize, vertexgreen!50!black, align=center] at (-3.1,-3.5) {best\\feasible};
+  \node[font=\scriptsize, vertexred, align=center] at (-1.4,-3.5) {infeasible\\(prune)};
+  \node[font=\scriptsize, vertexred, align=center] at (1.3,-3.5) {infeasible\\(prune)};
+  \node[font=\scriptsize, vertexorange!80!black, align=center] at (3.1,-3.5) {cannot beat\\best (prune)};
+\end{tikzpicture}
+\caption{Each level of the partially built graph fixes one adjacency. Infeasible partial graphs (red) and branches unable to beat the incumbent (orange) are discarded.}
+\label{fig:prune}
+\end{figure}
+
+\subsection{Generating search}
+Many graphs in the full search are isomorphic. Another method avoids this.
+Prof.\ Jan Goedgebeur pointed us to the \texttt{nauty} toolkit of McKay and Piperno \cite{McKayPiperno14}.
+Its program \texttt{geng} lists the undirected graphs on $n$ vertices, one from each isomorphism class.
+For directed multigraphs, our program uses each such graph as a \emph{support}.
+Each support edge $\{u,v\}$ gets multiplicities $\mu(u,v)$ and $\mu(v,u)$ between $0$ and $m-1$, not both zero.
+Different supports give non-isomorphic digraphs.
+After each choice the checker tests the partial digraph, and a branch that breaks the condition is dropped.
+Digraphs that reach the target size are put in a canonical form, so each isomorphism class is reported once.
+Different supports can be handled in parallel.
+We wrote our own step for choosing the multiplicities, because it can prune after each choice.
+
+
+
+
+
+
+\section{The heuristic search}
+For larger $n$ the full search is impossible.
+Instead we search for dense graphs in a guided way.
+A \emph{heuristic} is a rule that moves the search towards better graphs.
+A \emph{metaheuristic} also allows moves that make the graph worse, so that the search does not get stuck.
+
+For graphs and digraphs, each candidate gets an \emph{energy}
+\[
+    \Phi(G) = -|E(G)| + \Lambda \cdot \max\bigl(0,\ c^{\max}(G) - (m - 1)\bigr).
+\]
+Here $c^{\max}(G)$ is $\lec^{\max}(G)$ or $\kap^{\max}(G)$, depending on the separation, and $\Lambda>0$ is a fixed penalty.
+Low energy means many edges and no excess connectivity.
+The search starts from the empty graph and changes one multiplicity by one at each step.
+We use \emph{tabu search} \cite{Glover89}.
+At each step it makes the best allowed move, even if every move raises the energy.
+After a move, the changed pair is \emph{tabu} for a fixed number of steps, so the search cannot undo the move at once.
+A move that gives a better graph than any seen so far is always allowed.
+When the search stalls, it makes a small change to escape.
+
+The program also implements simulated annealing \cite{KirkpatrickGelattVecchi83} on the same energy.
+It accepts a worse move with a probability that decreases over time \cite{Metropolis53}.
+
+Every feasible graph can be built from the empty graph by adding edges one at a time, staying feasible.
+Still, it can help to pass through infeasible graphs: exchanging two edges may need an extra edge first.
+Tabu search allows this, but it only keeps feasible results.
+
+The search is restarted several times with different random choices, and the densest feasible graph is kept.
+The restarts are independent and can run in parallel.
+
+\subsection{Random greedy growth for hypergraphs}
+
+For hypergraphs we use random greedy growth.
+Each run starts with the empty hypergraph and a shuffled list of all possible hyperedges: each hyperedge once in the simple model, and $m-1$ times in the multi model.
+The procedure adds the hyperedges one by one, and keeps each one only if the hypergraph stays feasible.
+This is repeated with new random orders, and the densest result is kept.
+
+At the end of a run no single hyperedge can be added, because a rejected hyperedge stays infeasible when more hyperedges are added.
+This does not mean the result is as large as possible: an early choice can block several later ones.
+We use this method instead of tabu search because there are many possible hyperedges, for example $\binom nr$ in the undirected simple case.
+
+\subsection{Measuring only near the connectivity cap}
+Removing an edge never raises $\lec^{\max}$.
+Adding an edge raises it by at most one, because at most one route of a largest family uses the new edge.
+The same holds for $\kap^{\max}$.
+So the search does not need to run the checker at every step.
+Removing an edge from a feasible graph keeps it feasible.
+Adding an edge to a graph with $\lec^{\max}\le m-2$ also keeps it feasible.
+The search keeps an upper bound on $\lec^{\max}$: it adds one for each accepted addition, and it computes the exact value again at fixed intervals.
+The checker is only called when an addition could break the condition, or when an edge is removed from an infeasible graph.
+
+
+
+
+
+
+

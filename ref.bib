@@ -1,0 +1,638 @@
+% ============================================================================
+% COMPREHENSIVE BIBLIOGRAPHY FOR ERDOS PROBLEM 915 THESIS
+% ============================================================================
+%
+% NOTE ON UNCITED ENTRIES. Twenty-seven of the entries below are cited by the
+% current text, and those are the only ones the printed bibliography carries,
+% since bibtex emits cited entries alone. The rest are retained deliberately:
+% they supported passages that the 2026-08 shortening passes cut, and those
+% passages are archived in offcuts.tex with their restore anchors, so deleting
+% the entries here would make a restore silently lose its reference.
+%
+% Retained but not cited as of the current text:
+%   AbboudKT21, AhujaMagnantiOrlin93, Baranyai75, Berge89, Bollobas78,
+%   BollobasRandomGraphs, BollobasThomason85, BondyMurty08, BondySimonovits74,
+%   Dinic70, EdmondsKarp72, ErdosRenyi59, ErdosStone46, Frank11,
+%   GoldbergTarjan88, HanifehnezhadDolati20, Heule18,
+%   HeuleKullmannMarek16, Karger00, KovariSosTuran54,
+%   McKayRadziszowski95, Mulzer18, NagamochiIbaraki92, Orlin13, Razborov07,
+%   Schrijver03.
+%
+% To regenerate that list, compare the keys cited across chapters, main.tex and
+% preamble.tex against the entry keys in this file. Keep the recipe out of this
+% comment: bibtex scans for an at-sign anywhere outside an entry and treats what
+% follows as a new entry, so a shell one-liner mentioning one breaks the build.
+% ============================================================================
+
+% ============================================================================
+% PRIMARY SOURCES
+% ============================================================================
+
+@article{Mader73,
+    author = {Mader, Wolfgang},
+    title = {Ein {E}xtremalproblem des {Z}usammenhangs von {G}raphen},
+    journal = {Mathematische Zeitschrift},
+    volume = {131},
+    pages = {223--231},
+    year = {1973},
+    doi = {10.1007/BF01187240},
+}
+
+@misc{vandenbruwaene_thesis,
+  author  = {Vandenbruwaene, Louis},
+  title   = {Maximising {E}dge {D}ensity in {G}raphs {S}ubject to {C}onnectivity {C}onstraints: {E}rd{\H{o}}s {P}roblem 915, from {P}roof to {S}earch},
+  howpublished = {\url{https://github.com/louisvandenbruwaene/thesis}},
+  year    = {2026},
+  note    = {GitHub repository, accessed 28 August 2026}
+}
+
+@article{GomoryHu61,
+    author = {Gomory, Ralph E. and Hu, Tien Chung},
+    title = {Multi-Terminal Network Flows},
+    journal = {Journal of the Society for Industrial and Applied Mathematics},
+    volume = {9},
+    number = {4},
+    pages = {551--570},
+    year = {1961},
+    publisher = {SIAM},
+    doi = {10.1137/0109047},
+}
+
+@article{Menger27,
+    author = {Menger, Karl},
+    title = {{Z}ur allgemeinen {K}urventheorie},
+    journal = {Fundamenta Mathematicae},
+    volume = {10},
+    pages = {96--115},
+    year = {1927},
+}
+
+@article{Dirac52,
+    author = {Dirac, G. A.},
+    title = {A property of 4-chromatic graphs and some remarks on critical graphs},
+    journal = {Journal of the London Mathematical Society},
+    volume = {27},
+    pages = {85--92},
+    year = {1952},
+}
+
+@article{Mantel07,
+    author = {Mantel, W.},
+    title = {Problem 28},
+    journal = {Wiskundige Opgaven},
+    volume = {10},
+    pages = {60--61},
+    year = {1907},
+}
+
+@article{Mader72,
+    author = {Mader, Wolfgang},
+    title = {Existenz $n$-fach zusammenh\"{a}ngender {T}eilgraphen in {G}raphen gen\"{u}gend gro\ss{}er {K}antendichte},
+    journal = {Abhandlungen aus dem Mathematischen Seminar der Universit\"{a}t Hamburg},
+    volume = {37},
+    pages = {86--97},
+    year = {1972},
+    doi = {10.1007/BF02993903},
+}
+
+@article{BollobasErdos62,
+    author = {Bollob{\'a}s, B{\'e}la and Erd{\H{o}}s, P{\'a}l},
+    title = {Extremal Problems in Graph Theory},
+    journal = {Matematikai Lapok},
+    volume = {13},
+    pages = {143--152},
+    year = {1962},
+    language = {Hungarian},
+}
+
+% ============================================================================
+% VERTEX-DISJOINT PATHS
+% ============================================================================
+
+@article{Leonard73BE,
+    author = {Leonard, John L.},
+    title = {On a Conjecture of {B}ollob\'{a}s and {E}rd{\H{o}}s},
+    journal = {Periodica Mathematica Hungarica},
+    volume = {3},
+    number = {3--4},
+    pages = {281--284},
+    year = {1973},
+    doi = {10.1007/BF02018594},
+}
+
+@article{Leonard72b,
+    author = {Leonard, John L.},
+    title = {On Graphs with at Most Four Line-Disjoint Paths Connecting any Two Vertices},
+    journal = {Journal of Combinatorial Theory, Series B},
+    volume = {13},
+    pages = {242--250},
+    year = {1972},
+    doi = {10.1016/0095-8956(72)90059-7},
+}
+
+@article{Leonard73,
+    author = {Leonard, John L.},
+    title = {Graphs with 6-Ways},
+    journal = {Canadian Journal of Mathematics},
+    volume = {25},
+    pages = {687--692},
+    year = {1973},
+    doi = {10.4153/CJM-1973-069-x},
+}
+
+@article{SorensenThomassen74,
+    author = {S{\o}rensen, B. A. and Thomassen, Carsten},
+    title = {On $k$-Rails in Graphs},
+    journal = {Journal of Combinatorial Theory, Series B},
+    volume = {17},
+    number = {2},
+    pages = {143--159},
+    year = {1974},
+    doi = {10.1016/0095-8956(74)90082-3},
+}
+
+% ============================================================================
+% EARLY WORK
+% ============================================================================
+
+@article{Bartfai60,
+    author = {B\'{a}rtfai, P\'{a}l},
+    title = {Schweitzer verseny megold\'{a}s ({E}rd{\H{o}}s gr\'{a}ffeladat\'{a}ra)},
+    journal = {Matematikai Lapok},
+    volume = {11},
+    pages = {175--176},
+    year = {1960},
+    note = {In Hungarian. Solves Erd\H{o}s's graph problem for the $m=3$ vertex-disjoint case}
+}
+
+@article{Bollobas66,
+    author = {Bollob{\'a}s, B{\'e}la},
+    title = {On Graphs with at Most Three Independent Paths Connecting any Two Vertices},
+    journal = {Studia Scientiarum Mathematicarum Hungarica},
+    volume = {1},
+    pages = {137--140},
+    year = {1966}
+}
+
+% ============================================================================
+% TEXTBOOKS
+% ============================================================================
+
+@book{Diestel17,
+    author = {Diestel, Reinhard},
+    title = {Graph Theory},
+    edition = {5th},
+    publisher = {Springer},
+    year = {2017},
+    series = {Graduate Texts in Mathematics},
+    volume = {173},
+}
+
+@book{BondyMurty08,
+    author = {Bondy, J. A. and Murty, U. S. R.},
+    title = {Graph Theory},
+    publisher = {Springer},
+    year = {2008},
+    series = {Graduate Texts in Mathematics},
+    volume = {244}
+}
+
+@book{Schrijver03,
+    author = {Schrijver, Alexander},
+    title = {Combinatorial Optimization: Polyhedra and Efficiency},
+    publisher = {Springer},
+    year = {2003},
+    series = {Algorithms and Combinatorics},
+    volume = {24},
+    note = {Comprehensive treatment of network flows and connectivity}
+}
+
+% ============================================================================
+% HYPERGRAPHS
+% ============================================================================
+
+@inproceedings{ChekuriXu17,
+    author = {Chekuri, Chandra and Xu, Chao},
+    title = {Computing Minimum Cuts in Hypergraphs},
+    booktitle = {Proceedings of the 28th Annual ACM-SIAM Symposium on Discrete Algorithms (SODA)},
+    year = {2017},
+    pages = {1085--1100},
+    doi = {10.1137/1.9781611974782.70},
+}
+
+@article{DewarPikeProos18,
+    author = {Dewar, Megan and Pike, David and Proos, John},
+    title = {Connectivity in Hypergraphs},
+    journal = {Canadian Mathematical Bulletin},
+    volume = {61},
+    number = {2},
+    pages = {252--271},
+    year = {2018},
+    doi = {10.4153/CMB-2018-005-9},
+}
+
+@book{Berge89,
+    author = {Berge, Claude},
+    title = {Hypergraphs: Combinatorics of Finite Sets},
+    publisher = {North-Holland},
+    year = {1989},
+    note = {Classic reference on hypergraph theory}
+}
+
+% ============================================================================
+% NETWORK FLOWS
+% ============================================================================
+
+@article{FordFulkerson56,
+    author = {Ford, L. R. and Fulkerson, D. R.},
+    title = {Maximal Flow Through a Network},
+    journal = {Canadian Journal of Mathematics},
+    volume = {8},
+    pages = {399--404},
+    year = {1956},
+    doi = {10.4153/CJM-1956-045-5}
+}
+
+@book{AhujaMagnantiOrlin93,
+    author = {Ahuja, Ravindra K. and Magnanti, Thomas L. and Orlin, James B.},
+    title = {Network Flows: Theory, Algorithms, and Applications},
+    publisher = {Prentice Hall},
+    year = {1993}
+}
+
+% ============================================================================
+% EXTREMAL GRAPH THEORY
+% ============================================================================
+
+@article{Turan41,
+    author = {Tur{\'a}n, P{\'a}l},
+    title = {On an Extremal Problem in Graph Theory},
+    journal = {Matematikai {\'e}s Fizikai Lapok},
+    volume = {48},
+    pages = {436--452},
+    year = {1941},
+    language = {Hungarian}
+}
+
+@book{Bollobas78,
+    author = {Bollob{\'a}s, B{\'e}la},
+    title = {Extremal Graph Theory},
+    publisher = {Academic Press},
+    year = {1978}
+}
+
+@article{KovariSosTuran54,
+    author = {K\H{o}v{\'a}ri, Tam{\'a}s and S{\'o}s, Vera T. and Tur{\'a}n, P{\'a}l},
+    title = {On a Problem of {K}. {Z}arankiewicz},
+    journal = {Colloquium Mathematicum},
+    volume = {3},
+    pages = {50--57},
+    year = {1954}
+}
+
+% ============================================================================
+% CONNECTIVITY ALGORITHMS
+% ============================================================================
+
+@article{Karger00,
+    author = {Karger, David R.},
+    title = {Minimum Cuts in Near-Linear Time},
+    journal = {Journal of the ACM},
+    volume = {47},
+    number = {1},
+    pages = {46--76},
+    year = {2000}
+}
+
+@article{NagamochiIbaraki92,
+    author = {Nagamochi, Hiroshi and Ibaraki, Toshihide},
+    title = {A Linear Time Algorithm for Finding a Sparse $k$-Connected Spanning Subgraph of a $k$-Connected Graph},
+    journal = {Algorithmica},
+    volume = {7},
+    pages = {583--596},
+    year = {1992}
+}
+
+% ============================================================================
+% SURVEYS AND OVERVIEWS
+% ============================================================================
+
+@incollection{Frank11,
+    author = {Frank, Andr{\'a}s},
+    title = {Connections in Combinatorial Optimization},
+    booktitle = {Oxford Lecture Series in Mathematics and its Applications},
+    publisher = {Oxford University Press},
+    year = {2011}
+}
+
+@misc{ErdosProblems,
+    author = {Bloom, Thomas F.},
+    title = {Erd{\H{o}}s Problem \#915},
+    howpublished = {\url{https://www.erdosproblems.com/915}},
+    url = {https://www.erdosproblems.com/915},
+    urldate = {2026-08-28},
+    note = {Accessed 28 August 2026}
+}
+
+% ============================================================================
+% ADDITIONAL ALGORITHM REFERENCES
+% ============================================================================
+
+@article{EdmondsKarp72,
+    author = {Edmonds, Jack and Karp, Richard M.},
+    title = {Theoretical Improvements in Algorithmic Efficiency for Network Flow Problems},
+    journal = {Journal of the ACM},
+    volume = {19},
+    number = {2},
+    pages = {248--264},
+    year = {1972}
+}
+
+@article{Dinic70,
+    author = {Dinic, Efim A.},
+    title = {Algorithm for Solution of a Problem of Maximum Flow in Networks with Power Estimation},
+    journal = {Soviet Mathematics Doklady},
+    volume = {11},
+    pages = {1277--1280},
+    year = {1970}
+}
+
+@article{GoldbergTarjan88,
+    author = {Goldberg, Andrew V. and Tarjan, Robert E.},
+    title = {A New Approach to the Maximum-Flow Problem},
+    journal = {Journal of the ACM},
+    volume = {35},
+    number = {4},
+    pages = {921--940},
+    year = {1988}
+}
+
+@inproceedings{Orlin13,
+    author = {Orlin, James B.},
+    title = {Max Flows in {$O(nm)$} Time, or Better},
+    booktitle = {Proceedings of the 45th Annual ACM Symposium on Theory of Computing (STOC)},
+    pages = {765--774},
+    year = {2013}
+}
+
+@inproceedings{AbboudKT21,
+    author = {Abboud, Amir and Krauthgamer, Robert and Trabelsi, Ohad},
+    title = {Subcubic Algorithms for Gomory--{H}u Tree in Unweighted Graphs},
+    booktitle = {Proceedings of the 53rd Annual ACM Symposium on Theory of Computing (STOC)},
+    pages = {1725--1737},
+    year = {2021}
+}
+
+@article{Whitney32,
+    author = {Whitney, Hassler},
+    title = {Congruent Graphs and the Connectivity of Graphs},
+    journal = {American Journal of Mathematics},
+    volume = {54},
+    number = {1},
+    pages = {150--168},
+    year = {1932}
+}
+
+@article{ErdosStone46,
+    author = {Erd{\H{o}}s, P{\'a}l and Stone, Arthur H.},
+    title = {On the Structure of Linear Graphs},
+    journal = {Bulletin of the American Mathematical Society},
+    volume = {52},
+    pages = {1087--1091},
+    year = {1946}
+}
+
+% ============================================================================
+% RANDOM GRAPHS
+% ============================================================================
+
+@book{BollobasRandomGraphs,
+    author = {Bollob{\'a}s, B{\'e}la},
+    title = {Random Graphs},
+    edition = {2},
+    series = {Cambridge Studies in Advanced Mathematics},
+    volume = {73},
+    publisher = {Cambridge University Press},
+    year = {2001},
+    note = {Chapter 7 gives $\kappa(G(n,p)) = \delta(G(n,p))$ with high probability in this regime}
+}
+
+@incollection{BollobasThomason85,
+    author = {Bollob{\'a}s, B{\'e}la and Thomason, Andrew},
+    title = {Random Graphs of Small Order},
+    booktitle = {Random Graphs '83},
+    series = {Annals of Discrete Mathematics},
+    volume = {28},
+    pages = {47--97},
+    publisher = {North-Holland},
+    year = {1985},
+    note = {Hitting-time form of the connectivity result}
+}
+
+@article{ErdosRenyi59,
+    author = {Erd{\H{o}}s, P{\'a}l and R{\'e}nyi, Alfr{\'e}d},
+    title = {On Random Graphs {I}},
+    journal = {Publicationes Mathematicae Debrecen},
+    volume = {6},
+    pages = {290--297},
+    year = {1959},
+    note = {Foundational paper on random graph theory}
+}
+
+@article{BondySimonovits74,
+    author = {Bondy, John Adrian and Simonovits, Mikl{\'o}s},
+    title = {Cycles of Even Length in Graphs},
+    journal = {Journal of Combinatorial Theory, Series B},
+    volume = {16},
+    pages = {97--105},
+    year = {1974}
+}
+
+@article{Mulzer18,
+    author = {Mulzer, Wolfgang},
+    title = {Five Proofs of {Chernoff's} Bound with Applications},
+    journal = {Bulletin of the EATCS},
+    volume = {124},
+    year = {2018},
+    url = {https://page.mi.fu-berlin.de/mulzer/pubs/chernoff.pdf},
+    note = {Accessible survey of Chernoff bound variants}
+}
+
+@article{BercziEtAl24,
+    author = {B{\'e}rczi, Krist{\'o}f and Chandrasekaran, Karthekeyan and Kir{\'a}ly, Tam{\'a}s and Kulkarni, Shubhang},
+    title = {Splitting-off in Hypergraphs},
+    journal = {Journal of Combinatorial Theory, Series B},
+    volume = {176},
+    pages = {319--383},
+    year = {2026},
+    doi = {10.1016/j.jctb.2025.09.004}
+}
+
+@incollection{Baranyai75,
+  author    = {Baranyai, Zsolt},
+  title     = {On the factorization of the complete uniform hypergraph},
+  booktitle = {Infinite and Finite Sets (Colloq., Keszthely, 1973), Vol.~I},
+  series    = {Colloq. Math. Soc. Janos Bolyai},
+  volume    = {10},
+  pages     = {91--108},
+  publisher = {North-Holland},
+  year      = {1975}
+}
+
+@book{Tutte66,
+  author    = {Tutte, W. T.},
+  title     = {Connectivity in Graphs},
+  publisher = {University of Toronto Press},
+  address   = {Toronto},
+  year      = {1966},
+  doi       = {10.3138/9781487584863}
+}
+
+@article{HopcroftTarjan73,
+  author  = {Hopcroft, John E. and Tarjan, Robert E.},
+  title   = {Dividing a graph into triconnected components},
+  journal = {SIAM Journal on Computing},
+  volume  = {2},
+  number  = {3},
+  pages   = {135--158},
+  year    = {1973},
+  doi     = {10.1137/0202012}
+}
+
+% ============================================================================
+% COMPUTATIONAL EXTREMAL COMBINATORICS (related work for the pipeline)
+% ============================================================================
+
+@article{McKayPiperno14,
+  author  = {McKay, Brendan D. and Piperno, Adolfo},
+  title   = {Practical graph isomorphism, {II}},
+  journal = {Journal of Symbolic Computation},
+  volume  = {60},
+  pages   = {94--112},
+  year    = {2014},
+  doi     = {10.1016/j.jsc.2013.09.003},
+  note    = {Describes the nauty/Traces canonical-labelling tools underlying geng}
+}
+
+@article{McKayRadziszowski95,
+  author  = {McKay, Brendan D. and Radziszowski, Stanis{\l}aw P.},
+  title   = {{$R(4,5) = 25$}},
+  journal = {Journal of Graph Theory},
+  volume  = {19},
+  number  = {3},
+  pages   = {309--322},
+  year    = {1995},
+  doi     = {10.1002/jgt.3190190304},
+  note    = {Exhaustive-generation determination of a Ramsey number}
+}
+
+@inproceedings{HeuleKullmannMarek16,
+  author    = {Heule, Marijn J. H. and Kullmann, Oliver and Marek, Victor W.},
+  title     = {Solving and Verifying the {B}oolean {P}ythagorean Triples Problem via Cube-and-Conquer},
+  booktitle = {Theory and Applications of Satisfiability Testing (SAT 2016)},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {9710},
+  pages     = {228--245},
+  publisher = {Springer},
+  year      = {2016},
+  doi       = {10.1007/978-3-319-40970-2_15},
+  note      = {The certified SAT proof is roughly 200 terabytes in DRAT format}
+}
+
+@inproceedings{Heule18,
+  author    = {Heule, Marijn J. H.},
+  title     = {Schur Number Five},
+  booktitle = {Proceedings of the Thirty-Second AAAI Conference on Artificial Intelligence (AAAI-18)},
+  pages     = {6598--6606},
+  publisher = {AAAI Press},
+  year      = {2018},
+  doi       = {10.1609/aaai.v32i1.12209}
+}
+
+@article{Razborov07,
+  author  = {Razborov, Alexander A.},
+  title   = {Flag Algebras},
+  journal = {The Journal of Symbolic Logic},
+  volume  = {72},
+  number  = {4},
+  pages   = {1239--1282},
+  year    = {2007},
+  doi     = {10.2178/jsl/1203350785}
+}
+
+% ============================================================================
+% METAHEURISTICS: the two search engines of Chapter 2
+% ============================================================================
+
+@article{Metropolis53,
+    author = {Metropolis, Nicholas and Rosenbluth, Arianna W. and Rosenbluth,
+              Marshall N. and Teller, Augusta H. and Teller, Edward},
+    title = {Equation of State Calculations by Fast Computing Machines},
+    journal = {The Journal of Chemical Physics},
+    volume = {21},
+    number = {6},
+    pages = {1087--1092},
+    year = {1953},
+    doi = {10.1063/1.1699114},
+}
+
+@article{KirkpatrickGelattVecchi83,
+    author = {Kirkpatrick, S. and Gelatt, C. D. and Vecchi, M. P.},
+    title = {Optimization by Simulated Annealing},
+    journal = {Science},
+    volume = {220},
+    number = {4598},
+    pages = {671--680},
+    year = {1983},
+    doi = {10.1126/science.220.4598.671},
+}
+
+@article{Glover89,
+    author = {Glover, Fred},
+    title = {Tabu Search---Part {I}},
+    journal = {ORSA Journal on Computing},
+    volume = {1},
+    number = {3},
+    pages = {190--206},
+    year = {1989},
+    doi = {10.1287/ijoc.1.3.190},
+}
+
+@article{HanifehnezhadDolati20,
+    author = {Hanifehnezhad, Saeid and Dolati, Ardeshir},
+    title = {Symmetric Submodular System: Contractions and {G}omory--{H}u Tree},
+    journal = {Information and Computation},
+    volume = {271},
+    pages = {104479},
+    year = {2020},
+    doi = {10.1016/j.ic.2019.104479},
+    note = {Gomory--Hu trees for symmetric submodular cut functions}
+}
+
+@article{HuangLyu26,
+    author = {Huang, Zejun and Lyu, Zhenhua},
+    title = {Extremal Digraphs Containing at Most $t$ Paths of Length $2$ with the Same Endpoints},
+    journal = {Discrete Applied Mathematics},
+    volume = {388},
+    pages = {1--10},
+    year = {2026},
+    doi = {10.1016/j.dam.2026.02.043},
+    note = {Tur\'{a}n number for $t+1$ two-step paths sharing endpoints}
+}
+
+@article{Fekete23,
+    author = {Fekete, M.},
+    title = {{\"U}ber die {V}erteilung der {W}urzeln bei gewissen algebraischen {G}leichungen mit ganzzahligen {K}oeffizienten},
+    journal = {Mathematische Zeitschrift},
+    volume = {17},
+    pages = {228--249},
+    year = {1923},
+    note = {The subadditive lemma, used here in its superadditive form}
+}
+@manual{NautyGuide29,
+  author = {McKay, Brendan D. and Piperno, Adolfo},
+  title = {nauty and {Traces} User's Guide, Version 2.9},
+  year = {2025},
+  url = {https://pallini.di.uniroma1.it/nug29.pdf},
+  note = {Sections on directg and watercluster2. Accessed 5 September 2026}
+}

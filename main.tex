@@ -1,0 +1,165 @@
+\input{preamble}
+
+\begin{document}
+
+% ============================================================================
+% FRONT MATTER
+% ============================================================================
+
+% The cover carries no page number, so it needs no hyperref page anchor. Without
+% this, the cover (physical page 1) and the first numbered page both claim the
+% anchor "page.1", which pdfTeX reports as a duplicate destination. Disable the
+% anchor across the cover, then restore it for the numbered pages.
+\hypersetup{pageanchor=false}
+\makefacultycover
+\makecopyrightpage
+\hypersetup{pageanchor=true}
+
+\pagenumbering{Roman}
+\setcounter{page}{1}
+
+
+
+\chapter*{Foreword}
+\addcontentsline{toc}{chapter}{Foreword}
+This thesis asks how many edges a network can have when no two vertices may be joined by too many independent routes.
+The starting point is Erd\H{o}s Problem~915, which asks this for edge-disjoint paths in simple graphs.
+Chapter~1 states the problem and its variants, and collects what is proved.
+Chapter~2 explains how a program can measure connectivity and search for dense examples.
+Chapter~3 summarises the results and lists the open problems.
+The appendix contains the proofs.
+
+
+\chapter*{Contribution Statement}
+\addcontentsline{toc}{chapter}{Contribution Statement}
+I carried out this project with Stijn Cambie. I used artificial
+intelligence to write code, to suggest proofs, to help check them, to format
+\LaTeX{} and to check spelling. Results from the literature are cited where
+they are used. The code is available in the repository \cite{vandenbruwaene_thesis}.
+
+Every theorem and lemma is cited from the literature where needed.
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}X@{}}
+\toprule
+Area & Main results \\
+\midrule
+Undirected graphs & A proof of the edge bounds with the Gomory--Hu tree, and extremal graphs for every $n\ge m$. \\
+Hypergraphs, edge version & An upper bound for every $r$-uniform hypergraph, attained by simple hypergraphs on a stated range. \\
+Hypergraphs, vertex version & The exact value at $m=2$, and an upper bound at $m=3$ that is attained on stated ranges. \\
+Directed multigraphs & The exact value for every $n$ and $m$, and the extremal multigraphs for $n\ge\max(8,2m)$. \\
+Simple digraphs & The exact value at $m=2$, for both separations. \\
+Multigraphs, vertex version & The exact value at $m=2$ and $m=3$. \\
+Directed graphs and hypergraphs & Upper bounds with the right leading term, $n^2/4$ for simple digraphs and $(m-1)n^2/(4(r-1))$ for directed hypergraphs, valid for every $n$. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\chapter*{Short Summary}
+\addcontentsline{toc}{chapter}{Short Summary}
+Erd\H{o}s Problem~915 asks how many edges a simple graph on $n$ vertices can
+have if no pair is joined by $m$ edge-disjoint paths
+\cite{BollobasErdos62,ErdosProblems}. Writing the maximum as $\ell_m(n)$,
+Mader's bound is
+\[
+ \ell_m(n)\le\floorfrac{m(n-1)}2.
+\]
+We prove this bound with the Gomory--Hu tree and give graphs that reach it for every $n\ge m\ge2$.
+
+The thesis also studies the problem in eight models. Edges may be directed or not, may be repeated or not, and may join two vertices or more (hypergraphs). In each model we can ask for edge-disjoint routes or for vertex-disjoint routes, which gives sixteen problems.
+
+The proved results include:
+\begin{itemize}
+\item Multigraphs: at most $(m-1)(n-1)$ edges.
+\item $r$-uniform hypergraphs: at most $\floor{(m-1)(n-1)/(r-1)}$ hyperedges.
+\item Hypergraphs with vertex-disjoint routes: exactly $\floor{(n-1)/(r-1)}$ at $m=2$, and at most $\floor{2(n-1)/(r-1)}$ at $m=3$.
+\item Directed multigraphs: exactly $(m-1)\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs.
+\item Simple digraphs: $n^2/4+\Theta_m(n)$ arcs for fixed $m\ge3$.
+\end{itemize}
+The exact value for simple digraphs is open for $m\ge3$.
+
+Chapter~2 explains how a program measures connectivity with maximum flow and searches for dense examples. No result depends on this program.
+
+\chapter*{Abbreviations and Symbols}
+\addcontentsline{toc}{chapter}{Abbreviations and Symbols}
+\begingroup
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{\fill}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{\dimexpr0.78\textwidth-2\tabcolsep\relax}@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+\endfirsthead
+\multicolumn{2}{@{}l}{\textit{Abbreviations and Symbols (continued)}}\\
+\toprule
+Symbol & Meaning \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$G=(V,E)$, $D=(V,A)$ & vertex set $V$, with edge multiset $E$ or arc multiset $A$ \\
+$n$, $m$, $r$ & vertex count, forbidden-connectivity threshold, hyperedge size \\
+$\lambda_G(u,v)$ & maximum number of edge-disjoint $u$--$v$ paths \\
+$\kappa_G(u,v)$ & maximum number of incidence-separated $u$--$v$ paths \\
+$\lambda_G^{\max}$, $\kappa_G^{\max}$ & maximum local connectivity over distinct vertex pairs, ordered in directed models \\
+$\ell_m(n)$, $L_m(n)$ & simple and multigraph undirected edge maxima \\
+$k_m(n)$, $K_m(n)$ & simple and multigraph undirected vertex maxima \\
+$\ell_m^{\mathrm{dir}}(n)$, $L_m^{\mathrm{dir}}(n)$ & simple and multigraph directed arc maxima \\
+$k_m^{\mathrm{dir}}(n)$, $K_m^{\mathrm{dir}}(n)$ & simple and multigraph directed vertex maxima \\
+$\ell_m^{(r)}(n)$, $L_m^{(r)}(n)$ & simple and multi $r$-uniform hypergraph edge maxima \\
+$k_m^{(r)}(n)$, $K_m^{(r)}(n)$ & simple and multi $r$-uniform hypergraph vertex maxima \\
+$M(n)$ & $\max(2(n-1),\floor{n^2/4})$, the directed arc maximum at $m=2$ \\
+$B_{p,q}$ & complete one-way bipartite digraph, from the $p$-part to the $q$-part \\
+$\mu(u,v)$ & edge or arc multiplicity \\
+$h_m(b)$ & maximum edge count of a feasible simple block on $b$ vertices \\
+$W_m(G_0)$ & maximum feasible total multiplicity over the simple support $G_0$ \\
+$g_m(b)$ & maximum $W_m$ of a feasible block on $b$ vertices \\
+$c_m$ & limiting rate $\lim_{n\to\infty}k_m(n)/(n-1)$ (\Cref{thm:simple-vertex-blocks}) \\
+\end{longtable}
+\endgroup
+
+\tableofcontents
+
+% ============================================================================
+% MAIN MATTER
+% ============================================================================
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+\chapter{The Problem and Its Variants}\label{ch:basecases}
+\input{chapters/ch1_basecases}
+
+\chapter{Measuring and Searching by Machine}
+\label{ch:machine}\label{ch:certify}\label{ch:discover}
+\input{chapters/ch2_machine}
+
+\chapter{Synthesis, Results, and Open Problems}\label{ch:synthesis}
+\input{chapters/ch3_synthesis}
+
+% ============================================================================
+% APPENDICES
+% ============================================================================
+
+\appendix
+\crefalias{chapter}{appendix}
+
+\chapter{Proofs}\label{app:proofs}
+\input{chapters/app_proofs}
+
+% ============================================================================
+% BACK MATTER
+% ============================================================================
+
+% Bibliography.  \bibliographystyle{unsrt} numbers entries in order of first
+% citation, so only cited keys reach main.bbl; ref.bib also carries entries that
+% only offcuts.tex cites (BercziEtAl24 among them), and those do not print here.
+% An earlier note in this slot explained an underfull hbox of badness 1168 in the
+% BercziEtAl24 entry.  That entry left the thesis with the passage that cited it,
+% and the build now reports no overfull and no underfull boxes at all.
+\bibliographystyle{unsrt}
+\bibliography{ref}
+
+\makefacultybackcover
+
+\end{document}
