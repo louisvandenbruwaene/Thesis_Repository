@@ -5,6 +5,8 @@ This chapter explains how a program can measure connectivity in every variant, c
 No result in this thesis depends on the output of this program.
 This chapter therefore lists no computed values.
 The methods are what matters here, and the code itself is not central to the thesis: the way matters more than the destination.
+The program is too long to check line by line, so its output cannot simply be trusted.
+\Cref{sec:certificates} shows how an output can still be checked without reading the code.
 \Cref{fig:spine} shows the structure of the program.
 \begin{figure}[ht]
 \centering
@@ -441,9 +443,27 @@ Adding an edge to a graph with $\lec^{\max}\le m-2$ also keeps it feasible.
 The search keeps an upper bound on $\lec^{\max}$: it adds one for each accepted addition, and it computes the exact value again at fixed intervals.
 The checker is only called when an addition could break the condition, or when an edge is removed from an infeasible graph.
 
+\section{Checking the output without trusting the program}\label{sec:certificates}
 
+The program is too long to check by hand, so a value it prints is not a proof.
+We solve this by separating \emph{finding} from \emph{checking}.
+The program may find a graph in any way, correct or not.
+Together with the graph it writes a short \emph{certificate}: a list that a reader can check by hand, or with a few lines of independent code, without trusting the program.
 
+\emph{Edge separation.} For every pair $u,v$, the certificate gives a set of at most $m-1$ edges (or arcs, or hyperedge copies) whose removal leaves no route from $u$ to $v$.
+To check it, remove the set and follow the remaining edges from $u$: $v$ must not be reached.
+Then every route from $u$ to $v$ uses an element of the set, so no pair has $m$ disjoint routes.
+This check uses only that a route through a removed set must use one of its elements. It needs neither Menger's theorem nor a maximum flow.
+For undirected graphs one tree is enough: any tree on the vertices such that, for each tree edge, at most $m-1$ edges of $G$ cross it.
+Every pair $u,v$ is then separated by the split of any tree edge on its tree path, so $n-1$ counts replace $\binom n2$ checks.
+A Gomory--Hu tree (\Cref{thm:gomory-hu}) of a feasible graph is such a tree.
 
+\emph{Vertex separation.} For every pair $u,v$, the certificate gives a set of at most $m-1$ inner nodes of the incidence graph, vertices or edge copies, whose removal leaves no route from $u$ to $v$. It is checked in the same way.
 
+\emph{Size of the graph.} The number of edges is counted directly.
 
-
+So every lower bound the program finds can be checked: the graph is feasible by its certificate, and its size is counted.
+An upper bound is different. A certificate that no graph on $n$ vertices has more edges would be the whole search, which is too long to check.
+So the thesis takes no upper bound or exact value from the program.
+Every upper bound is proved by hand, and every construction in the thesis is checked by hand in \Cref{ch:basecases} or \Cref{app:proofs}.
+The exhaustive and heuristic searches of this chapter show which bounds are worth trying to prove, and which constructions to try.

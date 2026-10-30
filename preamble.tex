@@ -923,4 +923,30 @@ for scientific awards or contests.
 \newcommand{\aimedal}{\,[AI]}
 \newcommand{\conditional}{\,[conditional]}
 
-
+% ---------------------------------------------------------------------------
+% These appendix figures use the SHARED thesis TikZ styles (../shared/tikz-
+% styles.tex), so they match the blue KU Leuven look of the body figures.  The
+% appendix-prefixed names below are thin aliases onto those shared styles, kept
+% only so the dense figure bodies need no editing: apxlab/apx are thesis blue
+% vertices (labelled / small), apz a hyperedge square (hnode), apgedge the
+% standard edge, aparc a directed arc, apredarc/apdashed forbidden objects.
+% ---------------------------------------------------------------------------
+\tikzset{
+  apx/.style={gvertex, minimum size=4mm},
+  apxlab/.style={gvertex},
+  apz/.style={hnode},
+  apgedge/.style={gline},
+  aptedge/.style={line width=1.3pt, KULblauw3b, line cap=round},
+  aparc/.style={gdir},
+  apfaint/.style={gdirfaint},
+  apredarc/.style={gcut},
+  apdashed/.style={gcutedge},
+  aplab/.style={edgelabel},
+  aptw/.style={treeweight},
+  % apname: a free-floating text label with NO white fill box, for vertex names
+  % and annotations placed in open space. (Using aplab there draws an ugly white
+  % rectangle, and passing a bare colour to aplab overrides its fill and turns
+  % the whole label into a solid colour block, so coloured annotations use
+  % apname with text=<colour>.)
+  apname/.style={font=\scriptsize, inner sep=1.5pt},
+}

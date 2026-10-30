@@ -1,40 +1,12 @@
 % !TEX root = ../main.tex
-This appendix contains all proofs, and the lemmas they need.
+This appendix contains the proofs that are not in \Cref{ch:basecases}, and the lemmas they need.
 The definitions are in \Cref{ch:basecases}. New terms are defined where they are first used.
 
 The appendix has three parts.
-\textsc{Part I} contains the classical tools and the proof of Mader's theorem.
-\textsc{Parts II} and \textsc{III} contain the new results.
+\textsc{Part I} is about undirected graphs, \textsc{Part II} about directed graphs, and \textsc{Part III} about hypergraphs.
 The three main proof ideas are the reachability skeleton (directed multigraphs), the incidence-rank lemma (hypergraphs at $m=3$), and the two-step budget (directed graphs and hypergraphs).
 
 
-% ---------------------------------------------------------------------------
-% These appendix figures use the SHARED thesis TikZ styles (../shared/tikz-
-% styles.tex), so they match the blue KU Leuven look of the body figures.  The
-% appendix-prefixed names below are thin aliases onto those shared styles, kept
-% only so the dense figure bodies need no editing: apxlab/apx are thesis blue
-% vertices (labelled / small), apz a hyperedge square (hnode), apgedge the
-% standard edge, aparc a directed arc, apredarc/apdashed forbidden objects.
-% ---------------------------------------------------------------------------
-\tikzset{
-  apx/.style={gvertex, minimum size=4mm},
-  apxlab/.style={gvertex},
-  apz/.style={hnode},
-  apgedge/.style={gline},
-  aptedge/.style={line width=1.3pt, KULblauw3b, line cap=round},
-  aparc/.style={gdir},
-  apfaint/.style={gdirfaint},
-  apredarc/.style={gcut},
-  apdashed/.style={gcutedge},
-  aplab/.style={edgelabel},
-  aptw/.style={treeweight},
-  % apname: a free-floating text label with NO white fill box, for vertex names
-  % and annotations placed in open space. (Using aplab there draws an ugly white
-  % rectangle, and passing a bare colour to aplab overrides its fill and turns
-  % the whole label into a solid colour block, so coloured annotations use
-  % apname with text=<colour>.)
-  apname/.style={font=\scriptsize, inner sep=1.5pt},
-}
 
 % ---------------------------------------------------------------------------
 % Part dividers. The appendix is one chapter, so its thirteen sections would
@@ -56,146 +28,33 @@ The three main proof ideas are the reachability skeleton (directed multigraphs),
   \addvspace{0.4\baselineskip}}
 
 \clearpage
-\apppart{Part I. Classical tools and Mader's theorem}{The theorems of Menger and Gomory--Hu, cited without proof, and a full proof of Mader's theorem with the Gomory--Hu tree.}
+\apppart{Part I. Undirected graphs}{Graphs that attain Mader's bound, and the vertex problem as a problem about blocks.}
 
-\section{Menger, Gomory--Hu, and the degree bound}
+\section{Graphs that attain Mader's bound}\label{sec:mader-extremal}
 
-We use two classical results.
+The constructions below need hypergraphs in which no vertex lies in too many hyperedges. Recall that a graph is a $2$-uniform hypergraph, and the \emph{degree} of a vertex is the number of hyperedges that contain it.
 
-
-\begin{theorem}[Menger \cite{Menger27,FordFulkerson56}]\label{thm:menger}
-Let $u$ and $v$ be distinct vertices of a multigraph $G$. The largest number of pairwise edge-disjoint $u$--$v$ paths equals the smallest number of edges whose removal leaves no $u$--$v$ path. The same holds in a directed multigraph, with directed paths and arcs.
-\end{theorem}
-
-
-
-\begin{theorem}[Gomory--Hu \cite{GomoryHu61}]\label{thm:gomory-hu}
-Let $G$ be a multigraph on the vertex set $V$. There is a tree $T$ on $V$, with a weight $c(t)$ on each tree edge $t$, such that:
-\begin{enumerate}[label=(\arabic*)]
-\item Removing $t$ from $T$ splits $V$ into two parts $S$ and $V\setminus S$, and $c(t)$ is the number of edges of $G$ with one end in $S$ and one end in $V\setminus S$.
-\item For distinct $u,v$, the value $\lec_G(u,v)$ is the smallest weight on the $u$--$v$ path of $T$.
-\end{enumerate}
-\end{theorem}
-Such a tree is a \emph{Gomory--Hu tree} of $G$. Its edges need not be edges of $G$. If $t=xy$ is a tree edge, then the $x$--$y$ path of $T$ is $t$ itself, so $c(t)=\lec_G(x,y)$ by (2). This thesis uses the theorem only for undirected graphs.
-
-
-We also use a degree bound.
-
-\begin{lemma}[Degree bound]\label{lem:degree-bound}
-Every pair $u, v$ of distinct vertices of a graph $G$ satisfies $\lec_G(u, v) \le \min(\deg u, \deg v)$, and every ordered pair of a digraph $D$ satisfies $\lec_D(u, v) \le \min(d^+(u), d^-(v))$.
+\begin{lemma}[Sparse uniform hypergraphs exist]\label{lem:sparse-hypergraph}
+Let $r$, $n$ and $d$ be integers with $r \ge 1$, $n \ge r$ and $0 \le d \le \binom{n-1}{r-1}$. There is a simple
+$r$-uniform hypergraph on $n$ vertices with exactly $\floorfrac{dn}{r}$
+hyperedges and maximum degree at most $d$.
 \end{lemma}
 
 \begin{proof}
-Every edge-disjoint $u$--$v$ path uses a distinct edge at $u$, so there are at most $\deg u$ of them, and likewise at most $\deg v$. In the directed case each arc-disjoint path leaves $u$ by a distinct out-arc and enters $v$ by a distinct in-arc.
-\end{proof}
-
-
-
-
-\section{Mader's theorem in full}\label{sec:mader-gomory-hu}
-
-Let $T$ be a Gomory--Hu tree of $G$.
-For an edge $e$ of $G$, let $\dist_T(e)$ be the number of tree edges on the path in $T$ between the ends of $e$ (\Cref{fig:gomory-hu-dist}).
-An edge $e=uv$ of $G$ \emph{crosses} a tree edge $t$ if $u$ and $v$ lie in different parts when $t$ is removed from $T$.
-This happens exactly when $t$ lies on the $u$--$v$ path of $T$.
-So $e$ crosses $\dist_T(e)$ tree edges.
-
-The proof has three steps.
-\begin{enumerate}[label=(\arabic*)]
-\item The tree weights add up to at most $(m-1)(n-1)$.
-\item The same sum counts every edge of $G$ once for each tree edge it crosses (\Cref{lem:double-count}).
-\item In a simple graph, at most $n-1$ edges cross only one tree edge, and every other edge crosses at least two (\Cref{lem:sum-dist}).
-\end{enumerate}
-
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}[scale=0.86, transform shape]
-% --- left: graph G ---
-\begin{scope}
-  \node[apxlab] (e) at (-0.7,0.4) {e};
-  \node[apxlab] (a) at (0.6,1.5) {a};
-  \node[apxlab] (b) at (2.1,1.5) {b};
-  \node[apxlab] (c) at (2.8,0.1) {c};
-  \node[apxlab] (d) at (1.3,-0.9) {d};
-  \draw[apgedge] (e)--(a);
-  \draw[apgedge] (a)--(b);
-  \draw[apgedge] (b)--(c);
-  \draw[apgedge] (c)--(d);
-  \draw[apgedge] (b)--(d);          % dist 2
-  \draw[apgedge] (a)--(c);          % dist 1, a tree edge
-  \draw[apgedge,vertexred] (e) to[bend right=22] (c);  % dist 2, highlighted
-  \node[font=\small] at (1.0,-1.7) {graph $G$};
-\end{scope}
-% --- right: Gomory--Hu tree T (star centred at a and c) ---
-\begin{scope}[xshift=6.4cm]
-  \node[apxlab] (te) at (-0.7,0.4) {e};
-  \node[apxlab] (ta) at (0.6,1.5) {a};
-  \node[apxlab] (tb) at (2.1,1.5) {b};
-  \node[apxlab] (tc) at (2.8,0.1) {c};
-  \node[apxlab] (td) at (1.3,-0.9) {d};
-  \draw[aptedge] (te)--(ta) node[aptw,midway] {2};
-  \draw[aptedge] (ta)--(tc) node[aptw,pos=0.4] {3};
-  \draw[aptedge] (tc)--(tb) node[aptw,midway] {3};
-  \draw[aptedge] (tc)--(td) node[aptw,midway] {2};
-  \node[font=\small] at (1.0,-1.7) {Gomory--Hu tree $T$};
-\end{scope}
-% bracket arrow
-\draw[-{Stealth[length=6pt]}, line width=1.3pt, KULblauw3b]
-   (3.4,0.4) -- (4.7,0.4);
-\end{tikzpicture}
-\caption[Graph and Gomory--Hu tree]{A graph $G$ and a Gomory--Hu tree $T$ on the same vertices. Each edge $e$ of $G$ crosses $\dist_T(e)$ tree edges. In a simple graph, at most $n-1$ edges have $\dist_T(e)=1$.}
-\label{fig:gomory-hu-dist}
-\end{figure}
-
-\begin{lemma}[Sum of tree distances]\label{lem:sum-dist}\label{lem:dist-1-count}
-For a simple graph $G$, $\displaystyle\sum_{e \in E(G)} \dist_T(e) \;\ge\; 2|E(G)| - (n-1)$.
-\end{lemma}
-
-\begin{proof}
-Let $E_1$ be the set of edges with $\dist_T(e) = 1$.
-Such an edge joins two vertices that are adjacent in $T$.
-The tree $T$ has $n-1$ edges, and since $G$ is simple, each of them gives at most one edge of $E_1$. So $|E_1| \le n-1$.
-Every other edge has $\dist_T(e) \ge 2$. So
+Let $N := \floorfrac{dn}{r}$. Then $N \le \frac{n}{r}\binom{n-1}{r-1} = \binom{n}{r}$, so there are at least $N$ different $r$-sets.
+Among all families of $N$ different $r$-sets, choose one with the smallest value of $\sum_x \deg(x)^2$.
+Suppose $\deg(x) \ge \deg(y) + 2$ for two vertices $x,y$.
+Let $a$ be the number of sets in the family that contain $x$ but not $y$, and $b$ the number that contain $y$ but not $x$. Then $a \ge b + 2$.
+The map $A \mapsto A - x + y$ sends the first kind of set to the second kind, and different sets have different images.
+Since $a>b$, some image $A - x + y$ is not in the family.
+Replace $A$ by $A - x + y$. The family stays simple and has $N$ sets, and the sum changes by
 \[
-\sum_{e \in E(G)} \dist_T(e) \;\ge\; |E_1| + 2\bigl(|E(G)| - |E_1|\bigr) \;=\; 2|E(G)| - |E_1| \;\ge\; 2|E(G)| - (n-1). \qedhere
+(\deg(x)-1)^2 + (\deg(y)+1)^2 - \deg(x)^2 - \deg(y)^2
+ = 2\bigl(\deg(y) - \deg(x)\bigr) + 2 \le -2.
 \]
-\end{proof}
-
-\begin{lemma}[Double-counting identity]\label{lem:double-count}
-Let $G$ be a multigraph and $T$ a Gomory--Hu tree of $G$ with weights $c$. Then
-\[
-    \sum_{t \in E(T)} c(t) \;=\; \sum_{e \in E(G)} \dist_T(e).
-\]
-Parallel edges are counted separately in the right-hand sum.
-\end{lemma}
-
-\begin{proof}
-
-Count the pairs $(t,e)$ where $t$ is a tree edge, $e$ is an edge of $G$, and $e$ crosses $t$. For a fixed $t$, exactly $c(t)$ edges cross $t$, by property (1) of the Gomory--Hu theorem. For a fixed $e$, exactly $\dist_T(e)$ tree edges are crossed by $e$. So both sums count the same pairs.
-
-\end{proof}
-
-\begin{proof}[Proof of \Cref{thm:mader}, upper bound]
-Let $G$ be a simple graph on $n$ vertices with $\lec^{\max}_G \le m-1$, and let $T$ be a Gomory--Hu tree of $G$.
-Each tree edge $t = xy$ has weight $c(t) = \lec_G(x, y) \le m-1$.
-There are $n-1$ tree edges, so $\sum_{t} c(t) \le (m-1)(n-1)$.
-With \Cref{lem:sum-dist,lem:double-count} this gives
-\[
-2|E(G)| - (n-1) \;\le\; \sum_{e \in E(G)} \dist_T(e) \;=\; \sum_{t \in E(T)} c(t) \;\le\; (m-1)(n-1).
-\]
-So $2|E(G)| \le m(n-1)$. Since $|E(G)|$ is an integer, $|E(G)| \le \floorfrac{m(n-1)}{2}$.
-\end{proof}
-
-The factor $\tfrac12$ comes from step (3). In a multigraph step (3) fails, and the bound is $(m-1)(n-1)$ (\Cref{thm:multigraph-edge}).
-
-\begin{proof}[Proof of \Cref{thm:multigraph-edge}]
-For the lower bound, take any tree on the $n$ vertices and give every edge multiplicity $m-1$.
-This multigraph has $(m-1)(n-1)$ edges.
-Two vertices $u,v$ are joined by exactly one path in the tree.
-Removing the $m-1$ copies of one edge of this path separates $u$ from $v$.
-So $\lec(u,v)\le m-1$ for every pair.
-
-For the upper bound, let $\lec_G^{\max}\le m-1$ and let $T$ be a Gomory--Hu tree of $G$. Every edge of $G$ crosses at least one tree edge. So by \Cref{lem:double-count}, $|E(G)| \le \sum_e \dist_T(e) = \sum_t c(t) \le (m-1)(n-1)$.
+This contradicts the choice of the family.
+So any two degrees differ by at most one.
+The degrees add up to $rN \le dn$, so the largest degree is $\ceil{rN/n} \le d$.
 \end{proof}
 
 
@@ -345,7 +204,7 @@ Second, at $m = 4$, \Cref{thm:leonard} gives $h_4(b) = 2(b-1)$ for every $b \ge 
 So the rate $h_4(b)/(b-1)$ is $2$ for $b\ge4$, against $1$ at $b = 2$ and $3/2$ at $b = 3$.
 The best choice uses blocks of size at least four, and $k_4(n) = 2(n-1)$ for $n \ge 4$.
 This uses \Cref{thm:leonard}, so it is not a new proof.
-It does show the extremal block: the hub-and-spokes graph $H_{4,b}$ of \Cref{sec:mader-gomory-hu}, which is a hub joined to all vertices of a cycle.
+It does show the extremal block: the hub-and-spokes graph $H_{4,b}$ of \Cref{const:hub-spokes}, which is a hub joined to all vertices of a cycle.
 It is a single block with $2(b-1)$ edges.
 
 Third, the Bollob\'as--Erd\H{o}s construction, copies of $K_m$ sharing one vertex, is the case $b = m$: $h_m(m) = \binom{m}{2}$, with rate $m/2$.
@@ -372,6 +231,7 @@ So \Cref{thm:simple-vertex-blocks} sees $G^j$ as one block of size $m + (2m-3)j$
 The recursion beats the rate $m/2$ only when $j > 2/(m-4)$.
 So the smallest member of this family that beats copies of $K_m$ has $26$ vertices at $m = 5$, $24$ at $m = 6$ and $18$ at $m = 7$.
 Smaller examples exist. At $m=5$, \Cref{thm:sorensen-thomassen} gives $33$ edges on $14$ vertices, and by the bouquet argument above such a graph contains a block with rate above $5/2$.
+So $c_m=m/2$ for $m\le4$, $c_5=8/3$ by \Cref{thm:sorensen-thomassen}, and $m/2<c_m\le2(m-1)$ for $m\ge6$.
 
 \begin{remark}[A question about small degrees]\label{rem:vertex-degeneracy}
 Mader's density theorem \cite{Mader72}, in the form of \cite[Theorem~1.4.3]{Diestel17}, says that a graph of average degree at least $4k$ has a $(k+1)$-connected subgraph. A graph with at least $2(m-1)n$ edges has average degree at least $4(m-1)$, so it has an $m$-connected subgraph, and two of its vertices are joined by $m$ internally disjoint paths. So $k_m(n) < 2(m-1)n$.
@@ -393,7 +253,7 @@ Two of its four main vertices are joined by three internally disjoint paths, whi
 For $m\ge4$ the question is open.
 \end{remark}
 
-\apppart{Part II. Directed graphs}{The directed constructions, the reachability skeleton, the value at $m=2$, the bounds for $m\ge3$, and the exact value for directed multigraphs.}
+\apppart{Part II. Directed graphs}{The directed constructions, the reachability skeleton, the bounds for $m\ge3$, and the extremal directed multigraphs.}
 
 \section{The directed constructions}\label{sec:dir-constructions}
 
@@ -427,11 +287,64 @@ There are $24$ arcs from $A$ to $B$, and $6$ arcs forming a cycle inside $B$.
 Each pair $a_i, b_j$ has the direct arc and one detour, so $\lec^{\max} = 2$.
 This gives $30$ arcs, more than the $\max(m(n-1),\floor{n^2/4})=27$ of the first two constructions.
 The gain comes from making $B$ larger than half of the vertices.
+So for $n\ge m$,
+\[
+    \ell_m^{\mathrm{dir}}(n)\;\ge\;\max\Bigl(m(n-1),\ \floorfrac{(n+m-2)^2}{4}\Bigr).
+\]
+For fixed $m$ and large $n$ the augmented bipartite digraph has more arcs (\Cref{fig:crossover,fig:augmented-wall}).
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.78\textwidth]{figures/directed_crossover.png}
+    \caption{The arc counts of the hub and of the augmented bipartite digraph at $m = 3$, and their maximum. These are lower bounds only.}
+    \label{fig:crossover}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.0,
+    wallarc/.style={gdirfaint},
+    cyc/.style={-{Stealth[length=2.4mm]}, line width=1.3pt, vertexorange!85!black}]
+
+  % The m = 3, n = 10 instance: |A| = 4, |B| = 6. B is drawn as the ring its
+  % m-2 = 1 cyclic in-arc per vertex actually forms, rather than as a second
+  % column, where six arcs along one side merge into a single visible stroke.
+  \foreach \i/\y in {1/1.65, 2/0.55, 3/-0.55, 4/-1.65} {
+    \node[smallvertex] (a\i) at (0,\y) {$a_{\i}$};
+  }
+  \foreach \j/\ang in {1/90, 2/30, 3/-30, 4/-90, 5/-150, 6/150} {
+    \node[smallvertex] (b\j) at ($(5.6,0)+(\ang:1.85)$) {$b_{\j}$};
+  }
+  \begin{scope}[on background layer]
+    \node[draw=KULblauw1!25, fill=KULblauw1!6, rounded corners=10pt,
+          fit={(a1) (a4)}, inner sep=9pt] {};
+    \node[draw=vertexorange!35, fill=vertexorange!5, circle,
+          fit={(b1) (b2) (b3) (b4) (b5) (b6)}, inner sep=1pt] {};
+  \end{scope}
+  \node[font=\scriptsize, KULblauw1] at (0,2.55) {part $A$};
+  \node[font=\scriptsize, vertexorange!75!black] at (5.6,2.55) {part $B$};
+
+  % every arc from A to B: 4 x 6 = 24
+  \foreach \i in {1,...,4}{\foreach \j in {1,...,6}{\draw[wallarc] (a\i) -- (b\j);}}
+
+  % inside B, each b_j takes its m-2 = 1 cyclic predecessor: 6 more arcs
+  \foreach \j/\k in {1/2, 2/3, 3/4, 4/5, 5/6, 6/1} {
+    \draw[cyc] (b\j) -- (b\k);
+  }
+
+  \node[font=\scriptsize] at (0,-2.55) {$24$ arcs $A \to B$};
+  \node[font=\scriptsize, align=center, vertexorange!75!black] at (5.6,-2.55)
+    {$6$ cyclic in-arcs inside $B$};
+\end{tikzpicture}
+\caption{The augmented bipartite digraph of \Cref{const:augmented-bipartite} at $m = 3$, $n = 10$. All arcs between the parts go from $A$ to $B$. Inside $B$, each vertex gets one arc from the previous vertex on a cycle. A pair $a_i, b_j$ has the direct arc and one detour, so $\lec^{\max} = 2$. The digraph has $24 + 6 = 30$ arcs, against $27$ for the hub.}
+\label{fig:augmented-wall}
+\end{figure}
+
 
 \section{The reachability skeleton}\label{sec:reach-skeleton}
 
 The next lemma is used for both exact directed results.
-\Cref{sec:dir-arc-m2} uses it once, and \Cref{sec:dir-multi} uses it $m-1$ times.
+The proofs of \Cref{thm:dir-vertex-m2-exact,thm:dir-multi-full} in \Cref{ch:basecases} use it.
 
 \begin{definition}[Reachability skeleton]\label{def:reach-skeleton}
 Let $D$ be a directed multigraph. A \emph{reachability skeleton} of $D$ is a subdigraph $R$ on the same vertices, with at most one copy of each arc, such that for all $u\ne v$: $u$ can reach $v$ in $R$ exactly when $u$ can reach $v$ in $D$.
@@ -547,52 +460,6 @@ Since $f(1) = 2(n-1)$ and $f(n) = \floor{n^2/4}$, we get $f(q) \le M(n)$.
 \caption[A reachability skeleton]{The construction of \Cref{lem:reach-skeleton}. Each bidirected pair $A,B,C$ is a strongly connected component. Contracting the pairs gives $A\to B\to C$ and the redundant arc $A\to C$. Delete that arc to obtain the triangle-free digraph $Q$. The skeleton $R$ keeps the internal arcs of each pair and the two remaining connections between pairs. Although $a_1\to c_2$ is removed, $a_1$ still reaches $c_2$ through $B$.}
 \label{fig:skeleton-example}
 \end{figure}
-
-\section{The directed arc value at \texorpdfstring{$m = 2$}{m=2}}\label{sec:dir-arc-m2}
-
-This section proves the two values at $m=2$.
-We first prove the vertex version with \Cref{lem:reach-skeleton}.
-The arc version follows: since $\kap\le\lec$, every arc-feasible digraph is vertex-feasible, so $k_m^{\mathrm{dir}}(n)\ge\ell_m^{\mathrm{dir}}(n)$.
-
-
-\begin{proof}[Proof of \Cref{thm:dir-vertex-m2-exact}]
-Write $M(n) = \max(2(n-1), \floor{n^2/4})$.
-
-\emph{Lower bound.} The bidirected star (\Cref{const:directed-hub} at $m=2$) and the one-way bipartite digraph (\Cref{const:bipartite}) have $\lec^{\max} = 1$.
-Since $\kap\le\lec$, they also have $\kap^{\max} \le 1$.
-So $\ell_2^{\mathrm{dir}}(n) \ge M(n)$ and $k_2^{\mathrm{dir}}(n) \ge M(n)$.
-
-\emph{Upper bound.} Let $D$ be a simple digraph on $n \ge 2$ vertices with $\kap^{\max}_D \le 1$.
-By \Cref{lem:reach-skeleton}, $D$ has a reachability skeleton $R$ with $|A(R)| \le M(n)$.
-
-We claim that $R$ contains every arc of $D$.
-Suppose an arc $(u,v)$ of $D$ is not in $R$.
-Since $u$ reaches $v$ in $D$, it also reaches $v$ in $R$, along a directed path $P$.
-The path $P$ is not the arc $(u,v)$, so it has length at least two.
-The arc $u\to v$ has no inner vertex, so $P$ and the arc are two internally vertex-disjoint routes.
-So $\kap_D(u,v) \ge 2$, a contradiction.
-
-So $|A(D)| = |A(R)| \le M(n)$. With the lower bound, $k_2^{\mathrm{dir}}(n) = M(n)$.
-\end{proof}
-
-
-
-The arc version follows.
-
-\begin{proof}[Proof of \Cref{thm:dir-arc-m2-exact}]
-The two constructions above give $\ell_2^{\mathrm{dir}}(n) \ge M(n)$.
-Since $\kap\le\lec$, every arc-feasible digraph is vertex-feasible, so \Cref{thm:dir-vertex-m2-exact} bounds it. So
-\[
-    M(n) \;\le\; \ell_2^{\mathrm{dir}}(n) \;\le\; k_2^{\mathrm{dir}}(n) \;\le\; M(n),
-\]
-so all three are equal.
-\end{proof}
-
-
-
-
-
-
 
 \begin{lemma}[The augmented bipartite digraph is feasible]\label{lem:augmented-feasible}
 For $m \ge 2$ and $n \ge m$, the digraph of \Cref{const:augmented-bipartite} satisfies $\lec^{\max} = m-1$ and has $\floor{(n+m-2)^2/4}$ arcs. Hence $\ell_m^{\mathrm{dir}}(n) \ge \floor{(n+m-2)^2/4}$.
@@ -725,7 +592,9 @@ So for $m\ge3$ the second term is linear in $n$ on both sides.
 
 The linear coefficient is not known.
 The construction gives $(m-2)n/2$, and \Cref{thm:dir-arc-linear-error} allows $4(m-1)n$.
-For large $n$, the theorem of Huang and Lyu \cite{HuangLyu26} lowers the upper value to $(m-1)n$.
+For large $n$ a theorem of Huang and Lyu \cite[Theorem~2]{HuangLyu26}, with $t=m-1$, lowers this to $(m-1)n$.
+It applies because a feasible digraph has at most $m-1$ paths of length two between any two vertices (\Cref{lem:feasible-budgeted}).
+Our bound is weaker, but it holds for every $n$.
 
 
 
@@ -762,88 +631,12 @@ We use $\min(a,b) \le \sqrt{ab}$, the Cauchy--Schwarz inequality $\sum_x \sqrt{a
 
 So for $m\ge3$ both directed problems have leading term $n^2/4$ and a linear second term. The linear coefficient and the exact values are open. It is also open whether the two values are equal.
 
-\section{The directed multigraph arc formula}\label{sec:dir-multi}
-
-The lower bound uses thickened trees and thickened one-way bipartite digraphs.
-The upper bound uses the reachability skeleton: removing one copy of each skeleton arc lowers every positive connectivity by at least one.
-
-\subsection{The lower bound: thickening}
-
-If we multiply every multiplicity by the same integer, every cut and so every connectivity is multiplied by that integer.
-
-\begin{lemma}[Thickening]\label{lem:thickening}
-Let $D_0$ be a directed multigraph and $k \ge 1$ an integer. Write $k \cdot D_0$ for the multigraph obtained by multiplying every multiplicity $\mu(u,v)$ by $k$. Then $\lec_{k \cdot D_0}(u,v) = k \cdot \lec_{D_0}(u,v)$ for every ordered pair $u \ne v$, and $|A(k \cdot D_0)| = k\,|A(D_0)|$.
-\end{lemma}
-
-\begin{proof}
-By Menger's theorem, $\lec_{D_0}(u,v)$ is the smallest number of arcs, counted with multiplicity, in a $u$--$v$ cut.
-Multiplying every multiplicity by $k$ multiplies the size of every cut by $k$.
-So it multiplies the smallest cut by $k$ too.
-The number of arcs is also multiplied by $k$.
-\end{proof}
-
-\begin{construction}[Thickened tree and thickened bipartite digraph]\label{const:dir-multi-lower}
-Let $m \ge 2$.
-(a) Take any tree on the $n$ vertices and put $m-1$ arcs in each direction on every tree edge.
-With one arc in each direction this is the bidirected tree, with $\lec^{\max} = 1$.
-So by \Cref{lem:thickening} the thickened tree has $\lec^{\max} = m-1$ and $2(m-1)(n-1)$ arcs.
-(b) Take the one-way bipartite digraph of \Cref{const:bipartite} and repeat every arc $m-1$ times.
-By the same lemma it has $\lec^{\max} = m-1$ and $(m-1)\floor{n^2/4}$ arcs.
-\end{construction}
-
-The larger of the two gives $L_m^{\mathrm{dir}}(n) \ge (m-1)M(n)$. We now prove the upper bound.
-
-\subsection{The upper bound: a reachability skeleton}
-
-For the upper bound we want to delete a part of $D$ that lowers every positive connectivity, and whose size we can bound.
-Deleting one vertex does not work: it need not lower every connectivity.
-Instead we delete a reachability skeleton. By \Cref{lem:reach-skeleton} it has at most $M(n)$ arcs, and the next lemma shows that deleting it lowers every positive connectivity.
-
-
-\begin{lemma}[Deleting a skeleton lowers every positive connectivity]\label{lem:reach-delete}
-Let $D$ be a directed multigraph with $\lec^{\max}(D) \le k$ for some $k \ge 1$, and let $R$ be a reachability skeleton of $D$. Let $D - R$ be $D$ with one copy of each arc of $R$ removed. Then for every ordered pair $u \ne v$,
-\[
-    \lec_{D-R}(u,v) \;\le\; \max\bigl(\lec_D(u,v)-1,0\bigr),
-\]
-and consequently $\lec^{\max}(D - R) \le k - 1$.
-\end{lemma}
-
-The skeleton keeps reachability. So if routes from $u$ to $v$ remain after the deletion, one more route runs inside the deleted arcs.
-
-\begin{proof}
-Fix $u \ne v$ and let $t = \lec_{D-R}(u,v)$. If $t = 0$ there is nothing to prove.
-Otherwise $D-R$ has $t \ge 1$ arc-disjoint $u$--$v$ paths, so $u$ reaches $v$ in $D$.
-Since $R$ is a reachability skeleton, there is a $u$--$v$ path $P$ in $R$.
-The arcs of $P$ are the removed copies, so $P$ shares no arc with the $t$ paths in $D-R$.
-So $D$ has $t+1$ arc-disjoint $u$--$v$ paths, and $t + 1 \le \lec_D(u,v)$.
-Taking the maximum over all pairs gives $\lec^{\max}(D-R) \le k-1$.
-\end{proof}
-
-\begin{proof}[Proof of \Cref{thm:dir-multi-full}]
-The lower bound is \Cref{const:dir-multi-lower}.
-For the upper bound, fix $n$. We show by induction on $k \ge 0$ that every directed multigraph $D$ on $n$ vertices with $\lec^{\max}(D) \le k$ has $|A(D)| \le k\,M(n)$.
-For $k=0$ there are no arcs, since one arc is already one route.
-
-Let $k \ge 1$, and let $R$ be a reachability skeleton of $D$ with $|A(R)| \le M(n)$ (\Cref{lem:reach-skeleton}).
-By \Cref{lem:reach-delete}, $\lec^{\max}(D-R) \le k-1$, so by induction $|A(D-R)| \le (k-1)M(n)$.
-Every arc of $D$ is either in $R$ or in $D-R$. So
-\[
-    |A(D)| \;=\; |A(R)| \;+\; |A(D-R)| \;\le\; M(n) \;+\; (k-1)M(n) \;=\; k\,M(n).
-\]
-With $k = m-1$ this gives $L_m^{\mathrm{dir}}(n) \le (m-1)M(n)$.
-\end{proof}
-
-
-
-
-
-
-
+\section{The extremal directed multigraphs}\label{sec:dir-multi}
 
 At $m=2$ a feasible directed multigraph has no parallel arcs. So \Cref{thm:dir-multi-full} at $m=2$ is \Cref{thm:dir-arc-m2-exact}.
 
 
-\subsection{Extremal classification on the quadratic branch}\label{sec:quadratic-uniqueness}
+\label{sec:quadratic-uniqueness}
 
 \Cref{thm:dir-multi-full} gives the value, but not the extremal multigraphs.
 This subsection describes them for large $n$.
@@ -930,7 +723,7 @@ So every pair has multiplicity $m-1$, and $|A||B|=\floor{n^2/4}$, so the parts h
 The hypothesis $n\ge2m$ is used only in Step 1. Every vertex of an extremiser has degree at least $(m-1)\floor{n/2}$, because deleting it leaves at most $(m-1)M(n-1)$ arcs. For even $n$, every vertex has degree exactly $(m-1)n/2$.
 
 
-\apppart{Part III. Hypergraphs}{The edge bound, the vertex problem at $m = 2$ and $m = 3$, multigraphs with vertex separation, and directed hypergraphs.}
+\apppart{Part III. Hypergraphs}{Menger for hypergraphs, simple hypergraphs that attain the edge bound, the vertex problem at $m = 3$, multigraphs with vertex separation, and directed hypergraphs.}
 
 \section{The hypergraph bounds}
 
@@ -959,64 +752,6 @@ Removing only some copies changes nothing, so a smallest separating set consists
 Such a set separates $u$ from $v$ in $N$ exactly when the same hyperedge copies separate $u$ from $v$ in $\HH$.
 
 So both sides of Menger's theorem have the same value in $N$ and in $\HH$.
-\end{proof}
-
-\begin{lemma}[Cut induction for multihypergraphs]\label{lem:hyper-cut-induction}
-Let $\HH$ be a multihypergraph on $n \ge 1$ vertices, not assumed uniform, with
-$\lec^{\max}_\HH \le k$. Then, the sum running over hyperedge copies,
-\[
-    \sum_{e} \bigl(|e| - 1\bigr) \;\le\; k\,(n-1).
-\]
-\end{lemma}
-
-\begin{proof}
-Induction on $n$. At $n = 1$ every hyperedge is a single vertex and both sides
-are $0$.
-
-Let $n \ge 2$ and fix two vertices $u \ne v$.
-By \Cref{thm:menger-hyper}, a set $F$ of at most $k$ hyperedge copies separates them.
-Let $S$ be the set of vertices that $u$ can reach in $\HH - F$, and let $\bar S = V \setminus S$.
-Then $u \in S$ and $v \in \bar S$, and every copy that meets both sides lies in $F$.
-So at most $k$ copies meet both sides.
-
-Form two \emph{trace} multihypergraphs $\HH[S]$ and $\HH[\bar S]$: replace every copy $e$ by $e \cap S$, or by $e \cap \bar S$, and drop the sets with fewer than two vertices.
-A Berge route in a trace is also a Berge route in $\HH$, using the original copies.
-So a family of disjoint routes in a trace gives one of the same size in $\HH$.
-So both traces have $\lec^{\max} \le k$, and the induction hypothesis applies to both.
-
-Now count. A copy inside one side contributes $|e| - 1$ to that side.
-A copy that meets both sides satisfies
-\[
-    |e| - 1 \;=\; \bigl(|e \cap S| - 1\bigr)
-              \;+\; \bigl(|e \cap \bar S| - 1\bigr) \;+\; 1,
-\]
-where each bracket is the contribution to one trace (zero if that part was dropped).
-Summing over all copies gives
-\[
-    \sum_e \bigl(|e|-1\bigr)
-    \;\le\; k\bigl(|S| - 1\bigr) + k\bigl(|\bar S| - 1\bigr)
-            + \bigl|\{\text{crossing copies}\}\bigr|
-    \;\le\; k(n-2) + k \;=\; k(n-1). \qedhere
-\]
-\end{proof}
-
-A \emph{hypertree} is a hypergraph whose incidence graph (\Cref{sec:incidence-convention}) is a tree.
-
-\begin{proof}[Proof of \Cref{prop:hyper-edge}]
-\emph{Upper bound.} Every hyperedge has $|e| = r$, so \Cref{lem:hyper-cut-induction} with $k = m-1$ gives $(r-1)|E(\HH)| \le (m-1)(n-1)$.
-Since $|E(\HH)|$ is an integer, we can round down.
-
-\emph{Lower bound.} Suppose $r-1$ divides $n-1$.
-Take a hub $h$ and split the other $n-1$ vertices into groups $G_1, G_2, \dots$ of size $r-1$.
-The hyperedges are the sets $\{h\} \cup G_i$. Its incidence graph is a tree, so we call it a \emph{star hypertree}.
-Give each hyperedge multiplicity $m-1$.
-Every vertex other than $h$ lies in exactly $m-1$ hyperedge copies.
-Every pair contains such a vertex, and every route from or to it uses one of these copies.
-So every pair has $\lec\le m-1$.
-There are $(m-1)(n-1)/(r-1)$ hyperedges.
-
-If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} below attains the bound with a simple hypergraph.
-If $r = 2$, this condition means $m = 2$. Then the bound is $n-1$, and a tree attains it.
 \end{proof}
 
 The next theorem shows that for $r \ge 3$ and $m-1\le\binom{n-2}{r-2}$, simple hypergraphs attain the same bound.
@@ -1066,30 +801,7 @@ the upper bound $\floor{5(6-1)/(3-1)}=12$ from \Cref{prop:hyper-edge}.
 
 Since $\kap\le\lec$, the same multihypergraph also gives $12$ for the vertex problem. We do not know whether $12$ is optimal there.
 
-The proof of \Cref{thm:simple-hyper-edge} uses the following lemma.
 
-\begin{lemma}[Sparse uniform hypergraphs exist]\label{lem:sparse-hypergraph}
-Let $r$, $n$ and $d$ be integers with $r \ge 1$, $n \ge r$ and $0 \le d \le \binom{n-1}{r-1}$. There is a simple
-$r$-uniform hypergraph on $n$ vertices with exactly $\floorfrac{dn}{r}$
-hyperedges and maximum degree at most $d$.
-\end{lemma}
-
-\begin{proof}
-Let $N := \floorfrac{dn}{r}$. Then $N \le \frac{n}{r}\binom{n-1}{r-1} = \binom{n}{r}$, so there are at least $N$ different $r$-sets.
-Among all families of $N$ different $r$-sets, choose one with the smallest value of $\sum_x \deg(x)^2$.
-Suppose $\deg(x) \ge \deg(y) + 2$ for two vertices $x,y$.
-Let $a$ be the number of sets in the family that contain $x$ but not $y$, and $b$ the number that contain $y$ but not $x$. Then $a \ge b + 2$.
-The map $A \mapsto A - x + y$ sends the first kind of set to the second kind, and different sets have different images.
-Since $a>b$, some image $A - x + y$ is not in the family.
-Replace $A$ by $A - x + y$. The family stays simple and has $N$ sets, and the sum changes by
-\[
-(\deg(x)-1)^2 + (\deg(y)+1)^2 - \deg(x)^2 - \deg(y)^2
- = 2\bigl(\deg(y) - \deg(x)\bigr) + 2 \le -2.
-\]
-This contradicts the choice of the family.
-So any two degrees differ by at most one.
-The degrees add up to $rN \le dn$, so the largest degree is $\ceil{rN/n} \le d$.
-\end{proof}
 
 \section{The hypergraph vertex problem}\label{sec:hyper-vertex-proof}
 
@@ -1202,22 +914,6 @@ drawn in both. \textbf{(bottom)} The star hypertree of
 \Cref{thm:hyper-vertex-m2}, whose incidence graph is a tree.}
 \label{fig:incidence}
 \end{figure}
-
-We now prove \Cref{thm:hyper-vertex-m2}.
-
-\begin{proof}[Proof of \Cref{thm:hyper-vertex-m2}]
-A \emph{forest} is a graph without cycles.
-We claim that $\kap^{\max}_\HH \le 1$ exactly when $I(\HH)$ is a forest.
-Suppose $I(\HH)$ has a cycle $v_1, e_1, v_2, e_2, \dots, v_\ell, e_\ell, v_1$, with $\ell\ge2$ and all $v_i$ and $e_i$ distinct.
-Then $v_1, e_1, v_2$ and $v_1, e_\ell, v_\ell, \dots, e_2, v_2$ are two Berge routes from $v_1$ to $v_2$ that share no hyperedge and no inner vertex. So $\kap(v_1, v_2) \ge 2$.
-Conversely, two such routes between $u$ and $v$ together form a cycle in $I(\HH)$.
-This proves the claim.
-
-A forest on $n + q$ nodes has at most $n + q - 1$ edges, and $I(\HH)$ has $rq$ edges.
-So $rq \le n + q - 1$, that is, $q \le (n-1)/(r-1)$.
-The star hypertree has $\floor{(n-1)/(r-1)}$ hyperedges.
-Its hyperedges meet only at the hub, and every other vertex lies in at most one hyperedge, so its incidence graph is a forest.
-\end{proof}
 
 \begin{proposition}[General lower bound]\label{prop:hyper-vertex-lower}
 For $r \ge 3$, $m \ge 2$ and $m - 1 \le \binom{n-2}{r-2}$,
