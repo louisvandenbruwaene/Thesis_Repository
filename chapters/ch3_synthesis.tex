@@ -175,14 +175,14 @@ Each of the eight models has an edge problem and a vertex problem.
 \toprule
 Model & Edge or arc separation & Vertex separation \\
 \midrule
-Simple graph & Exact edge formula established & Classical exact values for $m\le5$, open for $m\ge6$ \\
-Multigraph & $(m-1)(n-1)$ established & $m=2,3$ established, with a general block reduction \\
-Simple hypergraph & Cut bound established, attainment on a stated range & $m=2$ established, $m=3$ bound established with stated attainment, higher thresholds open \\
-Multihypergraph & Same established cut bound, with additional repeated-edge constructions & $m=2$ established, $m=3$ bound and stated attainment established \\
-Simple digraph & Exact $m=2$ value established, $n^2/4+\Theta_m(n)$ established for $m\ge3$ & Same asymptotic order, with equality to the arc value open for $m\ge3$ \\
-Directed multigraph & Exact arc formula $(m-1)M(n)$ established & Established leading term $(m-1)n^2/4$, larger than the arc value for some small $n$ \\
-Directed simple hypergraph & Leading term $(m-1)n^2/[4(r-1)]$ established & Same established leading term \\
-Directed multihypergraph & Same established leading term & Same established leading term \\
+Simple graph & $\floor{m(n-1)/2}$ for $n\ge m$ & Exact for $m\le5$. Open for $m\ge6$ \\
+Multigraph & $(m-1)(n-1)$ & $n-1$ at $m=2$, $2(n-1)$ at $m=3$. Open for $m\ge4$ \\
+Simple hypergraph & At most $\floor{(m-1)(n-1)/(r-1)}$, equal when $m-1\le\binom{n-2}{r-2}$ & $\floor{(n-1)/(r-1)}$ at $m=2$, $\floor{2(n-1)/(r-1)}$ at $m=3$ for $r<n$. Open for $m\ge4$ \\
+Multihypergraph & At most $\floor{(m-1)(n-1)/(r-1)}$, equal when $(r-1)\mid(n-1)$ & $\floor{(n-1)/(r-1)}$ at $m=2$. At $m=3$ at most $\floor{2(n-1)/(r-1)}$, equal when $(r-1)\mid(n-1)$ \\
+Simple digraph & $M(n)$ at $m=2$. $n^2/4+\Theta_m(n)$ for $m\ge3$ & Same \\
+Directed multigraph & $(m-1)M(n)$ & $M(n)$ at $m=2$. $(m-1)n^2/4+O_m(n)$ \\
+Directed simple hypergraph & $(1+o(1))(m-1)n^2/(4(r-1))$ & Same \\
+Directed multihypergraph & $(1+o(1))(m-1)n^2/(4(r-1))$ & Same \\
 \bottomrule
 \end{tabularx}
 \caption{Status of the sixteen problems. Here $m\ge2$, hypergraphs have $r\ge3$, and asymptotic statements are for fixed $m$ and $r$ as $n\to\infty$.}
@@ -224,7 +224,7 @@ At $m=3$, the incidence-rank bound and a doubled tree give $K_3(n)=2(n-1)$ (\Cre
 At $m=5$ the thickened theta gives $K_5(4)\ge14>12=L_5(4)$ (\Cref{sec:multi-vertex}).
 
 The block reduction shows how a good small block can be repeated.
-Thickened cliques and thickened complete bipartite graphs give bounds of order $m^2n$ as $m\to\infty$ and $n/m\to\infty$.
+Thickened complete graphs and thickened complete bipartite graphs give bounds of order $m^2n$ as $m\to\infty$ and $n/m\to\infty$.
 The constants are $3-2\sqrt2$ below and $2$ above. The true constant is not known.
 
 \subsection{Simple undirected hypergraphs}

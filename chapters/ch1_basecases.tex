@@ -103,7 +103,7 @@ We write
     \ell_m(n) = \max\{\, |E(G)| : |V(G)| = n,\ \lec_G^{\max} \le m - 1 \,\}
 \]
 for the answer.
-Mader proved the following upper bound where $\floor{x}$ is $x$ rounded down and $\ceil{x}$ is $x$ rounded up.
+Mader proved the following upper bound. Here $\floor{x}$ is $x$ rounded down and $\ceil{x}$ is $x$ rounded up.
 
 \begin{theorem}[Mader \cite{Mader73}]\label{thm:mader}
 For all $n \ge 2$ and $m \ge 2$,
@@ -135,7 +135,7 @@ The first assumption is the size of an edge.
 A \emph{hyperedge} is a set of $r\ge2$ vertices.
 In an \emph{$r$-uniform hypergraph} every hyperedge has exactly $r$ vertices.
 A \emph{Berge path} is a sequence of distinct vertices and distinct hyperedges, alternating, in which each hyperedge contains the vertex before it and the vertex after it.
-This aligns best with the path definition for multigraphs.
+For $r=2$ it is an ordinary path.
 The size of a hypergraph is its number of hyperedges, counted with multiplicity.
 
 The second assumption is repetition.
@@ -665,7 +665,7 @@ $K_3^{(r)}(n) = \floor{2(n-1)/(r-1)}$
 \end{theorem}
 
 Both proofs use the incidence graph (\Cref{sec:hyper-vertex-proof}).
-At $m=3$ the proof bounds the number of independent cycles of the incidence graph.
+At $m=3$ the proof bounds the cycle rank of the incidence graph, its number of edges minus its number of nodes plus one.
 We have no such bound for $m\ge4$.
 
 

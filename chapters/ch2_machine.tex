@@ -58,7 +58,7 @@ A hypergraph is stored as a list of hyperedges. In the directed case, each hyper
     {list of hyperedges:\\[3pt] $e_1: \{3\ |\ 1,2\}$\\[1pt] $e_2:\{3\ |\ 4,5\}$};
 \end{scope}
 \end{tikzpicture}
-\caption{The two encodings for directed variants. The multiplicity matrix $\mu$ represents a digraph, with $\mu_{ij}$ arcs from $i$ to $j$. A list of hyperedges represents a directed hypergraph and records each tail separately. A multihypergraph repeats entries in that list. A tensor representation would require $n^r$ entries, almost all zero, and is therefore avoided.}
+\caption{The two encodings for directed variants. The multiplicity matrix $\mu$ represents a digraph, with $\mu_{ij}$ arcs from $i$ to $j$. A list of hyperedges represents a directed hypergraph and records each tail separately. A multihypergraph repeats entries in that list. A table with one entry for every $r$ vertices would need $n^r$ entries, almost all zero.}
 \label{fig:matrix-rep}
 \end{figure}
 
@@ -375,14 +375,14 @@ So a finished pruned search gives the same answer as the full search.
 \end{figure}
 
 \subsection{Generating search}
-Many graphs in the full search are isomorphic. Another method avoids this.
+The full search meets the same graph many times, with the vertices renamed. Another method avoids this.
 Prof.\ Jan Goedgebeur pointed us to the \texttt{nauty} toolkit of McKay and Piperno \cite{McKayPiperno14}.
-Its program \texttt{geng} lists the undirected graphs on $n$ vertices, one from each isomorphism class.
+Its program \texttt{geng} lists the undirected graphs on $n$ vertices, each only once up to renaming the vertices.
 For directed multigraphs, our program uses each such graph as a \emph{support}.
 Each support edge $\{u,v\}$ gets multiplicities $\mu(u,v)$ and $\mu(v,u)$ between $0$ and $m-1$, not both zero.
-Different supports give non-isomorphic digraphs.
+Different supports give different digraphs, even after renaming vertices.
 After each choice the checker tests the partial digraph, and a branch that breaks the condition is dropped.
-Digraphs that reach the target size are put in a canonical form, so each isomorphism class is reported once.
+Digraphs that reach the target size are reported once each, up to renaming the vertices.
 Different supports can be handled in parallel.
 We wrote our own step for choosing the multiplicities, because it can prune after each choice.
 
@@ -395,7 +395,7 @@ We wrote our own step for choosing the multiplicities, because it can prune afte
 For larger $n$ the full search is impossible.
 Instead we search for dense graphs in a guided way.
 A \emph{heuristic} is a rule that moves the search towards better graphs.
-A \emph{metaheuristic} also allows moves that make the graph worse, so that the search does not get stuck.
+The methods below also allow moves that make the graph worse, so that the search does not get stuck.
 
 For graphs and digraphs, each candidate gets an \emph{energy}
 \[
