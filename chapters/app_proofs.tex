@@ -658,35 +658,14 @@ Every $C$-budgeted simple digraph $D$ on $n$ vertices satisfies
 \end{lemma}
 
 \begin{proof}
-Summing the budget over all $n(n-1)$ ordered pairs gives $|A(D)| + \sum_{u \ne v} p_2(u,v) \le C\,n(n-1)$.
-A \emph{digon} is a pair of vertices with an arc in each direction. Let $\Delta$ be the number of digons.
-We use three facts.
-
-\emph{(a) Walks of length two, counted by their midpoint.}
+Count the walks $u \to x \to v$ of length two.
+Choosing the middle vertex $x$, an in-neighbour $u$ and an out-neighbour $v$ gives $\sum_x d^-(x)\,d^+(x)$ walks.
+The walks with $u \ne v$ number $\sum_{u\ne v} p_2(u,v)$.
+A walk with $u = v$ is fixed by its first arc $u \to x$, so there are at most $|A(D)|$ of them.
+Summing the budget over all ordered pairs gives $|A(D)| + \sum_{u\ne v} p_2(u,v) \le C\,n(n-1)$. So
 \[
-    \sum_{u,\,v \in V} p_2(u,v) \;=\; \sum_{x \in V} d^-(x)\,d^+(x),
+    \sum_x d^+(x)\,d^-(x) \;\le\; \sum_{u\ne v} p_2(u,v) + |A(D)| \;\le\; C\,n(n-1). \qedhere
 \]
-where the left sum also includes the pairs with $u=v$.
-Indeed, a walk $u \to x \to v$ is a choice of an in-neighbour $u$ of $x$ and an out-neighbour $v$ of $x$.
-
-\emph{(b) The pairs with $u=v$.} The term $p_2(u,u)$ counts walks $u \to x \to u$, and each digon gives two of them. So $\sum_{u} p_2(u,u) = 2\Delta$.
-
-\emph{(c)} Different digons use different arcs, so $2\Delta \le |A(D)|$.
-
-Together with the budget this gives
-\[
-\begin{aligned}
-    \sum_{x \in V} d^+(x)\,d^-(x)
-      &\;=\; \sum_{u \ne v} p_2(u,v) \;+\; 2\Delta
-      &&\text{by (a) and (b),} \\[2pt]
-      &\;\le\; \bigl[C\,n(n-1) - |A(D)|\bigr] \;+\; 2\Delta
-      && \\[2pt]
-      &\;\le\; \bigl[C\,n(n-1) - |A(D)|\bigr] \;+\; |A(D)|
-      &&\text{by (c),} \\[2pt]
-      &\;=\; C\,n(n-1).
-\end{aligned}
-\]
-
 \end{proof}
 
 \begin{lemma}[Deleting the smaller half of every vertex]\label{lem:smaller-half-deletion}
@@ -1671,9 +1650,9 @@ Optimised over $s$ and $t$ this rate is $\bigl(3 - 2\sqrt{2} + o_m(1)\bigr)m^2$,
 \begin{proof}
 Write $S$ and $T$ for the two sides, $|S| = s$ and $|T| = t$.
 
-\emph{The connectivities of $K_{s,t}$.} For $u \ne u'$ in $S$, the $t$ two-step routes through distinct vertices of $T$ are internally disjoint. They give $\kap(u,u') \ge t$. Every route must also meet $T$, which is a cut of size $t$, so $\kap(u,u') = \pi(u,u') = t$. Longer routes may exist but cannot increase this maximum. Symmetrically $\kap(v,v') = s$ for $v \ne v'$ in $T$. For adjacent $u \in S$ and $v \in T$, delete the edge $uv$. The sets $T \setminus \{v\}$ and $S \setminus \{u\}$ both separate $u$ from $v$, so $\pi(u,v) \le \min(s-1, t-1) = s-1$. Choose distinct $u_i \in S \setminus \{u\}$ and distinct $v_i \in T \setminus \{v\}$ for $1 \le i \le s-1$, possible because $s \le t$. The routes $u, v_i, u_i, v$ attain the bound. Thus $\pi(u,v) = s-1$ and $\kap(u,v) = s$.
+\emph{The connectivities of $K_{s,t}$.} For $u \ne u'$ in $S$, the $t$ two-step routes through distinct vertices of $T$ are internally disjoint. Every route meets $T$, so $\kap(u,u') = t$. Symmetrically $\kap(v,v') = s$ for $v \ne v'$ in $T$. For adjacent $u \in S$ and $v \in T$, delete the edge $uv$. The sets $T \setminus \{v\}$ and $S \setminus \{u\}$ both separate $u$ from $v$, so $\pi(u,v) \le \min(s-1, t-1) = s-1$. Choose distinct $u_i \in S \setminus \{u\}$ and distinct $v_i \in T \setminus \{v\}$ for $1 \le i \le s-1$, possible because $s \le t$. The routes $u, v_i, u_i, v$ attain the bound. Thus $\pi(u,v) = s-1$ and $\kap(u,v) = s$.
 
-\emph{Feasibility and count.} By \Cref{lem:multi-vertex-split} the multigraph has $\kap = (m-s) + (s-1) = m-1$ on an edge, and $\kap = t \le m-1$ or $s \le m-1$ on a non-adjacent pair, so nothing exceeds the cap. The count is $st$ edges at multiplicity $m-s$. Equivalently, by \Cref{lem:multi-vertex-objective}, $W_m(K_{s,t}) = st(m - s)$.
+\emph{Feasibility and count.} By \Cref{lem:multi-vertex-split} the multigraph has $\kap = (m-s) + (s-1) = m-1$ on an edge, and $\kap = t$ or $s$, both at most $m-1$, on a non-adjacent pair. It has $st$ edges of multiplicity $m-s$.
 
 \emph{The bouquet.} If $s\ge2$, then $K_{s,t}$ is $2$-connected, so \Cref{thm:multi-vertex-blocks} applies and $k$ copies at one shared vertex are feasible with total $k\,st(m-s)$ on $n = k(s+t-1)+1$ vertices. If $s=1$, then $K_{1,t}$ is a tree (a single edge when $t=1$), and after thickening every edge to multiplicity $m-1$, sharing vertices among copies still produces a thickened tree and is feasible directly. Its count is again $k\,t(m-1)=k\,st(m-s)$. Thus the displayed rate holds throughout the theorem's full range $1\le s\le t$.
 
