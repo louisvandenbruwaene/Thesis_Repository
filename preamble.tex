@@ -950,3 +950,11 @@ for scientific awards or contests.
   % apname with text=<colour>.)
   apname/.style={font=\scriptsize, inner sep=1.5pt},
 }
+
+% One part of the Chapter 2 program, cut from program/erdos915.py between the
+% marker comments #<name> and #</name>, so the thesis always shows the code
+% that runs.
+\newcommand{\programpart}[2]{%
+  \lstinputlisting[style=pythonkul, caption={#2}, label={lst:#1},
+    rangeprefix=\#, rangesuffix=, includerangemarker=false,
+    linerange={<#1>-</#1>}]{program/erdos915.py}}

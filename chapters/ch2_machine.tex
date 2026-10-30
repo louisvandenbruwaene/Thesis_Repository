@@ -7,6 +7,11 @@ This chapter therefore lists no computed values.
 The methods are what matters here, and the code itself is not central to the thesis: the way matters more than the destination.
 The program is too long to check line by line, so its output cannot simply be trusted.
 \Cref{sec:certificates} shows how an output can still be checked without reading the code.
+
+The program is one Python file of about $470$ lines, \texttt{program/erdos915.py}.
+It uses the library \texttt{networkx} for maximum flows and the program \texttt{geng} of \texttt{nauty} for one search.
+This chapter prints the program in parts, each next to the idea it implements.
+The names in the code follow the words of the text.
 \Cref{fig:spine} shows the structure of the program.
 \begin{figure}[ht]
 \centering
@@ -16,10 +21,23 @@ The program is too long to check line by line, so its output cannot simply be tr
 \end{figure}
 
 \section{Modelling}
-A graph or digraph is stored as a matrix $\mu$ of multiplicities.
-The matrix is symmetric for undirected graphs and has entries $0$ and $1$ for simple graphs.
-A hypergraph is stored as a list of hyperedges. In the directed case, each hyperedge also records its tail.
-\Cref{fig:matrix-rep} shows both.
+The program treats all eight models in one way.
+A model is described by three facts: whether it is directed, whether edges may repeat, and the edge size $r$.
+A graph is the case $r=2$.
+The separation, edge or vertex, is a separate choice, so the eight models give the sixteen problems.
+A \texttt{Problem} bundles a model, a separation, the number of vertices $n$ and the threshold $m$, and every function below takes one (\Cref{lst:models}).
+
+\programpart{models}{The eight models and the two separations.}
+
+Every edge is stored as a hyperedge: its vertices, and its tail if the model is directed.
+An ordinary edge $uv$ is the hyperedge $\{u,v\}$, and an arc $u\to v$ is the hyperedge $\{u,v\}$ with tail $u$.
+A route may enter a hyperedge at an \texttt{entry\_vertices} vertex and leave it at an \texttt{exit\_vertices} vertex.
+In an undirected hyperedge every vertex is both. In a directed one only the tail is an entry and only the heads are exits.
+A candidate graph is a table that gives every possible hyperedge its multiplicity.
+In a simple model every multiplicity is $0$ or $1$. In a multi model it is at most $m-1$, since $m$ copies of one edge already give $m$ disjoint routes (\Cref{lst:hyperedges}).
+\Cref{fig:matrix-rep} shows two ways to picture such a table.
+
+\programpart{hyperedges}{Hyperedges, the list of all possible hyperedges, and the largest useful multiplicity.}
 
 
 
@@ -79,11 +97,9 @@ We call this routine the \emph{checker}.
 
 
 \subsection{Transformations}
-The checker works on directed multigraphs with arc-disjoint routes.
-The other variants are first turned into such a network.
-An undirected multigraph becomes a directed one if we replace each edge by two opposite arcs.
+The checker works on one kind of network for all sixteen problems.
 
-A hyperedge becomes a \emph{gate} (\Cref{fig:hyper-gadget}).
+Every hyperedge, also an ordinary edge, becomes a \emph{gate} (\Cref{fig:hyper-gadget}).
 The gate has an entry node and an exit node, joined by one arc whose capacity is the multiplicity of the hyperedge.
 Each vertex of the hyperedge gets an arc of unlimited capacity to the entry node and one from the exit node.
 So the arc inside the gate is the only bottleneck.
@@ -92,12 +108,20 @@ So a route must go from the tail to a head.
 \Cref{thm:menger-hyper} shows that the maximum flow in this network is the number of hyperedge-disjoint Berge routes.
 \Cref{fig:hyper-gadget-example} shows an example.
 
-For vertex separation we split every vertex $v$ into two nodes $v^{\mathrm{in}}$ and $v^{\mathrm{out}}$, joined by one arc of capacity one (\Cref{fig:vertex-split}).
-Each arc $u\to v$ becomes an arc $u^{\mathrm{out}}\to v^{\mathrm{in}}$.
-A route through $v$ must use the arc from $v^{\mathrm{in}}$ to $v^{\mathrm{out}}$, so at most one route can pass through $v$.
-So the maximum flow from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ is $\kap(u,v)$.
-The arcs between different vertices keep their capacity $\mu(u,v)$, and the gates keep theirs.
-So parallel copies still give separate routes, as in the incidence convention of \Cref{sec:incidence-convention}.
+Every vertex $v$ is split into two nodes $v^{\mathrm{in}}$ and $v^{\mathrm{out}}$, joined by one arc (\Cref{fig:vertex-split}).
+Routes arrive at $v^{\mathrm{in}}$ and leave from $v^{\mathrm{out}}$.
+For vertex separation this arc has capacity one, so at most one route can pass through $v$.
+For edge separation its capacity is unlimited, and it changes nothing.
+The gates keep their capacity, so parallel copies still give separate routes, as in the incidence convention of \Cref{sec:incidence-convention}.
+\Cref{lst:network} builds this network.
+
+\programpart{network}{The flow network: split vertices and one gate per hyperedge.}
+
+The number of disjoint routes from $u$ to $v$ is the maximum flow from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ (\Cref{lst:measure}).
+A graph is feasible when this number is below $m$ for every pair, ordered in directed models.
+The flow may stop as soon as it reaches $m$, since a larger value changes nothing. This is the \texttt{stop\_at} argument.
+
+\programpart{measure}{Counting disjoint routes, and the feasibility test.}
 
 \begin{figure}[htbp]
 \centering
@@ -346,6 +370,14 @@ If this cannot beat the best graph found so far, the branch is dropped (\Cref{fi
 Both rules only drop graphs that are infeasible or cannot beat the best one.
 So a finished pruned search gives the same answer as the full search.
 
+\Cref{lst:exhaustive} decides the possible hyperedges one at a time, in a fixed order.
+For each it tries $1, 2, \dots$ copies, and stops at the first number of copies that makes the graph infeasible, since more copies stay infeasible.
+Then it also tries $0$ copies.
+The first line of \texttt{decide} is the second rule: if even all undecided hyperedges at full multiplicity cannot beat the best graph so far, the branch is dropped.
+After the time limit the search stops and reports the best graph so far as a lower bound only.
+
+\programpart{exhaustive}{The pruned exhaustive search.}
+
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[scale=1.0, >=Stealth,
@@ -384,9 +416,13 @@ For directed multigraphs, our program uses each such graph as a \emph{support}.
 Each support edge $\{u,v\}$ gets multiplicities $\mu(u,v)$ and $\mu(v,u)$ between $0$ and $m-1$, not both zero.
 Different supports give different digraphs, even after renaming vertices.
 After each choice the checker tests the partial digraph, and a branch that breaks the condition is dropped.
-Digraphs that reach the target size are reported once each, up to renaming the vertices.
+Digraphs of the largest size are reported once each, up to renaming the vertices.
+For this the program compares digraphs after trying every renaming of the vertices, which is fast for the small $n$ where this search finishes.
 Different supports can be handled in parallel.
 We wrote our own step for choosing the multiplicities, because it can prune after each choice.
+\Cref{lst:nauty} shows the whole search. For each support edge $\{a,b\}$, \texttt{choices} lists the pairs $(\mu(a,b),\mu(b,a))$ that are not both zero.
+
+\programpart{nauty}{The generating search for directed multigraphs, with \texttt{geng} from \texttt{nauty}.}
 
 
 
@@ -405,22 +441,34 @@ For graphs and digraphs, each candidate gets an \emph{energy}
 \]
 Here $c^{\max}(G)$ is $\lec^{\max}(G)$ or $\kap^{\max}(G)$, depending on the separation, and $\Lambda>0$ is a fixed penalty.
 Low energy means many edges and no excess connectivity.
+In the program $\Lambda$ is \texttt{PENALTY\_PER\_EXCESS\_ROUTE} (\Cref{lst:energy}).
+
+\programpart{energy}{The energy of a candidate graph.}
+
 The search starts from the empty graph and changes one multiplicity by one at each step.
 We use \emph{tabu search} \cite{Glover89}.
 At each step it makes the best allowed move, even if every move raises the energy.
 After a move, the changed pair is \emph{tabu} for a fixed number of steps, so the search cannot undo the move at once.
 A move that gives a better graph than any seen so far is always allowed.
-When the search stalls, it makes a small change to escape.
+When the search stalls, it makes a small change to escape: it removes all copies of three random hyperedges.
+\Cref{lst:neighbours} lists the moves, and \Cref{lst:tabu} is the search itself.
+The search keeps the exact connectivity of every pair of the current graph in \texttt{connectivity}, and \texttt{highest\_after} uses it to judge a move cheaply (\Cref{sec:near-cap}).
+
+\programpart{neighbours}{The moves: one copy more or one copy less of one hyperedge.}
+
+\programpart{tabu}{Tabu search.}
 
 The program also implements simulated annealing \cite{KirkpatrickGelattVecchi83} on the same energy.
 It accepts a worse move with a probability that decreases over time \cite{Metropolis53}.
+At temperature $T$ a move that raises the energy by $\Delta$ is accepted with probability $e^{-\Delta/T}$, and $T$ shrinks by a fixed factor at every step (\Cref{lst:annealing}).
+
+\programpart{annealing}{Simulated annealing on the same energy.}
 
 Every feasible graph can be built from the empty graph by adding edges one at a time, staying feasible.
 Still, it can help to pass through infeasible graphs: exchanging two edges may need an extra edge first.
 Tabu search allows this, but it only keeps feasible results.
 
-The search is restarted several times with different random choices, and the densest feasible graph is kept.
-The restarts are independent and can run in parallel.
+Each search keeps the densest feasible graph it has seen.
 
 \subsection{Random greedy growth for hypergraphs}
 
@@ -433,15 +481,19 @@ At the end of a run no single hyperedge can be added, because a rejected hypered
 This does not mean the result is as large as possible: an early choice can block several later ones.
 We use this method instead of tabu search because there are many possible hyperedges, for example $\binom nr$ in the undirected simple case.
 
-\subsection{Measuring only near the connectivity cap}
+\programpart{greedy}{Random greedy growth.}
+
+\subsection{Measuring only near the connectivity cap}\label{sec:near-cap}
 Removing an edge never raises $\lec^{\max}$.
 Adding an edge raises it by at most one, because at most one route of a largest family uses the new edge.
 The same holds for $\kap^{\max}$.
 So the search does not need to run the checker at every step.
 Removing an edge from a feasible graph keeps it feasible.
 Adding an edge to a graph with $\lec^{\max}\le m-2$ also keeps it feasible.
-The search keeps an upper bound on $\lec^{\max}$: it adds one for each accepted addition, and it computes the exact value again at fixed intervals.
-The checker is only called when an addition could break the condition, or when an edge is removed from an infeasible graph.
+Also, an addition can only push a pair above $m-1$ if that pair is already at $m-1$.
+So \texttt{highest\_after} in \Cref{lst:neighbours} answers without the checker when the graph stays feasible for sure.
+Otherwise it measures only the pairs at the cap.
+After a move is made, the search measures all pairs once, so the next step again starts from exact values.
 
 \section{Checking the output without trusting the program}\label{sec:certificates}
 
@@ -462,8 +514,33 @@ A Gomory--Hu tree (\Cref{thm:gomory-hu}) of a feasible graph is such a tree.
 
 \emph{Size of the graph.} The number of edges is counted directly.
 
+The program writes the certificate from a smallest cut of the flow network (\Cref{lst:certificate}).
+A cut uses only arcs of limited capacity: the arc inside a gate, which stands for a hyperedge, and, for vertex separation, the arc inside a split vertex.
+So the cut translates directly into removed hyperedges and removed vertices.
+
+\programpart{certificate}{Writing a certificate from smallest cuts.}
+
+The checker in \Cref{lst:checker} uses none of the code above.
+It counts the removed elements, with every copy of a removed hyperedge, and then follows the remaining hyperedges from $u$, entering each only at an entry vertex.
+If $v$ is never reached, the certificate is correct for this pair.
+Its correctness can be read off from its $30$ lines alone.
+
+\programpart{checker}{The independent certificate checker.}
+
 So every lower bound the program finds can be checked: the graph is feasible by its certificate, and its size is counted.
 An upper bound is different. A certificate that no graph on $n$ vertices has more edges would be the whole search, which is too long to check.
 So the thesis takes no upper bound or exact value from the program.
 Every upper bound is proved by hand, and every construction in the thesis is checked by hand in \Cref{ch:basecases} or \Cref{app:proofs}.
 The exhaustive and heuristic searches of this chapter show which bounds are worth trying to prove, and which constructions to try.
+
+\section{Running the program}
+
+\Cref{lst:driver} puts the parts together.
+For each problem, each $m$ and each $n$ it spends at most one minute.
+The first half goes to an exact search: the generating search for directed multigraphs, and the pruned search for the other models.
+If that does not finish, the second half goes to tabu search for graphs and digraphs, and to random greedy growth for hypergraphs.
+Every result is then certified and checked.
+The program prints one line per case: the model, the separation, $m$, $n$, the number of edges, whether the search finished, and whether the certificate passed.
+A finished search gives an exact value, but only the lower bound is certified (\Cref{sec:certificates}).
+
+\programpart{driver}{The driver: one minute per case, then a certificate.}

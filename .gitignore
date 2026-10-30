@@ -7,3 +7,5 @@
 *.out
 *.toc
 *.synctex.gz
+program/.venv/
+__pycache__/
