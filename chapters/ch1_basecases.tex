@@ -37,7 +37,7 @@ From now on, graphs are simple unless we say otherwise.
 A \emph{path} from $u$ to $v$ is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ of distinct vertices $v_i$ and edges $e_i$, where $v_0=u$, $v_q=v$ and $e_i$ joins $v_{i-1}$ and $v_i$.
 In a multigraph, two parallel edges give two different paths of length one.
 In a simple graph we can write a path as a list of vertices.
-A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{spanning tree} of a graph $G$ is a tree on all vertices of $G$ that uses only edges of $G$.
+A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{forest} is a graph without cycles. A \emph{spanning tree} of a graph $G$ is a tree on all vertices of $G$ that uses only edges of $G$.
 Two $u$--$v$ paths are \emph{edge-disjoint} if they have no edge in common.
 The \emph{local edge-connectivity} $\lec_G(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ paths.
 Its largest value over all pairs is
@@ -117,7 +117,7 @@ For $n\ge m$ the bound is always attained (\Cref{thm:extremal-existence}).
 For $2\le n<m$ the complete graph $K_n$ satisfies the condition, so $\ell_m(n)=\binom n2$.
 This is smaller than $\floor{m(n-1)/2}$, except when $(n,m)=(2,3)$.
 
-\Cref{sec:mader-gomory-hu} proves \Cref{thm:mader} with the Gomory--Hu tree as alternative independently found.
+\Cref{sec:mader-gomory-hu} proves \Cref{thm:mader} in a different way from Mader, with the Gomory--Hu tree.
 This is a tree on the vertices of $G$ with a weight on each edge.
 For every pair $u,v$, the value $\lec_G(u,v)$ is the smallest weight on the path from $u$ to $v$ in the tree.
 So the $\binom n2$ values $\lec_G(u,v)$ are stored in only $n-1$ weights.
@@ -403,9 +403,9 @@ Two $u$--$v$ paths are \emph{internally vertex-disjoint} if they have no vertex 
 The largest number of such paths is the \emph{local vertex-connectivity} $\kap_G(u,v)$.
 Its largest value over all pairs is $\kap_G^{\max}$.
 Internally vertex-disjoint paths are also edge-disjoint, so $\kap_G(u,v)\le\lec_G(u,v)$. 
-Hypergraphs don't always obey this rule.
-So in order to force the inequality for hypergraphs, internally vertex disjoint paths share neither vertices nor edges.
-This is just another assumption to simplify the workload and generalize wherever possible.
+In a hypergraph, two Berge paths can share a hyperedge without sharing a vertex.
+So for hypergraphs we also require that vertex-disjoint routes share no hyperedge.
+Then $\kap\le\lec$ holds in every model.
 \Cref{fig:edge-vs-vertex} shows that the vertex and edge-disjointness can differ.
 
 \begin{figure}[ht]
