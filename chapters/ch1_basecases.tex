@@ -918,7 +918,7 @@ For $m=4$ this is open.
 \begin{theorem}[The quadratic bound with a linear error]\label{thm:dir-arc-linear-error}
 For all $m \ge 2$ and $n \ge 2$, every simple digraph $D$ on $n$ vertices with $\lec^{\max}_D \le m-1$, or with $\kap^{\max}_D \le m-1$, satisfies
 \[
-    |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; 4(m-1)(n-1),
+    |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; (m-1)(n-1),
 \]
 so for each fixed $m$,
 \[
@@ -930,13 +930,10 @@ so for each fixed $m$,
 \Cref{app:proofs} gives the proof. It counts routes of length two.
 For an ordered pair $(u,v)$, the routes $u\to x\to v$ with different midpoints $x$, together with the arc $u\to v$, are disjoint.
 So a feasible digraph has at most $m-1$ of them.
-Summing over all pairs bounds $\sum_x d^+(x)\,d^-(x)$.
-The proof is by induction on $n$.
-If some vertex has total degree below $n/2$, we delete it and use the bound on $n-1$ vertices.
-Otherwise every total degree is at least $n/2$, and the sum above makes $\sum_x \min(d^+(x),d^-(x))$ at most linear in $n$.
-At every vertex we then delete its in-arcs or its out-arcs, whichever are fewer.
-These deleted arcs give the linear term.
-What remains has all arcs from one part to the other, so it has at most $\floor{n^2/4}$ arcs.
+Take a vertex $v$ of largest out-degree $\Delta$.
+Summing this over the pairs $(v,w)$ shows that the out-neighbours of $v$ send at most $(m-1)(n-1)$ arcs in total.
+The other $n-1-\Delta$ vertices send at most $\Delta$ arcs each.
+Together with the $\Delta$ arcs out of $v$ this gives at most $\Delta(n-\Delta)+(m-1)(n-1)$ arcs, and $\Delta(n-\Delta)\le\floor{n^2/4}$.
 The routes of length two are also internally vertex-disjoint, so the same proof works for vertex separation.
 
 
@@ -1021,7 +1018,7 @@ For $n\ge\max(8,2m)$ the bipartite construction is the only extremal multigraph,
 Let $r \ge 2$ and $m \ge 2$. Every forward directed $r$-uniform multihypergraph
 $\HH$ on $n \ge 2$ vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
 \[
-    |E(\HH)| \;\le\; \frac{m-1}{r-1}\floorfrac{n^2}{4} \;+\; 4(m-1)^2 (n-1).
+    |E(\HH)| \;\le\; \frac{m-1}{r-1}\floorfrac{n^2}{4} \;+\; (m-1)^2 (n-1).
 \]
 
 \end{theorem}
