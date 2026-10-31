@@ -920,11 +920,13 @@ for scientific awards or contests.
   flow/.style={->, thick, KULblauw3b!70}]
   \node[rolenode, fill=roleModel!16,    draw=roleModel]    (mod) at (0,0)     {\textbf{MODEL}\\[1pt]\scriptsize hyperedge table};
   \node[rolenode, fill=roleMeasure!16,  draw=roleMeasure]  (mea) at (3.3,0)   {\textbf{MEASURE}\\[1pt]\scriptsize max-flow checker};
-  \node[rolenode, fill=roleProve!18,    draw=roleProve]    (pro) at (7.0,0.85){\textbf{EXACT}\\[1pt]\scriptsize exhaustive search};
-  \node[rolenode, fill=roleDiscover!20, draw=roleDiscover] (dis) at (7.0,-0.85){\textbf{SEARCH}\\[1pt]\scriptsize tabu, greedy growth};
+  \node[rolenode, fill=roleProve!18,    draw=roleProve]    (pro) at (7.0,1.7) {\textbf{EXACT}\\[1pt]\scriptsize exhaustive search};
+  \node[rolenode, fill=roleDiscover!20, draw=roleDiscover] (dis) at (7.0,0)   {\textbf{SEARCH}\\[1pt]\scriptsize tabu, greedy growth};
+  \node[rolenode, fill=roleProve!18,    draw=roleProve]    (chk) at (7.0,-1.7){\textbf{CHECK}\\[1pt]\scriptsize \texttt{nauty}};
   \draw[flow] (mod) -- (mea);
   \draw[flow] (mea) -- (pro);
   \draw[flow] (mea) -- (dis);
+  \draw[flow] (mea) -- (chk);
 \end{tikzpicture}}
 
 % --- the variant tree: root -> model (3) -> direction (2) -> separation (2) --
