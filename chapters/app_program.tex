@@ -1,0 +1,45 @@
+% !TEX root = ../main.tex
+\Cref{ch:machine} prints the main parts of \texttt{program/erdos915.py}.
+This appendix prints the remaining parts, in the order they appear in the file, and the output of one full run.
+
+\section{The remaining parts of the program}\label{sec:program-rest}
+
+The file starts with a short description and the imports.
+
+\programpart{header}{The description and the imports.}
+
+Two helpers list the vertex pairs that must be checked, ordered in directed models, and count the edges of a graph.
+
+\programpart{pairs}{The vertex pairs and the edge count.}
+
+The heuristic searches keep the number of disjoint routes of every pair. The exception \texttt{OutOfTime} stops a search at its time limit.
+
+\programpart{connectivities}{The connectivity of every pair, and the time limit.}
+
+The generating search of \Cref{lst:nauty} reads the supports from \texttt{geng}, keeps the densest digraphs over all supports, and counts them up to renaming the vertices when it finishes.
+
+\programpart{supports}{Reading the supports from \texttt{geng}, and the generating search over all supports.}
+
+A move gives a new table, so the old one stays unchanged.
+
+\programpart{apply}{Making a move.}
+
+Simulated annealing, described in \Cref{ch:machine}.
+
+\programpart{annealing}{Simulated annealing on the same energy.}
+
+The main function runs every case in parallel and prints one table per problem.
+
+\programpart{main}{Running every case and printing the tables.}
+
+\section{Output}\label{sec:output}
+
+\Cref{lst:output} is the output of the program, unchanged.
+The command \texttt{python erdos915.py > output.txt} in the folder \texttt{program} writes it to a file, and this thesis reads that file directly, so no step lies between the program and the page.
+Each case had one minute, on a computer with ten processor cores.
+Every entry is the number of edges, arcs or hyperedges of the densest feasible graph found, and every one of these graphs passed its certificate.
+An entry marked \texttt{*} comes from a finished search, so it is the exact maximum.
+An unmarked entry is a lower bound only, and a longer run may raise it.
+For hypergraphs the rows start at $n=3$.
+
+{\lstinputlisting[style=outputlisting, caption={The output of the program for $2\le m\le 10$ and $n\le 10$.}, label={lst:output}]{program/output.txt}}

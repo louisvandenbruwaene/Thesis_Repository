@@ -1,3 +1,4 @@
+#<header>
 """Erdős Problem 915 in sixteen variants: measure connectivity, search for
 dense feasible graphs, and write a certificate that can be checked by hand.
 
@@ -13,6 +14,7 @@ from enum import Enum
 from multiprocessing import Pool
 
 import networkx
+#</header>
 
 
 #<models>
@@ -78,8 +80,10 @@ def largest_multiplicity(problem):
     if problem.MODEL.ALLOWS_REPEATED_EDGES:
         return problem.THRESHOLD_M - 1
     return 1
+#</hyperedges>
 
 
+#<pairs>
 def vertex_pairs(problem):
     vertices = range(problem.VERTEX_COUNT)
     if problem.MODEL.IS_DIRECTED:
@@ -89,7 +93,7 @@ def vertex_pairs(problem):
 
 def edge_count(multiplicity):
     return sum(multiplicity.values())
-#</hyperedges>
+#</pairs>
 
 
 #<network>
@@ -126,17 +130,19 @@ def is_feasible(problem, multiplicity):
     network = build_flow_network(problem, multiplicity)
     return all(disjoint_routes(network, u, v, stop_at=m) < m
                for u, v in vertex_pairs(problem))
+#</measure>
 
 
+#<connectivities>
 def all_connectivities(problem, multiplicity):
     network = build_flow_network(problem, multiplicity)
     return {(u, v): disjoint_routes(network, u, v)
             for u, v in vertex_pairs(problem)}
-#</measure>
 
 
 class OutOfTime(Exception):
     pass
+#</connectivities>
 
 
 #<exhaustive>
@@ -173,14 +179,7 @@ def exhaustive_search(problem, deadline):
 
 
 #<nauty>
-def undirected_supports(vertex_count):
-    output = subprocess.run(["geng", "-q", str(vertex_count)],
-                            capture_output=True, check=True).stdout
-    return [networkx.from_graph6_bytes(line) for line in output.split()]
-
-
-def best_digraphs_on_support(job):
-    problem, support_edges, deadline = job
+def best_digraphs_on_support(problem, support_edges, deadline):
     m = problem.THRESHOLD_M
     choices = [(forward, backward) for forward in range(m)
                for backward in range(m) if forward + backward > 0]
@@ -211,6 +210,20 @@ def best_digraphs_on_support(job):
         return best["size"], best["graphs"], True
     except OutOfTime:
         return best["size"], best["graphs"], False
+#</nauty>
+
+
+#<supports>
+def undirected_supports(vertex_count):
+    """Streams the output of geng, one graph at a time."""
+    geng = subprocess.Popen(["geng", "-q", str(vertex_count)],
+                            stdout=subprocess.PIPE)
+    try:
+        for line in geng.stdout:
+            yield networkx.from_graph6_bytes(line.strip())
+    finally:
+        geng.kill()
+        geng.wait()
 
 
 def canonical_form(vertex_count, multiplicity):
@@ -221,18 +234,24 @@ def canonical_form(vertex_count, multiplicity):
 
 
 def generating_search(problem, deadline):
-    jobs = [(problem, sorted(support.edges()), deadline)
-            for support in undirected_supports(problem.VERTEX_COUNT)]
-    with Pool() as pool:
-        results = pool.map(best_digraphs_on_support, jobs)
-    best_size = max(size for size, _, _ in results)
-    finished = all(done for _, _, done in results)
-    extremal = [graph for size, graphs, _ in results if size == best_size
-                for graph in graphs]
-    classes = {canonical_form(problem.VERTEX_COUNT, graph)
-               for graph in extremal}
-    return best_size, extremal[0], len(classes), finished
-#</nauty>
+    best_size, extremal, finished = 0, [{}], True
+    for support in undirected_supports(problem.VERTEX_COUNT):
+        if time.time() > deadline:
+            finished = False
+            break
+        size, graphs, done = best_digraphs_on_support(
+            problem, sorted(support.edges()), deadline)
+        finished = finished and done
+        if size > best_size:
+            best_size, extremal = size, []
+        if size == best_size:
+            extremal += graphs
+    classes = None
+    if finished:
+        classes = len({canonical_form(problem.VERTEX_COUNT, graph)
+                       for graph in extremal})
+    return best_size, extremal[0], classes, finished
+#</supports>
 
 
 #<energy>
@@ -256,13 +275,6 @@ def moves(problem, multiplicity):
             yield hyperedge, -1
 
 
-def apply(multiplicity, move):
-    hyperedge, change = move
-    changed = dict(multiplicity)
-    changed[hyperedge] = changed.get(hyperedge, 0) + change
-    return changed
-
-
 def highest_after(problem, multiplicity, move, connectivity):
     """Measures only near the cap: one copy more raises a value by at
     most one, so only pairs already at m-1 need a check, and one copy
@@ -280,6 +292,15 @@ def highest_after(problem, multiplicity, move, connectivity):
     return max((disjoint_routes(network, u, v) for u, v in at_cap),
                default=0)
 #</neighbours>
+
+
+#<apply>
+def apply(multiplicity, move):
+    hyperedge, change = move
+    changed = dict(multiplicity)
+    changed[hyperedge] = changed.get(hyperedge, 0) + change
+    return changed
+#</apply>
 
 
 #<tabu>
@@ -368,6 +389,8 @@ def random_greedy_growth(problem, deadline, seed):
         generator.shuffle(copies)
         multiplicity = {}
         for hyperedge in copies:
+            if time.time() > deadline:
+                break                       # the partial graph is feasible
             grown = apply(multiplicity, (hyperedge, +1))
             if is_feasible(problem, grown):
                 multiplicity = grown
@@ -455,19 +478,36 @@ def solve(problem):
     return size, exact, check_certificate(problem, graph, certificate)
 
 
-def main(largest_n=6, largest_m=4):
-    for model in ALL_MODELS():
-        for separation in Separation:
-            for m in range(2, largest_m + 1):
-                for n in range(model.EDGE_SIZE, largest_n + 1):
-                    size, exact, checked = solve(
-                        Problem(model, separation, n, m))
-                    print(model.NAME, separation.value, m, n, size,
-                          "exact" if exact else "lower bound",
-                          "certified" if checked else "NOT CERTIFIED",
-                          sep="\t", flush=True)
+#</driver>
+
+
+#<main>
+def print_table(model, separation, solved, largest_m):
+    print(f"\n{model.NAME}, {separation.value} separation")
+    print("n \\ m" + "".join(f"{m:>6}" for m in range(2, largest_m + 1)))
+    rows = {}
+    for problem, (size, exact, checked) in solved:
+        mark = ("*" if exact else " ") if checked else "!"
+        rows.setdefault(problem.VERTEX_COUNT, []).append(f"{size:>5}{mark}")
+    for n, cells in rows.items():
+        print(f"{n:>5}" + "".join(cells), flush=True)
+
+
+def main(largest_n=10, largest_m=10):
+    problems = [Problem(model, separation, n, m)
+                for model in ALL_MODELS() for separation in Separation
+                for n in range(model.EDGE_SIZE, largest_n + 1)
+                for m in range(2, largest_m + 1)]
+    print("Edges of the densest feasible graph found, every one certified.")
+    print("* the search finished, so the value is exact;",
+          "! the certificate failed")
+    with Pool() as pool:
+        solved = zip(problems, pool.imap(solve, problems))
+        for (model, separation), table in itertools.groupby(
+                solved, key=lambda pair: (pair[0].MODEL, pair[0].SEPARATION)):
+            print_table(model, separation, table, largest_m)
 
 
 if __name__ == "__main__":
     main()
-#</driver>
+#</main>

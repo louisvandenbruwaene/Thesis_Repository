@@ -3,14 +3,15 @@
 Chapter~1 stated the problem and the proved results.
 This chapter explains how a program can measure connectivity in every variant, check small graphs one by one, and search for dense examples.
 No result in this thesis depends on the output of this program.
-This chapter therefore lists no computed values.
+Its output for $n,m\le10$ is printed in \Cref{app:program}, and no proof uses it.
 The methods are what matters here, and the code itself is not central to the thesis: the way matters more than the destination.
 The program is too long to check line by line, so its output cannot simply be trusted.
 \Cref{sec:certificates} shows how an output can still be checked without reading the code.
 
 The program is one Python file of about $470$ lines, \texttt{program/erdos915.py}.
 It uses the library \texttt{networkx} for maximum flows and the program \texttt{geng} of \texttt{nauty} for one search.
-This chapter prints the program in parts, each next to the idea it implements.
+This chapter prints the main parts of the program, each next to the idea it implements.
+The remaining parts, such as the imports and small helper functions, are in \Cref{app:program}, so every line of the program is printed once.
 The names in the code follow the words of the text.
 \Cref{fig:spine} shows the structure of the program.
 \begin{figure}[ht]
@@ -35,7 +36,7 @@ A route may enter a hyperedge at an \texttt{entry\_vertices} vertex and leave it
 In an undirected hyperedge every vertex is both. In a directed one only the tail is an entry and only the heads are exits.
 A candidate graph is a table that gives every possible hyperedge its multiplicity.
 In a simple model every multiplicity is $0$ or $1$. In a multi model it is at most $m-1$, since $m$ copies of one edge already give $m$ disjoint routes (\Cref{lst:hyperedges}).
-\Cref{fig:matrix-rep} shows two ways to picture such a table.
+\Cref{fig:matrix-rep} shows two such tables.
 
 \programpart{hyperedges}{Hyperedges, the list of all possible hyperedges, and the largest useful multiplicity.}
 
@@ -43,8 +44,14 @@ In a simple model every multiplicity is $0$ or $1$. In a multi model it is at mo
 
 \begin{figure}[ht]
 \centering
+\newcommand{\hetable}[1]{%
+  {\small\renewcommand{\arraystretch}{1.15}%
+  \begin{tabular}{@{}ccc@{}}
+  \texttt{\color{codeConstant}TAIL} & \texttt{\color{codeConstant}MEMBERS} & copies\\ \midrule
+  #1
+  \end{tabular}}}
 \begin{tikzpicture}[>=Stealth]
-% ---- (a) digraph -> multiplicity matrix, diagonal highlighted, asymmetric ----
+% ---- (a) directed multigraph -> its hyperedge table ----
 \node[vertex] (A) at (0,   0)   {$1$};
 \node[vertex] (B) at (2.0, 0)   {$2$};
 \node[vertex] (C) at (1.0, 1.7) {$3$};
@@ -53,13 +60,16 @@ In a simple model every multiplicity is $0$ or $1$. In a multi model it is at mo
 \draw[arc] (B) to[bend left=15]  (C);
 \draw[arc] (C) to[bend left=15] (B);
 \draw[arc] (A) -- (C);
-\node[font=\small] at (1.0, -0.8) {directed multigraph $G$};
-\node at (3.3, 0.55) {$\xrightarrow{\;\mu\;}$};
-\node at (5.4, 0.55) {$\begin{pmatrix} {\color{vertexred}\mathbf 0} & 2 & 1 \\ 0 & {\color{vertexred}\mathbf 0} & 1 \\ 0 & 1 & {\color{vertexred}\mathbf 0} \end{pmatrix}$};
-\node[font=\small] at (5.4, -0.8) {multiplicity matrix $\mu$};
-\node[font=\scriptsize, vertexred] at (5.4, -1.3) {Diag($\mu$)$=0$ (no loops)};
-% ---- (b) directed hypergraph -> list of hyperedges, tail 3 shared by both ----
-\begin{scope}[yshift=-3.5cm]
+\node[font=\small] at (1.0, -0.8) {directed multigraph};
+\node at (3.4, 0.55) {$\longrightarrow$};
+\node at (6.2, 0.55) {\hetable{
+  $1$ & $\{1,2\}$ & ${\color{vertexred}\mathbf 2}$ \\
+  $1$ & $\{1,3\}$ & $1$ \\
+  $2$ & $\{2,3\}$ & $1$ \\
+  $3$ & $\{2,3\}$ & $1$ \\}};
+\node[font=\small] at (1.0, -1.25) {(a)};
+% ---- (b) directed hypergraph -> its hyperedge table ----
+\begin{scope}[yshift=-3.9cm]
   \coordinate (p1) at (0.0, 0.6);
   \coordinate (p2) at (0.0,-0.6);
   \coordinate (p3) at (1.1, 0.0);
@@ -72,13 +82,15 @@ In a simple model every multiplicity is $0$ or $1$. In a multi model it is at mo
     \draw[metro, metroB, -{Stealth[length=2.6mm]}, shorten >=2mm, shorten <=1.4mm] (p3) -- (p5);
   \end{scope}
   \foreach \p/\lbl in {p1/1,p2/2,p3/3,p4/4,p5/5} {\node[smallvertex] at (\p) {$\lbl$};}
-  \node[font=\small] at (1.1,-1.25) {directed hypergraph $H$};
-  \node at (3.3, 0.0) {$\longrightarrow$};
-  \node[font=\small, align=left] at (5.9, 0.0)
-    {list of hyperedges:\\[3pt] $e_1: \{3\ |\ 1,2\}$\\[1pt] $e_2:\{3\ |\ 4,5\}$};
+  \node[font=\small] at (1.1,-1.15) {directed hypergraph};
+  \node at (3.4, 0.0) {$\longrightarrow$};
+  \node at (6.2, 0.0) {\hetable{
+    {\color{metroA}$\mathbf 3$} & {\color{metroA}$\{1,2,3\}$} & $1$ \\
+    {\color{metroB}$\mathbf 3$} & {\color{metroB}$\{3,4,5\}$} & $1$ \\}};
+  \node[font=\small] at (1.1,-1.6) {(b)};
 \end{scope}
 \end{tikzpicture}
-\caption{The two encodings for directed variants. The multiplicity matrix $\mu$ represents a digraph, with $\mu_{ij}$ arcs from $i$ to $j$. A list of hyperedges represents a directed hypergraph and records each tail separately. A multihypergraph repeats entries in that list. A table with one entry for every $r$ vertices would need $n^r$ entries, almost all zero.}
+\caption{The program stores every model in one way: a table that gives each hyperedge its number of copies. (a) A directed multigraph. The arc $u\to v$ is the hyperedge with members $\{u,v\}$ and tail $u$, and the two parallel arcs from $1$ to $2$ are one row with $2$ copies. (b) A directed $3$-uniform hypergraph. Each hyperedge records its tail and its three members. In an undirected model there is no tail. A hyperedge that does not occur has $0$ copies and is left out.}
 \label{fig:matrix-rep}
 \end{figure}
 
@@ -417,8 +429,8 @@ Each support edge $\{u,v\}$ gets multiplicities $\mu(u,v)$ and $\mu(v,u)$ betwee
 Different supports give different digraphs, even after renaming vertices.
 After each choice the checker tests the partial digraph, and a branch that breaks the condition is dropped.
 Digraphs of the largest size are reported once each, up to renaming the vertices.
-For this the program compares digraphs after trying every renaming of the vertices, which is fast for the small $n$ where this search finishes.
-Different supports can be handled in parallel.
+For this the program compares digraphs after trying every renaming of the vertices. It does so only when the search finishes, which happens only for small $n$.
+The supports are read from \texttt{geng} one at a time (\Cref{lst:supports}), so the search can stop at the time limit before all of them are listed.
 We wrote our own step for choosing the multiplicities, because it can prune after each choice.
 \Cref{lst:nauty} shows the whole search. For each support edge $\{a,b\}$, \texttt{choices} lists the pairs $(\mu(a,b),\mu(b,a))$ that are not both zero.
 
@@ -460,9 +472,8 @@ The search keeps the exact connectivity of every pair of the current graph in \t
 
 The program also implements simulated annealing \cite{KirkpatrickGelattVecchi83} on the same energy.
 It accepts a worse move with a probability that decreases over time \cite{Metropolis53}.
-At temperature $T$ a move that raises the energy by $\Delta$ is accepted with probability $e^{-\Delta/T}$, and $T$ shrinks by a fixed factor at every step (\Cref{lst:annealing}).
-
-\programpart{annealing}{Simulated annealing on the same energy.}
+At temperature $T$ a move that raises the energy by $\Delta$ is accepted with probability $e^{-\Delta/T}$, and $T$ shrinks by a fixed factor at every step.
+The driver in \Cref{lst:driver} does not use it, so its code is in \Cref{app:program} (\Cref{lst:annealing}).
 
 Every feasible graph can be built from the empty graph by adding edges one at a time, staying feasible.
 Still, it can help to pass through infeasible graphs: exchanging two edges may need an extra edge first.
@@ -540,7 +551,11 @@ For each problem, each $m$ and each $n$ it spends at most one minute.
 The first half goes to an exact search: the generating search for directed multigraphs, and the pruned search for the other models.
 If that does not finish, the second half goes to tabu search for graphs and digraphs, and to random greedy growth for hypergraphs.
 Every result is then certified and checked.
-The program prints one line per case: the model, the separation, $m$, $n$, the number of edges, whether the search finished, and whether the certificate passed.
+The cases are independent, so the program runs them in parallel, one per processor core.
+For each of the sixteen problems it prints a table with one row per $n$ and one column per $m$ (\Cref{lst:main}).
+Each entry is the number of edges of the densest feasible graph found, marked when the search finished, and marked differently if the certificate failed.
 A finished search gives an exact value, but only the lower bound is certified (\Cref{sec:certificates}).
 
 \programpart{driver}{The driver: one minute per case, then a certificate.}
+
+\Cref{sec:output} prints the full output for $2\le m\le10$ and $n\le10$.

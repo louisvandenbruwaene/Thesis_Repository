@@ -698,13 +698,46 @@ for scientific awards or contests.
 \SetCommentSty{algocommentsty}
 \usepackage{listings}
 
-% A calm, on-brand style for the Python listings of the unified program.
+% The Python listings of the program, coloured by role so a reader can tell
+% the kinds of names apart at a glance: Python keywords blue, the program's own
+% functions and classes dark red, Python builtins purple, the named constants
+% and fields (written in capitals) orange, imported libraries teal, True,
+% False and None dark orange, strings green and comments grey.
+\definecolor{codeFunction}{RGB}{170,45,60}
+\definecolor{codeBuiltin}{RGB}{130,70,170}
+\definecolor{codeConstant}{RGB}{200,110,0}
+\definecolor{codeLibrary}{RGB}{0,128,128}
+\definecolor{codeComment}{RGB}{110,120,130}
 \lstdefinestyle{pythonkul}{%
     language=Python,
     basicstyle=\ttfamily\footnotesize,
     keywordstyle=\color{KULblauw1}\bfseries,
-    commentstyle=\color{KULblauw3b}\itshape,
-    stringstyle=\color{vertexgreen},
+    morekeywords={yield,with,as,try,except,finally,raise,continue,break},
+    keywordstyle=[2]\color{codeConstant!80!black}\bfseries,
+    morekeywords=[2]{True,False,None},
+    emph={[1]len,range,max,min,sum,dict,tuple,list,set,all,any,print,sorted,
+          enumerate,zip,str,int,Exception},
+    emphstyle={[1]\color{codeBuiltin}},
+    emph={[2]Model,Separation,Problem,Hyperedge,OutOfTime,ALL_MODELS,
+          entry_vertices,exit_vertices,possible_hyperedges,
+          largest_multiplicity,vertex_pairs,edge_count,build_flow_network,
+          disjoint_routes,is_feasible,all_connectivities,exhaustive_search,
+          decide,choose,best_digraphs_on_support,undirected_supports,
+          canonical_form,generating_search,energy,moves,highest_after,apply,
+          tabu_search,simulated_annealing,random_greedy_growth,
+          write_certificate,check_certificate,solve,print_table,main},
+    emphstyle={[2]\color{codeFunction}\bfseries},
+    emph={[3]NAME,IS_DIRECTED,ALLOWS_REPEATED_EDGES,EDGE_SIZE,HYPEREDGE_SIZE,
+          EDGE_DISJOINT,VERTEX_DISJOINT,MODEL,SEPARATION,VERTEX_COUNT,
+          THRESHOLD_M,TAIL,MEMBERS,PENALTY_PER_EXCESS_ROUTE,TABU_TENURE,
+          STEPS_WITHOUT_PROGRESS_BEFORE_KICK,START_TEMPERATURE,COOLING_FACTOR,
+          SECONDS_PER_CASE},
+    emphstyle={[3]\color{codeConstant}},
+    emph={[4]networkx,itertools,math,random,subprocess,time,dataclass,Enum,
+          Pool,inf},
+    emphstyle={[4]\color{codeLibrary}},
+    commentstyle=\color{codeComment}\itshape,
+    stringstyle=\color{vertexgreen!80!black},
     numberstyle=\ttfamily\scriptsize\color{gray},
     backgroundcolor=\color{KULblauw1!4},
     numbers=left,
@@ -748,6 +781,22 @@ for scientific awards or contests.
     numbersep=6pt,
     aboveskip=0.6\baselineskip,
     belowskip=0.4\baselineskip,
+}
+
+% The program's printed output: plain monospace, no colouring, no line numbers.
+\lstdefinestyle{outputlisting}{%
+    language={},
+    basicstyle=\linespread{1.0}\ttfamily\scriptsize,
+    numbers=none,
+    backgroundcolor=\color{KULblauw1!4},
+    frame=leftline,
+    framerule=1pt,
+    rulecolor=\color{KULblauw3a},
+    xleftmargin=12pt,
+    breaklines=false,
+    captionpos=b,
+    keywordstyle={}, keywordstyle=[2]{},
+    emphstyle={[1]{}}, emphstyle={[2]{}}, emphstyle={[3]{}}, emphstyle={[4]{}},
 }
 
 % Let cleveref name the new float types.
@@ -869,7 +918,7 @@ for scientific awards or contests.
   rolenode/.style={rounded corners=2.5pt, draw, very thick, align=center,
      minimum width=23mm, minimum height=12mm, font=\sffamily\footnotesize},
   flow/.style={->, thick, KULblauw3b!70}]
-  \node[rolenode, fill=roleModel!16,    draw=roleModel]    (mod) at (0,0)     {\textbf{MODEL}\\[1pt]\scriptsize $\mu$ matrix};
+  \node[rolenode, fill=roleModel!16,    draw=roleModel]    (mod) at (0,0)     {\textbf{MODEL}\\[1pt]\scriptsize hyperedge table};
   \node[rolenode, fill=roleMeasure!16,  draw=roleMeasure]  (mea) at (3.3,0)   {\textbf{MEASURE}\\[1pt]\scriptsize max-flow checker};
   \node[rolenode, fill=roleProve!18,    draw=roleProve]    (pro) at (7.0,0.85){\textbf{EXACT}\\[1pt]\scriptsize exhaustive search};
   \node[rolenode, fill=roleDiscover!20, draw=roleDiscover] (dis) at (7.0,-0.85){\textbf{SEARCH}\\[1pt]\scriptsize tabu, greedy growth};
