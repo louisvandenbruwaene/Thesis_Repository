@@ -563,7 +563,6 @@ In a feasible multigraph no multiplicity is larger than $m-1$, since $m$ paralle
 
 In every model, a graph is \emph{feasible} if no two vertices are joined by $m$ disjoint routes of the kind considered.
 \Cref{tab:notation} lists the notation for all sixteen problems.
-\Cref{fig:variant-tree-status} shows what is known about each of them.
 
 
 \begin{table}[ht]
@@ -1043,73 +1042,7 @@ With \Cref{thm:dir-hyper-constant} at $r=2$ this gives $K_m^{\mathrm{dir}}(n)=(m
 
 \section{Overview and open problems}\label{sec:overview}
 
-\Cref{tab:summary} and \Cref{fig:variant-tree-status} collect what is known about the sixteen problems.
-
-\begin{figure}[t]
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tikzpicture}
-  \node[vtroot, fill=KULblauw3a!18]  (root) at (9.0,3.9) {Problem 915};
-  \node[vtmodel, fill=KULblauw3a!12] (simple) at (1.8,2.6)  {simple};
-  \node[vtmodel, fill=KULblauw3a!12] (multi)  at (6.6,2.6)  {multi};
-  \node[vtmodel, fill=KULblauw3a!12] (hyper)  at (11.4,2.6) {hyper};
-  \node[vtmodel, fill=KULblauw3a!12] (mhyper) at (16.2,2.6) {multi-hyper};
-  \draw[vtedge] (root) -- (simple);
-  \draw[vtedge] (root) -- (multi);
-  \draw[vtedge] (root) -- (hyper);
-  \draw[vtedge] (root) -- (mhyper);
-  \node[vtdir, fill=KULblauw3a!8]  (d0) at (0.6,1.3)  {undirected};
-  \node[vtdir, fill=KULblauw3a!8]  (d1) at (3.0,1.3)  {directed};
-  \node[vtdir, fill=KULblauw3a!8]  (d2) at (5.4,1.3)  {undirected};
-  \node[vtdir, fill=KULblauw3a!8]  (d3) at (7.8,1.3)  {directed};
-  \node[vtdir, fill=KULblauw3a!8]  (d4) at (10.2,1.3) {undirected};
-  \node[vtdir, fill=KULblauw3a!8]  (d5) at (12.6,1.3) {directed};
-  \node[vtdir, fill=KULblauw3a!8]  (d6) at (15.0,1.3) {undirected};
-  \node[vtdir, fill=KULblauw3a!8]  (d7) at (17.4,1.3) {directed};
-  \draw[vtedge] (simple) -- (d0);
-  \draw[vtedge] (simple) -- (d1);
-  \draw[vtedge] (multi)  -- (d2);
-  \draw[vtedge] (multi)  -- (d3);
-  \draw[vtedge] (hyper)  -- (d4);
-  \draw[vtedge] (hyper)  -- (d5);
-  \draw[vtedge] (mhyper) -- (d6);
-  \draw[vtedge] (mhyper) -- (d7);
-  \node[vtleaf, fill=regimeProved!16]      (l0)  at (0,0)    {edge};
-  \node[vtleaf, fill=regimePartial!20]     (l1)  at (1.2,0)  {vertex};
-  \node[vtleaf, fill=regimePartial!20]     (l2)  at (2.4,0)  {edge};
-  \node[vtleaf, fill=regimePartial!20]     (l3)  at (3.6,0)  {vertex};
-  \node[vtleaf, fill=regimeProved!16]      (l4)  at (4.8,0)  {edge};
-  \node[vtleaf, fill=regimePartial!20]     (l5)  at (6.0,0)  {vertex};
-  \node[vtleaf, fill=regimeProved!16]      (l6)  at (7.2,0)  {edge};
-  \node[vtleaf, fill=regimePartial!20]     (l7)  at (8.4,0)  {vertex};
-  \node[vtleaf, fill=regimePartial!20]     (l8)  at (9.6,0)  {edge};
-  \node[vtleaf, fill=regimePartial!20]     (l9)  at (10.8,0) {vertex};
-  \node[vtleaf, fill=regimeOpen!22]        (l10) at (12.0,0) {edge};
-  \node[vtleaf, fill=regimeOpen!22]        (l11) at (13.2,0) {vertex};
-  \node[vtleaf, fill=regimePartial!20]     (l12) at (14.4,0) {edge};
-  \node[vtleaf, fill=regimePartial!20]     (l13) at (15.6,0) {vertex};
-  \node[vtleaf, fill=regimeOpen!22]        (l14) at (16.8,0) {edge};
-  \node[vtleaf, fill=regimeOpen!22]        (l15) at (18.0,0) {vertex};
-  \draw[vtedge] (d0) -- (l0);  \draw[vtedge] (d0) -- (l1);
-  \draw[vtedge] (d1) -- (l2);  \draw[vtedge] (d1) -- (l3);
-  \draw[vtedge] (d2) -- (l4);  \draw[vtedge] (d2) -- (l5);
-  \draw[vtedge] (d3) -- (l6);  \draw[vtedge] (d3) -- (l7);
-  \draw[vtedge] (d4) -- (l8);  \draw[vtedge] (d4) -- (l9);
-  \draw[vtedge] (d5) -- (l10); \draw[vtedge] (d5) -- (l11);
-  \draw[vtedge] (d6) -- (l12); \draw[vtedge] (d6) -- (l13);
-  \draw[vtedge] (d7) -- (l14); \draw[vtedge] (d7) -- (l15);
-  % Legend, one row in the order of the caption: known, partial, open.
-  \node[vtleaf, fill=regimeProved!16, minimum width=8mm]  (leg1) at (0,-1.5) {};
-  \node[anchor=west, font=\scriptsize] at (0.6,-1.5) {exact value known for every $m$};
-  \node[vtleaf, fill=regimePartial!20, minimum width=8mm] (leg2) at (5.2,-1.5) {};
-  \node[anchor=west, font=\scriptsize] at (5.8,-1.5) {exact value known for some $m$ or on a stated range};
-  \node[vtleaf, fill=regimeOpen!22, minimum width=8mm]    (leg3) at (14.0,-1.5) {};
-  \node[anchor=west, font=\scriptsize] at (14.6,-1.5) {only the leading term is known};
-\end{tikzpicture}%
-}
-\caption{Overview of the sixteen variants. Blue: the exact value is known for every $m$. Purple: the exact value is known for some $m$ or on a stated range. Amber: only the leading term is known.}
-\label{fig:variant-tree-status}
-\end{figure}
+\Cref{tab:summary} collects what is known about the sixteen problems.
 
 \begin{table}[htbp]
 \centering\small
