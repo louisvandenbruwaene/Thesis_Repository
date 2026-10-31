@@ -10,9 +10,10 @@ import itertools
 import json
 import math
 import os
+import platform
 import random
-import signal
 import subprocess
+import sys
 import threading
 import time
 from dataclasses import dataclass
@@ -165,7 +166,7 @@ class OutOfTime(Exception):
 def exhaustive_search(problem, deadline):
     hyperedges = possible_hyperedges(problem)
     cap = largest_multiplicity(problem)
-    best = {"size": -1, "graph": {}}
+    best = {"size": 0, "graph": {}}        # the empty graph
     multiplicity = {}
 
     def decide(index, size):
@@ -196,9 +197,10 @@ def exhaustive_search(problem, deadline):
 
 #<nauty>
 def nauty_commands(problem, size):
-    """The nauty commands that list every support that can carry size
-    edges, each once up to renaming the vertices. None for directed
-    hypergraphs, for which nauty has no program."""
+    """The nauty programs that list every support that can carry size
+    edges, each once up to renaming the vertices. Each entry is one
+    pipeline: a list of commands, the output of one feeding the next.
+    None for directed hypergraphs, for which nauty has no program."""
     model, n = problem.MODEL, problem.VERTEX_COUNT
     r = model.EDGE_SIZE
     fewest_edges = math.ceil(size / largest_multiplicity(problem))
@@ -207,13 +209,15 @@ def nauty_commands(problem, size):
         return None
     if fewest_edges > most_edges:
         return []                   # no graph has this many edges
+    edges = f"{fewest_edges}:{most_edges}"
     if not model.IS_DIRECTED and r == 2:
-        return [f"geng -q {n} {fewest_edges}:{most_edges}"]
+        return [[["geng", "-q", str(n), edges]]]
     if model.IS_DIRECTED:                   # one or two arcs per pair
-        fewest_pairs = math.ceil(fewest_edges / 2)
-        return [f"geng -q {n} {fewest_pairs}:{most_edges}"
-                f" | directg -q -T -e{fewest_edges}:{most_edges}"]
-    return [f"genbg -q -z -d0:{r} -D{k}:{r} {n} {k}"
+        pairs = f"{math.ceil(fewest_edges / 2)}:{most_edges}"
+        return [[["geng", "-q", str(n), pairs],
+                 ["directg", "-q", "-T", f"-e{edges}"]]]
+    return [[["genbg", "-q", "-z", f"-d0:{r}", f"-D{k}:{r}",
+              str(n), str(k)]]
             for k in range(fewest_edges, most_edges + 1)]
 
 
@@ -233,37 +237,48 @@ def read_support(problem, line):
             for x in range(n, graph.number_of_nodes())]
 
 
-def stop_nauty(nauty):
-    try:
-        os.killpg(nauty.pid, signal.SIGKILL)
-    except ProcessLookupError:
-        pass                                # it had already finished
+def start_pipeline(pipeline):
+    processes = []
+    for command in pipeline:
+        previous = processes[-1].stdout if processes else None
+        processes.append(subprocess.Popen(command, stdin=previous,
+                                          stdout=subprocess.PIPE))
+        if previous:
+            previous.close()        # only the next program reads it
+    return processes
+
+
+def stop_pipeline(processes):
+    for process in processes:
+        if process.poll() is None:
+            process.kill()
 
 
 def supports(problem, size, deadline):
-    """Streams the supports from nauty, one at a time. nauty can work a
+    """Streams the supports from nauty, one at a time. The list counts
+    as complete only if every program of every pipeline exits normally,
+    so a failed geng is never mistaken for an empty list. nauty can work a
     long time between two lines, so a timer stops it at the deadline."""
-    for command in nauty_commands(problem, size):
-        nauty = subprocess.Popen(command, shell=True,
-                                 stdout=subprocess.PIPE,
-                                 start_new_session=True)
+    for pipeline in nauty_commands(problem, size):
+        processes = start_pipeline(pipeline)
         timer = threading.Timer(max(0, deadline - time.time()),
-                                stop_nauty, [nauty])
+                                stop_pipeline, [processes])
         timer.start()
         try:
-            for line in nauty.stdout:
+            for line in processes[-1].stdout:
                 if time.time() > deadline:
                     raise OutOfTime
                 yield read_support(problem, line)
-            if nauty.wait() != 0:
+            statuses = [process.wait() for process in processes]
+            if any(statuses):
                 if time.time() > deadline:
                     raise OutOfTime         # the timer stopped it
-                raise RuntimeError(f"{command} failed")
+                raise RuntimeError(f"{pipeline} exited with {statuses}")
         finally:
             timer.cancel()
-            if nauty.poll() is None:        # the search stopped early
-                stop_nauty(nauty)
-                nauty.wait()
+            stop_pipeline(processes)        # the search stopped early
+            for process in processes:
+                process.wait()
 #</nauty>
 
 
@@ -493,8 +508,25 @@ def write_certificate(problem, multiplicity):
 
 
 #<checker>
-def check_certificate(problem, multiplicity, certificate):
+def belongs_to_model(problem, claimed_size, multiplicity):
+    """Every hyperedge is one the model allows, on vertices 0..n-1 with
+    an allowed split into tails and heads, with a whole number of
+    copies up to the largest multiplicity, and the copies add up to the
+    size."""
+    allowed = set(possible_hyperedges(problem))
+    cap = largest_multiplicity(problem)
+    for hyperedge, copies in multiplicity.items():
+        if hyperedge not in allowed:
+            return False
+        if type(copies) is not int or not 0 <= copies <= cap:
+            return False
+    return edge_count(multiplicity) == claimed_size
+
+
+def check_certificate(problem, claimed_size, multiplicity, certificate):
     """No flows and no search code, only following edges."""
+    if not belongs_to_model(problem, claimed_size, multiplicity):
+        return False
     for u, v in vertex_pairs(problem):
         removed_vertices, removed_hyperedges = certificate[(u, v)]
         if problem.SEPARATION is Separation.EDGE_DISJOINT \
@@ -545,7 +577,7 @@ def solve(problem):
         size, graph, exact = prove_largest(problem, size, graph,
                                            time.time() + part)
     certificate = write_certificate(problem, graph)
-    checked = check_certificate(problem, graph, certificate)
+    checked = check_certificate(problem, size, graph, certificate)
     return size, exact, checked, witness(problem, graph, certificate)
 
 
@@ -565,6 +597,103 @@ def witness(problem, graph, certificate):
 #</driver>
 
 
+#<verifier>
+def verify_witnesses(path="witnesses.json"):
+    """Checks every saved graph and certificate. Uses only the standard
+    library and nothing else from this file, so it can be read alone."""
+    with open(path) as file:
+        records = json.load(file)
+    failed = [record for record in records if not verify_record(record)]
+    passed = len(records) - len(failed)
+    print(f"{passed} of {len(records)} witnesses pass")
+    return not failed
+
+
+def allowed_tail_counts(model, r):
+    if not (model.startswith("directed") or "digraph" in model):
+        return {0}
+    if r == 2 or model.endswith("forward"):
+        return {1}
+    if model.endswith("backward"):
+        return {r - 1}
+    return set(range(1, r))                 # general: any split
+
+
+def verify_record(record):
+    n, m, r = record["n"], record["m"], record["edge_size"]
+    model, separation = record["model"], record["separation"]
+    directed = model.startswith("directed") or "digraph" in model
+    if ("hypergraph" in model) != (r >= 3) or r < 2:
+        return False
+    if separation not in ("edge", "vertex"):
+        return False
+    cap = m - 1 if "multi" in model else 1
+    tail_counts = allowed_tail_counts(model, r)
+    copies = {}
+    for tails, members, count in record["hyperedges"]:
+        key = (tuple(tails), tuple(members))
+        if key in copies:
+            return False                    # listed twice
+        if sorted(set(members)) != members or len(members) != r:
+            return False
+        if not all(type(v) is int and 0 <= v < n for v in members):
+            return False
+        if len(set(tails)) != len(tails):
+            return False
+        if not set(tails) <= set(members):
+            return False
+        if len(tails) not in tail_counts:
+            return False
+        if type(count) is not int or not 1 <= count <= cap:
+            return False
+        copies[key] = count
+    if sum(copies.values()) != record["size"]:
+        return False
+    certificate = {}
+    for u, v, removed_vertices, removed_hyperedges in \
+            record["certificate"]:
+        certificate[(u, v)] = (set(removed_vertices), {
+            (tuple(tails), tuple(members))
+            for tails, members in removed_hyperedges})
+    if directed:
+        pairs = list(itertools.permutations(range(n), 2))
+    else:
+        pairs = list(itertools.combinations(range(n), 2))
+    if sorted(certificate) != pairs \
+            or len(record["certificate"]) != len(pairs):
+        return False                        # one entry for every pair
+    for u, v in pairs:
+        removed_vertices, removed_hyperedges = certificate[(u, v)]
+        if separation == "edge" and removed_vertices:
+            return False
+        if u in removed_vertices or v in removed_vertices:
+            return False
+        if not removed_hyperedges <= copies.keys():
+            return False
+        removed = len(removed_vertices) + sum(
+            copies[e] for e in removed_hyperedges)
+        if removed > m - 1:
+            return False
+        reached, frontier = {u}, [u]
+        while frontier:
+            vertex = frontier.pop()
+            for tails, members in copies:
+                if (tails, members) in removed_hyperedges:
+                    continue
+                if vertex not in (tails or members):
+                    continue                # enter only at a tail
+                for nxt in members:
+                    if nxt in tails or nxt in reached \
+                            or nxt in removed_vertices:
+                        continue
+                    reached.add(nxt)
+                    frontier.append(nxt)
+        if v in reached:
+            return False
+    return True
+#</verifier>
+
+
 #<main>
 def print_table(model, separation, solved, largest_m, witnesses):
     print(f"\n{model.NAME}, {separation.value} separation")
@@ -574,7 +703,8 @@ def print_table(model, separation, solved, largest_m, witnesses):
         witnesses.append({
             "model": model.NAME, "separation": separation.value,
             "n": problem.VERTEX_COUNT, "m": problem.THRESHOLD_M,
-            "size": size, "search_finished": exact,
+            "edge_size": model.EDGE_SIZE, "size": size,
+            "search_finished": exact,
             "certificate_checked": checked, **found})
         mark = ("*" if exact else " ") if checked else "!"
         rows.setdefault(problem.VERTEX_COUNT, []).append(f"{size:>5}{mark}")
@@ -587,6 +717,12 @@ def main(largest_n=7, largest_m=7):
                 for model in ALL_MODELS() for separation in Separation
                 for n in range(model.EDGE_SIZE, largest_n + 1)
                 for m in range(2, largest_m + 1)]
+    nauty = subprocess.run(["geng", "--version"], capture_output=True,
+                           text=True).stdout.strip()
+    print(f"Python {platform.python_version()}, networkx "
+          f"{networkx.__version__}, {nauty}, {platform.platform()},")
+    print(f"{os.cpu_count()} processor cores, {SECONDS_PER_CASE} "
+          f"seconds per case, run on {time.strftime('%Y-%m-%d')}.")
     print("Edges of the densest feasible graph found, every one certified.")
     print("* the search finished, so the value is exact;",
           "! the certificate failed")
@@ -602,5 +738,7 @@ def main(largest_n=7, largest_m=7):
 
 
 if __name__ == "__main__":
+    if sys.argv[1:] == ["verify"]:
+        sys.exit(0 if verify_witnesses() else 1)
     main()
 #</main>

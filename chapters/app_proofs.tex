@@ -4,7 +4,7 @@ The definitions are in \Cref{ch:basecases}. New terms are defined where they are
 
 The appendix has three parts.
 \textsc{Part I} is about undirected graphs, \textsc{Part II} about directed graphs, and \textsc{Part III} about hypergraphs.
-The three main proof ideas are the reachability skeleton (directed multigraphs), the incidence-rank lemma (hypergraphs at $m=3$), and the two-step budget (directed graphs and hypergraphs).
+The three main proof ideas are the reachability skeleton (directed multigraphs), the incidence-rank lemma (hypergraphs at $m=3$), and the two-step budget, a bound on the number of routes with at most one inner vertex between every two vertices (directed graphs and hypergraphs).
 
 
 
@@ -561,7 +561,7 @@ Since $f(1) = 2(n-1)$ and $f(n) = \floor{n^2/4}$, we get $f(q) \le M(n)$.
   \node[font=\small] at (2.6,2.0) {$R$};
 \end{scope}
 \end{tikzpicture}}
-\caption[A reachability skeleton]{The construction of \Cref{lem:reach-skeleton}. Each bidirected pair $A,B,C$ is a strongly connected component. Contracting the pairs gives $A\to B\to C$ and the redundant arc $A\to C$. Delete that arc to obtain the triangle-free digraph $Q$. The skeleton $R$ keeps the internal arcs of each pair and the two remaining connections between pairs. Although $a_1\to c_2$ is removed, $a_1$ still reaches $c_2$ through $B$.}
+\caption[A reachability skeleton]{The construction of \Cref{lem:reach-skeleton}. Each bidirected pair $A,B,C$ is a strongly connected component. Merging each pair into a single vertex gives $A\to B\to C$ and the redundant arc $A\to C$. Delete that arc to obtain the triangle-free digraph $Q$. The skeleton $R$ keeps the internal arcs of each pair and the two remaining connections between pairs. Although $a_1\to c_2$ is removed, $a_1$ still reaches $c_2$ through $B$.}
 \label{fig:skeleton-example}
 \end{figure}
 
@@ -1107,7 +1107,7 @@ For the incidence graph of a hypergraph, $|E|$ counts the pairs of a vertex and 
 
 We use the words cut vertex and $k$-connected from \Cref{sec:simple-vertex-blocks}.
 A \emph{separating pair} is a pair of vertices whose removal disconnects the graph.
-By Menger's theorem \cite[Ch.~3]{Diestel17}, a graph is $3$-connected exactly when every two vertices are joined by $3$ internally disjoint paths.
+By Menger's theorem \cite[Ch.~3]{Diestel17}, a multigraph on at least four vertices is $3$-connected exactly when every two vertices are joined by $3$ internally disjoint paths. The condition of at least four vertices is needed: two vertices joined by three parallel edges have three internally disjoint paths, but the multigraph is not $3$-connected.
 
 \begin{lemma}[Incidence rank lemma]\label{lem:incidence-rank}
 Let $G$ be a connected loopless multigraph with a partition $V(G)=X \mathbin{\dot\cup} Z$ such that
@@ -1714,7 +1714,7 @@ There are at most $m-1$ of them, so $\lec(u,v)\le m-1$ for every ordered pair, a
 Hyperedges with different tails are different, so the hypergraph is simple when the head sets at each vertex are different.
 \end{proof}
 
-For small $n$ this construction can beat the two-layer construction.
+For small $n$ this construction can beat the construction of \Cref{prop:dir-hyper-first}.
 For example, at $n=m=6$ and $r=3$ it gives $30$ hyperedges, even in the simple model.
 
 We write a directed hyperedge as $(T,H)$, with tail set $T$ and head set $H$.

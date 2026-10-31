@@ -54,7 +54,7 @@ they are used. The code is available in the repository \cite{vandenbruwaene_thes
 \toprule
 Area & Main results \\
 \midrule
-Undirected graphs and multigraphs & A proof of Mader's bound with the Gomory--Hu tree, graphs that attain it for every $n\ge m$, and the exact multigraph edge value. \\
+Undirected graphs and multigraphs & A different proof of Mader's bound, with the Gomory--Hu tree, an explicit construction of graphs that attain it for every $n\ge m$ (the value itself is due to Mader), and the exact multigraph edge value. \\
 Multigraphs, vertex version & The exact value at $m=2$ and $m=3$. \\
 Hypergraphs, edge version & An upper bound for every $r$-uniform hypergraph, attained on stated ranges. \\
 Hypergraphs, vertex version & The exact value at $m=2$ and $m=3$, for simple hypergraphs at $m=3$ when $r<n$. \\
@@ -74,7 +74,7 @@ Mader's bound is
 \[
  \ell_m(n)\le\floorfrac{m(n-1)}2.
 \]
-We prove this bound with the Gomory--Hu tree and give graphs that reach it for every $n\ge m\ge2$.
+Mader also showed that the bound is attained for $n\ge m$. We prove the bound in a different way, with the Gomory--Hu tree, and give an explicit construction of graphs that reach it for every $n\ge m\ge2$.
 
 The thesis also studies the problem in eight models. Edges may be directed or not, may be repeated or not, and may join two vertices or more (hypergraphs). In each model we can ask for edge-disjoint routes or for vertex-disjoint routes, which gives sixteen problems.
 
@@ -110,9 +110,9 @@ Symbol & Meaning \\
 \bottomrule
 \endfoot
 $G=(V,E)$, $D=(V,A)$ & vertex set $V$, with edge multiset $E$ or arc multiset $A$ \\
-$n$, $m$, $r$ & vertex count, forbidden-connectivity threshold, hyperedge size \\
+$n$, $m$, $r$ & vertex count, number of disjoint routes that no pair may have, hyperedge size \\
 $\lambda_G(u,v)$ & maximum number of edge-disjoint $u$--$v$ paths \\
-$\kappa_G(u,v)$ & maximum number of incidence-separated $u$--$v$ paths \\
+$\kappa_G(u,v)$ & maximum number of separated $u$--$v$ paths \\
 $\lambda_G^{\max}$, $\kappa_G^{\max}$ & maximum local connectivity over distinct vertex pairs, ordered in directed models \\
 $\ell_m(n)$, $L_m(n)$ & simple and multigraph undirected edge maxima \\
 $k_m(n)$, $K_m(n)$ & simple and multigraph undirected vertex maxima \\

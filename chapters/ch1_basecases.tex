@@ -37,7 +37,9 @@ From now on, graphs are simple unless we say otherwise.
 A \emph{path} from $u$ to $v$ is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ of distinct vertices $v_i$ and edges $e_i$, where $v_0=u$, $v_q=v$ and $e_i$ joins $v_{i-1}$ and $v_i$.
 In a multigraph, two parallel edges give two different paths of length one.
 In a simple graph we can write a path as a list of vertices.
-A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{forest} is a graph without cycles. A \emph{spanning tree} of a graph $G$ is a tree on all vertices of $G$ that uses only edges of $G$.
+A \emph{walk} is a sequence of the same form in which vertices and edges may repeat.
+A \emph{cycle} is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ with $q\ge2$, distinct edges $e_i$ and distinct vertices $v_0,\ldots,v_{q-1}$, where $v_q=v_0$ and $e_i$ joins $v_{i-1}$ and $v_i$. In a simple graph a cycle has at least three edges, and in a multigraph two parallel edges form a cycle.
+A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{forest} is a graph without cycles. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$. A \emph{spanning tree} of $G$ is a subgraph of $G$ that is a tree on all vertices of $G$.
 We also call a path a \emph{route}.
 Two $u$--$v$ paths are \emph{edge-disjoint} if they have no edge in common.
 The \emph{local edge-connectivity} $\lec_G(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ paths.
@@ -81,7 +83,7 @@ Let $u$ and $v$ be distinct vertices of a multigraph $G$. The largest number of 
     \node[mv] at (\ang:1.5) {$\i$};
   }
 \end{tikzpicture}
-\caption{Menger's theorem on \Cref{fig:k5-example}: three edge-disjoint $1$--$3$ routes (coloured) meet the minimum three-edge cut around vertex $1$, so $\lec(1,3)=3$.}
+\caption{Menger's theorem on \Cref{fig:k5-example}: three edge-disjoint $1$--$3$ routes (coloured) each use one of the three edges at vertex $1$. Removing these three edges leaves no $1$--$3$ route, so $\lec(1,3)=3$.}
 \label{fig:menger}
 \end{figure}
 
@@ -115,7 +117,7 @@ For all $n \ge 2$ and $m \ge 2$,
 \end{theorem}
 
 Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62} found graphs that attain this bound when $m-1$ divides $n-1$: copies of $K_m$ that share one vertex.
-For $n\ge m$ the bound is always attained (\Cref{thm:extremal-existence}).
+For $n\ge m$ the bound is always attained. Mader proved this as well, so $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ \cite{Mader73}. \Cref{thm:extremal-existence} gives our own construction.
 For $2\le n<m$ the complete graph $K_n$ satisfies the condition, so $\ell_m(n)=\binom n2$.
 This is smaller than $\floor{m(n-1)/2}$, except when $(n,m)=(2,3)$.
 
@@ -586,11 +588,11 @@ Directed $r$-uniform multihypergraph & $L_m^{\mathrm{dir}\,(r)}(n)$ & $K_m^{\mat
 \end{tabular}
 \end{table}
 
-Menger's theorem, the Gomory--Hu tree and Mader's bound are classical.
+Menger's theorem, the Gomory--Hu tree, Mader's bound and the exact value $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ are classical.
 So are the results of B\'{a}rtfai, Bollob\'{a}s, Leonard, S{\o}rensen and Thomassen.
 The main new results are:
 \begin{itemize}
-\item a proof of Mader's bound with the Gomory--Hu tree, graphs that attain it for every $n\ge m$, and the multigraph edge value (\Cref{sec:mader-gomory-hu}, \Cref{thm:extremal-existence,thm:multigraph-edge}),
+\item a different proof of Mader's bound, with the Gomory--Hu tree, an explicit construction of graphs that attain it for every $n\ge m$, and the multigraph edge value (\Cref{sec:mader-gomory-hu}, \Cref{thm:extremal-existence,thm:multigraph-edge}),
 \item the multigraph vertex value at $m=2$ and $m=3$ (\Cref{thm:multi-vertex-m2,cor:multi-vertex-m3}),
 \item the hypergraph edge bound and the ranges where it is attained (\Cref{prop:hyper-edge}),
 \item the hypergraph vertex value at $m=2$ and $m=3$, for simple hypergraphs at $m=3$ when $r<n$ (\Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3}),
@@ -718,7 +720,7 @@ So the directed value grows quadratically in $n$, while the undirected value gro
 In the bipartite digraph all arcs point the same way, so a route crosses between the parts only once and never comes back.
 An undirected graph with $\lec^{\max}\le1$ has no cycle, so it has at most $n-1$ edges.
 
-For the upper bound we use a \emph{reachability skeleton}: a subdigraph, with at most one copy of each arc, in which $u$ can reach $v$ exactly when $u$ can reach $v$ in the whole digraph.
+For the upper bound we use a \emph{reachability skeleton}: a \emph{subdigraph}, that is, a subgraph of the digraph, with at most one copy of each arc, in which $u$ can reach $v$ exactly when $u$ can reach $v$ in the whole digraph.
 \Cref{lem:reach-skeleton} in the appendix shows that there is always a skeleton with at most $M(n)=\max(2(n-1),\floor{n^2/4})$ arcs.
 
 \begin{proof}[Proof of \Cref{thm:dir-vertex-m2-exact}]

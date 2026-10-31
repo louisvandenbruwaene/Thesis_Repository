@@ -6,7 +6,7 @@ No result in this thesis depends on the output of this program.
 Its output for $n,m\le7$ is printed in \Cref{app:program}.
 \Cref{sec:certificates} shows how an output can be checked without reading the code.
 
-The program is one Python file of about $600$ lines, \texttt{program/erdos915.py}.
+The program is one Python file of about $740$ lines, \texttt{program/erdos915.py}.
 It uses the library \texttt{networkx} for maximum flows, and the programs \texttt{geng}, \texttt{directg} and \texttt{genbg} of \texttt{nauty} to list graphs.
 This chapter prints the main parts of the program, each next to the idea it implements.
 The remaining parts, such as the imports and small helper functions, are in \Cref{app:program}, so every line of the program is printed once.
@@ -34,6 +34,7 @@ An ordinary edge $uv$ is the hyperedge $\{u,v\}$ without tails, and an arc $u\to
 A route may enter a hyperedge at an \texttt{entry\_vertices} vertex and leave it at an \texttt{exit\_vertices} vertex.
 In an undirected hyperedge every vertex is both. In a directed one only the tails are entries and only the heads are exits.
 A candidate graph is a table that gives every possible hyperedge its multiplicity.
+We call the models without repeated edges \emph{simple models}, and the models with repeated edges \emph{multi models}.
 In a simple model every multiplicity is $0$ or $1$. In a multi model it is at most $m-1$, since $m$ copies of one edge already give $m$ disjoint routes (\Cref{lst:hyperedges}).
 \Cref{fig:matrix-rep} shows two such tables.
 
@@ -336,20 +337,19 @@ The flow may stop as soon as it reaches $m$, since a larger value changes nothin
 \label{fig:checker-gadgets}
 \end{figure}
 
-\section{Checking every graph of a fixed order}\label{sec:certification-standard}
+\section{Checking every graph with a fixed number of vertices}\label{sec:certification-standard}
 The program stores a graph as a table that gives each possible hyperedge its number of copies (\Cref{fig:matrix-rep}).
 The possible hyperedges depend on the model:
 \begin{itemize}
 \item in a graph, the $\binom n2$ pairs $\{u,v\}$,
 \item in a digraph, the $n(n-1)$ ordered pairs, one for each arc $u\to v$,
-\item in an $r$-uniform hypergraph, the $\binom nr$ sets of $r$ vertices,
-\item in a directed $r$-uniform hypergraph, a set of $r$ vertices together with a choice of which of them are tails.
+\item in an $r$-uniform hypergraph, the $\binom nr$ sets of $r$ vertices, called \emph{$r$-sets},
+\item in a directed $r$-uniform hypergraph, an $r$-set together with a choice of which of its vertices are tails.
 A forward hyperedge has one tail, so each $r$-set gives $r$ possible hyperedges.
 A backward hyperedge has one head, which also gives $r$.
 In the general model the tails form any non-empty proper subset, which gives $2^r-2$.
 \end{itemize}
-In a simple model every entry of the table is $0$ or $1$.
-In a multi model it lies between $0$ and $m-1$, since $m$ copies of one hyperedge already give $m$ disjoint routes between two of its vertices.
+Each entry of the table is between $0$ and the largest multiplicity: $1$ in a simple model and $m-1$ in a multi model.
 To find an exact value, the program must show that no table with more copies than the best feasible graph found is feasible.
 If the search stops early, it gives only a lower bound.
 
@@ -445,7 +445,7 @@ Three of its programs cover six of the eight models:
 \begin{itemize}
 \item \texttt{geng} lists the simple graphs on $n$ vertices with a given number of edges,
 \item \texttt{directg} takes each graph from \texttt{geng} and directs each of its edges one way or both ways, which lists the simple digraphs,
-\item \texttt{genbg} lists bipartite graphs. A hypergraph is the bipartite graph with the $n$ vertices on one side and the hyperedges on the other side, each hyperedge joined to its $r$ vertices. With the option \texttt{-z} no two hyperedges have the same vertices, so the hypergraph is simple.
+\item \texttt{genbg} lists bipartite graphs: graphs whose vertices are split into two sides, with every edge joining the two sides. A hypergraph is the bipartite graph with the $n$ vertices on one side and the hyperedges on the other side, each hyperedge joined to its $r$ vertices. With the option \texttt{-z} no two hyperedges have the same vertices, so the hypergraph is simple.
 \end{itemize}
 \texttt{nauty} has no program that lists directed hypergraphs, so the program does not run this check for them. Their exact values come from the pruned search only.
 
@@ -459,6 +459,9 @@ In a simple model the support is the graph itself, with one copy of each edge.
 The copies are chosen one edge at a time, as in the pruned search: the program tries $1, 2, \dots$ copies and stops at the first number that makes the graph infeasible, since more copies stay infeasible.
 
 \Cref{lst:nauty} builds the \texttt{nauty} commands and reads their output one support at a time, so the check can stop at its time limit before all supports are listed.
+For digraphs two programs work together: \texttt{geng} passes every graph it lists to \texttt{directg}, which directs its edges.
+The program counts the list as complete only if both programs exit normally.
+If \texttt{geng} failed and \texttt{directg} did not, \texttt{directg} would receive no graphs and exit normally. The list would then look empty, and the check would report a value as exact without having checked anything.
 \Cref{lst:larger} chooses the copies, and repeats the check while it finds a feasible graph with one edge more.
 
 \programpart{nauty}{Listing the supports with \texttt{geng}, \texttt{directg} and \texttt{genbg} from \texttt{nauty}.}
@@ -519,6 +522,7 @@ We use this method instead of tabu search because there are many possible hypere
 \programpart{greedy}{Random greedy growth.}
 
 \subsection{Measuring only near the connectivity cap}\label{sec:near-cap}
+We call $m-1$, the largest connectivity a feasible graph allows, the \emph{cap}.
 Removing an edge never raises $\lec^{\max}$, since it creates no new route.
 Adding an edge raises $\lec(u,v)$ by at most one for every pair.
 Indeed, take a largest family of disjoint $u$--$v$ routes after the addition. At most one of them uses the new edge, and the others are disjoint routes in the old graph.
@@ -548,7 +552,9 @@ A Gomory--Hu tree (\Cref{thm:gomory-hu}) of a feasible graph is such a tree.
 
 \emph{Vertex separation.} For every pair $u,v$, the certificate gives a set of at most $m-1$ inner nodes of the incidence graph, vertices or edge copies, whose removal leaves no route from $u$ to $v$. It is checked in the same way. Separated routes share no inner node, so again each of them uses a different element of the set.
 
-\emph{Size of the graph.} The number of edges is counted directly.
+\emph{Size and model.} The number of edges is counted directly.
+Every hyperedge must also be one that the model allows: its vertices are among the $n$ vertices, it has $r$ of them, its split into tails and heads is allowed, and its number of copies is a whole number between $0$ and the largest multiplicity, which is $1$ in a simple model and $m-1$ otherwise.
+Without this check, two parallel edges with a correct certificate would pass as a simple graph.
 
 The program writes the certificate from a smallest cut of the flow network (\Cref{lst:certificate}).
 A cut uses only arcs of limited capacity: the arc inside a gate, which stands for a hyperedge, and, for vertex separation, the arc inside a split vertex.
@@ -557,14 +563,19 @@ So the cut translates directly into removed hyperedges and removed vertices.
 \programpart{certificate}{Writing a certificate from smallest cuts.}
 
 The checker in \Cref{lst:checker} computes no maximum flow and uses none of the search code.
-It uses only the list of vertex pairs and the entry and exit vertices of a hyperedge, from \Cref{lst:hyperedges,lst:pairs}.
-It counts the removed elements, with every copy of a removed hyperedge, and then follows the remaining hyperedges from $u$, entering each only at an entry vertex.
+It uses only the list of possible hyperedges, the largest multiplicity, the list of vertex pairs, the edge count and the entry and exit vertices of a hyperedge, from \Cref{lst:hyperedges,lst:pairs}.
+First \texttt{belongs\_to\_model} checks the size and the model.
+Then, for each pair, the checker counts the removed elements, with every copy of a removed hyperedge, and then follows the remaining hyperedges from $u$, entering each only at an entry vertex.
 If $v$ is never reached, the certificate is correct for this pair.
-Its correctness can be read off from its $28$ lines and these two short helpers.
+Its correctness can be read off from its $43$ lines and these short helpers.
 
 \programpart{checker}{The independent certificate checker.}
 
 So every lower bound the program finds can be checked: the graph is feasible by its certificate, and its size is counted.
+The program saves every graph with its certificate in the file \texttt{witnesses.json}.
+A second, separate checker, which we call the \emph{verifier}, checks this file (\Cref{lst:verifier} in \Cref{app:program}).
+It reads only the file and calls no other function of the program, so it can be read on its own. It checks the model, the size and every certificate as described above.
+The command \texttt{python erdos915.py verify} runs it.
 An upper bound is different. A certificate that no graph on $n$ vertices has more edges would be the whole search, which is too long to check.
 So the thesis takes no upper bound or exact value from the program.
 Every upper bound is proved by hand, and every construction in the thesis is checked by hand in \Cref{ch:basecases} or \Cref{app:proofs}.
@@ -581,7 +592,7 @@ Directed hypergraphs have no third part, so their budget is split into two parts
 Deadline checks occur between operations, so individual operations can overrun the budget. Certification adds further overhead.
 Every result is then certified and checked.
 The program saves, for each case, the model, the separation, $n$ and $m$, the hyperedges of the graph with their multiplicities, its size, the certificate for every vertex pair, and whether the search finished and the certificate passed.
-It writes these to the file \texttt{witnesses.json}, so a reader can recount the edges and check every certificate without rerunning the search.
+It writes these to the file \texttt{witnesses.json}, so a reader can recount the edges and check every certificate without rerunning the search, by hand or with the verifier of \Cref{lst:verifier}.
 The cases are independent, so the program runs them in parallel, one per processor core.
 For each problem, and each version of a directed hypergraph problem, it prints a table with one row per $n$ and one column per $m$ (\Cref{lst:main}).
 Each entry is the number of edges of the densest feasible graph found, marked when the search finished, and marked differently if the certificate failed.
