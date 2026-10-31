@@ -228,15 +228,19 @@ def best_digraphs_on_support(problem, support_edges, deadline):
 
 #<supports>
 def undirected_supports(vertex_count):
-    """Streams the output of geng, one graph at a time."""
+    """Streams the output of geng, one graph at a time. The stream counts
+    as complete only if geng then exits with status zero."""
     geng = subprocess.Popen(["geng", "-q", str(vertex_count)],
                             stdout=subprocess.PIPE)
     try:
         for line in geng.stdout:
             yield networkx.from_graph6_bytes(line.strip())
+        if geng.wait() != 0:
+            raise RuntimeError(f"geng failed with status {geng.returncode}")
     finally:
-        geng.kill()
-        geng.wait()
+        if geng.poll() is None:     # the search stopped early
+            geng.kill()
+            geng.wait()
 
 
 def canonical_form(vertex_count, multiplicity):
