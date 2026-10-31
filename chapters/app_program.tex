@@ -24,7 +24,7 @@ Simulated annealing, described in \Cref{ch:machine}.
 
 \programpart{annealing}{Simulated annealing on the same energy.}
 
-The verifier checks the saved file \texttt{witnesses.json} without the rest of the program (\Cref{sec:certificates}). For each saved graph it checks that every hyperedge is one the model allows, with a whole number of copies up to the largest multiplicity, that no hyperedge is listed twice, that the copies add up to the size, that every vertex pair has exactly one certificate entry, and that every certificate is correct.
+The verifier checks the saved file \texttt{witnesses.json} without the rest of the program (\Cref{sec:certificates}). For each saved graph it checks that every hyperedge is one the model allows, with a whole number of copies up to the largest multiplicity, that every hyperedge lists its vertices and its tails in increasing order, so that it has only one written form, that no hyperedge is listed twice, that the copies add up to the size, that every vertex pair has exactly one certificate entry, and that every certificate is correct.
 
 \programpart{verifier}{The standalone verifier of the saved graphs and certificates.}
 
@@ -36,7 +36,7 @@ The main function first prints the versions of Python, \texttt{networkx} and \te
 
 \Cref{lst:output} is the output of the program, unchanged.
 The command \texttt{python erdos915.py > output.txt} in the folder \texttt{program} writes it to a file, and this thesis reads that file directly, so no step lies between the program and the page.
-The first two lines of the output give the software versions, the operating system, the number of processor cores, the time budget per case and the date of the run. The computer was an Apple M5 with ten processor cores.
+The first four lines of the output give the software versions, the operating system, the number of processor cores, the time budget per case and the date of the run. The computer was an Apple M5 with ten processor cores.
 The searches stop at time limits and run in parallel, so the unfinished searches depend on the speed and the load of the computer. A run on another computer, or a second run on the same one, can print other lower bounds, even with the same random seed. An entry marked \texttt{*} is the exact maximum, so no run can print a larger value for it.
 Every entry is the number of edges, arcs or hyperedges of the densest feasible graph found, and every one of these graphs passed its certificate. The same run wrote these graphs and their certificates to \texttt{program/witnesses.json}.
 An entry marked \texttt{*} comes from a finished search, so it is the exact maximum.
@@ -46,4 +46,24 @@ Each directed hypergraph problem has three tables, one for each version of \Cref
 Wherever both searches finished, the forward and backward tables agree, as \Cref{lem:dir-hyper-duality} predicts.
 In the general model the search finished almost only at $n=3$. Its other entries are lower bounds, and some lie below the forward entries, although every forward hypergraph also belongs to the general model.
 
-{\lstinputlisting[style=outputlisting, caption={The output of the program for $2\le m\le 7$ and $n\le 7$.}, label={lst:output}]{program/output.txt}}
+% The file is read directly. First its first six lines (the run record and
+% the legend), then every table by its line range: one row per model, edge
+% separation on the left and vertex separation on the right.
+{\lstinputlisting[style=outputlisting, captionpos=t, lastline=6, caption={The output of the program for $2\le m\le 7$ and $n\le 7$.}, label={lst:output}]{program/output.txt}}
+\newcommand{\outputtable}[2]{%
+  \begin{minipage}[t]{0.47\textwidth}
+  \lstinputlisting[style=outputlisting, linerange={#1-#2}, basewidth=0.5em, xleftmargin=6pt]{program/output.txt}
+  \end{minipage}}
+\newcommand{\outputpair}[4]{\noindent\outputtable{#1}{#2}\hfill\outputtable{#3}{#4}\par\medskip}
+\outputpair{8}{15}{17}{24}
+\outputpair{26}{33}{35}{42}
+\outputpair{44}{50}{52}{58}
+\outputpair{60}{66}{68}{74}
+\outputpair{76}{83}{85}{92}
+\outputpair{94}{101}{103}{110}
+\outputpair{112}{118}{120}{126}
+\outputpair{128}{134}{136}{142}
+\outputpair{144}{150}{152}{158}
+\outputpair{160}{166}{168}{174}
+\outputpair{176}{182}{184}{190}
+\outputpair{192}{198}{200}{206}

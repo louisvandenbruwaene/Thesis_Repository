@@ -238,13 +238,22 @@ def read_support(problem, line):
 
 
 def start_pipeline(pipeline):
+    """Starts the programs of a pipeline. If one cannot start, those
+    already started are stopped before the error is passed on."""
     processes = []
-    for command in pipeline:
-        previous = processes[-1].stdout if processes else None
-        processes.append(subprocess.Popen(command, stdin=previous,
-                                          stdout=subprocess.PIPE))
-        if previous:
-            previous.close()        # only the next program reads it
+    try:
+        for command in pipeline:
+            previous = processes[-1].stdout if processes else None
+            processes.append(subprocess.Popen(command, stdin=previous,
+                                              stdout=subprocess.PIPE))
+            if previous:
+                previous.close()    # only the next program reads it
+    except BaseException:
+        stop_pipeline(processes)
+        for process in processes:
+            process.stdout.close()
+            process.wait()
+        raise
     return processes
 
 
@@ -631,21 +640,21 @@ def verify_record(record):
     tail_counts = allowed_tail_counts(model, r)
     copies = {}
     for tails, members, count in record["hyperedges"]:
-        key = (tuple(tails), tuple(members))
-        if key in copies:
-            return False                    # listed twice
         if sorted(set(members)) != members or len(members) != r:
-            return False
+            return False                    # sorted, no repeats
         if not all(type(v) is int and 0 <= v < n for v in members):
             return False
-        if len(set(tails)) != len(tails):
-            return False
+        if sorted(set(tails)) != tails:
+            return False                    # sorted, no repeats
         if not set(tails) <= set(members):
             return False
         if len(tails) not in tail_counts:
             return False
         if type(count) is not int or not 1 <= count <= cap:
             return False
+        key = (tuple(tails), tuple(members))
+        if key in copies:
+            return False                    # listed twice
         copies[key] = count
     if sum(copies.values()) != record["size"]:
         return False
@@ -719,8 +728,10 @@ def main(largest_n=7, largest_m=7):
                 for m in range(2, largest_m + 1)]
     nauty = subprocess.run(["geng", "--version"], capture_output=True,
                            text=True).stdout.strip()
-    print(f"Python {platform.python_version()}, networkx "
-          f"{networkx.__version__}, {nauty}, {platform.platform()},")
+    print(f"Python {platform.python_version()}, "
+          f"networkx {networkx.__version__},")
+    print(f"{nauty},")
+    print(f"{platform.platform()},")
     print(f"{os.cpu_count()} processor cores, {SECONDS_PER_CASE} "
           f"seconds per case, run on {time.strftime('%Y-%m-%d')}.")
     print("Edges of the densest feasible graph found, every one certified.")
