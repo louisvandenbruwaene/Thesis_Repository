@@ -54,13 +54,13 @@ they are used. The code is available in the repository \cite{vandenbruwaene_thes
 \toprule
 Area & Main results \\
 \midrule
-Undirected graphs & A proof of the edge bounds with the Gomory--Hu tree, and extremal graphs for every $n\ge m$. \\
-Hypergraphs, edge version & An upper bound for every $r$-uniform hypergraph, attained by simple hypergraphs on a stated range. \\
-Hypergraphs, vertex version & The exact value at $m=2$, and an upper bound at $m=3$ that is attained on stated ranges. \\
-Directed multigraphs & The exact value for every $n$ and $m$, and the extremal multigraphs for $n\ge\max(8,2m)$. \\
-Simple digraphs & The exact value at $m=2$, for both separations. \\
+Undirected graphs and multigraphs & A proof of Mader's bound with the Gomory--Hu tree, graphs that attain it for every $n\ge m$, and the exact multigraph edge value. \\
 Multigraphs, vertex version & The exact value at $m=2$ and $m=3$. \\
-Directed graphs and hypergraphs & Upper bounds with the right leading term, $n^2/4$ for simple digraphs and $(m-1)n^2/(4(r-1))$ for directed hypergraphs with any number of tails, valid for every $n$. \\
+Hypergraphs, edge version & An upper bound for every $r$-uniform hypergraph, attained on stated ranges. \\
+Hypergraphs, vertex version & The exact value at $m=2$, and an upper bound at $m=3$ that is attained on stated ranges. \\
+Simple digraphs, $m=2$ & The exact value, for both separations. \\
+Directed multigraphs & The exact value for every $n$ and $m$, and the extremal multigraphs for $n\ge\max(8,2m)$. \\
+Simple digraphs and directed hypergraphs & Upper bounds with the right leading term, $n^2/4$ for simple digraphs and $(m-1)n^2/(4(r-1))$ for directed hypergraphs in the three orientation models, valid for every $n$. \\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -80,12 +80,13 @@ The thesis also studies the problem in eight models. Edges may be directed or no
 
 The proved results include:
 \begin{itemize}
-\item Multigraphs: at most $(m-1)(n-1)$ edges.
-\item $r$-uniform hypergraphs: at most $\floor{(m-1)(n-1)/(r-1)}$ hyperedges.
-\item Hypergraphs with vertex-disjoint routes: exactly $\floor{(n-1)/(r-1)}$ at $m=2$, and at most $\floor{2(n-1)/(r-1)}$ at $m=3$.
+\item Multigraphs: exactly $(m-1)(n-1)$ edges. With vertex-disjoint routes, exactly $n-1$ at $m=2$ and $2(n-1)$ at $m=3$.
+\item $r$-uniform hypergraphs: at most $\floor{(m-1)(n-1)/(r-1)}$ hyperedges, attained on stated ranges.
+\item Hypergraphs with vertex-disjoint routes: exactly $\floor{(n-1)/(r-1)}$ at $m=2$, and at most $\floor{2(n-1)/(r-1)}$ at $m=3$, attained on stated ranges.
 \item Simple digraphs at $m=2$: exactly $\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs, for both separations.
 \item Directed multigraphs: exactly $(m-1)\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs.
-\item Simple digraphs: $n^2/4+\Theta_m(n)$ arcs for fixed $m\ge3$.
+\item Simple digraphs: $n^2/4+\Theta_m(n)$ arcs for fixed $m\ge3$, for both separations.
+\item Directed hypergraphs: $(1+o(1))(m-1)n^2/(4(r-1))$ hyperedges for fixed $m$ and $r$, in the three orientation models.
 \end{itemize}
 The exact value for simple digraphs is open for $m\ge3$.
 
@@ -160,12 +161,8 @@ $o(1)$ & a quantity that tends to $0$ \\
 % BACK MATTER
 % ============================================================================
 
-% Bibliography.  \bibliographystyle{unsrt} numbers entries in order of first
-% citation, so only cited keys reach main.bbl; ref.bib also carries entries that
-% only offcuts.tex cites (BercziEtAl24 among them), and those do not print here.
-% An earlier note in this slot explained an underfull hbox of badness 1168 in the
-% BercziEtAl24 entry.  That entry left the thesis with the passage that cited it,
-% and the build now reports no overfull and no underfull boxes at all.
+% Bibliography. unsrt numbers the entries in order of first citation, and
+% only cited keys of ref.bib are printed.
 \bibliographystyle{unsrt}
 \bibliography{ref}
 

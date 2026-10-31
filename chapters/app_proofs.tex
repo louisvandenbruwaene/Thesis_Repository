@@ -204,7 +204,7 @@ Second, at $m = 4$, \Cref{thm:leonard} gives $h_4(b) = 2(b-1)$ for every $b \ge 
 So the rate $h_4(b)/(b-1)$ is $2$ for $b\ge4$, against $1$ at $b = 2$ and $3/2$ at $b = 3$.
 The best choice uses blocks of size at least four, and $k_4(n) = 2(n-1)$ for $n \ge 4$.
 This uses \Cref{thm:leonard}, so it is not a new proof.
-It does show the extremal block: the hub-and-spokes graph $H_{4,b}$ of \Cref{const:hub-spokes}, which is a hub joined to all vertices of a cycle.
+It does show the extremal block: the hub-and-spokes graph $H_{4,b}$ of \Cref{const:hub-spokes}, with the graph on $v_1,\dots,v_{b-1}$ chosen to be one cycle, so that $H_{4,b}$ is a hub joined to all vertices of a cycle.
 It is a single block with $2(b-1)$ edges.
 
 Third, the Bollob\'as--Erd\H{o}s construction, copies of $K_m$ sharing one vertex, is the case $b = m$: $h_m(m) = \binom{m}{2}$, with rate $m/2$.
@@ -736,7 +736,7 @@ Let $u,v$ be distinct vertices of a multihypergraph $\HH$, and count parallel co
 \end{theorem}
 
 \begin{proof}
-We turn $\HH$ into a directed multigraph $N$, the gate network of \Cref{fig:hyper-gadget}, and use Menger's theorem for directed multigraphs (\Cref{thm:menger}).
+We turn $\HH$ into a directed multigraph $N$, the \emph{gate network}, and use Menger's theorem for directed multigraphs (\Cref{thm:menger}).
 Let $c$ be the total number of hyperedge copies.
 Every hyperedge $e$ with $\mu(e)$ copies gets two new nodes $e^-$ and $e^+$ and $\mu(e)$ parallel arcs $e^- \to e^+$, its \emph{gate}.
 Every vertex $x \in e$ gets $c+1$ parallel arcs $x \to e^-$ and $c+1$ parallel arcs $e^+ \to x$.
@@ -1305,7 +1305,7 @@ So maximising $W_m$ over feasible $G_0$ gives $K_m(n)$.
 The objective is a sum over edges of a quantity that depends only on the block of the edge. This gives the next result.
 
 \begin{theorem}[The multigraph incidence problem reduces to blocks]\label{thm:multi-vertex-blocks}
-For a $2$-connected graph $B$, or a single edge, write
+For $b\ge2$ write
 \[
     g_m(b) \;:=\; \max\bigl\{\, W_m(B) \;:\; B \text{ $2$-connected or an edge, } |V(B)| = b,\ \kap^{\max}_B \le m-1 \,\bigr\} ,
 \]
@@ -1401,10 +1401,6 @@ bound, while \Cref{thm:dir-hyper-constant} at $r=2$ gives the upper bound.
 Since $M(n)=\floor{n^2/4}$ for $n\ge7$, these bounds imply the stated asymptotic.
 \end{proof}
 
-At $n=3$ and $m=6$, the thickened complete digraph of \Cref{const:dir-multi-vertex-blocks} has $24$ arcs, more than $(m-1)M(3)=20$.
-It is feasible, because every route of length at least two passes through the third vertex.
-So for the vertex problem the arc construction is not optimal.
-
 \begin{construction}[Thickened complete digraph, and its bouquet]\label{const:dir-multi-vertex-blocks}
 For $2 \le b \le m$, take the complete digraph on $b$ vertices and give every arc
 multiplicity $m+1-b$. At $b=2$ this is one bidirected edge at multiplicity $m-1$.
@@ -1428,6 +1424,10 @@ So $\pi(u,v) = b-2$, and \Cref{lem:multi-vertex-split-dir} gives $\kap(u,v) = (m
 Two vertices in different blocks are separated by the common vertex, so $\kap \le 1$.
 A block of size $b$ has $b(b-1)$ ordered pairs, each with $m+1-b$ arcs.
 \end{proof}
+
+At $n=3$ and $m=6$, the thickened complete digraph has $24$ arcs, more than $(m-1)M(3)=20$.
+It is feasible, because every route of length at least two passes through the third vertex.
+So for the vertex problem the arc construction is not optimal.
 
 For small $n$ the block construction is larger, and for large $n$ the bipartite construction is larger.
 At $m=3$ the best block is a bidirected edge, so the bouquet is the thickened bidirected tree, and the bipartite construction is larger from $n=8$.

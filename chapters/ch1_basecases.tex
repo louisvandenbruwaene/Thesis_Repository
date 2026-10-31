@@ -1,5 +1,5 @@
 % !TEX root = ../main.tex
-This thesis asks how many connections a network can have before some pair of points has too many independent routes between them. This chapter defines the problem and its variants, and states the results that are proved.
+This chapter defines the problem and its variants, and states the results that are proved.
 
 \section{Graphs and routes}
 
@@ -186,20 +186,6 @@ The proof has three steps.
 \label{fig:gomory-hu-dist}
 \end{figure}
 
-\begin{lemma}[Sum of tree distances]\label{lem:sum-dist}\label{lem:dist-1-count}
-For a simple graph $G$, $\displaystyle\sum_{e \in E(G)} \dist_T(e) \;\ge\; 2|E(G)| - (n-1)$.
-\end{lemma}
-
-\begin{proof}
-Let $E_1$ be the set of edges with $\dist_T(e) = 1$.
-Such an edge joins two vertices that are adjacent in $T$.
-The tree $T$ has $n-1$ edges, and since $G$ is simple, each of them gives at most one edge of $E_1$. So $|E_1| \le n-1$.
-Every other edge has $\dist_T(e) \ge 2$. So
-\[
-\sum_{e \in E(G)} \dist_T(e) \;\ge\; |E_1| + 2\bigl(|E(G)| - |E_1|\bigr) \;=\; 2|E(G)| - |E_1| \;\ge\; 2|E(G)| - (n-1). \qedhere
-\]
-\end{proof}
-
 \begin{lemma}[Double-counting identity]\label{lem:double-count}
 Let $G$ be a multigraph and $T$ a Gomory--Hu tree of $G$ with weights $c$. Then
 \[
@@ -212,6 +198,20 @@ Parallel edges are counted separately in the right-hand sum.
 
 Count the pairs $(t,e)$ where $t$ is a tree edge, $e$ is an edge of $G$, and $e$ crosses $t$. For a fixed $t$, exactly $c(t)$ edges cross $t$, by property (1) of the Gomory--Hu theorem. For a fixed $e$, exactly $\dist_T(e)$ tree edges are crossed by $e$. So both sums count the same pairs.
 
+\end{proof}
+
+\begin{lemma}[Sum of tree distances]\label{lem:sum-dist}\label{lem:dist-1-count}
+For a simple graph $G$, $\displaystyle\sum_{e \in E(G)} \dist_T(e) \;\ge\; 2|E(G)| - (n-1)$.
+\end{lemma}
+
+\begin{proof}
+Let $E_1$ be the set of edges with $\dist_T(e) = 1$.
+Such an edge joins two vertices that are adjacent in $T$.
+The tree $T$ has $n-1$ edges, and since $G$ is simple, each of them gives at most one edge of $E_1$. So $|E_1| \le n-1$.
+Every other edge has $\dist_T(e) \ge 2$. So
+\[
+\sum_{e \in E(G)} \dist_T(e) \;\ge\; |E_1| + 2\bigl(|E(G)| - |E_1|\bigr) \;=\; 2|E(G)| - |E_1| \;\ge\; 2|E(G)| - (n-1). \qedhere
+\]
 \end{proof}
 
 \begin{proof}[Proof of \Cref{thm:mader}, upper bound]
@@ -590,11 +590,15 @@ Directed $r$-uniform multihypergraph & $L_m^{\mathrm{dir}\,(r)}(n)$ & $K_m^{\mat
 Menger's theorem, the Gomory--Hu tree and Mader's bound are classical.
 So are the results of B\'{a}rtfai, Bollob\'{a}s, Leonard, S{\o}rensen and Thomassen.
 The main new results are:
-the directed values at $m=2$ (\Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact}),
-the hypergraph edge bound (\Cref{prop:hyper-edge}),
-the exact value for directed multigraphs (\Cref{thm:dir-multi-full}),
-the hypergraph vertex problem at $m=2$ and $m=3$ (\Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3}),
-and the quadratic bounds for directed graphs and hypergraphs (\Cref{thm:dir-arc-linear-error,thm:dir-hyper-constant,thm:dir-hyper-general-constant}).
+\begin{itemize}
+\item a proof of Mader's bound with the Gomory--Hu tree, graphs that attain it for every $n\ge m$, and the multigraph edge value (\Cref{sec:mader-gomory-hu}, \Cref{thm:extremal-existence,thm:multigraph-edge}),
+\item the multigraph vertex value at $m=2$ and $m=3$ (\Cref{thm:multi-vertex-m2,cor:multi-vertex-m3}),
+\item the hypergraph edge bound and the ranges where it is attained (\Cref{prop:hyper-edge}),
+\item the hypergraph vertex value at $m=2$, and the bound at $m=3$ with the ranges where it is attained (\Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3}),
+\item the simple digraph values at $m=2$, for both separations (\Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact}),
+\item the directed multigraph value for every $n$ and $m$, and its extremal multigraphs for $n\ge\max(8,2m)$ (\Cref{thm:dir-multi-full,thm:dir-multi-uniqueness}),
+\item the quadratic bounds for simple digraphs and for directed hypergraphs in the three orientation models (\Cref{thm:dir-arc-linear-error,thm:dir-hyper-constant,thm:dir-hyper-general-constant}).
+\end{itemize}
 
 \section{Results and proofs}
 

@@ -433,7 +433,7 @@ def write_certificate(problem, multiplicity):
 
 #<checker>
 def check_certificate(problem, multiplicity, certificate):
-    """Independent of the code above: no flows, only following edges."""
+    """No flows and no search code, only following edges."""
     for u, v in vertex_pairs(problem):
         removed_vertices, removed_hyperedges = certificate[(u, v)]
         if problem.SEPARATION is Separation.EDGE_DISJOINT \

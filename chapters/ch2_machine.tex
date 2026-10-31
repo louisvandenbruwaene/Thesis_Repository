@@ -530,10 +530,11 @@ So the cut translates directly into removed hyperedges and removed vertices.
 
 \programpart{certificate}{Writing a certificate from smallest cuts.}
 
-The checker in \Cref{lst:checker} uses none of the code above.
+The checker in \Cref{lst:checker} computes no maximum flow and uses none of the search code.
+It uses only the list of vertex pairs and the entry and exit vertices of a hyperedge, from \Cref{lst:hyperedges,lst:pairs}.
 It counts the removed elements, with every copy of a removed hyperedge, and then follows the remaining hyperedges from $u$, entering each only at an entry vertex.
 If $v$ is never reached, the certificate is correct for this pair.
-Its correctness can be read off from its $30$ lines alone.
+Its correctness can be read off from its $28$ lines and these two short helpers.
 
 \programpart{checker}{The independent certificate checker.}
 
@@ -554,6 +555,11 @@ The cases are independent, so the program runs them in parallel, one per process
 For each problem, and each version of a directed hypergraph problem, it prints a table with one row per $n$ and one column per $m$ (\Cref{lst:main}).
 Each entry is the number of edges of the densest feasible graph found, marked when the search finished, and marked differently if the certificate failed.
 A finished search gives an exact value, but only the lower bound is certified (\Cref{sec:certificates}).
+
+The true maximum never decreases when $n$ or $m$ grows: an isolated vertex can be added, and a graph with no $m$ disjoint routes also has no $m+1$.
+The printed entries need not follow this.
+A larger $n$ or $m$ also gives more candidates, often many more, and every case gets the same thirty seconds.
+So an unfinished search covers a smaller part of a larger search space, and its entry can be smaller than the entry for a smaller $n$ or $m$.
 
 \programpart{driver}{The driver: thirty seconds per case, then a certificate.}
 
