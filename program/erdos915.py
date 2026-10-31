@@ -566,7 +566,7 @@ def check_certificate(problem, claimed_size, multiplicity, certificate):
 
 
 #<driver>
-SECONDS_PER_CASE = 30
+SECONDS_PER_CASE = 60
 
 
 def solve(problem):

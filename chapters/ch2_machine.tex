@@ -584,11 +584,11 @@ The exhaustive and heuristic searches of this chapter show which bounds are wort
 \section{Running the program}
 
 \Cref{lst:driver} puts the parts together.
-For each case, the driver allocates a nominal thirty-second search budget, in three parts of ten seconds.
+For each case, the driver allocates a nominal sixty-second search budget, in three parts of twenty seconds.
 The first part goes to the pruned search.
 If it does not finish, the second part goes to a heuristic search: tabu search for graphs and digraphs, and random greedy growth for hypergraphs.
 The third part goes to checking one edge more (\Cref{sec:one-more}), starting from the densest graph found so far.
-Directed hypergraphs have no third part, so their budget is split into two parts of fifteen seconds.
+Directed hypergraphs have no third part, so their budget is split into two parts of thirty seconds.
 Deadline checks occur between operations, so individual operations can overrun the budget. Certification adds further overhead.
 Every result is then certified and checked.
 The program saves, for each case, the model, the separation, $n$ and $m$, the hyperedges of the graph with their multiplicities, its size, the certificate for every vertex pair, and whether the search finished and the certificate passed.
@@ -600,9 +600,9 @@ A finished search gives an exact value, but only the lower bound is certified (\
 
 The true maximum never decreases when $n$ or $m$ grows: an isolated vertex can be added, and a graph with no $m$ disjoint routes also has no $m+1$.
 The printed entries need not follow this.
-A larger $n$ or $m$ also gives more candidates, often many more, and every case gets the same thirty-second budget.
+A larger $n$ or $m$ also gives more candidates, often many more, and every case gets the same sixty-second budget.
 So an unfinished search covers a smaller part of a larger search space, and its entry can be smaller than the entry for a smaller $n$ or $m$.
 
-\programpart{driver}{The driver: a thirty-second budget per case, then a certificate.}
+\programpart{driver}{The driver: a sixty-second budget per case, then a certificate.}
 
 \Cref{sec:output} prints the full output for $2\le m\le7$ and $n\le7$.
