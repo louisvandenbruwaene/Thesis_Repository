@@ -642,7 +642,7 @@ Every $C$-budgeted simple digraph $D$ on $n \ge 2$ vertices satisfies
 Let $v$ be a vertex of largest out-degree, and write $\Delta = d^+(v)$.
 Let $N^+(v)$ be the set of the $\Delta$ vertices $x$ with $v \to x$, and let $\delta(v)$ be the number of those $x$ that also have $x \to v$. So $\delta(v) \le \Delta$.
 
-\emph{Step 1: routes of length two from $v$.}
+First we count the routes of length two that start at $v$.
 We count the pairs $(x,w)$ with $v\to x$, $x\to w$ and $w\ne v$ in two ways.
 Fixing $w \ne v$ first gives the midpoints of the routes $v\to x\to w$. The conditions $x\ne v$ and $x\ne w$ hold automatically, since $v\to x$ and $x\to w$. So this count is $\sum_{w\ne v} p_2(v,w)$.
 Fixing $x \in N^+(v)$ first gives the $d^+(x)$ out-neighbours of $x$, minus one exactly when $x\to v$. So this count is $\sum_{x\in N^+(v)} d^+(x) - \delta(v)$.
@@ -651,15 +651,13 @@ Therefore
     \sum_{w\ne v} p_2(v,w) \;=\; \sum_{x\in N^+(v)} d^+(x) \;-\; \delta(v).
 \]
 
-\emph{Step 2: the budget at the pairs that start at $v$.}
 Adding the budget over the $n-1$ pairs $(v,w)$ with $w\ne v$ gives
 \[
     \Delta \;+\; \sum_{x\in N^+(v)} d^+(x) \;-\; \delta(v) \;\le\; C(n-1),
 \]
 since $v$ has $\Delta$ out-arcs. With $\delta(v)\le\Delta$ this gives $\sum_{x\in N^+(v)} d^+(x) \le C(n-1)$.
 
-\emph{Step 3: count the arcs by their tails.}
-Every arc has one tail. Split the vertices into $v$, the set $N^+(v)$, and the remaining $n-1-\Delta$ vertices, each of out-degree at most $\Delta$. So
+Now we count the arcs by their tails, since every arc has one tail. Split the vertices into $v$, the set $N^+(v)$, and the remaining $n-1-\Delta$ vertices, each of out-degree at most $\Delta$. So
 \[
     |A(D)| \;\le\; \Delta \;+\; C(n-1) \;+\; (n-1-\Delta)\,\Delta \;=\; C(n-1) \;+\; \Delta(n-\Delta).
 \]
