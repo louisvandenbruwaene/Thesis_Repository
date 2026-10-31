@@ -425,7 +425,7 @@ Prof.\ Jan Goedgebeur pointed us to the \texttt{nauty} toolkit of McKay and Pipe
 Its program \texttt{geng} lists the undirected graphs on $n$ vertices, each only once up to renaming the vertices.
 For directed multigraphs, our program uses each such graph as a \emph{support}.
 Each support edge $\{u,v\}$ gets multiplicities $\mu(u,v)$ and $\mu(v,u)$ between $0$ and $m-1$, not both zero.
-Different supports give different digraphs, even after renaming vertices.
+Renaming the vertices of a digraph renames its support in the same way. So digraphs on different supports from \texttt{geng} stay different, even after renaming vertices.
 After each choice the checker tests the partial digraph, and a branch that breaks the condition is dropped.
 Digraphs of the largest size are reported once each, up to renaming the vertices.
 For this the program compares digraphs after trying every renaming of the vertices. It does so only when the search finishes, which happens only for small $n$.
@@ -494,9 +494,10 @@ We use this method instead of tabu search because there are many possible hypere
 \programpart{greedy}{Random greedy growth.}
 
 \subsection{Measuring only near the connectivity cap}\label{sec:near-cap}
-Removing an edge never raises $\lec^{\max}$.
-Adding an edge raises it by at most one, because at most one route of a largest family uses the new edge.
-The same holds for $\kap^{\max}$.
+Removing an edge never raises $\lec^{\max}$, since it creates no new route.
+Adding an edge raises $\lec(u,v)$ by at most one for every pair.
+Indeed, take a largest family of disjoint $u$--$v$ routes after the addition. At most one of them uses the new edge, and the others are disjoint routes in the old graph.
+The same holds for $\kap^{\max}$, since separated routes also share no edge.
 So the search does not need to run the checker at every step.
 Removing an edge from a feasible graph keeps it feasible.
 Adding an edge to a graph with $\lec^{\max}\le m-2$ also keeps it feasible.
@@ -514,13 +515,13 @@ Together with the graph it writes a short \emph{certificate}: a list that a read
 
 \emph{Edge separation.} For every pair $u,v$, the certificate gives a set of at most $m-1$ edges (or arcs, or hyperedge copies) whose removal leaves no route from $u$ to $v$.
 To check it, remove the set and follow the remaining edges from $u$: $v$ must not be reached.
-Then every route from $u$ to $v$ uses an element of the set, so no pair has $m$ disjoint routes.
+Then every route from $u$ to $v$ uses an element of the set. Disjoint routes use different elements, so there are at most $m-1$ of them, and no pair has $m$ disjoint routes.
 This check uses only that a route through a removed set must use one of its elements. It needs neither Menger's theorem nor a maximum flow.
 For undirected graphs one tree is enough: any tree on the vertices such that, for each tree edge, at most $m-1$ edges of $G$ cross it.
-Every pair $u,v$ is then separated by the split of any tree edge on its tree path, so $n-1$ counts replace $\binom n2$ checks.
+Take a pair $u,v$ and a tree edge on the tree path between them. Removing this tree edge splits the vertices into two parts, with $u$ and $v$ on different sides. Every $u$--$v$ route uses an edge of $G$ that crosses between the parts, and there are at most $m-1$ of these. So $n-1$ counts replace $\binom n2$ checks.
 A Gomory--Hu tree (\Cref{thm:gomory-hu}) of a feasible graph is such a tree.
 
-\emph{Vertex separation.} For every pair $u,v$, the certificate gives a set of at most $m-1$ inner nodes of the incidence graph, vertices or edge copies, whose removal leaves no route from $u$ to $v$. It is checked in the same way.
+\emph{Vertex separation.} For every pair $u,v$, the certificate gives a set of at most $m-1$ inner nodes of the incidence graph, vertices or edge copies, whose removal leaves no route from $u$ to $v$. It is checked in the same way. Separated routes share no inner node, so again each of them uses a different element of the set.
 
 \emph{Size of the graph.} The number of edges is counted directly.
 

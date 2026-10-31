@@ -214,7 +214,7 @@ Every other edge has $\dist_T(e) \ge 2$. So
 \]
 \end{proof}
 
-\begin{proof}[Proof of \Cref{thm:mader}, upper bound]
+\begin{proof}[Proof of \Cref{thm:mader}]
 Let $G$ be a simple graph on $n$ vertices with $\lec^{\max}_G \le m-1$, and let $T$ be a Gomory--Hu tree of $G$.
 Each tree edge $t = xy$ has weight $c(t) = \lec_G(x, y) \le m-1$.
 There are $n-1$ tree edges, so $\sum_{t} c(t) \le (m-1)(n-1)$.
@@ -766,21 +766,23 @@ $\lec^{\max}_\HH \le k$. Then, the sum running over hyperedge copies,
 \end{lemma}
 
 \begin{proof}
-Induction on $n$. At $n = 1$ every hyperedge is a single vertex and both sides
-are $0$.
+Induction on $n$. At $n = 1$ there is no hyperedge, since a hyperedge has at least two vertices. So both sides are $0$.
 
 Let $n \ge 2$ and fix two vertices $u \ne v$.
-By \Cref{thm:menger-hyper}, a set $F$ of at most $k$ hyperedge copies separates them.
+Since $\lec_\HH(u,v) \le k$, \Cref{thm:menger-hyper} gives a set $F$ of at most $k$ hyperedge copies whose removal separates $u$ from $v$.
 Let $S$ be the set of vertices that $u$ can reach in $\HH - F$, and let $\bar S = V \setminus S$.
-Then $u \in S$ and $v \in \bar S$, and every copy that meets both sides lies in $F$.
+Then $u \in S$ and $v \in \bar S$, so both sets are non-empty.
+Every copy that meets both $S$ and $\bar S$ lies in $F$. Indeed, a copy outside $F$ with a vertex $x \in S$ and a vertex $y \in \bar S$ would let $u$ reach $x$ and then $y$ in $\HH - F$, so $y$ would lie in $S$.
 So at most $k$ copies meet both sides.
 
 Form two \emph{trace} multihypergraphs $\HH[S]$ and $\HH[\bar S]$: replace every copy $e$ by $e \cap S$, or by $e \cap \bar S$, and drop the sets with fewer than two vertices.
-A Berge route in a trace is also a Berge route in $\HH$, using the original copies.
-So a family of disjoint routes in a trace gives one of the same size in $\HH$.
-So both traces have $\lec^{\max} \le k$, and the induction hypothesis applies to both.
+A Berge route in a trace is also a Berge route in $\HH$, if we replace each trace copy by the copy it came from.
+Different trace copies come from different copies of $\HH$.
+So a family of hyperedge-disjoint routes in a trace gives one of the same size in $\HH$.
+So both traces have $\lec^{\max} \le k$. Both have fewer than $n$ vertices, so the induction hypothesis applies to both.
 
-Now count. A copy inside one side contributes $|e| - 1$ to that side.
+Now count. By induction, the copies of $\HH[S]$ contribute at most $k(|S|-1)$, and those of $\HH[\bar S]$ at most $k(|\bar S|-1)$.
+A copy inside one side contributes $|e| - 1$ to that side.
 A copy that meets both sides satisfies
 \[
     |e| - 1 \;=\; \bigl(|e \cap S| - 1\bigr)
@@ -804,11 +806,11 @@ Since $|E(\HH)|$ is an integer, we can round down.
 
 \emph{Lower bound.} Suppose $r-1$ divides $n-1$.
 Take a hub $h$ and split the other $n-1$ vertices into groups $G_1, G_2, \dots$ of size $r-1$.
-The hyperedges are the sets $\{h\} \cup G_i$. Its incidence graph is a tree, so we call it a \emph{star hypertree}.
+The hyperedges are the sets $\{h\} \cup G_i$. The incidence graph of this hypergraph is a tree, so we call it a \emph{star hypertree}.
 Give each hyperedge multiplicity $m-1$.
 Every vertex other than $h$ lies in exactly $m-1$ hyperedge copies.
 Every pair contains such a vertex, and every route from or to it uses one of these copies.
-So every pair has $\lec\le m-1$.
+So removing these $m-1$ copies separates the pair, and every pair has $\lec\le m-1$.
 There are $(m-1)(n-1)/(r-1)$ hyperedges.
 
 If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} below attains the bound with a simple hypergraph.
@@ -866,15 +868,25 @@ help.
 \begin{proof}[Proof of \Cref{thm:hyper-vertex-m2}]
 Let $q$ be the number of hyperedges.
 We claim that $\kap^{\max}_\HH \le 1$ exactly when $I(\HH)$ is a forest.
+The graph $I(\HH)$ is bipartite, with vertex nodes on one side and hyperedge nodes on the other. So a cycle in it alternates between the two kinds of nodes.
 Suppose $I(\HH)$ has a cycle $v_1, e_1, v_2, e_2, \dots, v_\ell, e_\ell, v_1$, with $\ell\ge2$ and all $v_i$ and $e_i$ distinct.
 Then $v_1, e_1, v_2$ and $v_1, e_\ell, v_\ell, \dots, e_2, v_2$ are two Berge routes from $v_1$ to $v_2$ that share no hyperedge and no inner vertex. So $\kap(v_1, v_2) \ge 2$.
-Conversely, two such routes between $u$ and $v$ together form a cycle in $I(\HH)$.
+Conversely, two such routes between $u$ and $v$ are two paths in $I(\HH)$ with the same ends and no common inner node. Together they form a cycle in $I(\HH)$.
 This proves the claim.
 
-A forest on $n + q$ nodes has at most $n + q - 1$ edges, and $I(\HH)$ has $rq$ edges.
-So $rq \le n + q - 1$, that is, $q \le (n-1)/(r-1)$.
-The star hypertree has $\floor{(n-1)/(r-1)}$ hyperedges.
-Its hyperedges meet only at the hub, and every other vertex lies in at most one hyperedge, so its incidence graph is a forest.
+\emph{Upper bound.}
+Each hyperedge copy contains $r$ vertices, so $I(\HH)$ has $rq$ edges and $n + q$ nodes.
+A forest on $n + q$ nodes has at most $n + q - 1$ edges.
+So $rq \le n + q - 1$, that is, $q \le (n-1)/(r-1)$. Since $q$ is an integer, $q \le \floor{(n-1)/(r-1)}$.
+
+\emph{Lower bound.}
+Take the star hypertree with $\floor{(n-1)/(r-1)}$ hyperedges, and leave the remaining vertices in no hyperedge.
+Its hyperedges meet only at the hub, and every other vertex lies in at most one hyperedge, so its incidence graph is a forest. So it has $\kap^{\max} \le 1$, and it is simple.
+
+\emph{The three values agree.}
+The star hypertree also has $\lec^{\max} \le 1$, since removing the one hyperedge at a non-hub vertex separates it from every other vertex.
+So it is feasible in all three problems, and $\ell_2^{(r)}(n),\, k_2^{(r)}(n),\, K_2^{(r)}(n) \ge \floor{(n-1)/(r-1)}$.
+A simple hypergraph is a multihypergraph, and $\kap \le \lec$, so $\ell_2^{(r)}(n) \le k_2^{(r)}(n) \le K_2^{(r)}(n)$. The upper bound above gives $K_2^{(r)}(n) \le \floor{(n-1)/(r-1)}$, so all three are equal.
 \end{proof}
 
 \begin{theorem}[Hypergraph vertex value at $m = 3$]\label{thm:hyper-vertex-m3}
