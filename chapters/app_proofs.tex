@@ -208,7 +208,7 @@ Consequently $k_m(n) \ge k_m(n_1) + k_m(n_2)$ whenever $n = n_1 + n_2 - 1$, and
 \[
     c_m \;:=\; \lim_{n \to \infty} \frac{k_m(n)}{n-1} \;=\; \sup_{b \ge 2} \frac{h_m(b)}{b-1}
 \]
-exists, the limit being approached from below. The supremum is finite: \Cref{rem:vertex-degeneracy} gives $k_m(n) < 2(m-1)n$, so $c_m \le 2(m-1)$.
+exists, the limit being approached from below. The supremum is finite: \Cref{rem:vertex-degeneracy} gives $c_m \le m-1$.
 \end{theorem}
 
 \begin{proof}
@@ -298,48 +298,24 @@ This is larger than $m/2$ for every $m \ge 5$, because
 \[
     2\bigl(m(m-1)-2\bigr) - m(2m-3) \;=\; m-4 .
 \]
+At $m=5$, \Cref{thm:sorensen-thomassen} gives $k_5(14) = \floor{112/3} - 4 = 33$ edges on $14$ vertices. Its rate is $33/13 > 5/2$, so by the bouquet argument above such a graph contains a block with rate above $5/2$.
+So $c_m=m/2$ for $m\le4$, $c_5=8/3$ by \Cref{thm:sorensen-thomassen}, and $m/2<c_m\le m-1$ for $m\ge6$ by the next remark.
 
-Their example is built step by step.
-Start with $G^0 = K_m$ minus an edge.
-To build $G^{j}$, take $G^{j-1}$ and two new copies of $G^0$, and glue them in a cycle: each one shares one vertex with the next.
-Each step adds two copies of $G^0$, with $2(m-1)-1 = 2m-3$ new vertices and $2\bigl(\binom m2 - 1\bigr) = m(m-1)-2$ new edges.
-As $j$ grows, the rate tends to $(m(m-1)-2)/(2m-3)$, the bound above.
-Gluing in a cycle creates no cut vertex, so $G^{j}$ is a single block.
-So \Cref{thm:simple-vertex-blocks} sees $G^j$ as one block of size $m + (2m-3)j$ and does not help to find it.
+\begin{remark}[Feasible graphs are $(m-1)$-degenerate]\label{rem:vertex-degeneracy}
+A theorem of Mader \cite{Mader71} states that every simple graph of minimum degree at least $d \ge 2$ contains two adjacent vertices joined by $d$ internally disjoint paths.
+Consequently, every graph feasible for the vertex problem has a vertex of degree at most $m-1$.
+Since taking a subgraph cannot increase local vertex-connectivity, every non-empty subgraph of a feasible graph has such a vertex.
+Thus every feasible graph is \emph{$(m-1)$-degenerate}.
 
-The block $G^j$ has $m + (2m-3)j$ vertices and $\binom m2 - 1 + j\bigl(m(m-1)-2\bigr)$ edges. Its rate is above $m/2$ exactly when
-\[
-    2\Bigl[\tbinom m2 - 1 + j\bigl(m(m-1)-2\bigr)\Bigr] \;>\; m\bigl[m-1 + j(2m-3)\bigr].
-\]
-The left side is $m(m-1) - 2 + j(2m^2 - 2m - 4)$, and the right side is $m(m-1) + j(2m^2 - 3m)$.
-So the condition is $j(m-4) > 2$, that is, $j > 2/(m-4)$.
-The smallest such $j$ is $3$ at $m=5$, $2$ at $m=6$ and $1$ at $m=7$.
-So the smallest member of this family that beats copies of $K_m$ has $5 + 3\cdot 7 = 26$ vertices at $m = 5$, $6 + 2 \cdot 9 = 24$ at $m = 6$ and $7 + 11 = 18$ at $m = 7$.
-Smaller examples exist. At $m=5$, \Cref{thm:sorensen-thomassen} gives $k_5(14) = \floor{112/3} - 4 = 33$ edges on $14$ vertices. Its rate is $33/13 > 5/2$, so by the bouquet argument above such a graph contains a block with rate above $5/2$.
-So $c_m=m/2$ for $m\le4$, $c_5=8/3$ by \Cref{thm:sorensen-thomassen}, and $m/2<c_m\le2(m-1)$ for $m\ge6$.
-
-\begin{remark}[A question about small degrees]\label{rem:vertex-degeneracy}
-Mader's density theorem \cite{Mader72}, in the form of \cite[Theorem~1.4.3]{Diestel17}, says that a graph of average degree at least $4k$ has a $(k+1)$-connected subgraph. A graph with at least $2(m-1)n$ edges has average degree at least $4(m-1)$, so it has an $m$-connected subgraph, and two of its vertices are joined by $m$ internally disjoint paths. So $k_m(n) < 2(m-1)n$.
-Feasibility gives more. For example, two adjacent vertices have at most $m-2$ common neighbours, since each common neighbour gives a route of length two next to the edge.
-
-We ask whether every feasible graph has a vertex of degree at most $m-1$.
-Removing vertices cannot create new paths, so every induced subgraph of a feasible graph is feasible.
-So a positive answer would mean that every non-empty induced subgraph has a vertex of degree at most $m-1$.
-Then we could remove such vertices one by one until the graph is empty.
-Read backwards, this adds the vertices one by one, and the $i$-th vertex has at most $\min(i-1,\,m-1)$ neighbours among the earlier ones. This would give
+Deleting vertices successively and counting the edges in reverse order, the $i$-th vertex has at most $\min(i-1,\,m-1)$ neighbours among the earlier ones. This gives
 \[
 \begin{aligned}
     k_m(n) \;\le\; \sum_{i=1}^{n}\min(i-1,\,m-1) &\;=\; \binom{m-1}{2} + (n-m+1)(m-1) \\
     &\;=\; (m-1)n - \binom{m}{2}
-    \qquad (n \ge m-1),
+    \qquad (n \ge m-1).
 \end{aligned}
 \]
-half the constant of the bound $2(m-1)n$ above.
-
-The answer is yes for $m = 3$.
-By a theorem of Dirac \cite{Dirac52}, a graph of minimum degree at least three contains a \emph{subdivision} of $K_4$: a copy of $K_4$ in which edges are replaced by internally disjoint paths.
-Two of its four main vertices are joined by three internally disjoint paths, which breaks the condition at $m=3$.
-For $m\ge4$ the question is open.
+Hence $c_m \le m-1$.
 \end{remark}
 
 \apppart{Part II. Directed graphs}{The directed constructions, the reachability skeleton, the bounds for $m\ge3$, and the extremal directed multigraphs.}
@@ -902,14 +878,14 @@ Let $c$ be the total number of hyperedge copies.
 Every hyperedge $e$ with $\mu(e)$ copies gets two new nodes $e^-$ and $e^+$ and $\mu(e)$ parallel arcs $e^- \to e^+$, its \emph{gate}.
 Every vertex $x \in e$ gets $c+1$ parallel arcs $x \to e^-$ and $c+1$ parallel arcs $e^+ \to x$.
 
-\emph{Paths.} A Berge path $u, e_1, v_1, \dots, e_k, v$ becomes the directed path $u \to e_1^- \to e_1^+ \to v_1 \to \cdots \to v$ in $N$.
-Conversely, a directed $u$--$v$ path in $N$ passes vertex, gate, vertex, gate, and so on, so it comes from a Berge path in this way.
+\emph{Paths.} A Berge path $u, e_1, v_1, \dots, e_k, v$ gives the directed walk $u \to e_1^- \to e_1^+ \to v_1 \to \cdots \to v$ in $N$. If it uses different copies of the same hyperedge, this walk revisits the corresponding gate nodes.
+Conversely, a directed $u$--$v$ path in $N$ alternates between original vertices and gates. Since it repeats no gate node, choosing the hyperedge copy represented by each gate arc gives a Berge path.
 
 Take a family of Berge paths that share no hyperedge copy.
-At most $\mu(e)$ of them use $e$, so each can use its own gate arc of $e$.
-Each path uses at least one hyperedge copy, so the family has at most $c$ paths. Every other arc has $c+1$ copies, so each path can also use its own copy of every other arc.
-This gives the same number of arc-disjoint directed paths in $N$.
-Conversely, arc-disjoint directed paths in $N$ use different gate arcs, so the Berge paths they come from share no hyperedge copy.
+Each hyperedge $e$ has $\mu(e)$ copies and $\mu(e)$ gate arcs, so distinct copies of $e$ get distinct gate arcs.
+Each path uses at least one hyperedge copy, so the family has at most $c$ paths. Every other arc has $c+1$ copies, so distinct paths can use distinct copies of every other arc.
+This gives an equally large family of arc-disjoint directed walks in $N$. Deleting closed portions from each walk yields directed paths with the same endpoints. This only removes arcs, so arc-disjointness is preserved.
+Conversely, arc-disjoint directed paths in $N$ use distinct gate arcs and therefore distinct hyperedge copies, so the Berge paths they give share no hyperedge copy.
 So the largest families have the same size in $N$ and in $\HH$.
 
 \emph{Cuts.} Every $u$--$v$ path in $N$ passes a gate. So removing all $c$ gate arcs separates $u$ from $v$, and a smallest separating set of arcs in $N$ has at most $c$ arcs.
@@ -1421,7 +1397,7 @@ For $n \ge m+2$ the other two constructions are not feasible, so among these thr
 
 For $m\ge5$, one triangle added to the thickened tree already beats it, also when $n\ge m+2$. The next result makes this precise.
 
-Fix a connected simple graph $G_0$.
+Fix a connected simple graph $G_0$ with $\kap^{\max}_{G_0} \le m-1$.
 By \Cref{lem:multi-vertex-split}, the best multigraph on $G_0$ takes $\mu(u,v) = m-1-\pi(u,v)$ on every edge.
 Its size is $(m-1)\,|E(G_0)| - \sum_{uv \in E(G_0)} \pi(u,v)$.
 Since $|E(G_0)| = n - 1 + \mathrm{rank}(G_0)$, it beats the thickened tree exactly when
@@ -1490,9 +1466,9 @@ This construction need not be optimal.
 The next result gives an upper bound of the same order.
 
 \begin{proposition}[An upper bound of the same order]\label{prop:multi-vertex-upper}
-For all $m \ge 2$ and $n \ge 2$,
+For all $m \ge 2$ and $n \ge 2$, the first inequality below holds, and the second holds for $n \ge m-1$:
 \[
-    K_m(n) \;\le\; (m-1)\,k_m(n) \;<\; 2(m-1)^2\,n .
+    K_m(n) \;\le\; (m-1)\,k_m(n) \;\le\; (m-1)\Bigl[(m-1)n - \binom{m}{2}\Bigr] .
 \]
 \end{proposition}
 
@@ -1503,13 +1479,13 @@ Let $G$ be feasible, with underlying simple graph $G_0$.
 
 \emph{$G_0$ is feasible for the simple vertex problem.} Take $u \ne v$. If they are adjacent, then $\mu(u,v) \ge 1$, and the routes of $G_0$ between them are the edge $uv$ and the longer routes, so $\kap_{G_0}(u,v) = 1 + \pi(u,v) \le \mu(u,v) + \pi(u,v) = \kap_G(u,v) \le m-1$. If they are not adjacent, then $\kap_{G_0}(u,v) = \pi(u,v) = \kap_G(u,v) \le m-1$. So $|E(G_0)| \le k_m(n)$, which gives the first inequality.
 
-The second inequality is $k_m(n) < 2(m-1)n$ from \Cref{rem:vertex-degeneracy}.
+The second inequality is \Cref{rem:vertex-degeneracy}.
 \end{proof}
 
 So for $n/m\to\infty$ and then $m\to\infty$,
 \[
     \Bigl(\tfrac{1}{8} + o_m(1)\Bigr) m^2 \, n
-    \;\le\; K_m(n) \;<\; 2 m^2 n .
+    \;\le\; K_m(n) \;\le\; m^2 n .
 \]
 This needs $n$ large: for example $K_m(2)=m-1$.
 \Cref{thm:multi-vertex-bipartite} below gives a better lower constant.
@@ -1615,7 +1591,7 @@ Since $3 - 2\sqrt{2} \approx 0.172 > \tfrac18$, this is larger than the rate of 
 \end{proof}
 
 In the best choice, one side has about $0.41m$ vertices and the other has $m-1$.
-So $3-2\sqrt2-o(1)\le K_m(n)/(m^2n)<2$ for $m\to\infty$ and $n/m\to\infty$.
+So $3-2\sqrt2-o(1)\le K_m(n)/(m^2n)\le1$ for $m\to\infty$ and $n/m\to\infty$.
 Whether this ratio has a limit is open.
 
 \subsection{The directed problem}\label{sec:multi-vertex-dir}

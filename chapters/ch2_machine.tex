@@ -242,7 +242,7 @@ The flow may stop as soon as it reaches $m$, since a larger value changes nothin
   \node[font=\small] at (4,-1.4) {(b)};
 \end{scope}
 \end{tikzpicture}}
-\caption[The gate network of a hypergraph]{(a) An undirected $3$-uniform hypergraph. (b) Its gate network for the pair $u,v$. The four black routes use four different gates, so $\lec(u,v)=4$. The vertex $v$ lies in only four hyperedges, so these four gates form a cut and no fifth route exists. Each gate is drawn as one point. Dotted lines join it to the third vertex of its hyperedge.}
+\caption[The gate network of a hypergraph]{(a) An undirected $3$-uniform hypergraph. (b) The relevant part of its gate network for the pair $u,v$. The four black routes use pairwise disjoint sets of gates, so $\lec(u,v)\ge4$. The vertex $v$ lies in only four hyperedges, and removing those four hyperedges separates $u$ from $v$, so $\lec(u,v)\le4$. Hence $\lec(u,v)=4$. Each gate is drawn as one point. Dotted lines indicate additional incidences of the displayed hyperedges.}
 \label{fig:hyper-gadget-example}
 \end{figure}
 
@@ -548,10 +548,13 @@ The exhaustive and heuristic searches of this chapter show which bounds are wort
 \section{Running the program}
 
 \Cref{lst:driver} puts the parts together.
-For each problem, each $m$ and each $n$ it spends at most thirty seconds.
-The first half goes to an exact search: the generating search for directed multigraphs, and the pruned search for the other models.
-If that does not finish, the second half goes to tabu search for graphs and digraphs, and to random greedy growth for hypergraphs.
+For each case, the driver allocates a nominal thirty-second search budget.
+The first fifteen seconds are allocated to an exact search: the generating search for directed multigraphs, and the pruned search for the other models.
+If that search does not finish, a further fifteen seconds are allocated to a heuristic search: tabu search for graphs and digraphs, and random greedy growth for hypergraphs.
+Deadline checks occur between operations, so individual operations can overrun the budget. Certification and, for directed multigraphs, counting the graphs up to renaming the vertices add further overhead.
 Every result is then certified and checked.
+The program saves, for each case, the model, the separation, $n$ and $m$, the hyperedges of the graph with their multiplicities, its size, the certificate for every vertex pair, and whether the search finished and the certificate passed.
+It writes these to the file \texttt{witnesses.json}, so a reader can recount the edges and check every certificate without rerunning the search.
 The cases are independent, so the program runs them in parallel, one per processor core.
 For each problem, and each version of a directed hypergraph problem, it prints a table with one row per $n$ and one column per $m$ (\Cref{lst:main}).
 Each entry is the number of edges of the densest feasible graph found, marked when the search finished, and marked differently if the certificate failed.
@@ -559,9 +562,9 @@ A finished search gives an exact value, but only the lower bound is certified (\
 
 The true maximum never decreases when $n$ or $m$ grows: an isolated vertex can be added, and a graph with no $m$ disjoint routes also has no $m+1$.
 The printed entries need not follow this.
-A larger $n$ or $m$ also gives more candidates, often many more, and every case gets the same thirty seconds.
+A larger $n$ or $m$ also gives more candidates, often many more, and every case gets the same thirty-second budget.
 So an unfinished search covers a smaller part of a larger search space, and its entry can be smaller than the entry for a smaller $n$ or $m$.
 
-\programpart{driver}{The driver: thirty seconds per case, then a certificate.}
+\programpart{driver}{The driver: a thirty-second budget per case, then a certificate.}
 
 \Cref{sec:output} prints the full output for $2\le m\le7$ and $n\le7$.

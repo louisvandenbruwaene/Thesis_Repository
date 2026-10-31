@@ -28,7 +28,7 @@ Simulated annealing, described in \Cref{ch:machine}.
 
 \programpart{annealing}{Simulated annealing on the same energy.}
 
-The main function runs every case in parallel and prints one table per problem.
+The main function runs every case in parallel, prints one table per problem, and saves every graph with its certificate.
 
 \programpart{main}{Running every case and printing the tables.}
 
@@ -36,9 +36,9 @@ The main function runs every case in parallel and prints one table per problem.
 
 \Cref{lst:output} is the output of the program, unchanged.
 The command \texttt{python erdos915.py > output.txt} in the folder \texttt{program} writes it to a file, and this thesis reads that file directly, so no step lies between the program and the page.
-Each case had thirty seconds, on a computer with ten processor cores.
+Each case had a nominal thirty-second search budget, on a computer with ten processor cores.
 The unfinished searches depend on the speed of the computer, so a run on another computer can print other lower bounds.
-Every entry is the number of edges, arcs or hyperedges of the densest feasible graph found, and every one of these graphs passed its certificate.
+Every entry is the number of edges, arcs or hyperedges of the densest feasible graph found, and every one of these graphs passed its certificate. The same run wrote these graphs and their certificates to \texttt{program/witnesses.json}.
 An entry marked \texttt{*} comes from a finished search, so it is the exact maximum.
 An unmarked entry is a lower bound only, and a longer run may raise it.
 For hypergraphs the rows start at $n=3$.

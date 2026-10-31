@@ -1,10 +1,13 @@
 #<header>
-"""Erdős Problem 915 in sixteen variants: measure connectivity, search for
-dense feasible graphs, and write a certificate that can be checked by hand.
-
-Run:  python erdos915.py     (prints one line of numbers per case)
-"""
+# Erdős Problem 915 in sixteen variants: measure connectivity, search
+# for dense feasible graphs, and write a certificate that can be checked
+# by hand.
+#
+# Run:  python erdos915.py > output.txt
+# It prints one table per problem and writes every graph found, with its
+# certificate, to witnesses.json.
 import itertools
+import json
 import math
 import random
 import subprocess
@@ -485,18 +488,37 @@ def solve(problem):
         if found_size > size:
             size, graph = found_size, found_graph
     certificate = write_certificate(problem, graph)
-    return size, exact, check_certificate(problem, graph, certificate)
+    checked = check_certificate(problem, graph, certificate)
+    return size, exact, checked, witness(problem, graph, certificate)
+
+
+def witness(problem, graph, certificate):
+    """The graph and its certificate, in a form a reader can check."""
+    def as_list(hyperedge):
+        return [list(hyperedge.TAILS), list(hyperedge.MEMBERS)]
+    return {
+        "hyperedges": [as_list(e) + [copies]
+                       for e, copies in sorted(graph.items()) if copies],
+        "certificate": [[u, v, removed_vertices,
+                         [as_list(e) for e in removed_hyperedges]]
+                        for (u, v), (removed_vertices, removed_hyperedges)
+                        in certificate.items()]}
 
 
 #</driver>
 
 
 #<main>
-def print_table(model, separation, solved, largest_m):
+def print_table(model, separation, solved, largest_m, witnesses):
     print(f"\n{model.NAME}, {separation.value} separation")
     print("n \\ m" + "".join(f"{m:>6}" for m in range(2, largest_m + 1)))
     rows = {}
-    for problem, (size, exact, checked) in solved:
+    for problem, (size, exact, checked, found) in solved:
+        witnesses.append({
+            "model": model.NAME, "separation": separation.value,
+            "n": problem.VERTEX_COUNT, "m": problem.THRESHOLD_M,
+            "size": size, "search_finished": exact,
+            "certificate_checked": checked, **found})
         mark = ("*" if exact else " ") if checked else "!"
         rows.setdefault(problem.VERTEX_COUNT, []).append(f"{size:>5}{mark}")
     for n, cells in rows.items():
@@ -511,11 +533,15 @@ def main(largest_n=7, largest_m=7):
     print("Edges of the densest feasible graph found, every one certified.")
     print("* the search finished, so the value is exact;",
           "! the certificate failed")
+    witnesses = []
     with Pool() as pool:
         solved = zip(problems, pool.imap(solve, problems))
         for (model, separation), table in itertools.groupby(
                 solved, key=lambda pair: (pair[0].MODEL, pair[0].SEPARATION)):
-            print_table(model, separation, table, largest_m)
+            print_table(model, separation, table, largest_m, witnesses)
+    with open("witnesses.json", "w") as file:
+        file.write("[\n" + ",\n".join(json.dumps(w) for w in witnesses)
+                   + "\n]\n")
 
 
 if __name__ == "__main__":
