@@ -246,8 +246,12 @@ A \emph{multigraph} or \emph{multihypergraph} may repeat edges.
 
 The third assumption is direction.
 A directed edge, or \emph{arc}, is an ordered pair of vertices.
-A directed hyperedge has one \emph{tail} and $r-1$ \emph{heads}.
-A directed Berge route enters a hyperedge at its tail and leaves it at a head.
+A directed hyperedge splits its $r$ vertices into a non-empty set of \emph{tails} and a non-empty set of \emph{heads}.
+A directed Berge route enters a hyperedge at a tail and leaves it at a head.
+The allowed numbers of tails are a parameter of the directed hypergraph models.
+In the \emph{forward} model every hyperedge has one tail and $r-1$ heads, in the \emph{backward} model it has $r-1$ tails and one head, and the \emph{general} model allows every split.
+For $r=2$ the three coincide, and a hyperedge is an arc.
+Unless a statement names one of them, the directed hypergraph models are forward.
 In the figures, one colour is one hyperedge, not a path of ordinary edges.
 \Cref{fig:eight-models} shows the eight models.
 
@@ -397,7 +401,7 @@ In the figures, one colour is one hyperedge, not a path of ordinary edges.
     \node[font=\scriptsize, text=black!65] at (0,-2.25) {a hyperedge repeated};
   \end{scope}
 \end{tikzpicture}}
-\caption{The eight models side by side, with the four undirected on top and the four directed below. The simple graph is a triangle, the multigraph has parallel edges, the hypergraph has three hyperedges, and the multihypergraph has one repeated hyperedge. The directed versions have arcs instead of edges, with the same pattern of repetition and hyperedges. In the two multihypergraph panels the two shades of red are the two copies of one hyperedge.}
+\caption{The eight models side by side, with the four undirected on top and the four directed below. The simple graph is a triangle, the multigraph has parallel edges, the hypergraph has three hyperedges, and the multihypergraph has one repeated hyperedge. The directed versions have arcs instead of edges, with the same pattern of repetition and hyperedges. In the two multihypergraph panels the two shades of red are the two copies of one hyperedge. Each directed hyperedge drawn has one tail.}
 \label{fig:eight-models}
 \end{figure}
 
@@ -546,7 +550,7 @@ The \emph{incidence graph} $I(\HH)$ has a node for each vertex and a node for ea
 An edge copy is joined to the vertices it contains.
 A route from $u$ to $v$ is a path in $I(\HH)$.
 Two routes are \emph{separated} if they have no inner node in common.
-In the directed case we use the directed incidence graph: the tail has an arc to the edge copy, and the edge copy has an arc to each head.
+In the directed case we use the directed incidence graph: each tail has an arc to the edge copy, and the edge copy has an arc to each head.
 For example, an arc $u\to v$ becomes $u\to e\to v$.
 
 The inner nodes are vertices and edge copies, so separated routes share no inner vertex and no edge copy.
@@ -590,7 +594,7 @@ the directed values at $m=2$ (\Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact
 the hypergraph edge bound (\Cref{prop:hyper-edge}),
 the exact value for directed multigraphs (\Cref{thm:dir-multi-full}),
 the hypergraph vertex problem at $m=2$ and $m=3$ (\Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3}),
-and the quadratic bounds for directed graphs and hypergraphs (\Cref{thm:dir-arc-linear-error,thm:dir-hyper-constant}).
+and the quadratic bounds for directed graphs and hypergraphs (\Cref{thm:dir-arc-linear-error,thm:dir-hyper-constant,thm:dir-hyper-general-constant}).
 
 \section{Results and proofs}
 
@@ -928,7 +932,6 @@ For all $n \ge 2$ and $m \ge 2$,
 \end{theorem}
 
 The lower bound uses thickened trees and thickened one-way bipartite digraphs.
-The upper bound uses the reachability skeleton: removing one copy of each skeleton arc lowers every positive connectivity by at least one.
 
 
 
@@ -954,7 +957,7 @@ So by \Cref{lem:thickening} the thickened tree has $\lec^{\max} = m-1$ and $2(m-
 By the same lemma it has $\lec^{\max} = m-1$ and $(m-1)\floor{n^2/4}$ arcs.
 \end{construction}
 
-The larger of the two gives $L_m^{\mathrm{dir}}(n) \ge (m-1)M(n)$. We now prove the upper bound.
+The larger of the two gives $L_m^{\mathrm{dir}}(n) \ge (m-1)M(n)$.
 
 
 
@@ -998,8 +1001,6 @@ With $k = m-1$ this gives $L_m^{\mathrm{dir}}(n) \le (m-1)M(n)$.
 
 For $n\ge\max(8,2m)$ the bipartite construction is the only extremal multigraph, up to reversing all arcs (\Cref{thm:dir-multi-uniqueness}).
 
-A directed hyperedge is \emph{forward} if it has one tail and $r-1$ heads, as above.
-
 \begin{theorem}[The directed hypergraph constant]\label{thm:dir-hyper-constant}
 Let $r \ge 2$ and $m \ge 2$. Every forward directed $r$-uniform multihypergraph
 $\HH$ on $n \ge 2$ vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
@@ -1016,6 +1017,9 @@ It uses the \emph{shadow} digraph, which has an arc $u\to v$ when some hyperedge
 Each hyperedge gives $r-1$ arcs of the shadow, and each arc comes from at most $m-1$ hyperedges.
 The route condition on the hypergraph limits the routes of length two in the shadow.
 \Cref{lem:two-step-budget} then bounds the number of arcs of the shadow.
+
+The backward model is the forward model with every hyperedge reversed, so it has the same extremal values (\Cref{lem:dir-hyper-duality}).
+The general model has the same leading term, with a larger linear term (\Cref{thm:dir-hyper-general-constant}).
 
 At $r=2$ this also covers directed multigraphs with vertex separation.
 At $m=2$ no arc can be repeated, so $K_2^{\mathrm{dir}}(n)=\ell_2^{\mathrm{dir}}(n)$.
@@ -1111,7 +1115,7 @@ Directed simple hypergraph & $(1+o(1))(m-1)n^2/(4(r-1))$ & Same \\
 Directed multihypergraph & $(1+o(1))(m-1)n^2/(4(r-1))$ & Same \\
 \bottomrule
 \end{tabularx}
-\caption{Status of the sixteen problems. Here $m\ge2$, hypergraphs have $r\ge3$, and asymptotic statements are for fixed $m$ and $r$ as $n\to\infty$.}
+\caption{Status of the sixteen problems. Here $m\ge2$, hypergraphs have $r\ge3$, and asymptotic statements are for fixed $m$ and $r$ as $n\to\infty$. The directed hypergraph rows hold in the forward, backward and general models.}
 \label{tab:summary}
 \end{table}
 

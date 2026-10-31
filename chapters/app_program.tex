@@ -36,10 +36,13 @@ The main function runs every case in parallel and prints one table per problem.
 
 \Cref{lst:output} is the output of the program, unchanged.
 The command \texttt{python erdos915.py > output.txt} in the folder \texttt{program} writes it to a file, and this thesis reads that file directly, so no step lies between the program and the page.
-Each case had one minute, on a computer with ten processor cores.
+Each case had thirty seconds, on a computer with ten processor cores.
 Every entry is the number of edges, arcs or hyperedges of the densest feasible graph found, and every one of these graphs passed its certificate.
 An entry marked \texttt{*} comes from a finished search, so it is the exact maximum.
 An unmarked entry is a lower bound only, and a longer run may raise it.
 For hypergraphs the rows start at $n=3$.
+Each directed hypergraph problem has three tables, one for each version of \Cref{sec:variants}.
+Wherever both searches finished, the tables with one tail and with one head agree, as \Cref{lem:dir-hyper-duality} predicts.
+In the general model the search finished almost only at $n=3$. Its other entries are lower bounds, and some lie below the one-tail entries, although every one-tail hypergraph also belongs to the general model.
 
-{\lstinputlisting[style=outputlisting, caption={The output of the program for $2\le m\le 10$ and $n\le 10$.}, label={lst:output}]{program/output.txt}}
+{\lstinputlisting[style=outputlisting, caption={The output of the program for $2\le m\le 7$ and $n\le 7$.}, label={lst:output}]{program/output.txt}}

@@ -754,6 +754,8 @@ Such a set separates $u$ from $v$ in $N$ exactly when the same hyperedge copies 
 So both sides of Menger's theorem have the same value in $N$ and in $\HH$.
 \end{proof}
 
+The same proof works for directed hyperedges and directed Berge paths, with arcs $x \to e^-$ only for the tails $x$ of $e$, and arcs $e^+ \to x$ only for its heads.
+
 The next theorem shows that for $r \ge 3$ and $m-1\le\binom{n-2}{r-2}$, simple hypergraphs attain the same bound.
 For graphs ($r=2$) this is different: there, simplicity lowers the bound from $(m-1)(n-1)$ to $\floor{m(n-1)/2}$.
 
@@ -1433,12 +1435,12 @@ At $m=6$ the best blocks have three or four vertices. The bouquet has $84$ arcs 
 
 \section{The directed hypergraph}\label{sec:dir-hyper}
 
-The last four variants use directed hyperedges.
+The last four variants use directed hyperedges, in the forward, backward or general model of \Cref{sec:variants}.
 The first result gives an upper and a lower bound that differ by a factor of four.
 \Cref{thm:dir-hyper-constant} then closes this gap.
 
 \begin{proposition}[Directed hypergraphs: first bounds]\label{prop:dir-hyper-first}
-Let $n\ge r\ge2$ and $m\ge2$. A directed $r$-uniform hyperedge has one tail and $r-1$ heads, and a Berge route enters it at the tail and leaves at a head. If every ordered pair of vertices has at most $m-1$ hyperedge-disjoint directed Berge routes, then
+Let $n\ge r\ge2$ and $m\ge2$, and take the forward model. If every ordered pair of vertices has at most $m-1$ hyperedge-disjoint directed Berge routes, then
 \[
     |E(\HH)| \;\le\; \frac{(m-1)\,n(n-1)}{r-1},
 \]
@@ -1495,10 +1497,8 @@ Hyperedges with different tails are different, so the hypergraph is simple when 
 For small $n$ this construction can beat the two-layer construction.
 For example, at $n=m=6$ and $r=3$ it gives $30$ hyperedges, even in the simple model.
 
-The forward model is one way to orient a hyperedge.
-In general, a directed $r$-uniform hyperedge splits its $r$ vertices into a non-empty \emph{tail set} $T$ and a non-empty \emph{head set} $H$. A route enters at a tail and leaves at a head.
-The \emph{forward} model has $|T| = 1$, the \emph{backward} model has $|H| = 1$, and the \emph{general} model allows any split.
-For $r\ge4$ there are splits with both parts of size at least two.
+We write a directed hyperedge as $(T,H)$, with tail set $T$ and head set $H$.
+For $r\ge4$ the general model has splits with both parts of size at least two.
 We show that the backward model is the forward model reversed, and that the general model has the same leading term as the forward model.
 
 \begin{lemma}[Backward is the reverse of forward]\label{lem:dir-hyper-duality}
@@ -1510,7 +1510,7 @@ Reversal turns every directed $u$--$v$ Berge path into a $v$--$u$ path with the 
 \end{proof}
 
 \begin{proposition}[The general model obeys the forward bound]\label{prop:dir-hyper-general}
-Let a directed $r$-uniform hyperedge be any split into a non-empty tail set $T$ and a non-empty head set $H$. If every ordered pair has at most $m-1$ hyperedge-disjoint, or at most $m-1$ internally vertex-disjoint, directed Berge routes, then
+Take the general model. If every ordered pair has at most $m-1$ hyperedge-disjoint, or at most $m-1$ internally vertex-disjoint, directed Berge routes, then
 \[
     |E(\HH)| \;\le\; \frac{(m-1)\,n(n-1)}{r-1}.
 \]
@@ -1599,9 +1599,7 @@ Instead we take a maximal family of routes and ask why no route can be added.
 Each unserved target is blocked by a hyperedge that is already used, and a used hyperedge has only $r$ vertices.
 
 \begin{theorem}[The general orientation model shares the constant]\label{thm:dir-hyper-general-constant}
-Let $r \ge 2$ and $m \ge 2$, and let a directed $r$-uniform hyperedge be any split
-$(T, H)$ into a non-empty tail set and a non-empty head set, as in
-\Cref{prop:dir-hyper-general}. Every such multihypergraph $\HH$ on $n \ge 2$
+Let $r \ge 2$ and $m \ge 2$. In the general model, every directed $r$-uniform multihypergraph $\HH$ on $n \ge 2$
 vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
 \[
     |E(\HH)| \;\le\; \frac{m-1}{r-1}\floorfrac{n^2}{4}
@@ -1609,8 +1607,6 @@ vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
 \]
 Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_{\HH} \le m-1$. So for fixed $r$ and $m$ the general model has the same leading term $\bigl(1+o(1)\bigr)(m-1)n^2/\bigl(4(r-1)\bigr)$ as the forward model, under both separations.
 \end{theorem}
-
-With \Cref{lem:dir-hyper-duality}, all three models have the same leading term.
 
 \begin{proof}
 Let $R$ be the shadow in the general model: $(u,v) \in A(R)$ when some hyperedge has $u$ among its tails and $v$ among its heads. Let $\mathrm{cod}(u,v)$ be the number of such hyperedges. Tails and heads are disjoint, so $R$ has no loops.
@@ -1650,6 +1646,5 @@ The construction of \Cref{prop:dir-hyper-first} also works in the general model,
 \end{proof}
 
 The constant $2r+1$ only affects the linear term.
-Together with \Cref{lem:dir-hyper-duality}, the theorem shows that the forward, backward and general models have the same leading term.
 
 

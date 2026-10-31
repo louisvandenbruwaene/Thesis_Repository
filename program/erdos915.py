@@ -24,10 +24,13 @@ class Model:
     IS_DIRECTED: bool
     ALLOWS_REPEATED_EDGES: bool
     EDGE_SIZE: int              # r: 2 for graphs, at least 3 otherwise
+    TAIL_COUNTS: tuple = (1,)   # directed: the allowed numbers of tails
 
 
 def ALL_MODELS(HYPEREDGE_SIZE=3):
     r = HYPEREDGE_SIZE
+    splits = [("one tail", (1,)), ("one head", (r - 1,)),
+              ("any split", tuple(range(1, r)))]
     return [
         Model("simple graph",             False, False, 2),
         Model("multigraph",               False, True,  2),
@@ -35,8 +38,11 @@ def ALL_MODELS(HYPEREDGE_SIZE=3):
         Model("multihypergraph",          False, True,  r),
         Model("simple digraph",           True,  False, 2),
         Model("directed multigraph",      True,  True,  2),
-        Model("directed hypergraph",      True,  False, r),
-        Model("directed multihypergraph", True,  True,  r),
+    ] + [
+        Model(f"{name}, {split}", True, repeated, r, tail_counts)
+        for name, repeated in [("directed hypergraph", False),
+                               ("directed multihypergraph", True)]
+        for split, tail_counts in splits
     ]
 
 
@@ -57,22 +63,26 @@ class Problem:
 #<hyperedges>
 @dataclass(frozen=True, order=True)
 class Hyperedge:
-    TAIL: int | None            # None for an undirected hyperedge
+    TAILS: tuple                # empty for an undirected hyperedge
     MEMBERS: tuple              # all its vertices, sorted
 
     def entry_vertices(self):
-        return self.MEMBERS if self.TAIL is None else (self.TAIL,)
+        return self.TAILS or self.MEMBERS
 
     def exit_vertices(self):
-        return tuple(v for v in self.MEMBERS if v != self.TAIL)
+        return tuple(v for v in self.MEMBERS if v not in self.TAILS)
 
 
 def possible_hyperedges(problem):
     model, n = problem.MODEL, problem.VERTEX_COUNT
     hyperedges = []
     for members in itertools.combinations(range(n), model.EDGE_SIZE):
-        tails = members if model.IS_DIRECTED else (None,)
-        hyperedges += [Hyperedge(tail, members) for tail in tails]
+        if not model.IS_DIRECTED:
+            hyperedges.append(Hyperedge((), members))
+            continue
+        for tail_count in model.TAIL_COUNTS:
+            hyperedges += [Hyperedge(tails, members) for tails
+                           in itertools.combinations(members, tail_count)]
     return hyperedges
 
 
@@ -198,7 +208,7 @@ def best_digraphs_on_support(problem, support_edges, deadline):
             best["graphs"].append(dict(multiplicity))
             return
         a, b = support_edges[index]
-        a_to_b, b_to_a = Hyperedge(a, (a, b)), Hyperedge(b, (a, b))
+        a_to_b, b_to_a = Hyperedge((a,), (a, b)), Hyperedge((b,), (a, b))
         for forward, backward in choices:
             multiplicity[a_to_b], multiplicity[b_to_a] = forward, backward
             if is_feasible(problem, multiplicity):
@@ -227,7 +237,7 @@ def undirected_supports(vertex_count):
 
 
 def canonical_form(vertex_count, multiplicity):
-    arcs = [(e.TAIL, e.exit_vertices()[0], copies)
+    arcs = [(e.TAILS[0], e.exit_vertices()[0], copies)
             for e, copies in multiplicity.items() if copies]
     return min(tuple(sorted((order[t], order[h], c) for t, h, c in arcs))
                for order in itertools.permutations(range(vertex_count)))
@@ -454,7 +464,7 @@ def check_certificate(problem, multiplicity, certificate):
 
 
 #<driver>
-SECONDS_PER_CASE = 60
+SECONDS_PER_CASE = 30
 
 
 def solve(problem):
@@ -493,7 +503,7 @@ def print_table(model, separation, solved, largest_m):
         print(f"{n:>5}" + "".join(cells), flush=True)
 
 
-def main(largest_n=10, largest_m=10):
+def main(largest_n=7, largest_m=7):
     problems = [Problem(model, separation, n, m)
                 for model in ALL_MODELS() for separation in Separation
                 for n in range(model.EDGE_SIZE, largest_n + 1)

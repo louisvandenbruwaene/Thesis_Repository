@@ -3,12 +3,10 @@
 Chapter~1 stated the problem and the proved results.
 This chapter explains how a program can measure connectivity in every variant, check small graphs one by one, and search for dense examples.
 No result in this thesis depends on the output of this program.
-Its output for $n,m\le10$ is printed in \Cref{app:program}, and no proof uses it.
-The methods are what matters here, and the code itself is not central to the thesis: the way matters more than the destination.
-The program is too long to check line by line, so its output cannot simply be trusted.
-\Cref{sec:certificates} shows how an output can still be checked without reading the code.
+Its output for $n,m\le7$ is printed in \Cref{app:program}.
+\Cref{sec:certificates} shows how an output can be checked without reading the code.
 
-The program is one Python file of about $470$ lines, \texttt{program/erdos915.py}.
+The program is one Python file of about $520$ lines, \texttt{program/erdos915.py}.
 It uses the library \texttt{networkx} for maximum flows and the program \texttt{geng} of \texttt{nauty} for one search.
 This chapter prints the main parts of the program, each next to the idea it implements.
 The remaining parts, such as the imports and small helper functions, are in \Cref{app:program}, so every line of the program is printed once.
@@ -23,17 +21,18 @@ The names in the code follow the words of the text.
 
 \section{Modelling}
 The program treats all eight models in one way.
-A model is described by three facts: whether it is directed, whether edges may repeat, and the edge size $r$.
+A model is described by four facts: whether it is directed, whether edges may repeat, the edge size $r$, and, for directed hypergraphs, the allowed numbers of tails.
 A graph is the case $r=2$.
+The program runs each directed hypergraph model in three versions, forward, backward and general (\Cref{sec:variants}), so \texttt{ALL\_MODELS} lists twelve entries for the eight models.
 The separation, edge or vertex, is a separate choice, so the eight models give the sixteen problems.
 A \texttt{Problem} bundles a model, a separation, the number of vertices $n$ and the threshold $m$, and every function below takes one (\Cref{lst:models}).
 
-\programpart{models}{The eight models and the two separations.}
+\programpart{models}{The models, with three versions of each directed hypergraph model, and the two separations.}
 
-Every edge is stored as a hyperedge: its vertices, and its tail if the model is directed.
-An ordinary edge $uv$ is the hyperedge $\{u,v\}$, and an arc $u\to v$ is the hyperedge $\{u,v\}$ with tail $u$.
+Every edge is stored as a hyperedge: its vertices, and its tails if the model is directed.
+An ordinary edge $uv$ is the hyperedge $\{u,v\}$ without tails, and an arc $u\to v$ is the hyperedge $\{u,v\}$ with tail $u$.
 A route may enter a hyperedge at an \texttt{entry\_vertices} vertex and leave it at an \texttt{exit\_vertices} vertex.
-In an undirected hyperedge every vertex is both. In a directed one only the tail is an entry and only the heads are exits.
+In an undirected hyperedge every vertex is both. In a directed one only the tails are entries and only the heads are exits.
 A candidate graph is a table that gives every possible hyperedge its multiplicity.
 In a simple model every multiplicity is $0$ or $1$. In a multi model it is at most $m-1$, since $m$ copies of one edge already give $m$ disjoint routes (\Cref{lst:hyperedges}).
 \Cref{fig:matrix-rep} shows two such tables.
@@ -47,7 +46,7 @@ In a simple model every multiplicity is $0$ or $1$. In a multi model it is at mo
 \newcommand{\hetable}[1]{%
   {\small\renewcommand{\arraystretch}{1.15}%
   \begin{tabular}{@{}ccc@{}}
-  \texttt{\color{codeConstant}TAIL} & \texttt{\color{codeConstant}MEMBERS} & copies\\ \midrule
+  \texttt{\color{codeConstant}TAILS} & \texttt{\color{codeConstant}MEMBERS} & copies\\ \midrule
   #1
   \end{tabular}}}
 \begin{tikzpicture}[>=Stealth]
@@ -63,10 +62,10 @@ In a simple model every multiplicity is $0$ or $1$. In a multi model it is at mo
 \node[font=\small] at (1.0, -0.8) {directed multigraph};
 \node at (3.4, 0.55) {$\longrightarrow$};
 \node at (6.2, 0.55) {\hetable{
-  $1$ & $\{1,2\}$ & ${\color{vertexred}\mathbf 2}$ \\
-  $1$ & $\{1,3\}$ & $1$ \\
-  $2$ & $\{2,3\}$ & $1$ \\
-  $3$ & $\{2,3\}$ & $1$ \\}};
+  $\{1\}$ & $\{1,2\}$ & ${\color{vertexred}\mathbf 2}$ \\
+  $\{1\}$ & $\{1,3\}$ & $1$ \\
+  $\{2\}$ & $\{2,3\}$ & $1$ \\
+  $\{3\}$ & $\{2,3\}$ & $1$ \\}};
 \node[font=\small] at (1.0, -1.25) {(a)};
 % ---- (b) directed hypergraph -> its hyperedge table ----
 \begin{scope}[yshift=-3.9cm]
@@ -78,19 +77,19 @@ In a simple model every multiplicity is $0$ or $1$. In a multi model it is at mo
   \begin{scope}[on background layer]
     \draw[metro, metroA, -{Stealth[length=2.6mm]}, shorten >=2mm, shorten <=1.4mm] (p3) -- (p1);
     \draw[metro, metroA, -{Stealth[length=2.6mm]}, shorten >=2mm, shorten <=1.4mm] (p3) -- (p2);
-    \draw[metro, metroB, -{Stealth[length=2.6mm]}, shorten >=2mm, shorten <=1.4mm] (p3) -- (p4);
     \draw[metro, metroB, -{Stealth[length=2.6mm]}, shorten >=2mm, shorten <=1.4mm] (p3) -- (p5);
+    \draw[metro, metroB, -{Stealth[length=2.6mm]}, shorten >=2mm, shorten <=1.4mm] (p4) -- (p5);
   \end{scope}
   \foreach \p/\lbl in {p1/1,p2/2,p3/3,p4/4,p5/5} {\node[smallvertex] at (\p) {$\lbl$};}
   \node[font=\small] at (1.1,-1.15) {directed hypergraph};
   \node at (3.4, 0.0) {$\longrightarrow$};
   \node at (6.2, 0.0) {\hetable{
-    {\color{metroA}$\mathbf 3$} & {\color{metroA}$\{1,2,3\}$} & $1$ \\
-    {\color{metroB}$\mathbf 3$} & {\color{metroB}$\{3,4,5\}$} & $1$ \\}};
+    {\color{metroA}$\{\mathbf 3\}$} & {\color{metroA}$\{1,2,3\}$} & $1$ \\
+    {\color{metroB}$\{\mathbf 3,\mathbf 4\}$} & {\color{metroB}$\{3,4,5\}$} & $1$ \\}};
   \node[font=\small] at (1.1,-1.6) {(b)};
 \end{scope}
 \end{tikzpicture}
-\caption{The program stores every model in one way: a table that gives each hyperedge its number of copies. (a) A directed multigraph. The arc $u\to v$ is the hyperedge with members $\{u,v\}$ and tail $u$, and the two parallel arcs from $1$ to $2$ are one row with $2$ copies. (b) A directed $3$-uniform hypergraph. Each hyperedge records its tail and its three members. In an undirected model there is no tail. A hyperedge that does not occur has $0$ copies and is left out.}
+\caption{The program stores every model in one way: a table that gives each hyperedge its number of copies. (a) A directed multigraph. The arc $u\to v$ is the hyperedge with members $\{u,v\}$ and tail $u$, and the two parallel arcs from $1$ to $2$ are one row with $2$ copies. (b) A directed $3$-uniform hypergraph in the general model. Each hyperedge records its tails and its three members: the red one has tail $3$, the blue one has tails $3$ and $4$ and head $5$. In an undirected model there are no tails. A hyperedge that does not occur has $0$ copies and is left out.}
 \label{fig:matrix-rep}
 \end{figure}
 
@@ -115,8 +114,8 @@ Every hyperedge, also an ordinary edge, becomes a \emph{gate} (\Cref{fig:hyper-g
 The gate has an entry node and an exit node, joined by one arc whose capacity is the multiplicity of the hyperedge.
 Each vertex of the hyperedge gets an arc of unlimited capacity to the entry node and one from the exit node.
 So the arc inside the gate is the only bottleneck.
-For a directed hyperedge, only the tail has an arc to the entry, and only the heads have an arc from the exit (\Cref{fig:dir-hyper-gadget}).
-So a route must go from the tail to a head.
+For a directed hyperedge, only the tails have an arc to the entry, and only the heads have an arc from the exit (\Cref{fig:dir-hyper-gadget}).
+So a route must go from a tail to a head.
 \Cref{thm:menger-hyper} shows that the maximum flow in this network is the number of hyperedge-disjoint Berge routes.
 \Cref{fig:hyper-gadget-example} shows an example.
 
@@ -330,7 +329,7 @@ The flow may stop as soon as it reaches $m$, since a larger value changes nothin
   \draw[gdirfaint] (gp) -- node[right, pos = 0.3, font=\scriptsize, text=black!60]{$\infty$} (c2);
 \end{scope}
 \end{tikzpicture}}
-\caption{The directed hyperedge is transformed into a gate with one tail and two heads. This gate has capacity equal to the multiplicity of the hyperedge and every route must enter at the tail and leave at a head.}
+\caption{A directed hyperedge with one tail and two heads is transformed into a gate. This gate has capacity equal to the multiplicity of the hyperedge and every route must enter at the tail and leave at a head. With several tails, each tail has an arc to $e^-$.}
 \label{fig:dir-hyper-gadget}
 \end{subfigure}
 \caption{The building blocks of the connectivity checker: vertex splitting, hyperedge gates and directed hyperedge gates.}
@@ -342,7 +341,7 @@ To find an exact value, the program must check every graph, or exclude it by a c
 A simple graph on $n$ vertices is a choice of $\mu(u,v)\in\{0,1\}$ for each pair, and a multigraph is a choice in $\{0,\dots,m-1\}$.
 A digraph makes this choice for each ordered pair.
 A hypergraph is a choice of some of the $\binom nr$ possible hyperedges. A multihypergraph also chooses a multiplicity for each.
-A directed hypergraph has $r$ possible hyperedges on each $r$-set, one for each choice of tail, and chooses some of these $r\binom nr$ hyperedges.
+A forward directed hypergraph has $r$ possible hyperedges on each $r$-set, one for each choice of tail, and chooses some of these $r\binom nr$ hyperedges. A backward one also has $r$, and a general one has $2^r-2$, one for each non-empty proper subset of tails.
 The program goes through all choices, checks each one, and keeps the densest feasible graph.
 If the search is stopped early, it gives only a lower bound.
 
@@ -350,7 +349,7 @@ If the search is stopped early, it gives only a lower bound.
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{figures/complexity_growth.png}
-    \caption{The number of candidates for blind enumeration, on a logarithmic scale. Every model passes $10^9$ candidates before $n=10$. Directed models grow fastest, because they have more entries to choose.}
+    \caption{The number of candidates for blind enumeration, on a logarithmic scale. Every model passes $10^9$ candidates before $n=10$. Directed models grow fastest, because they have more entries to choose. The directed hypergraph curve is the forward model.}
     \label{fig:complexity}
 \end{figure}
 
@@ -359,7 +358,7 @@ The number of candidates is (values per entry) to the power (number of entries).
 For graphs the number of entries grows like $n^2$, and for $r$-uniform hypergraphs like $n^r$.
 A larger $m$ gives more values per entry.
 Direction gives more entries, since both directions of a pair are chosen separately.
-Directed hypergraphs have the most candidates, because each $r$-set carries $r$ possible hyperedges, one for each tail.
+Directed hypergraphs have the most candidates, because each $r$-set carries several possible hyperedges.
 The separation does not change the candidates. It only changes the test for each candidate.
 
 
@@ -547,15 +546,15 @@ The exhaustive and heuristic searches of this chapter show which bounds are wort
 \section{Running the program}
 
 \Cref{lst:driver} puts the parts together.
-For each problem, each $m$ and each $n$ it spends at most one minute.
+For each problem, each $m$ and each $n$ it spends at most thirty seconds.
 The first half goes to an exact search: the generating search for directed multigraphs, and the pruned search for the other models.
 If that does not finish, the second half goes to tabu search for graphs and digraphs, and to random greedy growth for hypergraphs.
 Every result is then certified and checked.
 The cases are independent, so the program runs them in parallel, one per processor core.
-For each of the sixteen problems it prints a table with one row per $n$ and one column per $m$ (\Cref{lst:main}).
+For each problem, and each version of a directed hypergraph problem, it prints a table with one row per $n$ and one column per $m$ (\Cref{lst:main}).
 Each entry is the number of edges of the densest feasible graph found, marked when the search finished, and marked differently if the certificate failed.
 A finished search gives an exact value, but only the lower bound is certified (\Cref{sec:certificates}).
 
-\programpart{driver}{The driver: one minute per case, then a certificate.}
+\programpart{driver}{The driver: thirty seconds per case, then a certificate.}
 
-\Cref{sec:output} prints the full output for $2\le m\le10$ and $n\le10$.
+\Cref{sec:output} prints the full output for $2\le m\le7$ and $n\le7$.
