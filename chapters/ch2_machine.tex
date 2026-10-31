@@ -6,8 +6,8 @@ No result in this thesis depends on the output of this program.
 Its output for $n,m\le7$ is printed in \Cref{app:program}.
 \Cref{sec:certificates} shows how an output can be checked without reading the code.
 
-The program is one Python file of about $520$ lines, \texttt{program/erdos915.py}.
-It uses the library \texttt{networkx} for maximum flows and the program \texttt{geng} of \texttt{nauty} for one search.
+The program is one Python file of about $600$ lines, \texttt{program/erdos915.py}.
+It uses the library \texttt{networkx} for maximum flows, and the programs \texttt{geng}, \texttt{directg} and \texttt{genbg} of \texttt{nauty} to list graphs.
 This chapter prints the main parts of the program, each next to the idea it implements.
 The remaining parts, such as the imports and small helper functions, are in \Cref{app:program}, so every line of the program is printed once.
 The names in the code follow the words of the text.
@@ -337,14 +337,21 @@ The flow may stop as soon as it reaches $m$, since a larger value changes nothin
 \end{figure}
 
 \section{Checking every graph of a fixed order}\label{sec:certification-standard}
-To find an exact value, the program must check every graph, or exclude it by a correct pruning rule.
-A simple graph on $n$ vertices is a choice of $\mu(u,v)\in\{0,1\}$ for each pair, and a multigraph is a choice in $\{0,\dots,m-1\}$.
-A digraph makes this choice for each ordered pair.
-A hypergraph is a choice of some of the $\binom nr$ possible hyperedges. A multihypergraph also chooses a multiplicity for each.
-A forward directed hypergraph has $r$ possible hyperedges on each $r$-set, one for each choice of tail, and chooses some of these $r\binom nr$ hyperedges. A backward one also has $r$, and a general one has $2^r-2$, one for each non-empty proper subset of tails.
-The program goes through all choices, checks each one, and keeps the densest feasible graph.
-If the search is stopped early, it gives only a lower bound.
-
+The program stores a graph as a table that gives each possible hyperedge its number of copies (\Cref{fig:matrix-rep}).
+The possible hyperedges depend on the model:
+\begin{itemize}
+\item in a graph, the $\binom n2$ pairs $\{u,v\}$,
+\item in a digraph, the $n(n-1)$ ordered pairs, one for each arc $u\to v$,
+\item in an $r$-uniform hypergraph, the $\binom nr$ sets of $r$ vertices,
+\item in a directed $r$-uniform hypergraph, a set of $r$ vertices together with a choice of which of them are tails.
+A forward hyperedge has one tail, so each $r$-set gives $r$ possible hyperedges.
+A backward hyperedge has one head, which also gives $r$.
+In the general model the tails form any non-empty proper subset, which gives $2^r-2$.
+\end{itemize}
+In a simple model every entry of the table is $0$ or $1$.
+In a multi model it lies between $0$ and $m-1$, since $m$ copies of one hyperedge already give $m$ disjoint routes between two of its vertices.
+To find an exact value, the program must show that no table with more copies than the best feasible graph found is feasible.
+If the search stops early, it gives only a lower bound.
 
 \begin{figure}[ht]
     \centering
@@ -362,9 +369,10 @@ Directed hypergraphs have the most candidates, because each $r$-set carries seve
 The separation does not change the candidates. It only changes the test for each candidate.
 
 
-So there are $2^{\binom n2}$ simple graphs and $2^{n(n-1)}$ simple digraphs on $n$ labelled vertices.
+So there are $2^{\binom n2}$ simple graphs and $2^{n(n-1)}$ simple digraphs on $n$ vertices.
 With multiplicities at most $m-1$ there are $m^{\binom n2}$ multigraphs and $m^{n(n-1)}$ directed multigraphs.
 \Cref{fig:complexity} shows how fast this grows.
+The program uses two exact methods: a pruned search, for every model, and a check of the graphs with one edge more, for every model except directed hypergraphs.
 
 \subsection{Pruned search}
 A pruned search skips whole families of graphs.
@@ -384,7 +392,7 @@ So a finished pruned search gives the same answer as the full search.
 \Cref{lst:exhaustive} decides the possible hyperedges one at a time, in a fixed order.
 For each it tries $1, 2, \dots$ copies, and stops at the first number of copies that makes the graph infeasible, since more copies stay infeasible.
 Then it also tries $0$ copies.
-The first line of \texttt{decide} is the second rule: if even all undecided hyperedges at full multiplicity cannot beat the best graph so far, the branch is dropped.
+The test on \texttt{undecided} in \texttt{decide} is the second rule: if even all undecided hyperedges at full multiplicity cannot beat the best graph so far, the branch is dropped.
 After the time limit the search stops and reports the best graph so far as a lower bound only.
 
 \programpart{exhaustive}{The pruned exhaustive search.}
@@ -419,28 +427,45 @@ After the time limit the search stops and reports the best graph so far as a low
 \label{fig:prune}
 \end{figure}
 
-\subsection{Generating search}
-The full search meets the same graph many times, with the vertices renamed. Another method avoids this.
-Prof.\ Jan Goedgebeur pointed us to the \texttt{nauty} toolkit of McKay and Piperno \cite{McKayPiperno14}.
-Its program \texttt{geng} lists the undirected graphs on $n$ vertices, each only once up to renaming the vertices.
-For directed multigraphs, our program uses each such graph as a \emph{support}.
-Each support edge $\{u,v\}$ gets multiplicities $\mu(u,v)$ and $\mu(v,u)$ between $0$ and $m-1$, not both zero.
-Renaming the vertices of a digraph renames its support in the same way. So digraphs on different supports from \texttt{geng} stay different, even after renaming vertices.
-After each choice the checker tests the partial digraph, and a branch that breaks the condition is dropped.
-Digraphs of the largest size are reported once each, up to renaming the vertices.
-For this the program compares digraphs after trying every renaming of the vertices. It does so only when the search finishes, which happens only for small $n$.
-The supports are read from \texttt{geng} one at a time (\Cref{lst:supports}), so the search can stop at the time limit before all of them are listed.
-We wrote our own step for choosing the multiplicities, because it can prune after each choice.
-\Cref{lst:nauty} shows the whole search. For each support edge $\{a,b\}$, \texttt{choices} lists the pairs $(\mu(a,b),\mu(b,a))$ that are not both zero.
+\subsection{Checking one edge more}\label{sec:one-more}
+The pruned search meets every graph many times.
+Renaming the vertices of a graph gives a graph with the same number of edges and the same connectivities, so the renamed graph is feasible exactly when the original is.
+A graph on $n$ vertices has up to $n!$ renamings, so most of the work of the pruned search repeats work it has already done.
 
-\programpart{nauty}{The generating search for directed multigraphs, with \texttt{geng} from \texttt{nauty}.}
+The second method avoids this.
+It starts from a feasible graph with $L$ edges, found by the pruned search or by the heuristic search of \Cref{sec:heuristic}.
+Removing an edge creates no new route, so it never makes a feasible graph infeasible.
+So if a feasible graph with more than $L$ edges existed, removing edges from it one at a time would give a feasible graph with exactly $L+1$ edges.
+It is therefore enough to check every graph with exactly $L+1$ edges.
+If none of them is feasible, $L$ is the maximum.
+If one of them is feasible, the program keeps it, replaces $L$ by $L+1$, and checks again.
 
+To list these graphs, each only once up to renaming the vertices, the program uses the toolkit \texttt{nauty} of McKay and Piperno \cite{McKayPiperno14}, to which Prof.\ Jan Goedgebeur pointed us.
+Three of its programs cover six of the eight models:
+\begin{itemize}
+\item \texttt{geng} lists the simple graphs on $n$ vertices with a given number of edges,
+\item \texttt{directg} takes each graph from \texttt{geng} and directs each of its edges one way or both ways, which lists the simple digraphs,
+\item \texttt{genbg} lists bipartite graphs. A hypergraph is the bipartite graph with the $n$ vertices on one side and the hyperedges on the other side, each hyperedge joined to its $r$ vertices. With the option \texttt{-z} no two hyperedges have the same vertices, so the hypergraph is simple.
+\end{itemize}
+\texttt{nauty} has no program that lists directed hypergraphs, so the program does not run this check for them. Their exact values come from the pruned search only.
 
+\texttt{nauty} lists simple graphs only.
+The \emph{support} of a multigraph is the simple graph of the pairs, or $r$-sets, that carry at least one copy.
+For a multi model the program takes each support from \texttt{nauty} and chooses the number of copies of each of its edges, between $1$ and $m-1$, with $L+1$ copies in total.
+A support with $k$ edges carries between $k$ and $k(m-1)$ copies, so only supports with between $\lceil (L+1)/(m-1)\rceil$ and $L+1$ edges are listed.
+Renaming the vertices of a multigraph renames its support in the same way, so every multigraph with $L+1$ edges arises from some listed support.
+Two choices of copies on the same support can give the same multigraph up to renaming. This repeats work but does not affect the result.
+In a simple model the support is the graph itself, with one copy of each edge.
+The copies are chosen one edge at a time, as in the pruned search: the program tries $1, 2, \dots$ copies and stops at the first number that makes the graph infeasible, since more copies stay infeasible.
 
+\Cref{lst:nauty} builds the \texttt{nauty} commands and reads their output one support at a time, so the check can stop at its time limit before all supports are listed.
+\Cref{lst:larger} chooses the copies, and repeats the check while it finds a feasible graph with one edge more.
 
+\programpart{nauty}{Listing the supports with \texttt{geng}, \texttt{directg} and \texttt{genbg} from \texttt{nauty}.}
 
+\programpart{larger}{Checking every graph with one edge more.}
 
-\section{The heuristic search}
+\section{The heuristic search}\label{sec:heuristic}
 For larger $n$ the full search is impossible.
 Instead we search for dense graphs in a guided way.
 A \emph{heuristic} is a rule that moves the search towards better graphs.
@@ -548,10 +573,12 @@ The exhaustive and heuristic searches of this chapter show which bounds are wort
 \section{Running the program}
 
 \Cref{lst:driver} puts the parts together.
-For each case, the driver allocates a nominal thirty-second search budget.
-The first fifteen seconds are allocated to an exact search: the generating search for directed multigraphs, and the pruned search for the other models.
-If that search does not finish, a further fifteen seconds are allocated to a heuristic search: tabu search for graphs and digraphs, and random greedy growth for hypergraphs.
-Deadline checks occur between operations, so individual operations can overrun the budget. Certification and, for directed multigraphs, counting the graphs up to renaming the vertices add further overhead.
+For each case, the driver allocates a nominal thirty-second search budget, in three parts of ten seconds.
+The first part goes to the pruned search.
+If it does not finish, the second part goes to a heuristic search: tabu search for graphs and digraphs, and random greedy growth for hypergraphs.
+The third part goes to checking one edge more (\Cref{sec:one-more}), starting from the densest graph found so far.
+Directed hypergraphs have no third part, so their budget is split into two parts of fifteen seconds.
+Deadline checks occur between operations, so individual operations can overrun the budget. Certification adds further overhead.
 Every result is then certified and checked.
 The program saves, for each case, the model, the separation, $n$ and $m$, the hyperedges of the graph with their multiplicities, its size, the certificate for every vertex pair, and whether the search finished and the certificate passed.
 It writes these to the file \texttt{witnesses.json}, so a reader can recount the edges and check every certificate without rerunning the search.

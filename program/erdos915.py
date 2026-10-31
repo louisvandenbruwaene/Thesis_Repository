@@ -9,8 +9,11 @@
 import itertools
 import json
 import math
+import os
 import random
+import signal
 import subprocess
+import threading
 import time
 from dataclasses import dataclass
 from enum import Enum
@@ -32,8 +35,8 @@ class Model:
 
 def ALL_MODELS(HYPEREDGE_SIZE=3):
     r = HYPEREDGE_SIZE
-    splits = [("one tail", (1,)), ("one head", (r - 1,)),
-              ("any split", tuple(range(1, r)))]
+    splits = [("forward", (1,)), ("backward", (r - 1,)),
+              ("general", tuple(range(1, r)))]
     return [
         Model("simple graph",             False, False, 2),
         Model("multigraph",               False, True,  2),
@@ -192,83 +195,134 @@ def exhaustive_search(problem, deadline):
 
 
 #<nauty>
-def best_digraphs_on_support(problem, support_edges, deadline):
-    m = problem.THRESHOLD_M
-    choices = [(forward, backward) for forward in range(m)
-               for backward in range(m) if forward + backward > 0]
-    best = {"size": -1, "graphs": []}
-    multiplicity = {}
+def nauty_commands(problem, size):
+    """The nauty commands that list every support that can carry size
+    edges, each once up to renaming the vertices. None for directed
+    hypergraphs, for which nauty has no program."""
+    model, n = problem.MODEL, problem.VERTEX_COUNT
+    r = model.EDGE_SIZE
+    fewest_edges = math.ceil(size / largest_multiplicity(problem))
+    most_edges = min(size, len(possible_hyperedges(problem)))
+    if model.IS_DIRECTED and r > 2:
+        return None
+    if fewest_edges > most_edges:
+        return []                   # no graph has this many edges
+    if not model.IS_DIRECTED and r == 2:
+        return [f"geng -q {n} {fewest_edges}:{most_edges}"]
+    if model.IS_DIRECTED:                   # one or two arcs per pair
+        fewest_pairs = math.ceil(fewest_edges / 2)
+        return [f"geng -q {n} {fewest_pairs}:{most_edges}"
+                f" | directg -q -T -e{fewest_edges}:{most_edges}"]
+    return [f"genbg -q -z -d0:{r} -D{k}:{r} {n} {k}"
+            for k in range(fewest_edges, most_edges + 1)]
 
-    def choose(index, size):
-        if time.time() > deadline:
-            raise OutOfTime
-        undecided = len(support_edges) - index
-        if size + undecided * 2 * (m - 1) < best["size"]:
-            return
-        if index == len(support_edges):
-            if size > best["size"]:
-                best["size"], best["graphs"] = size, []
-            best["graphs"].append(dict(multiplicity))
-            return
-        a, b = support_edges[index]
-        a_to_b, b_to_a = Hyperedge((a,), (a, b)), Hyperedge((b,), (a, b))
-        for forward, backward in choices:
-            multiplicity[a_to_b], multiplicity[b_to_a] = forward, backward
-            if is_feasible(problem, multiplicity):
-                choose(index + 1, size + forward + backward)
-        del multiplicity[a_to_b], multiplicity[b_to_a]
 
+def read_support(problem, line):
+    """One line of nauty output as a list of hyperedges."""
+    n = problem.VERTEX_COUNT
+    if problem.MODEL.IS_DIRECTED:   # directg: n, arc count, arcs
+        numbers = [int(word) for word in line.split()[2:]]
+        return [Hyperedge((tail,), tuple(sorted((tail, head))))
+                for tail, head in zip(numbers[::2], numbers[1::2])]
+    graph = networkx.from_graph6_bytes(line.strip())
+    if problem.MODEL.EDGE_SIZE == 2:        # geng: the graph itself
+        return [Hyperedge((), tuple(sorted(edge)))
+                for edge in graph.edges()]
+    # genbg: first the n vertices, then one node per hyperedge
+    return [Hyperedge((), tuple(sorted(graph[x])))
+            for x in range(n, graph.number_of_nodes())]
+
+
+def stop_nauty(nauty):
     try:
-        choose(0, 0)
-        return best["size"], best["graphs"], True
-    except OutOfTime:
-        return best["size"], best["graphs"], False
+        os.killpg(nauty.pid, signal.SIGKILL)
+    except ProcessLookupError:
+        pass                                # it had already finished
+
+
+def supports(problem, size, deadline):
+    """Streams the supports from nauty, one at a time. nauty can work a
+    long time between two lines, so a timer stops it at the deadline."""
+    for command in nauty_commands(problem, size):
+        nauty = subprocess.Popen(command, shell=True,
+                                 stdout=subprocess.PIPE,
+                                 start_new_session=True)
+        timer = threading.Timer(max(0, deadline - time.time()),
+                                stop_nauty, [nauty])
+        timer.start()
+        try:
+            for line in nauty.stdout:
+                if time.time() > deadline:
+                    raise OutOfTime
+                yield read_support(problem, line)
+            if nauty.wait() != 0:
+                if time.time() > deadline:
+                    raise OutOfTime         # the timer stopped it
+                raise RuntimeError(f"{command} failed")
+        finally:
+            timer.cancel()
+            if nauty.poll() is None:        # the search stopped early
+                stop_nauty(nauty)
+                nauty.wait()
 #</nauty>
 
 
-#<supports>
-def undirected_supports(vertex_count):
-    """Streams the output of geng, one graph at a time. The stream counts
-    as complete only if geng then exits with status zero."""
-    geng = subprocess.Popen(["geng", "-q", str(vertex_count)],
-                            stdout=subprocess.PIPE)
-    try:
-        for line in geng.stdout:
-            yield networkx.from_graph6_bytes(line.strip())
-        if geng.wait() != 0:
-            raise RuntimeError(f"geng failed with status {geng.returncode}")
-    finally:
-        if geng.poll() is None:     # the search stopped early
-            geng.kill()
-            geng.wait()
+#<larger>
+def add_copies(problem, support, size, deadline):
+    """Gives every edge of the support between 1 and the largest
+    multiplicity copies, size in total. Returns a feasible choice, or
+    None if there is none."""
+    cap = largest_multiplicity(problem)
+    multiplicity = dict.fromkeys(support, 1)
 
-
-def canonical_form(vertex_count, multiplicity):
-    arcs = [(e.TAILS[0], e.exit_vertices()[0], copies)
-            for e, copies in multiplicity.items() if copies]
-    return min(tuple(sorted((order[t], order[h], c) for t, h, c in arcs))
-               for order in itertools.permutations(range(vertex_count)))
-
-
-def generating_search(problem, deadline):
-    best_size, extremal, finished = 0, [{}], True
-    for support in undirected_supports(problem.VERTEX_COUNT):
+    def choose(index, missing):
         if time.time() > deadline:
-            finished = False
-            break
-        size, graphs, done = best_digraphs_on_support(
-            problem, sorted(support.edges()), deadline)
-        finished = finished and done
-        if size > best_size:
-            best_size, extremal = size, []
-        if size == best_size:
-            extremal += graphs
-    classes = None
-    if finished:
-        classes = len({canonical_form(problem.VERTEX_COUNT, graph)
-                       for graph in extremal})
-    return best_size, extremal[0], classes, finished
-#</supports>
+            raise OutOfTime
+        if missing == 0:
+            return dict(multiplicity)
+        if missing > (len(support) - index) * (cap - 1):
+            return None                     # too few edges left
+        edge = support[index]
+        for copies in range(1, min(cap, missing + 1) + 1):
+            multiplicity[edge] = copies
+            if copies > 1 and not is_feasible(problem, multiplicity):
+                break               # more copies stay infeasible
+            found = choose(index + 1, missing - (copies - 1))
+            if found:
+                return found
+        multiplicity[edge] = 1
+        return None
+
+    if not is_feasible(problem, multiplicity):
+        return None
+    return choose(0, size - len(support))
+
+
+def feasible_graph_with(problem, size, deadline):
+    listed = supports(problem, size, deadline)
+    try:
+        for support in listed:
+            found = add_copies(problem, support, size, deadline)
+            if found:
+                return found
+        return None
+    finally:
+        listed.close()                      # stops nauty at once
+
+
+def prove_largest(problem, size, graph, deadline):
+    """Raises size while a feasible graph with one edge more exists.
+    When none exists, size is the maximum."""
+    if nauty_commands(problem, size + 1) is None:
+        return size, graph, False
+    try:
+        while larger := feasible_graph_with(problem, size + 1,
+                                            deadline):
+            size, graph = size + 1, larger
+        return size, graph, True
+    except OutOfTime:
+        return size, graph, False
+#</larger>
 
 
 #<energy>
@@ -476,21 +530,20 @@ SECONDS_PER_CASE = 30
 
 def solve(problem):
     model = problem.MODEL
-    deadline = time.time() + SECONDS_PER_CASE / 2
-    if model.IS_DIRECTED and model.ALLOWS_REPEATED_EDGES \
-            and model.EDGE_SIZE == 2:
-        size, graph, _, exact = generating_search(problem, deadline)
-    else:
-        size, graph, exact = exhaustive_search(problem, deadline)
+    has_nauty = nauty_commands(problem, 1) is not None
+    part = SECONDS_PER_CASE / (3 if has_nauty else 2)
+    size, graph, exact = exhaustive_search(problem, time.time() + part)
     if not exact:
-        deadline = time.time() + SECONDS_PER_CASE / 2
         if model.EDGE_SIZE == 2:
             search = tabu_search
         else:
             search = random_greedy_growth
-        found_size, found_graph = search(problem, deadline, seed=1)
+        found_size, found_graph = search(problem, time.time() + part,
+                                         seed=1)
         if found_size > size:
             size, graph = found_size, found_graph
+        size, graph, exact = prove_largest(problem, size, graph,
+                                           time.time() + part)
     certificate = write_certificate(problem, graph)
     checked = check_certificate(problem, graph, certificate)
     return size, exact, checked, witness(problem, graph, certificate)
