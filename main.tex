@@ -57,7 +57,7 @@ Area & Main results \\
 Undirected graphs and multigraphs & A proof of Mader's bound with the Gomory--Hu tree, graphs that attain it for every $n\ge m$, and the exact multigraph edge value. \\
 Multigraphs, vertex version & The exact value at $m=2$ and $m=3$. \\
 Hypergraphs, edge version & An upper bound for every $r$-uniform hypergraph, attained on stated ranges. \\
-Hypergraphs, vertex version & The exact value at $m=2$, and an upper bound at $m=3$ that is attained on stated ranges. \\
+Hypergraphs, vertex version & The exact value at $m=2$ and $m=3$, for simple hypergraphs at $m=3$ when $r<n$. \\
 Simple digraphs, $m=2$ & The exact value, for both separations. \\
 Directed multigraphs & The exact value for every $n$ and $m$, and the extremal multigraphs for $n\ge\max(8,2m)$. \\
 Simple digraphs and directed hypergraphs & Upper bounds with the right leading term, $n^2/4$ for simple digraphs and $(m-1)n^2/(4(r-1))$ for directed hypergraphs in the three orientation models, valid for every $n$. \\
@@ -82,7 +82,7 @@ The proved results include:
 \begin{itemize}
 \item Multigraphs: exactly $(m-1)(n-1)$ edges. With vertex-disjoint routes, exactly $n-1$ at $m=2$ and $2(n-1)$ at $m=3$.
 \item $r$-uniform hypergraphs: at most $\floor{(m-1)(n-1)/(r-1)}$ hyperedges, attained on stated ranges.
-\item Hypergraphs with vertex-disjoint routes: exactly $\floor{(n-1)/(r-1)}$ at $m=2$, and at most $\floor{2(n-1)/(r-1)}$ at $m=3$, attained on stated ranges.
+\item Hypergraphs with vertex-disjoint routes: exactly $\floor{(n-1)/(r-1)}$ at $m=2$, and exactly $\floor{2(n-1)/(r-1)}$ at $m=3$, for simple hypergraphs when $r<n$.
 \item Simple digraphs at $m=2$: exactly $\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs, for both separations.
 \item Directed multigraphs: exactly $(m-1)\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs.
 \item Simple digraphs: $n^2/4+\Theta_m(n)$ arcs for fixed $m\ge3$, for both separations.

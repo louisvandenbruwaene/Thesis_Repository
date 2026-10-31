@@ -469,8 +469,8 @@ The search keeps the exact connectivity of every pair of the current graph in \t
 
 \programpart{tabu}{Tabu search.}
 
-The program also implements simulated annealing \cite{KirkpatrickGelattVecchi83} on the same energy.
-It accepts a worse move with a probability that decreases over time \cite{Metropolis53}.
+The program also implements simulated annealing on the same energy.
+It accepts a worse move with a probability that decreases over time.
 At temperature $T$ a move that raises the energy by $\Delta$ is accepted with probability $e^{-\Delta/T}$, and $T$ shrinks by a fixed factor at every step.
 The driver in \Cref{lst:driver} does not use it, so its code is in \Cref{app:program} (\Cref{lst:annealing}).
 

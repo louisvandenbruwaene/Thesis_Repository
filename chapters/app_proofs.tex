@@ -383,7 +383,7 @@ Indeed, suppose three points $x, y, z$ of $Q$ are joined in pairs.
 Since $Q$ has no directed cycle, the three arcs must look like $x \to y$, $y \to z$ and $x \to z$, after renaming.
 But then $x \to z$ could be deleted, since $x$ still reaches $z$ through $y$.
 This contradicts the choice of $Q$.
-By Mantel's theorem \cite{Mantel07,Turan41}, a triangle-free graph on $q$ vertices has at most $\floor{q^2/4}$ edges. So
+By Mantel's theorem \cite{Mantel07}, a triangle-free graph on $q$ vertices has at most $\floor{q^2/4}$ edges. So
 \[
     |A(Q)| \;\le\; \floorfrac{q^2}{4}.
 \]
@@ -727,7 +727,7 @@ The hypothesis $n\ge2m$ is used only in Step 1. Every vertex of an extremiser ha
 
 \section{The hypergraph bounds}
 
-There are several notions of connectivity in hypergraphs, for example in Chekuri and Xu \cite{ChekuriXu17} and Dewar, Pike and Proos \cite{DewarPikeProos18}.
+Hypergraphs have several notions of connectivity.
 This thesis uses Berge paths throughout.
 We first need Menger's theorem for Berge paths. It also shows that the gate network of \Cref{ch:certify} computes the right value.
 
@@ -1092,6 +1092,10 @@ $I(\HH)$ has $rq$ edges and $n + q$ nodes, so the ranks add up to $rq - (n + q) 
 The bounds add up to $n - C$.
 So $rq - (n + q) + C \le n - C$, that is, $q(r-1) \le 2(n-1) - 2(C-1) \le 2(n-1)$.
 The lower bound is \Cref{prop:hyper-vertex-lower} at $m = 3$.
+
+For multihypergraphs, every simple hypergraph is also a multihypergraph, so $K_3^{(r)}(n) \ge k_3^{(r)}(n)$.
+For $2 < r < n$ this gives the lower bound.
+In the remaining cases, $r = 2$ or $r = n$, the number $r-1$ divides $n-1$, and \Cref{prop:hyper-vertex-lower-multi} gives it.
 \end{proof}
 
 \begin{remark}[Edges as gates at $r = 2$, and the boundary of the method]

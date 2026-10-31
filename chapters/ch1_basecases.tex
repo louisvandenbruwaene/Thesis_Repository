@@ -594,7 +594,7 @@ The main new results are:
 \item a proof of Mader's bound with the Gomory--Hu tree, graphs that attain it for every $n\ge m$, and the multigraph edge value (\Cref{sec:mader-gomory-hu}, \Cref{thm:extremal-existence,thm:multigraph-edge}),
 \item the multigraph vertex value at $m=2$ and $m=3$ (\Cref{thm:multi-vertex-m2,cor:multi-vertex-m3}),
 \item the hypergraph edge bound and the ranges where it is attained (\Cref{prop:hyper-edge}),
-\item the hypergraph vertex value at $m=2$, and the bound at $m=3$ with the ranges where it is attained (\Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3}),
+\item the hypergraph vertex value at $m=2$ and $m=3$, for simple hypergraphs at $m=3$ when $r<n$ (\Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3}),
 \item the simple digraph values at $m=2$, for both separations (\Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact}),
 \item the directed multigraph value for every $n$ and $m$, and its extremal multigraphs for $n\ge\max(8,2m)$ (\Cref{thm:dir-multi-full,thm:dir-multi-uniqueness}),
 \item the quadratic bounds for simple digraphs and for directed hypergraphs in the three orientation models (\Cref{thm:dir-arc-linear-error,thm:dir-hyper-constant,thm:dir-hyper-general-constant}).
@@ -754,7 +754,7 @@ so all three are equal.
 \subsection{Undirected hypergraphs}
 
 \begin{theorem}[Hypergraph edge bound]\label{prop:hyper-edge}
-For $n\ge r\ge2$ and $m\ge2$, an $r$-uniform multihypergraph on $n$ vertices with $\lec^{\max}\le m-1$ has size at most $\floorfrac{(m-1)(n-1)}{r-1}$. There are simple hypergraphs attaining the bound when $m - 1 \le \binom{n-2}{r-2}$, and multihypergraphs attaining it when $(r-1) \mid n - 1$.
+For $n\ge r\ge2$ and $m\ge2$, an $r$-uniform multihypergraph on $n$ vertices with $\lec^{\max}\le m-1$ has size at most $\floorfrac{(m-1)(n-1)}{r-1}$. There are simple hypergraphs attaining the bound when $m - 1 \le \binom{n-2}{r-2}$, and multihypergraphs attaining it when $m - 1 \le \binom{n-2}{r-2}$ or $(r-1) \mid n - 1$.
 \end{theorem}
 
 \begin{lemma}[Cut induction for multihypergraphs]\label{lem:hyper-cut-induction}
@@ -813,6 +813,7 @@ There are $(m-1)(n-1)/(r-1)$ hyperedges.
 
 If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} below attains the bound with a simple hypergraph.
 If $r = 2$, this condition means $m = 2$. Then the bound is $n-1$, and a tree attains it.
+A simple hypergraph is also a multihypergraph, so in this range multihypergraphs attain the bound too.
 \end{proof}
 
 The star hypertree of \Cref{fig:hyper-star} attains the bound at $m=2$.
@@ -884,9 +885,8 @@ is attained by a simple hypergraph, so
 \[
     k_3^{(r)}(n) \;=\; \floorfrac{2(n-1)}{r-1} \;=\; \ell_3^{(r)}(n).
 \]
-When $(r-1) \mid (n-1)$, a multihypergraph attains it, so then
-$K_3^{(r)}(n) = \floor{2(n-1)/(r-1)}$
-(\Cref{prop:hyper-vertex-lower-multi}).
+For multihypergraphs the bound is attained for every $n \ge r$, so
+$K_3^{(r)}(n) = \floor{2(n-1)/(r-1)}$ for all $n \ge r \ge 2$.
 \end{theorem}
 
 Both proofs use the incidence graph (\Cref{sec:hyper-vertex-proof}).
@@ -1112,7 +1112,7 @@ Model & Edge or arc separation & Vertex separation \\
 Simple graph & $\floor{m(n-1)/2}$ for $n\ge m$ & Exact for $m\le5$. Open for $m\ge6$ \\
 Multigraph & $(m-1)(n-1)$ & $n-1$ at $m=2$, $2(n-1)$ at $m=3$. Open for $m\ge4$ \\
 Simple hypergraph & At most $\floor{(m-1)(n-1)/(r-1)}$, equal when $m-1\le\binom{n-2}{r-2}$ & $\floor{(n-1)/(r-1)}$ at $m=2$, $\floor{2(n-1)/(r-1)}$ at $m=3$ for $r<n$. Open for $m\ge4$ \\
-Multihypergraph & At most $\floor{(m-1)(n-1)/(r-1)}$, equal when $(r-1)\mid(n-1)$ & $\floor{(n-1)/(r-1)}$ at $m=2$. At $m=3$ at most $\floor{2(n-1)/(r-1)}$, equal when $(r-1)\mid(n-1)$ \\
+Multihypergraph & At most $\floor{(m-1)(n-1)/(r-1)}$, equal when $m-1\le\binom{n-2}{r-2}$ or $(r-1)\mid(n-1)$ & $\floor{(n-1)/(r-1)}$ at $m=2$, $\floor{2(n-1)/(r-1)}$ at $m=3$. Open for $m\ge4$ \\
 Simple digraph & $M(n)$ at $m=2$. $n^2/4+\Theta_m(n)$ for $m\ge3$ & Same \\
 Directed multigraph & $(m-1)M(n)$ & $M(n)$ at $m=2$. $(m-1)n^2/4+O_m(n)$ \\
 Directed simple hypergraph & $(1+o(1))(m-1)n^2/(4(r-1))$ & Same \\
