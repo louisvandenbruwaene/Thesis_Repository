@@ -24,9 +24,19 @@
 \addcontentsline{toc}{chapter}{Foreword}
 This thesis asks how many edges a network can have when no two vertices may be joined by too many independent routes.
 The starting point is Erd\H{o}s Problem~915, which asks this for edge-disjoint paths in simple graphs.
+Edges may also be directed, may be repeated, or may contain more than two vertices, and independent routes may share no edge or share no vertex.
+These choices give sixteen problems, and the thesis treats all of them.
+
 Chapter~1 states the problem and its variants, proves the main results, and lists the open problems.
+The definitions are in its first three sections, and the notation is also listed under Abbreviations and Symbols.
+A reader who wants only the results can read these sections and then go to \Cref{sec:overview}, where a table and a figure give what is known about each of the sixteen problems, followed by the open problems.
+The shorter proofs are in Chapter~1, and the longer ones are in \Cref{app:proofs}.
+That appendix has three parts, on undirected graphs, directed graphs and hypergraphs.
+
 Chapter~2 explains how a Python program can measure connectivity and search for dense examples, using pruning and metaheuristics to make the search faster.
-The appendices contain the longer proofs, the rest of the program and its output.
+No proof uses the program, so a reader interested only in the mathematics can skip this chapter.
+It needs only the definitions of Chapter~1.
+\Cref{app:program} prints the parts of the program that Chapter~2 leaves out, and the output of one full run.
 
 I thank my girlfriend Sara for her unwavering support and love.
 I also thank my friends and family for their help throughout this journey.
