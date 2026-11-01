@@ -525,11 +525,8 @@ We use this method instead of tabu search because there are many possible hypere
 A move adds or removes one copy of one hyperedge.
 Removing a copy never raises a connectivity, since every route of the smaller graph is also a route of the larger one.
 Adding a copy raises $\lec(u,v)$ and $\kap(u,v)$ by at most one for every pair.
-To see this, take a largest family of disjoint $u$--$v$ routes after the addition.
-In the incidence convention of \Cref{sec:incidence-convention}, every copy of a hyperedge is a node of its own.
-With edge separation the routes share no copy by definition. With vertex separation they are separated, so they share no inner node, and a copy is an inner node of every route that uses it.
-So at most one of them uses the new copy.
-The others are disjoint routes of the old graph, of the same kind, so the connectivity rose by at most one.
+Edge-disjoint routes share no copy by definition, so after the addition at most one of them uses the new copy, and the others were already there.
+Separated routes also share no copy, which is why $\kap\le\lec$ holds in every model (\Cref{sec:incidence-convention}), so the same holds for $\kap$.
 This needs the convention. If two routes were only required to share no vertex, they could pass through the same hyperedge (\Cref{sec:incidence-convention}), and one new hyperedge could start several new routes at once.
 So the search does not need to run the max-flow computation at every step.
 Removing a copy from a feasible graph keeps it feasible.
