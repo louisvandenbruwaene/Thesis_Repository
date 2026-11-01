@@ -31,7 +31,7 @@ A \texttt{Problem} bundles a model, a separation, the number of vertices $n$ and
 
 Every edge is stored as a hyperedge: its vertices, and its tails if the model is directed.
 An ordinary edge $uv$ is the hyperedge $\{u,v\}$ without tails, and an arc $u\to v$ is the hyperedge $\{u,v\}$ with tail $u$.
-A route may enter a hyperedge at an \texttt{entry\_vertices} vertex and leave it at an \texttt{exit\_vertices} vertex.
+A route may enter a hyperedge only at one of its \emph{entry vertices}, and leave it only at one of its \emph{exit vertices} (\texttt{entry\_vertices} and \texttt{exit\_vertices} in the code).
 In an undirected hyperedge every vertex is both. In a directed one only the tails are entries and only the heads are exits.
 A candidate graph is a table that gives every possible hyperedge its multiplicity.
 We call the models without repeated edges \emph{simple models}, and the models with repeated edges \emph{multi models}.
@@ -111,7 +111,7 @@ We call this routine the \emph{checker}.
 \subsection{Transformations}
 The checker works on one kind of network for all sixteen problems.
 
-Every hyperedge, also an ordinary edge, becomes a \emph{gate} (\Cref{fig:hyper-gadget}).
+Every hyperedge, including an ordinary edge, becomes a \emph{gate} (\Cref{fig:hyper-gadget}).
 The gate has an entry node and an exit node, joined by one arc whose capacity is the multiplicity of the hyperedge.
 Each vertex of the hyperedge gets an arc of unlimited capacity to the entry node and one from the exit node.
 So the arc inside the gate is the only bottleneck.
@@ -243,7 +243,7 @@ The flow may stop as soon as it reaches $m$, since a larger value changes nothin
   \node[font=\small] at (4,-1.4) {(b)};
 \end{scope}
 \end{tikzpicture}}
-\caption[The gate network of a hypergraph]{(a) An undirected $3$-uniform hypergraph. (b) The relevant part of its gate network for the pair $u,v$. The four black routes use pairwise disjoint sets of gates, so $\lec(u,v)\ge4$. The vertex $v$ lies in only four hyperedges, and removing those four hyperedges separates $u$ from $v$, so $\lec(u,v)\le4$. Hence $\lec(u,v)=4$. Each gate is drawn as one point. Dotted lines indicate additional incidences of the displayed hyperedges.}
+\caption[The gate network of a hypergraph]{(a) An undirected $3$-uniform hypergraph. (b) The relevant part of its gate network for the pair $u,v$. The four black routes use pairwise disjoint sets of gates, so $\lec(u,v)\ge4$. The vertex $v$ lies in only four hyperedges, and removing those four hyperedges separates $u$ from $v$, so $\lec(u,v)\le4$. Hence $\lec(u,v)=4$. Each gate is drawn as one point. A dotted line joins a gate to the third vertex of its hyperedge, which the route does not use.}
 \label{fig:hyper-gadget-example}
 \end{figure}
 
@@ -356,7 +356,7 @@ If the search stops early, it gives only a lower bound.
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{figures/complexity_growth.png}
-    \caption{The number of candidates for blind enumeration, on a logarithmic scale. Every model passes $10^9$ candidates before $n=10$. Directed models grow fastest, because they have more entries to choose. The directed hypergraph curve is the forward model.}
+    \caption{The number of candidate graphs if every table is listed, on a logarithmic scale. Every model passes $10^9$ candidates before $n=10$. Directed models grow fastest, because they have more entries to choose. The directed hypergraph curve is the forward model.}
     \label{fig:complexity}
 \end{figure}
 
@@ -423,7 +423,7 @@ After the time limit the search stops and reports the best graph so far as a low
   \node[font=\scriptsize, vertexred, align=center] at (1.3,-3.5) {infeasible\\(prune)};
   \node[font=\scriptsize, vertexorange!80!black, align=center] at (3.1,-3.5) {cannot beat\\best (prune)};
 \end{tikzpicture}
-\caption{Each level of the partially built graph fixes one adjacency. Infeasible partial graphs (red) and branches unable to beat the incumbent (orange) are discarded.}
+\caption{Each level of the search decides one arc. Partly built graphs that are already infeasible (red), and branches that cannot beat the best graph found so far (orange), are dropped.}
 \label{fig:prune}
 \end{figure}
 
@@ -589,13 +589,13 @@ The first part goes to the pruned search.
 If it does not finish, the second part goes to a heuristic search: tabu search for graphs and digraphs, and random greedy growth for hypergraphs.
 The third part goes to checking one edge more (\Cref{sec:one-more}), starting from the densest graph found so far.
 Directed hypergraphs have no third part, so their budget is split into two parts of thirty seconds.
-Deadline checks occur between operations, so individual operations can overrun the budget. Certification adds further overhead.
+The program checks the time only between operations, so one operation can run past the budget. Writing and checking the certificate takes extra time.
 Every result is then certified and checked.
 The program saves, for each case, the model, the separation, $n$ and $m$, the hyperedges of the graph with their multiplicities, its size, the certificate for every vertex pair, and whether the search finished and the certificate passed.
 It writes these to the file \texttt{witnesses.json}, so a reader can recount the edges and check every certificate without rerunning the search, by hand or with the verifier of \Cref{lst:verifier}.
 The cases are independent, so the program runs them in parallel, one per processor core.
 For each problem, and each version of a directed hypergraph problem, it prints a table with one row per $n$ and one column per $m$ (\Cref{lst:main}).
-Each entry is the number of edges of the densest feasible graph found, marked when the search finished, and marked differently if the certificate failed.
+Each entry is the number of edges of the densest feasible graph found. It is marked \texttt{*} when the search finished, and \texttt{!} if the certificate failed.
 A finished search gives an exact value, but only the lower bound is certified (\Cref{sec:certificates}).
 
 The true maximum never decreases when $n$ or $m$ grows: an isolated vertex can be added, and a graph with no $m$ disjoint routes also has no $m+1$.

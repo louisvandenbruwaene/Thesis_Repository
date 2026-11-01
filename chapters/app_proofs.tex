@@ -796,8 +796,8 @@ So $u \to x$ is in $R$.
 But $u$ also reaches $x$ along the path, so $u\to x$ could be removed without changing reachability. This is a contradiction.
 \end{proof}
 
-\begin{theorem}[Extremal classification on the quadratic branch]\label{thm:dir-multi-uniqueness}
-Let $m \ge 2$ and $n \ge \max(8,\, 2m)$, so that $M(n) = \floor{n^2/4}$ and $n$ is on the quadratic branch. If $D$ is a directed multigraph on $n$ vertices with $\lec^{\max}_D \le m-1$ and $|A(D)| = L_m^{\mathrm{dir}}(n) = (m-1)\floor{n^2/4}$, then
+\begin{theorem}[The extremal directed multigraphs]\label{thm:dir-multi-uniqueness}
+Let $m \ge 2$ and $n \ge \max(8,\, 2m)$, so that $M(n) = \floor{n^2/4}$. If $D$ is a directed multigraph on $n$ vertices with $\lec^{\max}_D \le m-1$ and $|A(D)| = L_m^{\mathrm{dir}}(n) = (m-1)\floor{n^2/4}$, then
 \[
     D \;\in\; \left\{(m-1) \cdot B_{\ceil{n/2},\,\floor{n/2}},\ (m-1) \cdot B_{\floor{n/2},\,\ceil{n/2}}\right\} ,
 \]
@@ -1822,9 +1822,9 @@ At $r = 2$ the shadow is the digraph itself, and the theorem gives the quadratic
 
 The general model needs a different proof that the shadow is budgeted.
 The proof above used twice that a hyperedge has one tail: leaving hyperedges with different tails are different, and they differ from the entering hyperedges.
-With several tails this fails. Two midpoints can leave through the same hyperedge, and for $r \ge 4$ one hyperedge can be the entrance for one target and the exit for another.
-Instead we take a maximal family of routes and ask why no route can be added.
-Each unserved target is blocked by a hyperedge that is already used, and a used hyperedge has only $r$ vertices.
+With several tails this fails. Two midpoints can leave through the same hyperedge, and for $r \ge 4$ one hyperedge can be the first hyperedge of one route and the second hyperedge of another.
+Instead we take a family of routes to which no route can be added, and ask what stops a new route.
+Every midpoint, or $v$ itself, that gets no route lies in a hyperedge that the family already uses, and a used hyperedge has only $r$ vertices.
 
 \begin{theorem}[The general orientation model shares the constant]\label{thm:dir-hyper-general-constant}
 Let $r \ge 2$ and $m \ge 2$. In the general model, every directed $r$-uniform multihypergraph $\HH$ on $n \ge 2$
@@ -1847,7 +1847,7 @@ A hyperedge $(T,H)$ gives $|T|\,|H| \ge r-1$ arcs of $R$. So
 \]
 
 Next we show that the shadow is budgeted.
-Fix an ordered pair $(u,v)$. Let $\mathcal{T}$ be the set of midpoints counted by $p_2(u,v)$, together with $v$ if $(u,v) \in A(R)$.
+Fix an ordered pair $(u,v)$. Let $\mathcal{T}$ be the set of midpoints counted by $p_2(u,v)$, together with $v$ if $(u,v) \in A(R)$. We call the elements of $\mathcal{T}$ \emph{targets}.
 Call a hyperedge $e$ an \emph{entrance} for $t \in \mathcal{T}$ if $u$ is a tail of $e$ and $t$ a head.
 Call $e$ an \emph{exit} for a midpoint $t$ if $t$ is a tail of $e$ and $v$ a head.
 Every $t \in \mathcal{T}$ has an entrance, and every midpoint has an exit.
