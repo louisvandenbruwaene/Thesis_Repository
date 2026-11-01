@@ -527,7 +527,7 @@ Removing a copy never raises a connectivity, since every route of the smaller gr
 Adding a copy raises $\lec(u,v)$ and $\kap(u,v)$ by at most one for every pair.
 To see this, take a largest family of disjoint $u$--$v$ routes after the addition.
 In the incidence convention of \Cref{sec:incidence-convention}, every copy of a hyperedge is a node of its own.
-Edge-disjoint routes share no copy, and separated routes share no inner node, so in both cases no two routes of the family use the same copy.
+With edge separation the routes share no copy by definition. With vertex separation they are separated, so they share no inner node, and a copy is an inner node of every route that uses it.
 So at most one of them uses the new copy.
 The others are disjoint routes of the old graph, of the same kind, so the connectivity rose by at most one.
 This needs the convention. If two routes were only required to share no vertex, they could pass through the same hyperedge (\Cref{sec:incidence-convention}), and one new hyperedge could start several new routes at once.
