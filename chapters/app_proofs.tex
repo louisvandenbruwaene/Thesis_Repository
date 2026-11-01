@@ -280,7 +280,7 @@ Second, at $m = 4$, \Cref{thm:leonard} gives $h_4(b) = 2(b-1)$ for every $b \ge 
 So the rate $h_4(b)/(b-1)$ is $2$ for $b\ge4$, against $1$ at $b = 2$ and $3/2$ at $b = 3$.
 The best choice uses blocks of size at least four, and $k_4(n) = 2(n-1)$ for $n \ge 4$.
 This uses \Cref{thm:leonard}, so it is not a new proof.
-It does show the extremal block: the hub-and-spokes graph $H_{4,b}$ of \Cref{const:hub-spokes}, with the graph on $v_1,\dots,v_{b-1}$ chosen to be one cycle, so that $H_{4,b}$ is a hub joined to all vertices of a cycle.
+It does show the extremal block: the hub-and-spokes graph $H_{4,b}$ of \Cref{const:hub-spokes}, with the graph on $v_0,\dots,v_{b-2}$ chosen to be one cycle, so that $H_{4,b}$ is a hub joined to all vertices of a cycle.
 It is a single block with $2(b-1)$ edges.
 
 Third, the Bollob\'as--Erd\H{o}s construction, copies of $K_m$ sharing one vertex, is the case $b = m$: $h_m(m) = \binom{m}{2}$, with rate $m/2$.
@@ -703,7 +703,7 @@ If all arcs at $a$ go out, then every $b\in B$ has an incoming arc, so it has no
 If all arcs at $a$ come in, all arcs go from $B$ to $A$ in the same way.
 From now on, call the part that the arcs leave $A$, and the other part $B$.
 
-Next, $D$ has no arc outside $R$. Every path in $R$ has one arc, so $u$ reaches $x$ in $R$ only when $u \to x$ is an arc of $R$.
+Next, every arc of $D$ has the same ordered endpoints as an arc of $R$. Every path in $R$ has one arc, so $u$ reaches $x$ in $R$ only when $u \to x$ is an arc of $R$.
 As shown above, these are exactly the pairs $(u,x)$ with $u \in A$ and $x \in B$.
 If $D$ has an arc $u\to x$, then $u$ reaches $x$ in $D$, so also in $R$. So $u\to x$ is an arc of $R$.
 
@@ -1500,7 +1500,7 @@ So the upper and lower bounds have the same $n^2$ term.
 
 Two remarks.
 For small $n$, the bound of \Cref{prop:dir-hyper-first} is smaller, roughly until $n \approx 4(m-1)(r-1)/3$. The theorem is only better asymptotically.
-At $r = 2$ the shadow is the digraph itself, and the theorem gives the quadratic term of \Cref{thm:dir-multi-full} again.
+At $r = 2$ the shadow is the underlying simple digraph, obtained by suppressing parallel copies, and the theorem gives the quadratic term of \Cref{thm:dir-multi-full} again.
 
 The general model needs a different proof that the shadow is budgeted.
 The proof above used twice that a hyperedge has one tail: leaving hyperedges with different tails are different, and they differ from the entering hyperedges.

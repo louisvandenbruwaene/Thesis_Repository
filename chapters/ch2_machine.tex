@@ -533,7 +533,7 @@ Removing a copy from a feasible graph keeps it feasible.
 Adding a copy to a graph in which every pair has at most $m-2$ disjoint routes also keeps it feasible.
 Also, an addition can only push a pair above $m-1$ if that pair is already at $m-1$.
 So \texttt{highest\_after} in \Cref{lst:neighbours} answers without the max-flow computation when the graph stays feasible for sure.
-Otherwise it measures only the pairs already at $m-1$.
+Otherwise it measures only the pairs that already have at least $m-1$ disjoint routes.
 After a move is made, the search measures all pairs once, so the next step again starts from exact values.
 
 \section{Checking the output without trusting the program}\label{sec:certificates}
