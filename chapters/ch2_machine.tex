@@ -15,7 +15,7 @@ The names in the code follow the words of the text.
 \begin{figure}[ht]
 \centering
 \spinediagram
-\caption{One model feeds the max-flow checker. Exhaustive search uses it to find exact values, heuristic search uses it to find dense examples, and the check with \texttt{nauty} uses it to show that no feasible graph has one edge more than the densest one found (\Cref{sec:one-more}).}
+\caption{One model feeds the max-flow routine. Exhaustive search uses it to find exact values, heuristic search uses it to find dense examples, and the check with \texttt{nauty} uses it to show that no feasible graph has one edge more than the densest one found (\Cref{sec:one-more}).}
 \label{fig:spine}
 \end{figure}
 
@@ -105,11 +105,11 @@ In a digraph the link has a direction. In an undirected graph it can be used in 
 The max-flow min-cut theorem of Ford and Fulkerson \cite{FordFulkerson56} says that the maximum flow equals the smallest capacity of a cut.
 By Menger's theorem, this is $\lec(u,v)$.
 So computing a maximum flow computes $\lec(u,v)$.
-We call this routine the \emph{checker}.
+We call this the \emph{max-flow routine}.
 
 
 \subsection{Transformations}
-The checker works on one kind of network for all sixteen problems.
+The max-flow routine works on one kind of network for all sixteen problems.
 
 Every hyperedge, including an ordinary edge, becomes a \emph{gate} (\Cref{fig:hyper-gadget}).
 The gate has an entry node and an exit node, joined by one arc whose capacity is the multiplicity of the hyperedge.
@@ -333,7 +333,7 @@ The flow may stop as soon as it reaches $m$, since a larger value changes nothin
 \caption{A directed hyperedge with one tail and two heads is transformed into a gate. This gate has capacity equal to the multiplicity of the hyperedge and every route must enter at the tail and leave at a head. With several tails, each tail has an arc to $e^-$.}
 \label{fig:dir-hyper-gadget}
 \end{subfigure}
-\caption{The building blocks of the connectivity checker: vertex splitting, hyperedge gates and directed hyperedge gates.}
+\caption{The building blocks of the max-flow routine: vertex splitting, hyperedge gates and directed hyperedge gates.}
 \label{fig:checker-gadgets}
 \end{figure}
 
@@ -521,18 +521,17 @@ We use this method instead of tabu search because there are many possible hypere
 
 \programpart{greedy}{Random greedy growth.}
 
-\subsection{Measuring only near the connectivity cap}\label{sec:near-cap}
-We call $m-1$, the largest connectivity a feasible graph allows, the \emph{cap}.
+\subsection{Measuring only the pairs that matter}\label{sec:near-cap}
 Removing an edge never raises $\lec^{\max}$, since it creates no new route.
 Adding an edge raises $\lec(u,v)$ by at most one for every pair.
 Indeed, take a largest family of disjoint $u$--$v$ routes after the addition. At most one of them uses the new edge, and the others are disjoint routes in the old graph.
 The same holds for $\kap^{\max}$, since separated routes also share no edge.
-So the search does not need to run the checker at every step.
+So the search does not need to run the max-flow routine at every step.
 Removing an edge from a feasible graph keeps it feasible.
 Adding an edge to a graph with $\lec^{\max}\le m-2$ also keeps it feasible.
 Also, an addition can only push a pair above $m-1$ if that pair is already at $m-1$.
-So \texttt{highest\_after} in \Cref{lst:neighbours} answers without the checker when the graph stays feasible for sure.
-Otherwise it measures only the pairs at the cap.
+So \texttt{highest\_after} in \Cref{lst:neighbours} answers without the max-flow routine when the graph stays feasible for sure.
+Otherwise it measures only the pairs already at $m-1$.
 After a move is made, the search measures all pairs once, so the next step again starts from exact values.
 
 \section{Checking the output without trusting the program}\label{sec:certificates}
@@ -562,10 +561,10 @@ So the cut translates directly into removed hyperedges and removed vertices.
 
 \programpart{certificate}{Writing a certificate from smallest cuts.}
 
-The checker in \Cref{lst:checker} computes no maximum flow and uses none of the search code.
+The certificate checker in \Cref{lst:checker} computes no maximum flow and uses none of the search code.
 It uses only the list of possible hyperedges, the largest multiplicity, the list of vertex pairs, the edge count and the entry and exit vertices of a hyperedge, from \Cref{lst:hyperedges,lst:pairs}.
 First \texttt{belongs\_to\_model} checks the size and the model.
-Then, for each pair, the checker counts the removed elements, with every copy of a removed hyperedge, and then follows the remaining hyperedges from $u$, entering each only at an entry vertex.
+Then, for each pair, the certificate checker counts the removed elements, with every copy of a removed hyperedge, and then follows the remaining hyperedges from $u$, entering each only at an entry vertex.
 If $v$ is never reached, the certificate is correct for this pair.
 Its correctness can be read off from its $43$ lines and these short helpers.
 
@@ -573,7 +572,7 @@ Its correctness can be read off from its $43$ lines and these short helpers.
 
 So every lower bound the program finds can be checked: the graph is feasible by its certificate, and its size is counted.
 The program saves every graph with its certificate in the file \texttt{witnesses.json}.
-A second, separate checker, which we call the \emph{verifier}, checks this file (\Cref{lst:verifier} in \Cref{app:program}).
+A second checker, the \emph{file checker}, checks this file (\Cref{lst:verifier} in \Cref{app:program}).
 It reads only the file and calls no other function of the program, so it can be read on its own. It checks the model, the size and every certificate as described above.
 The command \texttt{python erdos915.py verify} runs it.
 An upper bound is different. A certificate that no graph on $n$ vertices has more edges would be the whole search, which is too long to check.
@@ -592,7 +591,7 @@ Directed hypergraphs have no third part, so their budget is split into two parts
 The program checks the time only between operations, so one operation can run past the budget. Writing and checking the certificate takes extra time.
 Every result is then certified and checked.
 The program saves, for each case, the model, the separation, $n$ and $m$, the hyperedges of the graph with their multiplicities, its size, the certificate for every vertex pair, and whether the search finished and the certificate passed.
-It writes these to the file \texttt{witnesses.json}, so a reader can recount the edges and check every certificate without rerunning the search, by hand or with the verifier of \Cref{lst:verifier}.
+It writes these to the file \texttt{witnesses.json}, so a reader can recount the edges and check every certificate without rerunning the search, by hand or with the file checker of \Cref{lst:verifier}.
 The cases are independent, so the program runs them in parallel, one per processor core.
 For each problem, and each version of a directed hypergraph problem, it prints a table with one row per $n$ and one column per $m$ (\Cref{lst:main}).
 Each entry is the number of edges of the densest feasible graph found. It is marked \texttt{*} when the search finished, and \texttt{!} if the certificate failed.

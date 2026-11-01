@@ -611,7 +611,7 @@ Summing the budget over all ordered pairs gives $|A(D)| + \sum_{u\ne v} p_2(u,v)
 \]
 \end{proof}
 
-\begin{lemma}[Deleting the smaller half of every vertex]\label{lem:smaller-half-deletion}
+\begin{lemma}[Making a digraph one-way bipartite]\label{lem:smaller-half-deletion}
 Every simple digraph $D$ on $n$ vertices can be made \emph{one-way bipartite}, so that all remaining arcs go from one part to the other, by deleting at most $\sum_{x} \min(d^+(x), d^-(x))$ arcs. So
 \[
     |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; \sum_{x \in V} \min\bigl(d^+(x), d^-(x)\bigr) .
@@ -619,16 +619,16 @@ Every simple digraph $D$ on $n$ vertices can be made \emph{one-way bipartite}, s
 \end{lemma}
 
 \begin{proof}
-Call $x$ \emph{source-like} if $d^+(x) \ge d^-(x)$, and \emph{sink-like} otherwise. Let $S$ and $T$ be these two sets.
-Delete every arc into a source-like vertex and every arc out of a sink-like vertex.
-At a source-like vertex $x$ this deletes its $d^-(x) = \min(d^+(x), d^-(x))$ in-arcs. At a sink-like vertex it deletes its $d^+(x) = \min(d^+(x), d^-(x))$ out-arcs.
+Let $S$ be the set of vertices $x$ with $d^+(x) \ge d^-(x)$, and let $T$ be the set of the other vertices.
+Delete every arc into a vertex of $S$ and every arc out of a vertex of $T$.
+At a vertex $x$ of $S$ this deletes its $d^-(x) = \min(d^+(x), d^-(x))$ in-arcs. At a vertex of $T$ it deletes its $d^+(x) = \min(d^+(x), d^-(x))$ out-arcs.
 An arc may be deleted at both of its ends, so in total at most the sum above is deleted.
-An arc $a\to b$ survives only if $a$ is not sink-like and $b$ is not source-like, that is, $a \in S$ and $b \in T$.
+An arc $a\to b$ survives only if $a \notin T$ and $b \notin S$, that is, $a \in S$ and $b \in T$.
 So the remaining arcs all go from $S$ to $T$.
 Since $|S| + |T| = n$, there are at most $|S|\,|T|\le\floor{n^2/4}$ of them.
 \end{proof}
 
-\begin{lemma}[The counting core]\label{lem:two-step-budget}
+\begin{lemma}[The arc bound for budgeted digraphs]\label{lem:two-step-budget}
 Every $C$-budgeted simple digraph $D$ on $n \ge 2$ vertices satisfies
 \[
     |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; C(n-1).
@@ -890,7 +890,7 @@ For graphs ($r=2$) this is different: there, simplicity lowers the bound from $(
 
 
 
-\begin{theorem}[Simplicity is free for $r \ge 3$]\label{thm:simple-hyper-edge}
+\begin{theorem}[Simple hypergraphs attain the edge bound for $r \ge 3$]\label{thm:simple-hyper-edge}
 Let $r \ge 3$, $n \ge r$, and $2 \le m$ with $m-1 \le \binom{n-2}{r-2}$. Then the maximum number of hyperedges in a \emph{simple} $r$-uniform hypergraph on $n$ vertices with $\lec^{\max}\le m-1$ is exactly $\floorfrac{(m-1)(n-1)}{r-1}$.
 \end{theorem}
 
@@ -1193,21 +1193,21 @@ Remove it, and divide the components of $G - \{a,b\}$ into two non-empty groups,
 Each component has a neighbour of $a$ and a neighbour of $b$. Otherwise the other one of $a,b$ would be a cut vertex.
 So $U \cup \{a,b\}$ contains an $a$--$b$ path with all inner vertices in $U$, and the same holds for $W$.
 Let $s = |X \cap \{a,b\}|$, the number of $a,b$ that lie in $X$.
-We build two smaller graphs $G_U$ and $G_W$, the \emph{pieces}.
+We build two smaller graphs $G_U$ and $G_W$.
 $G_U$ consists of $U \cup \{a,b\}$ and all edges of $G$ among these vertices, except the edge $ab$, together with one extra $a$--$b$ connection. $G_W$ is built in the same way. The extra connection is:
 \begin{itemize}
-    \item If $ab \in E(G)$: the edge $ab$ itself, in both pieces.
-    \item If $ab \notin E(G)$ and $s \ge 1$: one new edge $ab$ in each piece.
-    \item If $s = 0$: in each piece, one new $X$-vertex joined to $a$ and to $b$.
+    \item If $ab \in E(G)$: the edge $ab$ itself, in both $G_U$ and $G_W$.
+    \item If $ab \notin E(G)$ and $s \ge 1$: one new edge $ab$ in each of $G_U$ and $G_W$.
+    \item If $s = 0$: in each of $G_U$ and $G_W$, one new $X$-vertex joined to $a$ and to $b$.
 \end{itemize}
 These cases cover everything. If $ab \in E(G)$, then by (i) at least one of $a,b$ lies in $X$, so $s \ge 1$.
 In that case $s = 1$. Indeed, if $a,b\in X$, then the edge $ab$, the path through $U$ and the path through $W$ would give $\kap(a,b) \ge 3$, against (iv).
 
-\emph{Each piece is connected and satisfies (i) to (iv).}
+\emph{$G_U$ and $G_W$ are connected and satisfy (i) to (iv).}
 We check this for $G_U$.
 It is connected, since every component in $U$ is joined to $a$ and $b$, and $a$ and $b$ are joined by the extra connection.
 (i): every added edge has an end in $X$. In the second case this is $a$ or $b$, since $s \ge 1$. In the third case it is the new vertex.
-(ii): an added edge joins two vertices that had no edge in the piece, so it is not parallel to another edge.
+(ii): an added edge joins two vertices that had no edge in $G_U$, so it is not parallel to another edge.
 (iii): a $Z$-vertex in $U$ keeps all its neighbours. If $a$ or $b$ lies in $Z$, it keeps a neighbour in $U$ and gains the extra connection, so it has degree at least $2$.
 (iv): take two $X$-vertices $x, x'$ of $G_U$.
 If one of them is the new vertex of the third case, it has degree two, so $\kap(x,x') \le 2$.
@@ -1220,7 +1220,7 @@ The other paths lie in $G_U$, so they do not meet $W$.
 This gives the same number of internally disjoint $x$--$x'$ paths in $G$.
 By (iv) for $G$ there are at most two, so (iv) holds in $G_U$.
 
-\emph{Each piece is smaller.}
+\emph{$G_U$ and $G_W$ are smaller.}
 $W$ is not a single vertex: in a simple graph that vertex would have only $a$ and $b$ as neighbours, but every degree is at least three.
 So $G_U$ loses the at least two vertices of $W$.
 Every vertex of $W$ has degree at least three, and an edge inside $W$ is counted at two vertices of $W$, so at least three edges of $G$ touch $W$, and $G_U$ loses them.
@@ -1228,12 +1228,12 @@ $G_U$ gains at most one vertex and two edges. So $|V| + |E|$ drops by at least $
 The same holds for $G_W$.
 
 \emph{Counting.}
-Let $r_U, r_W$ be the ranks of the pieces and $X_U, X_W$ their $X$-sets.
-Together the pieces contain every vertex of $G$, with $a$ and $b$ counted twice, and every edge of $G$ other than $ab$ once.
+Let $r_U, r_W$ be the ranks of $G_U$ and $G_W$, and $X_U, X_W$ their $X$-sets.
+Together $G_U$ and $G_W$ contain every vertex of $G$, with $a$ and $b$ counted twice, and every edge of $G$ other than $ab$ once.
 \begin{itemize}
-\item First case. The edge $ab$ is counted twice, so the pieces have $|V|+2$ vertices and $|E|+1$ edges. So $r_U + r_W = (|E|+1) - (|V|+2) + 2 = \mathrm{rank}(G)$. Exactly one of $a,b$ lies in $X$, so $|X_U| + |X_W| = |X| + 1$.
-\item Second case. Two new edges, so the pieces have $|V|+2$ vertices and $|E|+2$ edges, and $r_U + r_W = \mathrm{rank}(G) + 1$. The vertices of $X \cap \{a,b\}$ are counted twice, so $|X_U| + |X_W| = |X| + s$.
-\item Third case. Two new vertices and four new edges, so the pieces have $|V|+4$ vertices and $|E|+4$ edges, and $r_U + r_W = \mathrm{rank}(G) + 1$. The two new vertices lie in $X$ and $a, b$ do not, so $|X_U| + |X_W| = |X| + 2$.
+\item First case. The edge $ab$ is counted twice, so together they have $|V|+2$ vertices and $|E|+1$ edges. So $r_U + r_W = (|E|+1) - (|V|+2) + 2 = \mathrm{rank}(G)$. Exactly one of $a,b$ lies in $X$, so $|X_U| + |X_W| = |X| + 1$.
+\item Second case. Two new edges, so together they have $|V|+2$ vertices and $|E|+2$ edges, and $r_U + r_W = \mathrm{rank}(G) + 1$. The vertices of $X \cap \{a,b\}$ are counted twice, so $|X_U| + |X_W| = |X| + s$.
+\item Third case. Two new vertices and four new edges, so together they have $|V|+4$ vertices and $|E|+4$ edges, and $r_U + r_W = \mathrm{rank}(G) + 1$. The two new vertices lie in $X$ and $a, b$ do not, so $|X_U| + |X_W| = |X| + 2$.
 \end{itemize}
 By induction $r_U \le |X_U| - 1$ and $r_W \le |X_W| - 1$, so $r_U + r_W \le |X_U| + |X_W| - 2$.
 In the first case this gives $\mathrm{rank}(G) \le |X| - 1$.
@@ -1295,7 +1295,7 @@ Write $K_m(n)$ for the largest number of edges, counted with multiplicity, of a 
 
 The parallel edges and the longer routes do not interfere, so we can count them separately.
 
-\begin{lemma}[Splitting the vertex measure]\label{lem:multi-vertex-split}
+\begin{lemma}[Splitting the local vertex-connectivity]\label{lem:multi-vertex-split}
 Let $G$ be a multigraph with multiplicity function $\mu$ and underlying simple graph $G_0$. For any two vertices $u \ne v$, write $\pi(u,v)$ for the largest number of pairwise internally disjoint $u$--$v$ paths of length at least two in $G_0$. Then
 \[
     \kap_G(u,v) \;=\; \mu(u,v) \;+\; \pi(u,v).
@@ -1576,7 +1576,7 @@ Whether this ratio has a limit is open.
 The splitting of $\kap$ into parallel arcs and longer routes also works for directed graphs (\Cref{lem:multi-vertex-split-dir}).
 \Cref{cor:dir-multi-incidence} below gives the exact value at $m=2$ and the leading term for every fixed $m$.
 
-\begin{lemma}[Splitting the directed vertex measure]\label{lem:multi-vertex-split-dir}
+\begin{lemma}[Splitting the directed local vertex-connectivity]\label{lem:multi-vertex-split-dir}
 Let $D$ be a directed multigraph with multiplicity function $\mu$ and underlying simple
 digraph $D_0$. For an ordered pair $u \ne v$, write $\pi(u,v)$ for the largest number
 of pairwise internally disjoint directed $u$--$v$ paths of length at least two in
@@ -1785,18 +1785,17 @@ Fix an ordered pair $(u,v)$.
 Recall that a midpoint of $(u,v)$ is a vertex $x \notin \{u,v\}$ with arcs $u \to x$ and $x \to v$ in $R$.
 Let $\mathcal{T}$ be the set of midpoints, together with $v$ if $(u,v) \in A(R)$. So $|\mathcal{T}| = \mathbf{1}_{(u,v) \in A(R)} + p_2(u,v)$.
 Every $t \in \mathcal{T}$ has an arc $u \to t$ in $R$, so it is a head of some hyperedge with tail $u$.
-Pick hyperedges with tail $u$ one at a time.
-Each time, pick one that contains an element $t$ of $\mathcal{T}$ that is not in an earlier pick, and assign the pick to that $t$.
-Stop when every element of $\mathcal{T}$ lies in a picked hyperedge.
-Each new pick contains an element that the earlier picks do not contain, so the picks are different hyperedges, and they are assigned to different elements of $\mathcal{T}$.
-Each pick has $r-1$ heads, so it contains at most $r-1$ elements of $\mathcal{T}$. So the number $k$ of picks satisfies $k(r-1) \ge |\mathcal{T}|$.
+Choose hyperedges $e_1, e_2, \dots$ with tail $u$ one at a time, where each $e_i$ contains an element $t_i$ of $\mathcal{T}$ that lies in none of $e_1, \dots, e_{i-1}$.
+Stop at $e_k$, when every element of $\mathcal{T}$ lies in one of them.
+Then $e_1, \dots, e_k$ are different hyperedges, and $t_1, \dots, t_k$ are different elements of $\mathcal{T}$.
+Each $e_i$ has $r-1$ heads, so it contains at most $r-1$ elements of $\mathcal{T}$. So $k(r-1) \ge |\mathcal{T}|$.
 
-Now turn the picks into routes.
-If a pick $e$ is assigned to $v$, take the route $u \to v$ through $e$.
-If it is assigned to a midpoint $x$, take the route $u \to x \to v$: enter through $e$, and leave through a hyperedge with tail $x$ and head $v$ (one exists, since $(x,v) \in A(R)$).
+Now turn each $e_i$ into a route.
+If $t_i = v$, take the route $u \to v$ through $e_i$.
+If $t_i$ is a midpoint $x$, take the route $u \to x \to v$: enter through $e_i$, and leave through a hyperedge with tail $x$ and head $v$ (one exists, since $(x,v) \in A(R)$).
 In the forward model every hyperedge has exactly one tail.
 The leaving hyperedges have different tails, namely different midpoints, so they are different.
-They also differ from the entering ones, which have tail $u$. The entering ones are different picks.
+They also differ from $e_1, \dots, e_k$, which have tail $u$.
 So the $k$ routes share no hyperedge.
 A route has at most one inner vertex, its midpoint, and different routes have different midpoints. So the routes are separated, and $k \le \kap_\HH(u,v)$. So
 \[

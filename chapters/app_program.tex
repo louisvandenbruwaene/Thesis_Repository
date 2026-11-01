@@ -24,9 +24,9 @@ Simulated annealing, described in \Cref{ch:machine}.
 
 \programpart{annealing}{Simulated annealing on the same energy.}
 
-The verifier checks the saved file \texttt{witnesses.json} without the rest of the program (\Cref{sec:certificates}). For each saved graph it checks that every hyperedge is one the model allows, with a whole number of copies up to the largest multiplicity, that every hyperedge lists its vertices and its tails in increasing order, so that it has only one written form, that no hyperedge is listed twice, that the copies add up to the size, that every vertex pair has exactly one certificate entry, and that every certificate is correct.
+The file checker checks the saved file \texttt{witnesses.json} without the rest of the program (\Cref{sec:certificates}). For each saved graph it checks that every hyperedge is one the model allows, with a whole number of copies up to the largest multiplicity, that every hyperedge lists its vertices and its tails in increasing order, so that it has only one written form, that no hyperedge is listed twice, that the copies add up to the size, that every vertex pair has exactly one certificate entry, and that every certificate is correct.
 
-\programpart{verifier}{The standalone verifier of the saved graphs and certificates.}
+\programpart{verifier}{The file checker of the saved graphs and certificates.}
 
 The main function first prints the versions of Python, \texttt{networkx} and \texttt{nauty}, the operating system, the number of processor cores, the time budget and the date. Then it runs every case in parallel, prints one table per problem, and saves every graph with its certificate.
 
