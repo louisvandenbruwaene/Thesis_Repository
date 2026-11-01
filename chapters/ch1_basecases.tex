@@ -590,16 +590,32 @@ Directed $r$-uniform multihypergraph & $L_m^{\mathrm{dir}\,(r)}(n)$ & $K_m^{\mat
 
 Menger's theorem, the Gomory--Hu tree, Mader's bound and the exact value $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ are classical.
 So are the results of B\'{a}rtfai, Bollob\'{a}s, Leonard, S{\o}rensen and Thomassen.
-The main new results are:
-\begin{itemize}
-\item a different proof of Mader's bound, with the Gomory--Hu tree, an explicit construction of graphs that attain it for every $n\ge m$, and the multigraph edge value (\Cref{sec:mader-gomory-hu}, \Cref{thm:extremal-existence,thm:multigraph-edge}),
-\item the multigraph vertex value at $m=2$ and $m=3$ (\Cref{thm:multi-vertex-m2,cor:multi-vertex-m3}),
-\item the hypergraph edge bound and the ranges where it is attained (\Cref{prop:hyper-edge}),
-\item the hypergraph vertex value at $m=2$ and $m=3$, for simple hypergraphs at $m=3$ when $r<n$ (\Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3}),
-\item the simple digraph values at $m=2$, for both separations (\Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact}),
-\item the directed multigraph value for every $n$ and $m$, and its extremal multigraphs for $n\ge\max(8,2m)$ (\Cref{thm:dir-multi-full,thm:dir-multi-uniqueness}),
-\item the quadratic bounds for simple digraphs and for directed hypergraphs in the three orientation models (\Cref{thm:dir-arc-linear-error,thm:dir-hyper-constant,thm:dir-hyper-general-constant}).
-\end{itemize}
+\Cref{tab:contributions} lists the results of this thesis.
+It separates a new proof of a known theorem, a new construction for a known value, and a statement for which we found no earlier source, and it names the closest result we know.
+We did not search the literature exhaustively, so the last kind means only that we found no earlier source.
+
+\begin{table}[!t]
+\centering\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Result & Where & Kind & Closest known result \\
+\midrule
+Mader's bound $\ell_m(n)\le\floor{m(n-1)/2}$ & \Cref{sec:mader-gomory-hu} & New proof & Mader \cite{Mader73} \\
+Graphs attaining Mader's bound for every $n\ge m$ & \Cref{thm:extremal-existence} & New construction & Mader \cite{Mader73}. Bollob\'{a}s--Erd\H{o}s \cite{BollobasErdos62} when $(m-1)\mid(n-1)$ \\
+Multigraph edge value $L_m(n)$ & \Cref{thm:multigraph-edge} & No earlier source found & Mader's bound for simple graphs \\
+Multigraph vertex value at $m=2,3$ & \Cref{thm:multi-vertex-m2,cor:multi-vertex-m3} & No earlier source found & The simple graph values of \Cref{thm:leonard} \\
+Hypergraph edge bound and the ranges where it is attained & \Cref{prop:hyper-edge} & No earlier source found & Mader's bound, the case $r=2$ \\
+Hypergraph vertex value at $m=2,3$ & \Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3} & No earlier source found & \Cref{thm:leonard}, the case $r=2$ \\
+Simple digraph values at $m=2$, both separations & \Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact} & No earlier source found & None found \\
+Directed multigraph value with arc separation, and its extremal multigraphs & \Cref{thm:dir-multi-full,thm:dir-multi-uniqueness} & No earlier source found & None found \\
+Simple digraphs: $n^2/4+(m-1)(n-1)$ for every $n$ & \Cref{thm:dir-arc-linear-error} & Overlaps a known result & Huang--Lyu \cite[Theorem~2]{HuangLyu26} give the linear term $(m-1)n$ for $n$ large in terms of $m$ \\
+Directed hypergraphs: the leading constant in three orientation models & \Cref{thm:dir-hyper-constant,thm:dir-hyper-general-constant} & No earlier source found & None found \\
+\bottomrule
+\end{tabularx}
+\caption{The results of this thesis, with the closest result we found in the literature.}
+\label{tab:contributions}
+\end{table}
 
 \section{Results and proofs}
 
@@ -720,12 +736,134 @@ So the directed value grows quadratically in $n$, while the undirected value gro
 In the bipartite digraph all arcs point the same way, so a route crosses between the parts only once and never comes back.
 An undirected graph with $\lec^{\max}\le1$ has no cycle, so it has at most $n-1$ edges.
 
-For the upper bound we use a \emph{reachability skeleton}: a \emph{subdigraph}, that is, a subgraph of the digraph, with at most one copy of each arc, in which $u$ can reach $v$ exactly when $u$ can reach $v$ in the whole digraph.
-\Cref{lem:reach-skeleton} in the appendix shows that there is always a skeleton with at most $M(n)=\max(2(n-1),\floor{n^2/4})$ arcs.
+For the upper bound we keep only the arcs that are needed to tell who can reach whom.
+
+\begin{definition}[Reachability skeleton]\label{def:reach-skeleton}
+Let $D$ be a directed multigraph. A \emph{reachability skeleton} of $D$ is a \emph{subdigraph} $R$ of $D$, that is, a subgraph of the digraph, on the same vertices, with at most one copy of each arc, such that for all $u\ne v$: $u$ can reach $v$ in $R$ exactly when $u$ can reach $v$ in $D$.
+\end{definition}
+
+A skeleton keeps the information about who can reach whom. It does not keep the number of disjoint paths.
+
+\begin{lemma}[A sparse reachability skeleton always exists]\label{lem:reach-skeleton}
+Every loopless directed multigraph $D$ on $n \ge 2$ vertices has a reachability skeleton $R$ with
+\[
+    |A(R)| \;\le\; M(n) \;:=\; \max\Bigl(2(n-1),\ \floorfrac{n^2}{4}\Bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+We build $R$ first inside each strongly connected component, then between components, and then we count.
+A \emph{strongly connected component} is a maximal set of vertices in which any two can reach each other.
+Every digraph splits into such components.
+\Cref{fig:skeleton-example} shows an example.
+
+Take a component with $n_i$ vertices and choose a vertex $r$ in it.
+We choose $n_i-1$ arcs along which $r$ reaches every vertex of the component.
+Start with $r$ alone.
+As long as some vertex of the component is not yet reached, there is an arc of $D$ from a reached vertex to an unreached vertex of the component, since $r$ reaches every vertex of the component along arcs inside it.
+Add this arc. Each arc reaches one new vertex, so this ends after $n_i-1$ arcs.
+In the same way, with all directions reversed, there are $n_i-1$ arcs along which every vertex of the component reaches $r$.
+Any two vertices $u,v$ of the component are then joined by a walk from $u$ to $r$ and on to $v$ along these arcs, and this walk contains a $u$--$v$ path.
+So at most $2(n_i - 1)$ arcs keep all reachability inside the component.
+
+Replace each component by one point.
+Put an arc from one point to another if $D$ has an arc from the first component to the second.
+This gives a digraph $Q_0$ on $q$ points, one per component.
+$Q_0$ has no directed cycle. Indeed, all vertices of the components on such a cycle could reach each other, so they would lie in one component.
+Now delete arcs from $Q_0$ one at a time, as long as this does not change which points of $Q_0$ reach which.
+Call the result $Q$. No arc of $Q$ can be deleted without changing this.
+
+The graph $Q$, with directions ignored, has no triangle.
+Indeed, suppose three points of $Q$ are joined in pairs.
+Two points are never joined both ways, since that would be a directed cycle.
+Three arcs on three points that form no directed cycle always look like $x \to y$, $y \to z$ and $x \to z$, after renaming: $x$ is the point with both arcs leaving, and $z$ the point with both arcs entering.
+But then $x \to z$ could be deleted, since $x$ still reaches $z$ through $y$.
+This contradicts the choice of $Q$.
+By Mantel's theorem \cite{Mantel07}, a graph on $q$ vertices with no triangle has at most $\floor{q^2/4}$ edges. So
+\[
+    |A(Q)| \;\le\; \floorfrac{q^2}{4}.
+\]
+
+Let $R$ consist of the two trees chosen above in every component, and, for each arc of $Q$, one arc of $D$ between the corresponding components.
+These trees keep reachability inside each component.
+Now suppose $u$ reaches $v$ in $D$, with $u$ and $v$ in different components.
+Then the component of $u$ reaches the component of $v$ in $Q_0$, and so also in $Q$.
+Follow the arcs of $Q$ from the first component to the last.
+For each arc of $Q$, the set $R$ has an arc of $D$ between the two components.
+Inside each component, the two trees lead from the vertex where we enter to the vertex where we leave.
+So $u$ reaches $v$ in $R$.
+Since $R$ is part of $D$, it creates no new reachability. So $R$ is a reachability skeleton.
+If the components have sizes $n_1, \dots, n_q$, then
+\[
+    |A(R)| \;\le\; \sum_{i=1}^{q} 2(n_i - 1) \;+\; |A(Q)| \;\le\; 2(n-q) \;+\; \floorfrac{q^2}{4} \;=:\; f(q).
+\]
+
+It remains to bound $f(q)$ for $1 \le q \le n$.
+Since $\floor{(q+1)^2/4} - \floor{q^2/4} = \floor{(q+1)/2}$ (check even and odd $q$),
+\[
+    f(q+1) - f(q) \;=\; -2 \;+\; \floorfrac{q+1}{2}.
+\]
+These differences never decrease as $q$ grows.
+So $f$ first goes down (or stays level) and then goes up (or stays level). Its largest value on $\{1,\dots,n\}$ is therefore at $q=1$ or at $q=n$.
+Since $f(1) = 2(n-1)$ and $f(n) = \floor{n^2/4}$, we get $f(q) \le M(n)$.
+\end{proof}
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}
+% ---- left panel: D, three bidirected SCCs A={a1,a2}, B={b1,b2}, C={c1,c2},
+% joined a2->b1, b2->c1, and the redundant direct arc a1->c2 bent well below
+% everything so it never crosses the other arcs.
+\begin{scope}
+  \node[apxlab] (a1) at (0,1) {$a_1$};
+  \node[apxlab] (a2) at (0,-1) {$a_2$};
+  \node[apxlab] (b1) at (2.6,1) {$b_1$};
+  \node[apxlab] (b2) at (2.6,-1) {$b_2$};
+  \node[apxlab] (c1) at (5.2,1) {$c_1$};
+  \node[apxlab] (c2) at (5.2,-1) {$c_2$};
+  \draw[aparc] (a1) to[bend left=14]  (a2);
+  \draw[aparc] (a2) to[bend left=14]  (a1);
+  \draw[aparc] (b1) to[bend left=14]  (b2);
+  \draw[aparc] (b2) to[bend left=14]  (b1);
+  \draw[aparc] (c1) to[bend left=14]  (c2);
+  \draw[aparc] (c2) to[bend left=14]  (c1);
+  \draw[aparc] (a2) to[bend left=8] (b1);
+  \draw[aparc] (b2) to[bend left=8] (c1);
+  \draw[apfaint] (a1) to[bend right=55] (c2);
+  \node[apname, text=black!55] at (2.6,-2.35) {redundant: $a_1$ already reaches $c_2$ via $a_2,b_1,b_2,c_1$};
+  \node[font=\small] at (2.6,2.0) {$D$};
+\end{scope}
+% ---- arrow between panels ----
+\draw[-{Stealth[length=6pt]}, line width=1.3pt, KULblauw3b] (6.6,0) -- (7.9,0);
+\node[font=\scriptsize, align=center, text=KULblauw3b] at (7.25,0.5) {drop the\\redundant arc};
+% ---- right panel: R, same six vertices, same six internal arcs, only the
+% two witness arcs a2->b1 and b2->c1 survive between components.
+\begin{scope}[xshift=9.6cm]
+  \node[apxlab] (ra1) at (0,1) {$a_1$};
+  \node[apxlab] (ra2) at (0,-1) {$a_2$};
+  \node[apxlab] (rb1) at (2.6,1) {$b_1$};
+  \node[apxlab] (rb2) at (2.6,-1) {$b_2$};
+  \node[apxlab] (rc1) at (5.2,1) {$c_1$};
+  \node[apxlab] (rc2) at (5.2,-1) {$c_2$};
+  \draw[aparc] (ra1) to[bend left=14]  (ra2);
+  \draw[aparc] (ra2) to[bend left=14]  (ra1);
+  \draw[aparc] (rb1) to[bend left=14]  (rb2);
+  \draw[aparc] (rb2) to[bend left=14]  (rb1);
+  \draw[aparc] (rc1) to[bend left=14]  (rc2);
+  \draw[aparc] (rc2) to[bend left=14]  (rc1);
+  \draw[aparc] (ra2) to[bend left=8] (rb1);
+  \draw[aparc] (rb2) to[bend left=8] (rc1);
+  \node[font=\small] at (2.6,2.0) {$R$};
+\end{scope}
+\end{tikzpicture}}
+\caption[A reachability skeleton]{The construction of \Cref{lem:reach-skeleton}. Each bidirected pair $A,B,C$ is a strongly connected component. Merging each pair into a single vertex gives $A\to B\to C$ and the redundant arc $A\to C$. Delete that arc to obtain the triangle-free digraph $Q$. The skeleton $R$ keeps the internal arcs of each pair and the two remaining connections between pairs. Although $a_1\to c_2$ is removed, $a_1$ still reaches $c_2$ through $B$.}
+\label{fig:skeleton-example}
+\end{figure}
+
+The skeleton has at most one copy of each arc, so at $m=2$ it is enough to show that a feasible digraph is its own skeleton.
 
 \begin{proof}[Proof of \Cref{thm:dir-vertex-m2-exact}]
-Write $M(n) = \max(2(n-1), \floor{n^2/4})$.
-
 \emph{Lower bound.} The bidirected star (\Cref{const:directed-hub} at $m=2$) and the one-way bipartite digraph (\Cref{const:bipartite}) have $\lec^{\max} = 1$.
 Since $\kap\le\lec$, they also have $\kap^{\max} \le 1$.
 So $\ell_2^{\mathrm{dir}}(n) \ge M(n)$ and $k_2^{\mathrm{dir}}(n) \ge M(n)$.
@@ -938,7 +1076,7 @@ Together with the $\Delta$ arcs out of $v$ this gives at most $\Delta(n-\Delta)+
 The routes of length two are also internally vertex-disjoint, so the same proof works for vertex separation.
 
 
-\begin{theorem}[Directed multigraph value, every $n$ and $m$]\label{thm:dir-multi-full}
+\begin{theorem}[Directed multigraph value with arc separation, every $n$ and $m$]\label{thm:dir-multi-full}
 For all $n \ge 2$ and $m \ge 2$,
 \[
     L_m^{\mathrm{dir}}(n) \;=\; (m-1)\,M(n), \qquad M(n) := \max\!\Bigl(2(n-1),\ \floorfrac{n^2}{4}\Bigr).

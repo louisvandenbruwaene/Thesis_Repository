@@ -4,7 +4,7 @@ The definitions are in \Cref{ch:basecases}. New terms are defined where they are
 
 The appendix has three parts.
 \textsc{Part I} is about undirected graphs, \textsc{Part II} about directed graphs, and \textsc{Part III} about hypergraphs.
-The three main proof ideas are the reachability skeleton (directed multigraphs), the incidence-rank lemma (hypergraphs at $m=3$), and the two-step budget, a bound on the number of routes with at most one inner vertex between every two vertices (directed graphs and hypergraphs).
+The two main proof ideas here are the incidence-rank lemma (hypergraphs at $m=3$) and the two-step budget, a bound on the number of routes with at most one inner vertex between every two vertices (directed graphs and hypergraphs).
 
 
 
@@ -39,7 +39,7 @@ The three main proof ideas are the reachability skeleton (directed multigraphs),
 
 \section{Graphs that attain Mader's bound}\label{sec:mader-extremal}
 
-The constructions below need hypergraphs in which no vertex lies in too many hyperedges. Recall that a graph is a $2$-uniform hypergraph, and the \emph{degree} of a vertex is the number of hyperedges that contain it.
+The hypergraph constructions in Part III need hypergraphs in which no vertex lies in too many hyperedges. Recall that a graph is a $2$-uniform hypergraph, and the \emph{degree} of a vertex is the number of hyperedges that contain it.
 
 \begin{lemma}[Sparse uniform hypergraphs exist]\label{lem:sparse-hypergraph}
 Let $r$, $n$ and $d$ be integers with $r \ge 1$, $n \ge r$ and $0 \le d \le \binom{n-1}{r-1}$. There is a simple
@@ -78,7 +78,12 @@ Since $N \le dn/r$, we have $rN/n \le d$. As $d$ is an integer, $\ceil{rN/n} \le
 \begin{construction}[Hub-and-spokes graph]\label{const:hub-spokes}\label{const:shared-clique}
 Let $n\ge m\ge2$. The graph $H_{m,n}$ has a vertex $h$ and further vertices $v_1,\dots,v_{n-1}$. Join $h$ to every $v_i$. On $v_1,\dots,v_{n-1}$, add a graph with $\floor{(m-2)(n-1)/2}$ edges in which every vertex has degree at most $m-2$.
 
-Such a graph exists. For $n=2$ we have $m=2$, and no edges are needed. For $n\ge3$, apply \Cref{lem:sparse-hypergraph} with $r=2$, with $n-1$ vertices and with $d=m-2$. The lemma needs $m-2 \le n-2$, and this holds since $m \le n$.
+This graph can be written down directly. Write $N=n-1$ and $d=m-2$, so $0\le d\le N-1$, and number the vertices $v_0,\dots,v_{N-1}$ around a circle, with indices taken modulo $N$.
+For each $s=1,\dots,\floor{d/2}$, join every $v_i$ to $v_{i+s}$.
+Since $s<N/2$, these are $N\floor{d/2}$ different edges, and every vertex gets degree $2\floor{d/2}$.
+If $d$ is odd, also join $v_i$ to $v_{i+\floor{N/2}}$ for $i=0,\dots,\floor{N/2}-1$.
+These $\floor{N/2}$ edges share no vertex, and they are new, since $d\le N-1$ and $d$ odd give $\floor{d/2}<\floor{N/2}$.
+So every degree is at most $d$, and the number of edges is $N\floor{d/2}$ for even $d$ and $N\floor{d/2}+\floor{N/2}$ for odd $d$. In both cases this is $\floor{dN/2}=\floor{(m-2)(n-1)/2}$.
 If $m-1$ divides $n-1$, one can instead take disjoint copies of $K_{m-1}$. In that case $H_{m,n}$ consists of copies of $K_m$ that share the vertex $h$.
 \end{construction}
 
@@ -318,7 +323,7 @@ Deleting vertices successively and counting the edges in reverse order, the $i$-
 Hence $c_m \le m-1$.
 \end{remark}
 
-\apppart{Part II. Directed graphs}{The directed constructions, the reachability skeleton, the bounds for $m\ge3$, and the extremal directed multigraphs.}
+\apppart{Part II. Directed graphs}{The directed constructions, the bounds for $m\ge3$, and the extremal directed multigraphs.}
 
 \section{The directed constructions}\label{sec:dir-constructions}
 
@@ -436,134 +441,6 @@ For fixed $m$ and large $n$ the augmented bipartite digraph has more arcs (\Cref
 \label{fig:augmented-wall}
 \end{figure}
 
-
-\section{The reachability skeleton}\label{sec:reach-skeleton}
-
-The proofs of \Cref{thm:dir-vertex-m2-exact,thm:dir-multi-full} in \Cref{ch:basecases} use the next lemma.
-Recall from \Cref{thm:dir-multi-full} that
-\[
-    M(n) \;=\; \max\Bigl(2(n-1),\ \floorfrac{n^2}{4}\Bigr).
-\]
-
-\begin{definition}[Reachability skeleton]\label{def:reach-skeleton}
-Let $D$ be a directed multigraph. A \emph{reachability skeleton} of $D$ is a subdigraph $R$ on the same vertices, with at most one copy of each arc, such that for all $u\ne v$: $u$ can reach $v$ in $R$ exactly when $u$ can reach $v$ in $D$.
-\end{definition}
-
-A skeleton keeps the information about who can reach whom. It does not keep the number of disjoint paths.
-
-\begin{lemma}[A sparse reachability skeleton always exists]\label{lem:reach-skeleton}
-Every loopless directed multigraph $D$ on $n \ge 2$ vertices has a reachability skeleton $R$ with $|A(R)| \le M(n)$.
-\end{lemma}
-
-\begin{proof}
-We build $R$ first inside each strongly connected component, then between components, and then we count.
-A \emph{strongly connected component} is a maximal set of vertices in which any two can reach each other.
-Every digraph splits into such components.
-\Cref{fig:skeleton-example} shows an example.
-
-Take a component with $n_i$ vertices and choose a vertex $r$ in it.
-We choose $n_i-1$ arcs along which $r$ reaches every vertex of the component.
-Start with $r$ alone.
-As long as some vertex of the component is not yet reached, there is an arc of $D$ from a reached vertex to an unreached vertex of the component, since $r$ reaches every vertex of the component along arcs inside it.
-Add this arc. Each arc reaches one new vertex, so this ends after $n_i-1$ arcs.
-In the same way, with all directions reversed, there are $n_i-1$ arcs along which every vertex of the component reaches $r$.
-Any two vertices $u,v$ of the component are then joined by a walk from $u$ to $r$ and on to $v$ along these arcs, and this walk contains a $u$--$v$ path.
-So at most $2(n_i - 1)$ arcs keep all reachability inside the component.
-
-Replace each component by one point.
-Put an arc from one point to another if $D$ has an arc from the first component to the second.
-This gives a digraph $Q_0$ on $q$ points, one per component.
-$Q_0$ has no directed cycle. Indeed, all vertices of the components on such a cycle could reach each other, so they would lie in one component.
-Now delete arcs from $Q_0$ one at a time, as long as this does not change which points of $Q_0$ reach which.
-Call the result $Q$. No arc of $Q$ can be deleted without changing this.
-
-The graph $Q$, with directions ignored, has no triangle.
-Indeed, suppose three points of $Q$ are joined in pairs.
-Two points are never joined both ways, since that would be a directed cycle.
-Three arcs on three points that form no directed cycle always look like $x \to y$, $y \to z$ and $x \to z$, after renaming: $x$ is the point with both arcs leaving, and $z$ the point with both arcs entering.
-But then $x \to z$ could be deleted, since $x$ still reaches $z$ through $y$.
-This contradicts the choice of $Q$.
-By Mantel's theorem \cite{Mantel07}, a graph on $q$ vertices with no triangle has at most $\floor{q^2/4}$ edges. So
-\[
-    |A(Q)| \;\le\; \floorfrac{q^2}{4}.
-\]
-
-Let $R$ consist of the two trees chosen above in every component, and, for each arc of $Q$, one arc of $D$ between the corresponding components.
-These trees keep reachability inside each component.
-Now suppose $u$ reaches $v$ in $D$, with $u$ and $v$ in different components.
-Then the component of $u$ reaches the component of $v$ in $Q_0$, and so also in $Q$.
-Follow the arcs of $Q$ from the first component to the last.
-For each arc of $Q$, the set $R$ has an arc of $D$ between the two components.
-Inside each component, the two trees lead from the vertex where we enter to the vertex where we leave.
-So $u$ reaches $v$ in $R$.
-Since $R$ is part of $D$, it creates no new reachability. So $R$ is a reachability skeleton.
-If the components have sizes $n_1, \dots, n_q$, then
-\[
-    |A(R)| \;\le\; \sum_{i=1}^{q} 2(n_i - 1) \;+\; |A(Q)| \;\le\; 2(n-q) \;+\; \floorfrac{q^2}{4} \;=:\; f(q).
-\]
-
-It remains to bound $f(q)$ for $1 \le q \le n$.
-Since $\floor{(q+1)^2/4} - \floor{q^2/4} = \floor{(q+1)/2}$ (check even and odd $q$),
-\[
-    f(q+1) - f(q) \;=\; -2 \;+\; \floorfrac{q+1}{2}.
-\]
-These differences never decrease as $q$ grows.
-So $f$ first goes down (or stays level) and then goes up (or stays level). Its largest value on $\{1,\dots,n\}$ is therefore at $q=1$ or at $q=n$.
-Since $f(1) = 2(n-1)$ and $f(n) = \floor{n^2/4}$, we get $f(q) \le M(n)$.
-\end{proof}
-
-\begin{figure}[htbp]
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tikzpicture}
-% ---- left panel: D, three bidirected SCCs A={a1,a2}, B={b1,b2}, C={c1,c2},
-% joined a2->b1, b2->c1, and the redundant direct arc a1->c2 bent well below
-% everything so it never crosses the other arcs.
-\begin{scope}
-  \node[apxlab] (a1) at (0,1) {$a_1$};
-  \node[apxlab] (a2) at (0,-1) {$a_2$};
-  \node[apxlab] (b1) at (2.6,1) {$b_1$};
-  \node[apxlab] (b2) at (2.6,-1) {$b_2$};
-  \node[apxlab] (c1) at (5.2,1) {$c_1$};
-  \node[apxlab] (c2) at (5.2,-1) {$c_2$};
-  \draw[aparc] (a1) to[bend left=14]  (a2);
-  \draw[aparc] (a2) to[bend left=14]  (a1);
-  \draw[aparc] (b1) to[bend left=14]  (b2);
-  \draw[aparc] (b2) to[bend left=14]  (b1);
-  \draw[aparc] (c1) to[bend left=14]  (c2);
-  \draw[aparc] (c2) to[bend left=14]  (c1);
-  \draw[aparc] (a2) to[bend left=8] (b1);
-  \draw[aparc] (b2) to[bend left=8] (c1);
-  \draw[apfaint] (a1) to[bend right=55] (c2);
-  \node[apname, text=black!55] at (2.6,-2.35) {redundant: $a_1$ already reaches $c_2$ via $a_2,b_1,b_2,c_1$};
-  \node[font=\small] at (2.6,2.0) {$D$};
-\end{scope}
-% ---- arrow between panels ----
-\draw[-{Stealth[length=6pt]}, line width=1.3pt, KULblauw3b] (6.6,0) -- (7.9,0);
-\node[font=\scriptsize, align=center, text=KULblauw3b] at (7.25,0.5) {drop the\\redundant arc};
-% ---- right panel: R, same six vertices, same six internal arcs, only the
-% two witness arcs a2->b1 and b2->c1 survive between components.
-\begin{scope}[xshift=9.6cm]
-  \node[apxlab] (ra1) at (0,1) {$a_1$};
-  \node[apxlab] (ra2) at (0,-1) {$a_2$};
-  \node[apxlab] (rb1) at (2.6,1) {$b_1$};
-  \node[apxlab] (rb2) at (2.6,-1) {$b_2$};
-  \node[apxlab] (rc1) at (5.2,1) {$c_1$};
-  \node[apxlab] (rc2) at (5.2,-1) {$c_2$};
-  \draw[aparc] (ra1) to[bend left=14]  (ra2);
-  \draw[aparc] (ra2) to[bend left=14]  (ra1);
-  \draw[aparc] (rb1) to[bend left=14]  (rb2);
-  \draw[aparc] (rb2) to[bend left=14]  (rb1);
-  \draw[aparc] (rc1) to[bend left=14]  (rc2);
-  \draw[aparc] (rc2) to[bend left=14]  (rc1);
-  \draw[aparc] (ra2) to[bend left=8] (rb1);
-  \draw[aparc] (rb2) to[bend left=8] (rc1);
-  \node[font=\small] at (2.6,2.0) {$R$};
-\end{scope}
-\end{tikzpicture}}
-\caption[A reachability skeleton]{The construction of \Cref{lem:reach-skeleton}. Each bidirected pair $A,B,C$ is a strongly connected component. Merging each pair into a single vertex gives $A\to B\to C$ and the redundant arc $A\to C$. Delete that arc to obtain the triangle-free digraph $Q$. The skeleton $R$ keeps the internal arcs of each pair and the two remaining connections between pairs. Although $a_1\to c_2$ is removed, $a_1$ still reaches $c_2$ through $B$.}
-\label{fig:skeleton-example}
-\end{figure}
 
 \section{Simple digraphs beyond the first threshold}
 
@@ -1121,6 +998,60 @@ Read $X$ as the vertices of a hypergraph and $Z$ as its hyperedges, so that $G$ 
 Then (i) says that two hyperedge nodes are never adjacent, (ii) that no hyperedge repeats a vertex, (iii) that every hyperedge has at least two vertices, and (iv) that the hypergraph is feasible at $m = 3$.
 We allow edges inside $X$, because the proof creates them when it removes a hyperedge node of degree two.
 
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+   blob/.style={draw=KULblauw1!55, fill=KULblauw1!8, line width=0.8pt},
+   xn/.style={apxlab, minimum size=5.5mm, inner sep=0pt, font=\small},
+   zn/.style={apz, minimum size=5mm, inner sep=0pt, font=\small},
+   extra/.style={line width=2pt, vertexorange, line cap=round},
+   xnew/.style={xn, draw=vertexorange!90!black, fill=vertexorange!35}]
+% \sepblob{centre}{name}: a component group, drawn as a shaded oval
+\newcommand{\sepblob}[2]{\draw[blob] (#1) ellipse (0.5 and 0.95); \node[font=\small] at (#1) {$#2$};}
+% \sepjoin{a}{b}{centre}{side}: two edges from a and from b into a group
+\newcommand{\sepjoin}[4]{%
+  \draw[apgedge] (#1) -- ($(#3)+(#4*0.35,0.55)$);
+  \draw[apgedge] (#1) -- ($(#3)+(#4*0.45,0.2)$);
+  \draw[apgedge] (#2) -- ($(#3)+(#4*0.35,-0.55)$);
+  \draw[apgedge] (#2) -- ($(#3)+(#4*0.45,-0.2)$);}
+% \seprow{y}{shape of a}{shape of b}{label}
+\newcommand{\seprow}[4]{%
+  \begin{scope}[yshift=#1]
+  \node[font=\small, align=right, anchor=east] at (-1.0,0) {#4};
+  % G
+  \sepblob{0,0}{U} \sepblob{3,0}{W}
+  \node[#2] (a) at (1.5,0.95) {$a$}; \node[#3] (b) at (1.5,-0.95) {$b$};
+  \sepjoin{a}{b}{0,0}{1} \sepjoin{a}{b}{3,0}{-1}
+  \draw[-{Stealth[length=5pt]}, line width=1.1pt, KULblauw3b] (3.8,0) -- (4.5,0);
+  % G_U
+  \sepblob{5.2,0}{U}
+  \node[#2] (ua) at (6.7,0.95) {$a$}; \node[#3] (ub) at (6.7,-0.95) {$b$};
+  \sepjoin{ua}{ub}{5.2,0}{1}
+  % G_W
+  \sepblob{10.6,0}{W}
+  \node[#2] (wa) at (9.1,0.95) {$a$}; \node[#3] (wb) at (9.1,-0.95) {$b$};
+  \sepjoin{wa}{wb}{10.6,0}{-1}
+  \end{scope}}
+% ---- case 1: ab is an edge, exactly one of a,b in X ----
+\seprow{0cm}{xn}{zn}{$ab\in E(G)$}
+\draw[apgedge] (a) -- (b);
+\draw[extra] (ua) -- (ub); \draw[extra] (wa) -- (wb);
+% ---- case 2: no edge ab, at least one of a,b in X ----
+\seprow{-3cm}{xn}{xn}{$ab\notin E(G)$,\\ $s\ge1$}
+\draw[extra] (ua) -- (ub); \draw[extra] (wa) -- (wb);
+% ---- case 3: a,b both in Z ----
+\seprow{-6cm}{zn}{zn}{$s=0$}
+\node[xnew] (un) at (7.5,-6) {}; \draw[extra] (ua) -- (un) -- (ub);
+\node[xnew] (wn) at (8.3,-6) {}; \draw[extra] (wa) -- (wn) -- (wb);
+% column heads
+\node[font=\small] at (1.5,1.8) {$G$};
+\node[font=\small] at (6.0,1.8) {$G_U$};
+\node[font=\small] at (9.8,1.8) {$G_W$};
+\end{tikzpicture}
+\caption[The separating-pair step]{The separating-pair step in the proof of \Cref{lem:incidence-rank}. Circles are $X$-vertices and squares are $Z$-vertices. Removing $\{a,b\}$ splits $G$ into the groups $U$ and $W$, and each of $G_U$ and $G_W$ gets one extra $a$--$b$ connection, drawn in orange. If $ab$ is an edge, both keep it. If $ab$ is not an edge and $a$ or $b$ lies in $X$, both get a new edge $ab$. If $a$ and $b$ both lie in $Z$, both get a new $X$-vertex joined to $a$ and $b$, since an edge between two $Z$-vertices would break condition (i). In $G$, the extra connection of $G_U$ stands for an $a$--$b$ path through $W$, and the other way round.}
+\label{fig:separating-pair}
+\end{figure}
+
 \begin{proof}
 We use induction on $|V| + |E|$.
 We first split the graph at a cut vertex, then remove vertices of degree two, and finally treat a $2$-connected graph in which every degree is at least three.
@@ -1193,7 +1124,7 @@ Remove it, and divide the components of $G - \{a,b\}$ into two non-empty groups,
 Each component has a neighbour of $a$ and a neighbour of $b$. Otherwise the other one of $a,b$ would be a cut vertex.
 So $U \cup \{a,b\}$ contains an $a$--$b$ path with all inner vertices in $U$, and the same holds for $W$.
 Let $s = |X \cap \{a,b\}|$, the number of $a,b$ that lie in $X$.
-We build two smaller graphs $G_U$ and $G_W$.
+We build two smaller graphs $G_U$ and $G_W$ (\Cref{fig:separating-pair}).
 $G_U$ consists of $U \cup \{a,b\}$ and all edges of $G$ among these vertices, except the edge $ab$, together with one extra $a$--$b$ connection. $G_W$ is built in the same way. The extra connection is:
 \begin{itemize}
     \item If $ab \in E(G)$: the edge $ab$ itself, in both $G_U$ and $G_W$.
