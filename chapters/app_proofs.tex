@@ -76,9 +76,9 @@ Since $N \le dn/r$, we have $rN/n \le d$. As $d$ is an integer, $\ceil{rN/n} \le
 
 
 \begin{construction}[Hub-and-spokes graph]\label{const:hub-spokes}\label{const:shared-clique}
-Let $n\ge m\ge2$. The graph $H_{m,n}$ has a vertex $h$ and further vertices $v_1,\dots,v_{n-1}$. Join $h$ to every $v_i$. On $v_1,\dots,v_{n-1}$, add a graph with $\floor{(m-2)(n-1)/2}$ edges in which every vertex has degree at most $m-2$.
+Let $n\ge m\ge2$. The graph $H_{m,n}$ has a vertex $h$ and further vertices $v_0,\dots,v_{n-2}$. Join $h$ to every $v_i$. On $v_0,\dots,v_{n-2}$, add a graph with $\floor{(m-2)(n-1)/2}$ edges in which every vertex has degree at most $m-2$.
 
-This graph can be written down directly. Write $N=n-1$ and $d=m-2$, so $0\le d\le N-1$, and number the vertices $v_0,\dots,v_{N-1}$ around a circle, with indices taken modulo $N$.
+This graph can be written down directly. Write $N=n-1$ and $d=m-2$, so $0\le d\le N-1$, so these vertices are $v_0,\dots,v_{N-1}$. Place them around a circle in this order, and take indices modulo $N$.
 For each $s=1,\dots,\floor{d/2}$, join every $v_i$ to $v_{i+s}$.
 Since $s\le\floor{d/2}<N/2$, the vertices $v_{i+s}$ and $v_{i-s}$ are different, so these are $N\floor{d/2}$ different edges, and every vertex gets degree $2\floor{d/2}$.
 If $d$ is odd, also join $v_i$ to $v_{i+\floor{N/2}}$ for $i=0,\dots,\floor{N/2}-1$.

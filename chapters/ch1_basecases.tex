@@ -1108,7 +1108,7 @@ We allow edges inside $X$, because the proof creates them when it removes a hype
   \end{scope}}
 % ---- case 1: ab is an edge, exactly one of a,b in X ----
 \seprow{0cm}{xn}{zn}{$ab\in E(G)$}
-\draw[apgedge] (a) -- (b);
+\draw[apgedge, line width=1.6pt, KULblauw1] (a) -- (b);
 \draw[extra] (ua) -- (ub); \draw[extra] (wa) -- (wb);
 % ---- case 2: no edge ab, at least one of a,b in X ----
 \seprow{-3cm}{xn}{xn}{$ab\notin E(G)$,\\ $s\ge1$}
@@ -1122,7 +1122,7 @@ We allow edges inside $X$, because the proof creates them when it removes a hype
 \node[font=\small] at (6.0,1.8) {$G_U$};
 \node[font=\small] at (9.8,1.8) {$G_W$};
 \end{tikzpicture}
-\caption[The separating-pair step]{The separating-pair step in the proof of \Cref{lem:incidence-rank}. Circles are $X$-vertices and squares are $Z$-vertices. Removing $\{a,b\}$ splits $G$ into the groups $U$ and $W$, and each of $G_U$ and $G_W$ gets one extra $a$--$b$ connection, drawn in orange. If $ab$ is an edge, both keep it. If $ab$ is not an edge and $a$ or $b$ lies in $X$, both get a new edge $ab$. If $a$ and $b$ both lie in $Z$, both get a new $X$-vertex joined to $a$ and $b$, since an edge between two $Z$-vertices would break condition (i). In $G$, the extra connection of $G_U$ stands for an $a$--$b$ path through $W$, and the other way round.}
+\caption[The separating-pair step]{The separating-pair step in the proof of \Cref{lem:incidence-rank}. Circles are $X$-vertices and squares are $Z$-vertices. Removing $\{a,b\}$ splits $G$ into the groups $U$ and $W$, and each of $G_U$ and $G_W$ gets one extra $a$--$b$ connection, drawn in orange. If $ab$ is an edge, both keep it. If $ab$ is not an edge and $a$ or $b$ lies in $X$, both get a new edge $ab$. The middle row shows $a,b\in X$, and the case with only one of them in $X$ is the same. If $a$ and $b$ both lie in $Z$, both get a new $X$-vertex joined to $a$ and $b$, since an edge between two $Z$-vertices would break condition (i). In $G$, the extra connection of $G_U$ stands for an $a$--$b$ path through $W$, and the other way round.}
 \label{fig:separating-pair}
 \end{figure}
 
