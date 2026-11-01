@@ -1823,8 +1823,8 @@ At $r = 2$ the shadow is the digraph itself, and the theorem gives the quadratic
 The general model needs a different proof that the shadow is budgeted.
 The proof above used twice that a hyperedge has one tail: leaving hyperedges with different tails are different, and they differ from the entering hyperedges.
 With several tails this fails. Two midpoints can leave through the same hyperedge, and for $r \ge 4$ one hyperedge can be the first hyperedge of one route and the second hyperedge of another.
-Instead we take a family of routes to which no route can be added, and ask what stops a new route.
-Every midpoint, or $v$ itself, that gets no route lies in a hyperedge that the family already uses, and a used hyperedge has only $r$ vertices.
+Instead we choose routes one at a time until no route can be added.
+Every midpoint, or $v$, that then has no route lies in a hyperedge that is already used, and a used hyperedge has only $r$ vertices.
 
 \begin{theorem}[The general orientation model shares the constant]\label{thm:dir-hyper-general-constant}
 Let $r \ge 2$ and $m \ge 2$. In the general model, every directed $r$-uniform multihypergraph $\HH$ on $n \ge 2$
@@ -1847,20 +1847,19 @@ A hyperedge $(T,H)$ gives $|T|\,|H| \ge r-1$ arcs of $R$. So
 \]
 
 Next we show that the shadow is budgeted.
-Fix an ordered pair $(u,v)$. Let $\mathcal{T}$ be the set of midpoints counted by $p_2(u,v)$, together with $v$ if $(u,v) \in A(R)$. We call the elements of $\mathcal{T}$ \emph{targets}.
-Call a hyperedge $e$ an \emph{entrance} for $t \in \mathcal{T}$ if $u$ is a tail of $e$ and $t$ a head.
-Call $e$ an \emph{exit} for a midpoint $t$ if $t$ is a tail of $e$ and $v$ a head.
-Every $t \in \mathcal{T}$ has an entrance, and every midpoint has an exit.
-No hyperedge is both an entrance and an exit for the same $t$, since $t$ cannot be both a tail and a head.
+Fix an ordered pair $(u,v)$. Let $\mathcal{T}$ be the set of midpoints counted by $p_2(u,v)$, together with $v$ if $(u,v) \in A(R)$.
+Every $t \in \mathcal{T}$ gives a route from $u$ to $v$.
+For $t = v$ it is the route of length one through a hyperedge with $u$ among its tails and $v$ among its heads.
+For a midpoint $t$ it is the route $u \to t \to v$ through a hyperedge with $u$ among its tails and $t$ among its heads, followed by a hyperedge with $t$ among its tails and $v$ among its heads.
+These two hyperedges are different, since $t$ cannot be both a tail and a head of one hyperedge.
 
-For each target we use one route. For $v$ it is a route of length one through an entrance. For a midpoint $t$ it is the route $u \to t \to v$ through an entrance and an exit.
-Build a family of such routes, for different targets and with all hyperedges different, adding routes one at a time until no route can be added.
-Let $\mathcal{F}$ be the result, with $M$ routes, serving the set $S$ of targets, and let $U$ be the set of hyperedges it uses. Then $|U| \le 2M$.
+Choose such routes for different elements of $\mathcal{T}$, with all hyperedges different, one at a time until no route can be added.
+Let $S$ be the set of the $M$ elements of $\mathcal{T}$ that received a route, and let $U$ be the set of hyperedges these routes use. Then $|U| \le 2M$.
 The routes share no hyperedge, and their inner vertices are different, so $M \le \kap_{\HH}(u,v) \le m-1$.
 
 Now take $t \in \mathcal{T} \setminus S$.
-If $t$ had an entrance outside $U$ and, for a midpoint, also an exit outside $U$, we could add a route for $t$. This contradicts maximality.
-So $t$ is a tail or a head of some hyperedge in $U$. So
+No route for $t$ can be added. So every hyperedge with $u$ among its tails and $t$ among its heads lies in $U$, or $t$ is a midpoint and every hyperedge with $t$ among its tails and $v$ among its heads lies in $U$.
+Such hyperedges exist, so $t$ is a tail or a head of some hyperedge in $U$. So
 \[
     \mathcal{T} \setminus S \;\subseteq\; \bigcup_{e \in U} \bigl(T_e \cup H_e\bigr) ,
     \qquad\text{and}\qquad
