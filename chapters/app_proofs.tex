@@ -178,7 +178,7 @@ At $n=13$ both maxima are $30$, and the edge and vertex values first differ at $
 
 The same care is needed for the Bollob\'{a}s--Erd\H{o}s conjecture of \Cref{sec:simple-vertex-blocks}.
 Its forcing number $1+\binom m2 p$ is for graphs on $1+(m-1)p$ vertices.
-Each copy of $K_m$ adds $\binom m2$ edges but only $m-1$ vertices, so in our notation the rate is $m/2$ edges per vertex.
+Each copy of $K_m$ adds $\binom m2$ edges but only $m-1$ vertices, so in our notation this gives $m/2$ edges per added vertex.
 \end{remark}
 
 \subsection{The vertex problem is a block problem}\label{sec:simple-vertex-blocks}
@@ -192,6 +192,7 @@ A \emph{bridge} is an edge whose removal disconnects its component.
 A \emph{block} is a maximal connected subgraph that has an edge and no cut vertex of its own.
 In a simple graph, a block is either a bridge or a maximal $2$-connected subgraph.
 
+Call $|E(G)|/(|V(G)|-1)$ the \emph{rate} of a graph $G$, with edges counted with multiplicity in a multigraph. It is the number of edges per vertex after the first.
 The next theorem says that the best graph is built from blocks: choose block sizes $b_i$, where a block of size $b_i$ costs $b_i-1$ vertices and gives at most $h_m(b_i)$ edges, with total cost at most $n-1$.
 
 \begin{theorem}[The vertex problem reduces to blocks]\label{thm:simple-vertex-blocks}
@@ -279,7 +280,6 @@ It is a single block with $2(b-1)$ edges.
 
 Third, the Bollob\'as--Erd\H{o}s construction, copies of $K_m$ sharing one vertex, is the case $b = m$: $h_m(m) = \binom{m}{2}$, with rate $m/2$.
 Their conjecture says that $c_m = m/2$, so that no block beats $K_m$.
-Call $|E(G)|/(|V(G)|-1)$ the \emph{rate} of a graph $G$.
 A \emph{bouquet} is a set of blocks that share one vertex and are otherwise disjoint.
 A bouquet with blocks $B_i$ of sizes $b_i$ has rate
 \[
@@ -1359,7 +1359,7 @@ For $m \ge 3$ there are three constructions.
     Here $\pi(u,v) = n-2$: each of the other $n-2$ vertices gives a route of length two, and together they separate $u$ from $v$ once the edge $uv$ is removed.
     So $\kap(u,v) = q + n - 2$, and it is feasible when $q \le m+1-n$.
     It has $\binom{n}{2}(m+1-n)$ edges, which is positive only when $n \le m$.
-    \item \emph{The thickened theta.} Choose two \emph{poles}. Join each of the other $n-2$ vertices to both poles with multiplicity $m-2$, and join the poles with multiplicity $m+1-n$ if this is positive.
+    \item \emph{The thickened theta.} Choose two vertices, the \emph{poles}. Join each of the other $n-2$ vertices to both poles with multiplicity $m-2$, and join the poles with multiplicity $m+1-n$ if this is positive.
     A non-pole is joined only to the two poles, so every route from it leaves through a pole.
     So a pole and a non-pole have $\pi = 1$, and $\kap = (m-2) + 1 = m-1$.
     Two non-poles are not adjacent and have $\kap = \pi = 2$.

@@ -15,7 +15,7 @@ The names in the code follow the words of the text.
 \begin{figure}[ht]
 \centering
 \spinediagram
-\caption{One model feeds the max-flow routine. Exhaustive search uses it to find exact values, heuristic search uses it to find dense examples, and the check with \texttt{nauty} uses it to show that no feasible graph has one edge more than the densest one found (\Cref{sec:one-more}).}
+\caption{One model feeds the max-flow computation. Exhaustive search uses it to find exact values, heuristic search uses it to find dense examples, and the check with \texttt{nauty} uses it to show that no feasible graph has one edge more than the densest one found (\Cref{sec:one-more}).}
 \label{fig:spine}
 \end{figure}
 
@@ -105,11 +105,11 @@ In a digraph the link has a direction. In an undirected graph it can be used in 
 The max-flow min-cut theorem of Ford and Fulkerson \cite{FordFulkerson56} says that the maximum flow equals the smallest capacity of a cut.
 By Menger's theorem, this is $\lec(u,v)$.
 So computing a maximum flow computes $\lec(u,v)$.
-We call this the \emph{max-flow routine}.
+We call this the \emph{max-flow computation}.
 
 
 \subsection{Transformations}
-The max-flow routine works on one kind of network for all sixteen problems.
+The max-flow computation works on one kind of network for all sixteen problems.
 
 Every hyperedge, including an ordinary edge, becomes a \emph{gate} (\Cref{fig:hyper-gadget}).
 The gate has an entry node and an exit node, joined by one arc whose capacity is the multiplicity of the hyperedge.
@@ -333,7 +333,7 @@ The flow may stop as soon as it reaches $m$, since a larger value changes nothin
 \caption{A directed hyperedge with one tail and two heads is transformed into a gate. This gate has capacity equal to the multiplicity of the hyperedge and every route must enter at the tail and leave at a head. With several tails, each tail has an arc to $e^-$.}
 \label{fig:dir-hyper-gadget}
 \end{subfigure}
-\caption{The building blocks of the max-flow routine: vertex splitting, hyperedge gates and directed hyperedge gates.}
+\caption{The building blocks of the max-flow computation: vertex splitting, hyperedge gates and directed hyperedge gates.}
 \label{fig:checker-gadgets}
 \end{figure}
 
@@ -521,16 +521,21 @@ We use this method instead of tabu search because there are many possible hypere
 
 \programpart{greedy}{Random greedy growth.}
 
-\subsection{Measuring only the pairs that matter}\label{sec:near-cap}
-Removing an edge never raises $\lec^{\max}$, since it creates no new route.
-Adding an edge raises $\lec(u,v)$ by at most one for every pair.
-Indeed, take a largest family of disjoint $u$--$v$ routes after the addition. At most one of them uses the new edge, and the others are disjoint routes in the old graph.
-The same holds for $\kap^{\max}$, since separated routes also share no edge.
-So the search does not need to run the max-flow routine at every step.
-Removing an edge from a feasible graph keeps it feasible.
-Adding an edge to a graph with $\lec^{\max}\le m-2$ also keeps it feasible.
+\subsection{Measuring only when needed}\label{sec:near-cap}
+A move adds or removes one copy of one hyperedge.
+Removing a copy never raises a connectivity, since every route of the smaller graph is also a route of the larger one.
+Adding a copy raises $\lec(u,v)$ and $\kap(u,v)$ by at most one for every pair.
+To see this, take a largest family of disjoint $u$--$v$ routes after the addition.
+In the incidence convention of \Cref{sec:incidence-convention}, every copy of a hyperedge is a node of its own.
+Edge-disjoint routes share no copy, and separated routes share no inner node, so in both cases no two routes of the family use the same copy.
+So at most one of them uses the new copy.
+The others are disjoint routes of the old graph, of the same kind, so the connectivity rose by at most one.
+This needs the convention. If two routes were only required to share no vertex, they could pass through the same hyperedge (\Cref{sec:incidence-convention}), and one new hyperedge could start several new routes at once.
+So the search does not need to run the max-flow computation at every step.
+Removing a copy from a feasible graph keeps it feasible.
+Adding a copy to a graph in which every pair has at most $m-2$ disjoint routes also keeps it feasible.
 Also, an addition can only push a pair above $m-1$ if that pair is already at $m-1$.
-So \texttt{highest\_after} in \Cref{lst:neighbours} answers without the max-flow routine when the graph stays feasible for sure.
+So \texttt{highest\_after} in \Cref{lst:neighbours} answers without the max-flow computation when the graph stays feasible for sure.
 Otherwise it measures only the pairs already at $m-1$.
 After a move is made, the search measures all pairs once, so the next step again starts from exact values.
 
