@@ -302,7 +302,7 @@ At $m=5$, \Cref{thm:sorensen-thomassen} gives $k_5(14) = \floor{112/3} - 4 = 33$
 So $c_m=m/2$ for $m\le4$, $c_5=8/3$ by \Cref{thm:sorensen-thomassen}, and $m/2<c_m\le m-1$ for $m\ge6$ by the next remark.
 
 \begin{remark}[Feasible graphs are $(m-1)$-degenerate]\label{rem:vertex-degeneracy}
-A theorem of Mader \cite{Mader71} states that every simple graph of minimum degree at least $d \ge 2$ contains two adjacent vertices joined by $d$ internally disjoint paths.
+A theorem of Mader \cite{Mader71,Mader73b} states that every simple graph of minimum degree at least $d \ge 2$ contains two adjacent vertices joined by $d$ internally disjoint paths.
 Consequently, every graph feasible for the vertex problem has a vertex of degree at most $m-1$.
 Since taking a subgraph cannot increase local vertex-connectivity, every non-empty subgraph of a feasible graph has such a vertex.
 Thus every feasible graph is \emph{$(m-1)$-degenerate}.
@@ -1119,13 +1119,11 @@ $\mathrm{rank}(G) \le |X| - 1$.
 
 Read $X$ as the vertices of a hypergraph and $Z$ as its hyperedges, so that $G$ is the incidence graph.
 Then (i) says that two hyperedge nodes are never adjacent, (ii) that no hyperedge repeats a vertex, (iii) that every hyperedge has at least two vertices, and (iv) that the hypergraph is feasible at $m = 3$.
-We allow edges inside $X$, because Step~2 of the proof creates them.
+We allow edges inside $X$, because the proof creates them when it removes a hyperedge node of degree two.
 
 \begin{proof}
 We use induction on $|V| + |E|$.
-Step~1 handles cut vertices.
-Steps~2 and~3 remove vertices of degree two.
-Step~4 handles what is left: a $2$-connected graph in which every degree is at least three.
+We first split the graph at a cut vertex, then remove vertices of degree two, and finally treat a $2$-connected graph in which every degree is at least three.
 In each step we build one or two smaller graphs, check that they satisfy (i) to (iv) and are connected, and apply the induction hypothesis to them.
 
 \emph{Base: $|V| \le 2$.}
