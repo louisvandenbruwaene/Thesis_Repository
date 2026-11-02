@@ -254,7 +254,7 @@ The library builds the flow in steps, and one step can raise its value by more t
 % to roughly 0.58 of natural size and its labels to under 5pt. Stacking them
 % one per row at 0.70\textwidth reverses that, drawing each slightly larger
 % than natural instead.
-\begin{figure}[ht]
+\begin{figure}[htbp]
 \centering
 \begin{subfigure}[b]{0.70\textwidth}
 \centering
@@ -569,6 +569,7 @@ The program saves every graph with its certificate in the file \texttt{witnesses
 A second checker, the \emph{file checker}, checks this file (\Cref{lst:verifier} in \Cref{app:program}).
 It reads only the file and calls no other function of the program, so it can be read on its own. It checks the model, the size and every certificate as described above.
 The command \texttt{python erdos915.py verify} runs it on \texttt{witnesses\_tabu.json}, and \texttt{python erdos915.py verify witnesses\_greedy.json} on the other file.
+The file checker itself uses only the Python standard library, but the program imports \texttt{networkx} at the start, so \texttt{networkx} must be installed to run these commands.
 An upper bound is different. A certificate that no graph on $n$ vertices has more edges would be the whole search, which is too long to check.
 So the thesis takes no upper bound or exact value from the program.
 Every upper bound is proved by hand, and every construction in the thesis is checked by hand in \Cref{ch:basecases} or \Cref{app:proofs}.
@@ -614,9 +615,9 @@ Dropping every possible ball would reach every local optimum, and so also the de
 Within the time limit the program runs one of the two searches.
 A run for a single model, or a single $n$ and $m$, can combine them: many fresh starts, each followed by a short tabu search.
 
-Which search does better depends on how the local optima lie.
-When the local optima are shallow and close together, a small change leads from one to a denser one, and tabu search can follow these steps.
-When they are deep and far apart, a small change only leads back to the same one, and only a fresh start reaches another.
+One possible explanation, which this thesis does not test, is how the local optima lie.
+If they are shallow and close together, a small change leads from one to a denser one, and tabu search can follow these steps.
+If they are deep and far apart, a small change mostly leads back to the same one, and fresh starts may help to reach others.
 Tabu search has better results for the general version of directed hypergraphs and directed multihypergraphs, for example $41$ against $35$ hyperedges for the general directed multihypergraph with edge separation at $n=7$, $m=7$.
 Random greedy growth has better results for multigraphs and directed multigraphs with vertex separation, and for the forward and backward versions of directed multihypergraphs, for example $74$ arcs against $68$ for the directed multigraph with vertex separation at $n=7$, $m=6$.
 For the forward and backward versions of directed hypergraphs the two searches differ in at most three entries per table, some in favour of each search.

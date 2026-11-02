@@ -1120,7 +1120,9 @@ For example, at $m = 10$, $s = 6$ and $n = 11$, two copies sharing a vertex give
 Disjoint copies would allow only one copy, with $75$ edges, and $120$ edges after attaching the other five vertices.
 
 Each copy of $K_s$ uses $s-1$ new vertices, which makes the gain per added vertex $\mathrm{gain}(s,m)/(s-1) = (s-2)(m-1-s)/2$. The factors $s-2$ and $m-1-s$ add up to $m-3$. Their product is largest when they are about equal, at $s\approx(m+1)/2$, where the gain per vertex is about $(m-3)^2/8$.
-For $n/m\to\infty$ the construction therefore gives $K_m(n)\ge\bigl(\tfrac18+o_m(1)\bigr)m^2(n-1)$, while the thickened tree gives only $(m-1)(n-1)$.
+For sufficiently large $m$, choose an integer $s$ nearest to $(m+1)/2$, and take $k = \floor{(n-1)/(s-1)}$, which is at least $1$ once $n \ge m$.
+The gain per added vertex is then $m^2/8 + O(m)$, and rounding $k$ down loses at most one $\mathrm{gain}(s,m) = O(m^3)$ edges.
+So $K_m(n) \ge \bigl(\tfrac18 - O(1/m) - O(m/n)\bigr)m^2 n$, while the thickened tree gives only $(m-1)(n-1)$.
 
 This construction need not be optimal.
 The next result gives an upper bound of the same order.
@@ -1142,9 +1144,9 @@ Let $G$ be feasible, with underlying simple graph $G_0$.
 The second inequality is \Cref{rem:vertex-degeneracy}.
 \end{proof}
 
-So for $n/m\to\infty$ and then $m\to\infty$,
+So for $m\to\infty$ and $n/m\to\infty$,
 \[
-    \Bigl(\tfrac{1}{8} + o_m(1)\Bigr) m^2 \, n
+    \Bigl(\tfrac{1}{8} - o(1)\Bigr) m^2 \, n
     \;\le\; K_m(n) \;\le\; m^2 n .
 \]
 This needs $n$ large: for example $K_m(2)=m-1$.
@@ -1251,6 +1253,12 @@ Since $3 - 2\sqrt{2} \approx 0.172 > \tfrac18$, this is larger than the rate of 
 \end{proof}
 
 In the best choice, one side has about $0.41m$ vertices and the other has $m-1$.
+
+For other $n$ with $n \ge s+t$, glue $k = \floor{(n-1)/(s+t-1)}$ blocks at one shared vertex, and join each remaining vertex to the shared vertex by one edge.
+Each such vertex has one neighbour, so the multigraph stays feasible.
+Fewer than $s+t-1 < 2m$ vertices remain, so at most one block of $st(m-s) < m^3$ edges is lost.
+For sufficiently large $m$, take $t = m-1$ and an integer $s$ nearest to $(\sqrt2-1)m$. For these optimising choices the rate is $(3-2\sqrt2)m^2 + O(m)$.
+This gives $K_m(n)/(m^2n) \ge 3-2\sqrt2 - O(1/m) - O(m/n)$, where $O(1/m)$ accounts for the finite-$m$ error in the block rate and $O(m/n)$ for the rounding of $k$.
 So $3-2\sqrt2-o(1)\le K_m(n)/(m^2n)\le1$ for $m\to\infty$ and $n/m\to\infty$.
 Whether this ratio has a limit is open.
 
