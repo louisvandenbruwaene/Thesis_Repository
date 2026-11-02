@@ -484,14 +484,14 @@ The setting \texttt{HEURISTIC\_SEARCH} chooses which one runs, and \Cref{sec:com
 \subsection{Tabu search}
 
 The first heuristic is \emph{tabu search} \cite{Glover89}.
-Tabu search is a \emph{metaheuristic}, meaning it moves through the space of all feasible graphs in a guided way.
-It is a metaheuristic instead of a plain heuristic because it also makes moves that make the graph worse. This keeps it from getting stuck in a \emph{local optimum}, a graph to which no copy can be added although denser graphs may exist.
+Tabu search is a \emph{metaheuristic}: a general strategy that steers a simple search, here adding random copies, so that it does not stop at the first graph where it gets stuck.
+Such a graph is a \emph{local optimum}, a graph to which no copy can be added although denser graphs may exist. Tabu search moves on from it by also making moves that make the graph smaller.
 
 Tabu search does this as follows.
 The search starts at the empty graph and moves to another graph by adding or removing one copy of an edge.
-The choice of move is random. As long as a copy can be added, the search adds one, chosen at random among the copies that can be added. At a local optimum it removes a random copy instead.
+The choice of move is random. As long as a copy can be added, the search adds one, chosen at random among the copies that can be added. At a local optimum, or when every copy that can be added is on the tabu list below, it removes a random copy instead.
 Adding that copy back would lead straight back to the local optimum.
-To prevent this, the search keeps a \emph{tabu list} of the last ten edges it changed, and it may not change an edge on this list. The only exception is a move that gives more edges than any graph seen so far.
+To prevent this, the search keeps a \emph{tabu list} of the edges changed in its last ten moves, and it may not change an edge on this list. The only exception is a move that gives more edges than any graph seen so far.
 The search runs until its time limit and returns the densest graph it has seen. It stops earlier only on tiny cases, where every move can be forbidden.
 
 Whether a copy can be added is tested only when needed, as in the pruned search.

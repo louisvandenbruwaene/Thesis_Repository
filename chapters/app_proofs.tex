@@ -78,7 +78,7 @@ Since $N \le dn/r$, we have $rN/n \le d$. As $d$ is an integer, $\ceil{rN/n} \le
 \begin{construction}[Hub-and-spokes graph]\label{const:hub-spokes}\label{const:shared-clique}
 Let $n\ge m\ge2$. The graph $H_{m,n}$ has a vertex $h$ and further vertices $v_0,\dots,v_{n-2}$. Join $h$ to every $v_i$. On $v_0,\dots,v_{n-2}$, add a graph with $\floor{(m-2)(n-1)/2}$ edges in which every vertex has degree at most $m-2$.
 
-This graph can be written down directly. Write $N=n-1$ and $d=m-2$, so $0\le d\le N-1$, so these vertices are $v_0,\dots,v_{N-1}$. Place them around a circle in this order, and take indices modulo $N$.
+This graph can be written down directly. Write $N=n-1$ and $d=m-2$. Since $n\ge m$, $0\le d\le N-1$, and the vertices are $v_0,\dots,v_{N-1}$. Place them around a circle in this order, and take indices modulo $N$.
 For each $s=1,\dots,\floor{d/2}$, join every $v_i$ to $v_{i+s}$.
 The numbers $\pm1,\dots,\pm\floor{d/2}$ are $2\floor{d/2}$ different numbers modulo $N$, because none is zero and all are smaller than $N/2$ in absolute value. Each $v_i$ is therefore joined to $2\floor{d/2}$ different vertices $v_{i\pm s}$. Every vertex gets degree $2\floor{d/2}$, and the number of edges, half the sum of the degrees, is $N\floor{d/2}$.
 If $d$ is odd, also join $v_i$ to $v_{i+\floor{N/2}}$ for $i=0,\dots,\floor{N/2}-1$.
@@ -168,7 +168,7 @@ This is (b).
 \end{proof}
 
 For $m = 2$ this shows that the extremal graphs are exactly the trees on the $n$ vertices.
-Indeed, $m(n-1) = 2(n-1)$ is even, so by (a) every tree edge is an edge of $G$. So $G$ contains $T$. Both have $n-1$ edges, so $G = T$ is a tree.
+Here $m(n-1) = 2(n-1)$ is even, so by (a) every tree edge is an edge of $G$. So $G$ contains $T$. Both have $n-1$ edges, so $G = T$ is a tree.
 Conversely, a tree has $n-1$ edges and $\lec^{\max} = 1$.
 
 \begin{remark}[Forcing and avoiding counts]\label{rem:threshold-convention}\label{rem:threshold-audit}
@@ -715,7 +715,7 @@ The product $|A|\,|B|$ with $|A|+|B| = n$ equals $\floor{n^2/4}$ only when the p
 
 The hypothesis $n\ge2m$ is used only to exclude paths with two arcs in $R$.
 Every vertex of an extremal multigraph has degree at least $(m-1)\floor{n/2}$.
-Indeed, deleting the vertex leaves a feasible multigraph on $n-1 \ge 7$ vertices, with at most $(m-1)M(n-1) = (m-1)\floor{(n-1)^2/4}$ arcs.
+Deleting the vertex leaves a feasible multigraph on $n-1 \ge 7$ vertices, with at most $(m-1)M(n-1) = (m-1)\floor{(n-1)^2/4}$ arcs.
 So the vertex has at least $(m-1)\bigl(\floor{n^2/4} - \floor{(n-1)^2/4}\bigr) = (m-1)\floor{n/2}$ arcs.
 For even $n$, every vertex of $(m-1)\cdot B_{n/2,\,n/2}$ has degree exactly $(m-1)n/2$.
 
