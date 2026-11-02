@@ -101,7 +101,7 @@ This section explains how the program computes them.
 To compute $\lec(u,v)$ we use a maximum flow.
 In a network every link has a capacity, and a \emph{maximum flow} is the largest amount that can be sent from $u$ to $v$.
 We give each pair of vertices a link with capacity $\mu(u,v)$.
-In a digraph the link has a direction. In an undirected graph it can be used in both directions.
+In a directed graph the link has a direction. In an undirected graph it can be used in both directions.
 The max-flow min-cut theorem of Ford and Fulkerson \cite{FordFulkerson56} says that the maximum flow equals the smallest capacity of a cut.
 By Menger's theorem, this is $\lec(u,v)$.
 So computing a maximum flow computes $\lec(u,v)$.
@@ -342,7 +342,7 @@ The program stores a graph as a table that gives each possible hyperedge its num
 The possible hyperedges depend on the model:
 \begin{itemize}
 \item in a graph, the $\binom n2$ pairs $\{u,v\}$,
-\item in a digraph, the $n(n-1)$ ordered pairs, one for each arc $u\to v$,
+\item in a directed graph, the $n(n-1)$ ordered pairs, one for each arc $u\to v$,
 \item in an $r$-uniform hypergraph, the $\binom nr$ sets of $r$ vertices, called \emph{$r$-sets},
 \item in a directed $r$-uniform hypergraph, an $r$-set together with a choice of which of its vertices are tails.
 A forward hyperedge has one tail, so each $r$-set gives $r$ possible hyperedges.
@@ -369,7 +369,7 @@ Directed hypergraphs have the most candidates, because each $r$-set carries seve
 The separation does not change the candidates. It only changes the test for each candidate.
 
 
-So there are $2^{\binom n2}$ simple graphs and $2^{n(n-1)}$ simple digraphs on $n$ vertices.
+So there are $2^{\binom n2}$ simple graphs and $2^{n(n-1)}$ simple directed graphs on $n$ vertices.
 With multiplicities at most $m-1$ there are $m^{\binom n2}$ multigraphs and $m^{n(n-1)}$ directed multigraphs.
 \Cref{fig:complexity} shows how fast this grows.
 The program uses two exact methods: a pruned search, for every model, and a check of the graphs with one edge more, for every model except directed hypergraphs.
@@ -444,7 +444,7 @@ To list these graphs, each only once up to renaming the vertices, the program us
 Three of its programs cover six of the eight models:
 \begin{itemize}
 \item \texttt{geng} lists the simple graphs on $n$ vertices with a given number of edges,
-\item \texttt{directg} takes each graph from \texttt{geng} and directs each of its edges one way or both ways, which lists the simple digraphs,
+\item \texttt{directg} takes each graph from \texttt{geng} and directs each of its edges one way or both ways, which lists the simple directed graphs,
 \item \texttt{genbg} lists bipartite graphs: graphs whose vertices are split into two sides, with every edge joining the two sides. A hypergraph is the bipartite graph with the $n$ vertices on one side and the hyperedges on the other side, each hyperedge joined to its $r$ vertices. With the option \texttt{-z} no two hyperedges have the same vertices, so the hypergraph is simple.
 \end{itemize}
 \texttt{nauty} has no program that lists directed hypergraphs, so the program does not run this check for them. Their exact values come from the pruned search only.
@@ -459,7 +459,7 @@ In a simple model the support is the graph itself, with one copy of each edge.
 The copies are chosen one edge at a time, as in the pruned search: the program tries $1, 2, \dots$ copies and stops at the first number that makes the graph infeasible, since more copies stay infeasible.
 
 \Cref{lst:nauty} builds the \texttt{nauty} commands and reads their output one support at a time, so the check can stop at its time limit before all supports are listed.
-For digraphs two programs work together: \texttt{geng} passes every graph it lists to \texttt{directg}, which directs its edges.
+For directed graphs two programs work together: \texttt{geng} passes every graph it lists to \texttt{directg}, which directs its edges.
 The program counts the list as complete only if both programs exit normally.
 If \texttt{geng} failed and \texttt{directg} did not, \texttt{directg} would receive no graphs and exit normally. The list would then look empty, and the check would report a value as exact without having checked anything.
 \Cref{lst:larger} chooses the copies, and repeats the check while it finds a feasible graph with one edge more.
@@ -474,7 +474,7 @@ Instead we search for dense graphs in a guided way.
 A \emph{heuristic} is a rule that moves the search towards better graphs.
 The methods below also allow moves that make the graph worse, so that the search does not get stuck.
 
-For graphs and digraphs, each candidate gets an \emph{energy}
+For graphs and directed graphs, each candidate gets an \emph{energy}
 \[
     \Phi(G) = -|E(G)| + \Lambda \cdot \max\bigl(0,\ c^{\max}(G) - (m - 1)\bigr).
 \]
@@ -587,7 +587,7 @@ The exhaustive and heuristic searches of this chapter show which bounds are wort
 \Cref{lst:driver} puts the parts together.
 For each case, the driver allocates a nominal sixty-second search budget, in three parts of twenty seconds.
 The first part goes to the pruned search.
-If it does not finish, the second part goes to a heuristic search: tabu search for graphs and digraphs, and random greedy growth for hypergraphs.
+If it does not finish, the second part goes to a heuristic search: tabu search for graphs and directed graphs, and random greedy growth for hypergraphs.
 The third part goes to checking one edge more (\Cref{sec:one-more}), starting from the densest graph found so far.
 Directed hypergraphs have no third part, so their budget is split into two parts of thirty seconds.
 The program checks the time only between operations, so one operation can run past the budget. Writing and checking the certificate takes extra time.

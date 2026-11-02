@@ -328,7 +328,7 @@ In the figures, one colour is one hyperedge, not a path of ordinary edges.
     \node[font=\itshape] at (0,-1.75) {multihypergraph};
     \node[font=\scriptsize, text=black!65] at (0,-2.25) {a hyperedge repeated};
   \end{scope}
-  % (a) simple digraph: directed triangle with one bidirected pair
+  % (a) simple directed graph: directed triangle with one bidirected pair
   \begin{scope}[shift={(0,-4.5)}]
     \node[mv] (s1d) at (90:0.78) {};
     \node[mv] (s2d) at (210:0.78) {};
@@ -338,7 +338,7 @@ In the figures, one colour is one hyperedge, not a path of ordinary edges.
     \draw[darc] (s2d) to[bend right=14] (s3d);
     \draw[darc] (s3d) to[bend right=14] (s1d);
     \draw[darc] (s2d) to[bend right=14] (s1d);
-    \node[font=\itshape] at (0,-1.75) {simple digraph};
+    \node[font=\itshape] at (0,-1.75) {simple directed graph};
     \node[font=\scriptsize, text=black!65] at (0,-2.25) {one arc per ordered pair};
   \end{scope}
   % (b) directed multigraph: a triple arc, a bidirected pair, a single arc
@@ -407,8 +407,8 @@ In the figures, one colour is one hyperedge, not a path of ordinary edges.
 \label{fig:eight-models}
 \end{figure}
 
-Digraphs have no Gomory--Hu tree, but Menger's theorem (\Cref{thm:menger}) also holds for directed multigraphs, with directed paths and arcs.
-In a digraph, the \emph{out-degree} $d^+(v)$ is the number of arcs that leave $v$.
+Directed graphs have no Gomory--Hu tree, but Menger's theorem (\Cref{thm:menger}) also holds for directed multigraphs, with directed paths and arcs.
+In a directed graph, the \emph{out-degree} $d^+(v)$ is the number of arcs that leave $v$.
 The vertices these arcs point to are the \emph{out-neighbours} of $v$.
 The \emph{in-degree} $d^-(v)$ is the number of arcs that enter $v$, and they come from the \emph{in-neighbours} of $v$.
 The \emph{total degree} is $d(v)=d^+(v)+d^-(v)$.
@@ -417,7 +417,7 @@ Removing three arcs cuts all of them, as Menger's theorem predicts.
 The out-degree of $u$ and the in-degree of $v$ also bound the number of routes:
 
 \begin{lemma}[Degree bound]\label{lem:degree-bound}
-Every pair $u, v$ of distinct vertices of a graph $G$ satisfies $\lec_G(u, v) \le \min(\deg u, \deg v)$, and every ordered pair of a digraph $D$ satisfies $\lec_D(u, v) \le \min(d^+(u), d^-(v))$.
+Every pair $u, v$ of distinct vertices of a graph $G$ satisfies $\lec_G(u, v) \le \min(\deg u, \deg v)$, and every ordered pair of a directed graph $D$ satisfies $\lec_D(u, v) \le \min(d^+(u), d^-(v))$.
 \end{lemma}
 
 \begin{proof}
@@ -454,9 +454,9 @@ Every edge-disjoint $u$--$v$ path uses a distinct edge at $u$, so there are at m
 \draw[me] (v3) to[bend right=12] (v4);
 % the fourth is already u->v
 
-% --- extra arcs to make the digraph richer ---
+% --- extra arcs to make the directed graph richer ---
 % one arc from 0 to 2.  Kept SIMPLE on purpose: this figure illustrates the
-% directed measure in the simple-digraph discussion, so no pair carries a
+% directed measure in the simple-directed graph discussion, so no pair carries a
 % parallel copy.  Parallel arcs are drawn in the multigraph figures instead.
 \draw[me] (v0) to[bend right=12] (v2);
 
@@ -510,7 +510,7 @@ Every edge-disjoint $u$--$v$ path uses a distinct edge at $u$, so there are at m
 
 \end{tikzpicture}
 
-\caption{Three arc-disjoint $u\to v$ routes (coloured) and the corresponding three-arc directed cut (red) in a \emph{simple} digraph. Thus $\lambda(u,v)=3$, meeting the degree bound $\min(d^+(u),d^-(v))=3$.}
+\caption{Three arc-disjoint $u\to v$ routes (coloured) and the corresponding three-arc directed cut (red) in a \emph{simple} directed graph. Thus $\lambda(u,v)=3$, meeting the degree bound $\min(d^+(u),d^-(v))=3$.}
 \label{fig:directed-lambda}
 \end{figure}
 
@@ -580,7 +580,7 @@ Simple graph & $\ell_m(n)$ & $k_m(n)$ \\
 Multigraph & $L_m(n)$ & $K_m(n)$ \\
 $r$-uniform simple hypergraph & $\ell_m^{(r)}(n)$ & $k_m^{(r)}(n)$ \\
 $r$-uniform multihypergraph & $L_m^{(r)}(n)$ & $K_m^{(r)}(n)$ \\
-Simple digraph & $\ell_m^{\mathrm{dir}}(n)$ & $k_m^{\mathrm{dir}}(n)$ \\
+Simple directed graph & $\ell_m^{\mathrm{dir}}(n)$ & $k_m^{\mathrm{dir}}(n)$ \\
 Directed multigraph & $L_m^{\mathrm{dir}}(n)$ & $K_m^{\mathrm{dir}}(n)$ \\
 Directed $r$-uniform simple hypergraph & $\ell_m^{\mathrm{dir}\,(r)}(n)$ & $k_m^{\mathrm{dir}\,(r)}(n)$ \\
 Directed $r$-uniform multihypergraph & $L_m^{\mathrm{dir}\,(r)}(n)$ & $K_m^{\mathrm{dir}\,(r)}(n)$ \\
@@ -607,9 +607,9 @@ Multigraph edge value $L_m(n)$ & \Cref{thm:multigraph-edge} & No earlier source 
 Multigraph vertex value at $m=2,3$ & \Cref{thm:multi-vertex-m2,cor:multi-vertex-m3} & No earlier source found & The simple graph values of \Cref{thm:leonard} \\
 Hypergraph edge bound and the ranges where it is attained & \Cref{prop:hyper-edge} & No earlier source found & Mader's bound for simple graphs \\
 Hypergraph vertex value at $m=2,3$ & \Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3} & No earlier source found & The simple graph values of \Cref{thm:leonard} \\
-Simple digraph values at $m=2$, both separations & \Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact} & No earlier source found & None found \\
+Simple directed graph values at $m=2$, both separations & \Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact} & No earlier source found & None found \\
 Directed multigraph value with arc separation, and its extremal multigraphs & \Cref{thm:dir-multi-full,thm:dir-multi-uniqueness} & No earlier source found & None found \\
-Simple digraphs: at most $\floor{n^2/4}+(m-1)(n-1)$ arcs for every $n$ & \Cref{thm:dir-arc-linear-error} & Overlaps a known result & Huang--Lyu \cite[Theorem~2]{HuangLyu26} give the linear term $(m-1)n$ for $n$ large in terms of $m$ \\
+Simple directed graphs: at most $\floor{n^2/4}+(m-1)(n-1)$ arcs for every $n$ & \Cref{thm:dir-arc-linear-error} & Overlaps a known result & Huang--Lyu \cite[Theorem~2]{HuangLyu26} give the linear term $(m-1)n$ for $n$ large in terms of $m$ \\
 Directed hypergraphs: the leading constant in three orientation models & \Cref{thm:dir-hyper-constant,thm:dir-hyper-general-constant} & No earlier source found & None found \\
 \bottomrule
 \end{tabularx}
@@ -670,21 +670,21 @@ S{\o}rensen and Thomassen count the least number of edges that forces $m$ disjoi
 \subsection{Directed graphs at the first threshold}
 
 \begin{theorem}[Directed arc value at $m = 2$]\label{thm:dir-arc-m2-exact}
-For simple digraphs,
+For simple directed graphs,
 \[
     \ell_2^{\mathrm{dir}}(n) = \max\!\left(2(n-1),\ \floorfrac{n^2}{4}\right).
 \]
 \end{theorem}
 
-Two constructions attain the two terms (\Cref{fig:simple-digraph-m2}).
+Two constructions attain the two terms (\Cref{fig:simple-directed graph-m2}).
 The \emph{bidirected star} joins one vertex to every other vertex by an arc in each direction, so it has $2(n-1)$ arcs.
-The one-way complete bipartite digraph has all arcs from one half of the vertices to the other half, so it has $\floor{n^2/4}$ arcs.
+The one-way complete bipartite directed graph has all arcs from one half of the vertices to the other half, so it has $\floor{n^2/4}$ arcs.
 In both, every ordered pair is joined by at most one directed path.
 \Cref{sec:dir-constructions} gives the details.
 
 
 \begin{theorem}[Directed vertex value at $m = 2$]\label{thm:dir-vertex-m2-exact}
-For simple digraphs, $k_2^{\mathrm{dir}}(n) = \ell_2^{\mathrm{dir}}(n)$.
+For simple directed graphs, $k_2^{\mathrm{dir}}(n) = \ell_2^{\mathrm{dir}}(n)$.
 \end{theorem}
 
 \begin{figure}[ht]
@@ -727,19 +727,19 @@ For simple digraphs, $k_2^{\mathrm{dir}}(n) = \ell_2^{\mathrm{dir}}(n)$.
   \node[font=\small] at (0,-1.3) {$A$};
   \node[font=\small] at (4,-1.3) {$B$};
 \end{tikzpicture}
-\caption{At $n=7$ the two constructions have the same number of arcs, $12$ each, and both have $\lec^{\max}=1$. Left: the bidirected star, a hub joined to six spokes both ways, $2(n-1)=12$. Right: the one-way complete bipartite digraph $B_{3,4}$, every arc from $A$ to $B$, $\floor{n^2/4}=12$.}
-\label{fig:simple-digraph-m2}
+\caption{At $n=7$ the two constructions have the same number of arcs, $12$ each, and both have $\lec^{\max}=1$. Left: the bidirected star, a hub joined to six spokes both ways, $2(n-1)=12$. Right: the one-way complete bipartite directed graph $B_{3,4}$, every arc from $A$ to $B$, $\floor{n^2/4}=12$.}
+\label{fig:simple-directed graph-m2}
 \end{figure}
 
-The star has more arcs for $n<7$, and the bipartite digraph has more for $n>7$.
+The star has more arcs for $n<7$, and the bipartite directed graph has more for $n>7$.
 So the directed value grows quadratically in $n$, while the undirected value grows linearly.
-In the bipartite digraph all arcs point the same way, so a route crosses between the parts only once and never comes back.
+In the bipartite directed graph all arcs point the same way, so a route crosses between the parts only once and never comes back.
 An undirected graph with $\lec^{\max}\le1$ has no cycle, so it has at most $n-1$ edges.
 
 For the upper bound we keep only the arcs that are needed to tell who can reach whom.
 
 \begin{definition}[Reachability skeleton]\label{def:reach-skeleton}
-Let $D$ be a directed multigraph. A \emph{reachability skeleton} of $D$ is a \emph{subdigraph} $R$ of $D$, that is, a subgraph of the digraph, on the same vertices, with at most one copy of each arc, such that for all $u\ne v$: $u$ can reach $v$ in $R$ exactly when $u$ can reach $v$ in $D$.
+Let $D$ be a directed multigraph. A \emph{reachability skeleton} of $D$ is a \emph{directed subgraph} $R$ of $D$, that is, a subgraph of the directed graph, on the same vertices, with at most one copy of each arc, such that for all $u\ne v$: $u$ can reach $v$ in $R$ exactly when $u$ can reach $v$ in $D$.
 \end{definition}
 
 A skeleton keeps the information about who can reach whom. It does not keep the number of disjoint paths.
@@ -754,7 +754,7 @@ Every directed multigraph $D$ on $n \ge 2$ vertices has a reachability skeleton 
 \begin{proof}
 We build $R$ first inside each strongly connected component, then between components, and then we count.
 A \emph{strongly connected component} is a maximal set of vertices in which any two can reach each other.
-Every digraph splits into such components.
+Every directed graph splits into such components.
 \Cref{fig:skeleton-example} shows an example.
 
 Take a component with $n_i$ vertices and choose a vertex $r$ in it.
@@ -768,7 +768,7 @@ So at most $2(n_i - 1)$ arcs keep all reachability inside the component.
 
 Replace each component by one point.
 Put an arc from one point to another if $D$ has an arc from the first component to the second.
-This gives a digraph $Q_0$ on $q$ points, one per component.
+This gives a directed graph $Q_0$ on $q$ points, one per component.
 $Q_0$ has no \emph{directed cycle}, that is, no sequence of arcs $x_1\to x_2\to\dots\to x_k\to x_1$ through $k\ge2$ different points. Indeed, all vertices of the components on such a cycle could reach each other, so they would lie in one component.
 Now delete arcs from $Q_0$ one at a time, as long as this does not change which points of $Q_0$ reach which.
 Call the result $Q$. No arc of $Q$ can be deleted without changing this.
@@ -857,18 +857,18 @@ Since $f(1) = 2(n-1)$ and $f(n) = \floor{n^2/4}$, we get $f(q) \le M(n)$.
   \node[font=\small] at (2.6,2.0) {$R$};
 \end{scope}
 \end{tikzpicture}}
-\caption[A reachability skeleton]{The construction of \Cref{lem:reach-skeleton}. Each bidirected pair $A,B,C$ is a strongly connected component. Merging each pair into a single vertex gives $A\to B\to C$ and the redundant arc $A\to C$. Delete that arc to obtain the triangle-free digraph $Q$. The skeleton $R$ keeps the internal arcs of each pair and the two remaining connections between pairs. Although $a_1\to c_2$ is removed, $a_1$ still reaches $c_2$ through $B$.}
+\caption[A reachability skeleton]{The construction of \Cref{lem:reach-skeleton}. Each bidirected pair $A,B,C$ is a strongly connected component. Merging each pair into a single vertex gives $A\to B\to C$ and the redundant arc $A\to C$. Delete that arc to obtain the triangle-free directed graph $Q$. The skeleton $R$ keeps the internal arcs of each pair and the two remaining connections between pairs. Although $a_1\to c_2$ is removed, $a_1$ still reaches $c_2$ through $B$.}
 \label{fig:skeleton-example}
 \end{figure}
 
-The skeleton has at most one copy of each arc, so at $m=2$ it is enough to show that a feasible digraph is its own skeleton.
+The skeleton has at most one copy of each arc, so at $m=2$ it is enough to show that a feasible directed graph is its own skeleton.
 
 \begin{proof}[Proof of \Cref{thm:dir-vertex-m2-exact}]
-\emph{Lower bound.} The bidirected star (\Cref{const:directed-hub} at $m=2$) and the one-way bipartite digraph (\Cref{const:bipartite}) have $\lec^{\max} = 1$.
+\emph{Lower bound.} The bidirected star (\Cref{const:directed-hub} at $m=2$) and the one-way bipartite directed graph (\Cref{const:bipartite}) have $\lec^{\max} = 1$.
 Since $\kap\le\lec$, they also have $\kap^{\max} \le 1$.
 So $\ell_2^{\mathrm{dir}}(n) \ge M(n)$ and $k_2^{\mathrm{dir}}(n) \ge M(n)$.
 
-\emph{Upper bound.} Let $D$ be a simple digraph on $n \ge 2$ vertices with $\kap^{\max}_D \le 1$.
+\emph{Upper bound.} Let $D$ be a simple directed graph on $n \ge 2$ vertices with $\kap^{\max}_D \le 1$.
 By \Cref{lem:reach-skeleton}, $D$ has a reachability skeleton $R$ with $|A(R)| \le M(n)$.
 
 We claim that $R$ contains every arc of $D$.
@@ -883,7 +883,7 @@ So $|A(D)| = |A(R)| \le M(n)$. With the lower bound, $k_2^{\mathrm{dir}}(n) = M(
 
 \begin{proof}[Proof of \Cref{thm:dir-arc-m2-exact}]
 The two constructions above give $\ell_2^{\mathrm{dir}}(n) \ge M(n)$.
-Since $\kap\le\lec$, every arc-feasible digraph is vertex-feasible, so \Cref{thm:dir-vertex-m2-exact} bounds it. So
+Since $\kap\le\lec$, every arc-feasible directed graph is vertex-feasible, so \Cref{thm:dir-vertex-m2-exact} bounds it. So
 \[
     M(n) \;\le\; \ell_2^{\mathrm{dir}}(n) \;\le\; k_2^{\mathrm{dir}}(n) \;\le\; M(n),
 \]
@@ -1291,7 +1291,7 @@ For $m=4$ this is open.
 \subsection{Directed bounds beyond the first threshold}
 
 \begin{theorem}[The quadratic bound with a linear error]\label{thm:dir-arc-linear-error}
-For all $m \ge 2$ and $n \ge 2$, every simple digraph $D$ on $n$ vertices with $\lec^{\max}_D \le m-1$, or with $\kap^{\max}_D \le m-1$, satisfies
+For all $m \ge 2$ and $n \ge 2$, every simple directed graph $D$ on $n$ vertices with $\lec^{\max}_D \le m-1$, or with $\kap^{\max}_D \le m-1$, satisfies
 \[
     |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; (m-1)(n-1),
 \]
@@ -1304,7 +1304,7 @@ so for each fixed $m$,
 
 \Cref{app:proofs} gives the proof. It counts routes of length two.
 For an ordered pair $(u,v)$, the routes $u\to x\to v$ with different midpoints $x$, together with the arc $u\to v$, are disjoint.
-So a feasible digraph has at most $m-1$ of them.
+So a feasible directed graph has at most $m-1$ of them.
 Take a vertex $v$ of largest out-degree $\Delta$.
 Summing this over the pairs $(v,w)$ shows that the out-neighbours of $v$ send at most $(m-1)(n-1)$ arcs in total.
 The other $n-1-\Delta$ vertices send at most $\Delta$ arcs each.
@@ -1319,7 +1319,7 @@ For all $n \ge 2$ and $m \ge 2$,
 \]
 \end{theorem}
 
-The lower bound uses thickened trees and thickened one-way bipartite digraphs.
+The lower bound uses thickened trees and thickened one-way bipartite directed graphs.
 
 
 
@@ -1336,12 +1336,12 @@ So it multiplies the smallest cut by $k$ too.
 The number of arcs is also multiplied by $k$.
 \end{proof}
 
-\begin{construction}[Thickened tree and thickened bipartite digraph]\label{const:dir-multi-lower}
+\begin{construction}[Thickened tree and thickened bipartite directed graph]\label{const:dir-multi-lower}
 Let $m \ge 2$.
 (a) Take any tree on the $n$ vertices and put $m-1$ arcs in each direction on every tree edge.
 With one arc in each direction this is the bidirected tree, with $\lec^{\max} = 1$.
 So by \Cref{lem:thickening} the thickened tree has $\lec^{\max} = m-1$ and $2(m-1)(n-1)$ arcs.
-(b) Take the one-way bipartite digraph of \Cref{const:bipartite} and repeat every arc $m-1$ times.
+(b) Take the one-way bipartite directed graph of \Cref{const:bipartite} and repeat every arc $m-1$ times.
 By the same lemma it has $\lec^{\max} = m-1$ and $(m-1)\floor{n^2/4}$ arcs.
 \end{construction}
 
@@ -1401,7 +1401,7 @@ $\HH$ on $n \ge 2$ vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
 Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_\HH\le m-1$. The construction of \Cref{prop:dir-hyper-first} has $(1+o(1))(m-1)n^2/(4(r-1))$ hyperedges, so the leading term is right.
 
 \Cref{app:proofs} gives the proof.
-It uses the \emph{shadow} digraph, which has an arc $u\to v$ when some hyperedge has tail $u$ and head $v$.
+It uses the \emph{shadow} directed graph, which has an arc $u\to v$ when some hyperedge has tail $u$ and head $v$.
 Each hyperedge gives $r-1$ arcs of the shadow, and each arc comes from at most $m-1$ hyperedges.
 The route condition on the hypergraph limits the routes of length two in the shadow.
 \Cref{lem:two-step-budget} then bounds the number of arcs of the shadow.
@@ -1431,7 +1431,7 @@ Simple graph & $\floor{m(n-1)/2}$ for $n\ge m$ & Exact for $m\le5$. Open for $m\
 Multigraph & $(m-1)(n-1)$ & $n-1$ at $m=2$, $2(n-1)$ at $m=3$. Open for $m\ge4$ \\
 Simple hypergraph & At most $\floor{(m-1)(n-1)/(r-1)}$, equal when $m-1\le\binom{n-2}{r-2}$ & $\floor{(n-1)/(r-1)}$ at $m=2$, $\floor{2(n-1)/(r-1)}$ at $m=3$ for $r<n$. Open for $m\ge4$ \\
 Multihypergraph & At most $\floor{(m-1)(n-1)/(r-1)}$, equal when $m-1\le\binom{n-2}{r-2}$ or $(r-1)\mid(n-1)$ & $\floor{(n-1)/(r-1)}$ at $m=2$, $\floor{2(n-1)/(r-1)}$ at $m=3$. Open for $m\ge4$ \\
-Simple digraph & $M(n)$ at $m=2$. $n^2/4+\Theta_m(n)$ for $m\ge3$ & Same \\
+Simple directed graph & $M(n)$ at $m=2$. $n^2/4+\Theta_m(n)$ for $m\ge3$ & Same \\
 Directed multigraph & $(m-1)M(n)$ & $M(n)$ at $m=2$. $(m-1)n^2/4+O_m(n)$ \\
 Directed simple hypergraph & $(1+o(1))(m-1)n^2/(4(r-1))$ & Same \\
 Directed multihypergraph & $(1+o(1))(m-1)n^2/(4(r-1))$ & Same \\

@@ -328,7 +328,7 @@ Hence $c_m \le m-1$.
 \section{The directed constructions}\label{sec:dir-constructions}
 
 Three constructions give the directed lower bounds.
-\Cref{fig:simple-digraph-m2} shows the first two.
+\Cref{fig:simple-directed graph-m2} shows the first two.
 Here we define them and check their connectivity.
 
 \begin{construction}[Directed hub]\label{const:directed-hub}
@@ -341,21 +341,21 @@ Every ordered pair $(u,v)$ contains a vertex other than the hub.
 So $\lec(u,v) \le m-1$, that is, $\lec^{\max} \le m-1$.
 At $m = 2$ there are no ring arcs, and we get the \emph{bidirected star}.
 
-\begin{construction}[One-way bipartite digraph]\label{const:bipartite}
+\begin{construction}[One-way bipartite directed graph]\label{const:bipartite}
 Split the vertices into parts $A$ and $B$ of sizes $\floor{n/2}$ and $\ceil{n/2}$, and include every arc from $A$ to $B$ and none the other way. The total is $\floor{n^2/4}$ arcs.
 \end{construction}
 
 No arc leaves $B$ and no arc enters $A$.
 So every route has length one, and $\lec^{\max} = 1$.
 
-\begin{construction}[Augmented bipartite digraph]\label{const:augmented-bipartite}
+\begin{construction}[Augmented bipartite directed graph]\label{const:augmented-bipartite}
 For $n \ge m \ge 2$, set $|B| = \ceil{(n+m-2)/2}$ and $|A| = n - |B|$. Number the vertices of $B$ as $b_1, \dots, b_{|B|}$, and read the indices modulo $|B|$. Include every arc from $A$ to $B$, and inside $B$ give each $b_j$ the $m-2$ in-arcs from $b_{j-1}, \dots, b_{j-(m-2)}$. The total is $\floor{(n+m-2)^2/4}$ arcs.
 \end{construction}
 
 Since $n \ge m$, we have $|B| \ge (2m-2)/2 = m-1$, so the vertices $b_{j-1}, \dots, b_{j-(m-2)}$ are different from each other and from $b_j$.
 
-\begin{lemma}[The augmented bipartite digraph is feasible]\label{lem:augmented-feasible}
-For $m \ge 2$ and $n \ge m$, the digraph of \Cref{const:augmented-bipartite} satisfies $\lec^{\max} = m-1$ and has $\floor{(n+m-2)^2/4}$ arcs. Hence $\ell_m^{\mathrm{dir}}(n) \ge \floor{(n+m-2)^2/4}$.
+\begin{lemma}[The augmented bipartite directed graph is feasible]\label{lem:augmented-feasible}
+For $m \ge 2$ and $n \ge m$, the directed graph of \Cref{const:augmented-bipartite} satisfies $\lec^{\max} = m-1$ and has $\floor{(n+m-2)^2/4}$ arcs. Hence $\ell_m^{\mathrm{dir}}(n) \ge \floor{(n+m-2)^2/4}$.
 \end{lemma}
 
 \begin{proof}
@@ -392,12 +392,12 @@ So for $n\ge m$,
 \[
     \ell_m^{\mathrm{dir}}(n)\;\ge\;\max\Bigl(m(n-1),\ \floorfrac{(n+m-2)^2}{4}\Bigr).
 \]
-For fixed $m$ and large $n$ the augmented bipartite digraph has more arcs (\Cref{fig:crossover,fig:augmented-wall}).
+For fixed $m$ and large $n$ the augmented bipartite directed graph has more arcs (\Cref{fig:crossover,fig:augmented-wall}).
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.78\textwidth]{figures/directed_crossover.png}
-    \caption{The arc counts of the hub and of the augmented bipartite digraph at $m = 3$, and their maximum. These are lower bounds only.}
+    \caption{The arc counts of the hub and of the augmented bipartite directed graph at $m = 3$, and their maximum. These are lower bounds only.}
     \label{fig:crossover}
 \end{figure}
 
@@ -437,24 +437,24 @@ For fixed $m$ and large $n$ the augmented bipartite digraph has more arcs (\Cref
   \node[font=\scriptsize, align=center, vertexorange!75!black] at (5.6,-2.55)
     {$6$ cyclic in-arcs inside $B$};
 \end{tikzpicture}
-\caption{The augmented bipartite digraph of \Cref{const:augmented-bipartite} at $m = 3$, $n = 10$. All arcs between the parts go from $A$ to $B$. Inside $B$, each vertex gets one arc from the previous vertex on a cycle. A pair $a_i, b_j$ has the direct arc and one detour, so $\lec^{\max} = 2$. The digraph has $24 + 6 = 30$ arcs, against $27$ for the hub.}
+\caption{The augmented bipartite directed graph of \Cref{const:augmented-bipartite} at $m = 3$, $n = 10$. All arcs between the parts go from $A$ to $B$. Inside $B$, each vertex gets one arc from the previous vertex on a cycle. A pair $a_i, b_j$ has the direct arc and one detour, so $\lec^{\max} = 2$. The directed graph has $24 + 6 = 30$ arcs, against $27$ for the hub.}
 \label{fig:augmented-wall}
 \end{figure}
 
 
-\section{Simple digraphs beyond the first threshold}
+\section{Simple directed graphs beyond the first threshold}
 
 \subsection{The two-step budget}\label{sec:two-step-budget}
 
 \begin{definition}[Two-step budget]\label{def:two-step-budget}
-Let $D$ be a simple digraph and $C \ge 1$. For $u\ne v$, let $p_2(u,v)$ be the number of vertices $x \notin \{u,v\}$ with arcs $u\to x$ and $x\to v$. Such an $x$ is the \emph{midpoint} of the route $u \to x \to v$. We call $D$ \emph{$C$-budgeted} if every ordered pair $(u,v)$ of distinct vertices satisfies
+Let $D$ be a simple directed graph and $C \ge 1$. For $u\ne v$, let $p_2(u,v)$ be the number of vertices $x \notin \{u,v\}$ with arcs $u\to x$ and $x\to v$. Such an $x$ is the \emph{midpoint} of the route $u \to x \to v$. We call $D$ \emph{$C$-budgeted} if every ordered pair $(u,v)$ of distinct vertices satisfies
 \[
     \mathbf{1}_{(u,v) \in A(D)} + p_2(u,v) \;\le\; C .
 \]
 \end{definition}
 
-\begin{lemma}[Feasible digraphs are budgeted]\label{lem:feasible-budgeted}
-Let $D$ be a simple digraph and $m \ge 2$. If $\lec^{\max}_D \le m-1$, or if $\kap^{\max}_D \le m-1$, then $D$ is $(m-1)$-budgeted.
+\begin{lemma}[Feasible directed graphs are budgeted]\label{lem:feasible-budgeted}
+Let $D$ be a simple directed graph and $m \ge 2$. If $\lec^{\max}_D \le m-1$, or if $\kap^{\max}_D \le m-1$, then $D$ is $(m-1)$-budgeted.
 \end{lemma}
 
 \begin{proof}
@@ -471,7 +471,7 @@ The next lemma turns the budget into a statement about degrees.
 A vertex with large in-degree and large out-degree is the midpoint of many two-step routes, and the budget limits these.
 
 \begin{lemma}[The budget, read on degrees]\label{lem:budget-degree-sum}
-Every $C$-budgeted simple digraph $D$ on $n$ vertices satisfies
+Every $C$-budgeted simple directed graph $D$ on $n$ vertices satisfies
 \[
     \sum_{x \in V} d^+(x)\,d^-(x) \;\le\; C\,n(n-1) .
 \]
@@ -488,8 +488,8 @@ Summing the budget over all ordered pairs gives $|A(D)| + \sum_{u\ne v} p_2(u,v)
 \]
 \end{proof}
 
-\begin{lemma}[Making a digraph one-way bipartite]\label{lem:smaller-half-deletion}
-Every simple digraph $D$ on $n$ vertices can be made \emph{one-way bipartite}, so that all remaining arcs go from one part to the other, by deleting at most $\sum_{x} \min(d^+(x), d^-(x))$ arcs. So
+\begin{lemma}[Making a directed graph one-way bipartite]\label{lem:smaller-half-deletion}
+Every simple directed graph $D$ on $n$ vertices can be made \emph{one-way bipartite}, so that all remaining arcs go from one part to the other, by deleting at most $\sum_{x} \min(d^+(x), d^-(x))$ arcs. So
 \[
     |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; \sum_{x \in V} \min\bigl(d^+(x), d^-(x)\bigr) .
 \]
@@ -505,8 +505,8 @@ So the remaining arcs all go from $S$ to $T$.
 Since $|S| + |T| = n$, there are at most $|S|\,|T|\le\floor{n^2/4}$ of them.
 \end{proof}
 
-\begin{lemma}[The arc bound for budgeted digraphs]\label{lem:two-step-budget}
-Every $C$-budgeted simple digraph $D$ on $n \ge 2$ vertices satisfies
+\begin{lemma}[The arc bound for budgeted directed graphs]\label{lem:two-step-budget}
+Every $C$-budgeted simple directed graph $D$ on $n \ge 2$ vertices satisfies
 \[
     |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; C(n-1).
 \]
@@ -541,7 +541,7 @@ Finally $\Delta(n-\Delta) = n^2/4 - (\Delta-n/2)^2 \le n^2/4$, and $\Delta(n-\De
 We can now prove \Cref{thm:dir-arc-linear-error}.
 
 \begin{restated}{\Cref{thm:dir-arc-linear-error}}
-For all $m \ge 2$ and $n \ge 2$, every simple digraph $D$ on $n$ vertices with $\lec^{\max}_D \le m-1$, or with $\kap^{\max}_D \le m-1$, satisfies
+For all $m \ge 2$ and $n \ge 2$, every simple directed graph $D$ on $n$ vertices with $\lec^{\max}_D \le m-1$, or with $\kap^{\max}_D \le m-1$, satisfies
 \[
     |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; (m-1)(n-1),
 \]
@@ -550,11 +550,11 @@ so for each fixed $m \ge 3$, both $\ell_m^{\mathrm{dir}}(n)$ and $k_m^{\mathrm{d
 
 \begin{proof}[Proof of \Cref{thm:dir-arc-linear-error}]
 \emph{Upper bound.}
-By \Cref{lem:feasible-budgeted}, a simple digraph with $\lec^{\max}_D \le m-1$ or with $\kap^{\max}_D \le m-1$ is $(m-1)$-budgeted.
+By \Cref{lem:feasible-budgeted}, a simple directed graph with $\lec^{\max}_D \le m-1$ or with $\kap^{\max}_D \le m-1$ is $(m-1)$-budgeted.
 So \Cref{lem:two-step-budget} with $C = m-1$ gives the stated bound.
 
 \emph{Lower bound.}
-The digraph of \Cref{const:augmented-bipartite} has $\lec^{\max} \le m-1$ (\Cref{lem:augmented-feasible}). Since $\kap \le \lec$, also $\kap^{\max} \le m-1$. For $n\ge m$ this gives
+The directed graph of \Cref{const:augmented-bipartite} has $\lec^{\max} \le m-1$ (\Cref{lem:augmented-feasible}). Since $\kap \le \lec$, also $\kap^{\max} \le m-1$. For $n\ge m$ this gives
 \[
     k_m^{\mathrm{dir}}(n) \;\ge\; \ell_m^{\mathrm{dir}}(n) \;\ge\; \floorfrac{(n+m-2)^2}{4}
     \;=\; \frac{n^2}{4} + \frac{(m-2)n}{2} + O_m(1).
@@ -565,19 +565,19 @@ For $m\ge3$ the term $(m-2)n/2$ is positive. So both functions are $n^2/4$ plus 
 The linear coefficient is not known.
 The construction gives $(m-2)n/2$, and \Cref{thm:dir-arc-linear-error} allows $(m-1)n$.
 A theorem of Huang and Lyu \cite[Theorem~2]{HuangLyu26}, with $t=m-1\ge2$, also gives the linear term $(m-1)n$, for $n\ge\max(t^3+4t^2+3t+4,\ 17t^2/2+30t+27)$.
-It applies because a feasible digraph has at most $m-1$ paths of length two between any two vertices (\Cref{lem:feasible-budgeted}).
+It applies because a feasible directed graph has at most $m-1$ paths of length two between any two vertices (\Cref{lem:feasible-budgeted}).
 \Cref{thm:dir-arc-linear-error} holds for every $n$.
 
 
 
 
-The next proposition is about the shape of a feasible digraph.
+The next proposition is about the shape of a feasible directed graph.
 After deleting $O(\sqrt m\,n^{3/2})$ arcs, all remaining arcs go from one part to the other.
 The parts need not be balanced.
 For fixed $m$ this error is larger than the linear error of \Cref{thm:dir-arc-linear-error}.
 
 \begin{proposition}[Almost all arcs go one way]\label{prop:dir-arc-stability}
-Let $D$ be a simple digraph on $n \ge 2$ vertices with $\lec^{\max}_D \le m-1$. Then deleting at most $\sqrt{m}\, n^{3/2}$ arcs leaves $D$ a subgraph of a one-way bipartite digraph, and
+Let $D$ be a simple directed graph on $n \ge 2$ vertices with $\lec^{\max}_D \le m-1$. Then deleting at most $\sqrt{m}\, n^{3/2}$ arcs leaves $D$ a subgraph of a one-way bipartite directed graph, and
 \[
     |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; \sqrt{m}\, n^{3/2}.
 \]
@@ -678,7 +678,7 @@ Let $m \ge 2$ and $n \ge \max(8,\, 2m)$, so that $M(n) = \floor{n^2/4}$. If $D$ 
 \[
     D \;\in\; \left\{(m-1) \cdot B_{\ceil{n/2},\,\floor{n/2}},\ (m-1) \cdot B_{\floor{n/2},\,\ceil{n/2}}\right\} ,
 \]
-where $B_{a,b}$ has all arcs from its part of size $a$ to its part of size $b$, each once, and $(m-1)\cdot B_{a,b}$ takes every arc $m-1$ times as in \Cref{lem:thickening}. These two digraphs are the same up to renaming the vertices when $n$ is even, and reverses of each other when $n$ is odd.
+where $B_{a,b}$ has all arcs from its part of size $a$ to its part of size $b$, each once, and $(m-1)\cdot B_{a,b}$ takes every arc $m-1$ times as in \Cref{lem:thickening}. These two directed graphs are the same up to renaming the vertices when $n$ is even, and reverses of each other when $n$ is odd.
 \end{theorem}
 
 \begin{proof}
@@ -1261,7 +1261,7 @@ The splitting of $\kap$ into parallel arcs and longer routes also works for dire
 
 \begin{lemma}[Splitting the directed local vertex-connectivity]\label{lem:multi-vertex-split-dir}
 Let $D$ be a directed multigraph with multiplicity function $\mu$ and underlying simple
-digraph $D_0$. For an ordered pair $u \ne v$, write $\pi(u,v)$ for the largest number
+directed graph $D_0$. For an ordered pair $u \ne v$, write $\pi(u,v)$ for the largest number
 of pairwise internally disjoint directed $u$--$v$ paths of length at least two in
 $D_0$. Then $\kap_D(u,v) = \mu(u,v) + \pi(u,v)$.
 \end{lemma}
@@ -1285,7 +1285,7 @@ and for each fixed $m \ge 2$,
     (m-1)M(n) \;\le\; K_m^{\mathrm{dir}}(n)
     \;\le\; (m-1)\floorfrac{n^2}{4} + (m-1)^2(n-1) .
 \]
-So $K_m^{\mathrm{dir}}(n) = (m-1)n^2/4 + O_m(n)$, and the thickened bipartite digraph of \Cref{thm:dir-multi-full} has the right leading term here too.
+So $K_m^{\mathrm{dir}}(n) = (m-1)n^2/4 + O_m(n)$, and the thickened bipartite directed graph of \Cref{thm:dir-multi-full} has the right leading term here too.
 \end{corollary}
 
 \begin{proof}
@@ -1300,14 +1300,14 @@ So \Cref{thm:dir-hyper-constant} at $r=2$ gives the upper bound.
 For $n\ge7$ we have $M(n)=\floor{n^2/4}$. So both bounds are $(m-1)n^2/4 + O_m(n)$.
 \end{proof}
 
-\begin{construction}[Thickened complete digraph, and its bouquet]\label{const:dir-multi-vertex-blocks}
-For $2 \le b \le m$, take the complete digraph on $b$ vertices and give every arc
+\begin{construction}[Thickened complete directed graph, and its bouquet]\label{const:dir-multi-vertex-blocks}
+For $2 \le b \le m$, take the complete directed graph on $b$ vertices and give every arc
 multiplicity $m+1-b$. At $b=2$ this is one bidirected edge at multiplicity $m-1$.
 Hanging $k$ such blocks off one shared vertex, pairwise disjoint otherwise, uses
 $k(b-1)+1$ vertices, and blocks of different sizes may be mixed.
 \end{construction}
 
-\begin{proposition}[Gluing complete digraphs]\label{prop:dir-multi-vertex-blocks}
+\begin{proposition}[Gluing complete directed graphs]\label{prop:dir-multi-vertex-blocks}
 Glue blocks of \Cref{const:dir-multi-vertex-blocks} with sizes $b_i$ at one common vertex, keep them disjoint otherwise, and add isolated vertices to reach $n$. The result is feasible, so
 \[
     K_m^{\mathrm{dir}}(n) \;\ge\; \max\Bigl\{\, \sum_i b_i(b_i-1)(m+1-b_i)
@@ -1325,7 +1325,7 @@ Two vertices in different blocks are separated by the common vertex, so $\kap \l
 A block of size $b$ has $b(b-1)$ ordered pairs, each with $m+1-b$ arcs.
 \end{proof}
 
-At $n=3$ and $m=6$, the thickened complete digraph has $24$ arcs, more than $(m-1)M(3)=20$.
+At $n=3$ and $m=6$, the thickened complete directed graph has $24$ arcs, more than $(m-1)M(3)=20$.
 It is feasible: every route of length at least two passes through the third vertex, so $\pi = 1$ and $\kap = 4 + 1 = 5 = m-1$ for every ordered pair.
 So the extremal multigraphs of the arc problem are not optimal for the vertex problem.
 
@@ -1434,10 +1434,10 @@ The rest of this section finds the constant for both models. Their exact values 
 
 
 
-The proof uses the one-step shadow digraph. It bounds the hyperedges by the shadow arcs, shows that the shadow satisfies a two-step budget, and applies \Cref{lem:two-step-budget}.
+The proof uses the one-step shadow directed graph. It bounds the hyperedges by the shadow arcs, shows that the shadow satisfies a two-step budget, and applies \Cref{lem:two-step-budget}.
 
 \begin{definition}[One-step shadow]\label{def:one-step-shadow}
-Let $\HH$ be a forward directed $r$-uniform hypergraph on $V$. Its \emph{shadow} is the simple digraph $R(\HH)$ on $V$ with an arc $(u,v)$ when some hyperedge of $\HH$ has tail $u$ and head $v$. Let $\mathrm{cod}(u,v)$ be the number of such hyperedges.
+Let $\HH$ be a forward directed $r$-uniform hypergraph on $V$. Its \emph{shadow} is the simple directed graph $R(\HH)$ on $V$ with an arc $(u,v)$ when some hyperedge of $\HH$ has tail $u$ and head $v$. Let $\mathrm{cod}(u,v)$ be the number of such hyperedges.
 \end{definition}
 
 
@@ -1500,7 +1500,7 @@ So the upper and lower bounds have the same $n^2$ term.
 
 Two remarks.
 For small $n$, the bound of \Cref{prop:dir-hyper-first} is smaller, roughly until $n \approx 4(m-1)(r-1)/3$. The theorem is only better asymptotically.
-At $r = 2$ the shadow is the underlying simple digraph, obtained by suppressing parallel copies, and the theorem gives the quadratic term of \Cref{thm:dir-multi-full} again.
+At $r = 2$ the shadow is the underlying simple directed graph, obtained by suppressing parallel copies, and the theorem gives the quadratic term of \Cref{thm:dir-multi-full} again.
 
 The general model needs a different proof that the shadow is budgeted.
 The proof above used twice that a hyperedge has one tail: leaving hyperedges with different tails are different, and they differ from the entering hyperedges.
