@@ -442,7 +442,7 @@ A graph on $n$ vertices has up to $n!$ renamings, which means the pruned search 
 The second method avoids this.
 It starts from a feasible graph with $L$ edges, found by the pruned search or by the heuristic search of \Cref{sec:heuristic}.
 Removing an edge creates no new route, so it never makes a feasible graph infeasible.
-So if a feasible graph with more than $L$ edges existed, removing edges from it one at a time would give a feasible graph with exactly $L+1$ edges.
+If a feasible graph with more than $L$ edges existed, removing edges from it one at a time would give a feasible graph with exactly $L+1$ edges.
 It is therefore enough to check every graph with exactly $L+1$ edges.
 If none of them is feasible, $L$ is the maximum.
 If one of them is feasible, the program keeps it, replaces $L$ by $L+1$, and checks again.
@@ -520,7 +520,7 @@ Adding a copy raises $\lec(u,v)$ and $\kap(u,v)$ by at most one for every pair.
 Edge-disjoint routes share no copy by definition, so after the addition at most one of them uses the new copy, and the others were already there.
 Separated routes also share no copy, which is why $\kap\le\lec$ holds in every model (\Cref{sec:incidence-convention}), so the same holds for $\kap$.
 This needs the convention. If two routes were only required to share no vertex, they could pass through the same hyperedge (\Cref{sec:incidence-convention}), and one new hyperedge could start several new routes at once.
-So the search does not need to run the maximum-flow computation for every candidate move.
+The search therefore does not need to run the maximum-flow computation for every candidate move.
 Removing a copy from a feasible graph keeps it feasible.
 Adding a copy to a graph in which every pair has at most $m-2$ disjoint routes also keeps it feasible.
 Also, an addition can only push a pair above $m-1$ if that pair is already at $m-1$.
@@ -540,7 +540,7 @@ To check it, remove the set and follow the remaining edges from $u$: $v$ must no
 Then every route from $u$ to $v$ uses an element of the set. Disjoint routes use different elements, so there are at most $m-1$ of them, and no pair has $m$ disjoint routes.
 This check uses only that a route through a removed set must use one of its elements. It needs neither Menger's theorem nor a maximum flow.
 For undirected graphs one tree is enough: any tree on the vertices such that, for each tree edge, at most $m-1$ edges of $G$ cross it.
-Take a pair $u,v$ and a tree edge on the tree path between them. Removing this tree edge splits the vertices into two parts, with $u$ and $v$ on different sides. Every $u$--$v$ route uses an edge of $G$ that crosses between the parts, and there are at most $m-1$ of these. So $n-1$ counts replace $\binom n2$ checks.
+Take a pair $u,v$ and a tree edge on the tree path between them. Removing this tree edge splits the vertices into two parts, with $u$ and $v$ on different sides. Every $u$--$v$ route uses an edge of $G$ that crosses between the parts, and there are at most $m-1$ of these. In this way $n-1$ counts replace $\binom n2$ checks.
 A Gomory--Hu tree (\Cref{thm:gomory-hu}) of a feasible graph is such a tree.
 
 \emph{Vertex separation.} For every pair $u,v$, the certificate gives a set of at most $m-1$ inner nodes of the incidence graph, vertices or edge copies, whose removal leaves no route from $u$ to $v$. It is checked in the same way. Separated routes share no inner node, so again each of them uses a different element of the set.
@@ -551,7 +551,7 @@ Without this check, two parallel edges with a correct certificate would pass as 
 
 The program writes the certificate from a smallest cut of the flow network (\Cref{lst:certificate}).
 A cut uses only arcs of limited capacity: the arc inside a gate, which stands for a hyperedge, and, for vertex separation, the arc inside a split vertex.
-So the cut translates directly into removed hyperedges and removed vertices.
+The cut therefore translates directly into removed hyperedges and removed vertices.
 
 \programpart{certificate}{Writing a certificate from smallest cuts.}
 
@@ -571,7 +571,7 @@ It reads only the file and calls no other function of the program, so it can be 
 The command \texttt{python erdos915.py verify} runs it on \texttt{witnesses\_tabu.json}, and \texttt{python erdos915.py verify witnesses\_greedy.json} on the other file.
 The file checker itself uses only the Python standard library, but the program imports \texttt{networkx} at the start, so \texttt{networkx} must be installed to run these commands.
 An upper bound is different. A certificate that no graph on $n$ vertices has more edges would be the whole search, which is too long to check.
-So the thesis takes no upper bound or exact value from the program.
+For this reason the thesis takes no upper bound or exact value from the program.
 Every upper bound is proved by hand, and every construction in the thesis is checked by hand in \Cref{ch:basecases} or \Cref{app:proofs}.
 The exhaustive and heuristic searches of this chapter show which bounds are worth trying to prove, and which constructions to try.
 
@@ -595,7 +595,7 @@ A finished search gives an exact value, but only the lower bound is certified (\
 The true maximum never decreases when $n$ or $m$ grows: an isolated vertex can be added, and a graph with no $m$ disjoint routes also has no $m+1$.
 The printed entries need not follow this.
 A larger $n$ or $m$ also gives more candidates, often many more, and every case gets the same sixty-second budget.
-So an unfinished search covers a smaller part of a larger search space, and its entry can be smaller than the entry for a smaller $n$ or $m$.
+An unfinished search therefore covers a smaller part of a larger search space, and its entry can be smaller than the entry for a smaller $n$ or $m$.
 
 \programpart{driver}{The driver: a sixty-second budget per case, then a certificate.}
 

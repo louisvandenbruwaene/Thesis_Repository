@@ -139,7 +139,7 @@ Let $T$ be a Gomory--Hu tree of $G$.
 For an edge $e$ of $G$, let $\dist_T(e)$ be the number of tree edges on the path in $T$ between the ends of $e$ (\Cref{fig:gomory-hu-dist}).
 An edge $e=uv$ of $G$ \emph{crosses} a tree edge $t$ if $u$ and $v$ lie in different parts when $t$ is removed from $T$.
 This happens exactly when $t$ lies on the $u$--$v$ path of $T$. If $t$ lies on this path, removing $t$ breaks the only $u$--$v$ path of $T$, which puts $u$ and $v$ in different parts. If $t$ does not lie on it, the path survives the removal and keeps $u$ and $v$ together.
-So $e$ crosses $\dist_T(e)$ tree edges.
+Hence $e$ crosses $\dist_T(e)$ tree edges.
 
 The proof has three steps.
 \begin{enumerate}[label=(\arabic*)]
@@ -198,7 +198,7 @@ Parallel edges are counted separately in the right-hand sum.
 
 \begin{proof}
 
-Count the pairs $(t,e)$ where $t$ is a tree edge, $e$ is an edge of $G$, and $e$ crosses $t$. For a fixed $t$, exactly $c(t)$ edges cross $t$, by property (1) of the Gomory--Hu theorem. For a fixed $e$, exactly $\dist_T(e)$ tree edges are crossed by $e$. So both sums count the same pairs.
+Count the pairs $(t,e)$ where $t$ is a tree edge, $e$ is an edge of $G$, and $e$ crosses $t$. For a fixed $t$, exactly $c(t)$ edges cross $t$, by property (1) of the Gomory--Hu theorem. For a fixed $e$, exactly $\dist_T(e)$ tree edges are crossed by $e$. Both sums therefore count the same pairs.
 
 \end{proof}
 
@@ -209,7 +209,7 @@ For a simple graph $G$, $\displaystyle\sum_{e \in E(G)} \dist_T(e) \;\ge\; 2|E(G
 \begin{proof}
 Let $E_1$ be the set of edges with $\dist_T(e) = 1$.
 Such an edge joins two vertices that are adjacent in $T$.
-The tree $T$ has $n-1$ edges, and since $G$ is simple, each of them gives at most one edge of $E_1$. So $|E_1| \le n-1$.
+The tree $T$ has $n-1$ edges, and since $G$ is simple, each of them gives at most one edge of $E_1$, which gives $|E_1| \le n-1$.
 Every other edge has $\dist_T(e) \ge 2$. Its distance is not $0$, because its two ends are different, and not $1$, because it is not in $E_1$. This gives
 \[
 \sum_{e \in E(G)} \dist_T(e) \;\ge\; |E_1| + 2\bigl(|E(G)| - |E_1|\bigr) \;=\; 2|E(G)| - |E_1| \;\ge\; 2|E(G)| - (n-1). \qedhere
@@ -224,7 +224,7 @@ With \Cref{lem:sum-dist,lem:double-count} this gives
 \[
 2|E(G)| - (n-1) \;\le\; \sum_{e \in E(G)} \dist_T(e) \;=\; \sum_{t \in E(T)} c(t) \;\le\; (m-1)(n-1).
 \]
-So $2|E(G)| \le m(n-1)$. Since $|E(G)|$ is an integer, $|E(G)| \le \floorfrac{m(n-1)}{2}$.
+This simplifies to $2|E(G)| \le m(n-1)$. Since $|E(G)|$ is an integer, $|E(G)| \le \floorfrac{m(n-1)}{2}$.
 \end{proof}
 
 The factor $\tfrac12$ comes from step (3). In a multigraph step (3) fails, and the bound is $(m-1)(n-1)$ (\Cref{thm:multigraph-edge}).
@@ -631,9 +631,9 @@ For the lower bound, take any tree on the $n$ vertices and give every edge multi
 This multigraph has $(m-1)(n-1)$ edges.
 Two vertices $u,v$ are joined by exactly one path in the tree.
 Removing the $m-1$ copies of one edge of this path separates $u$ from $v$.
-So $\lec(u,v)\le m-1$ for every pair.
+Every pair therefore has $\lec(u,v)\le m-1$.
 
-For the upper bound, let $\lec_G^{\max}\le m-1$ and let $T$ be a Gomory--Hu tree of $G$. Every edge of $G$ crosses at least one tree edge. So by \Cref{lem:double-count}, $|E(G)| \le \sum_e \dist_T(e) = \sum_t c(t) \le (m-1)(n-1)$.
+For the upper bound, let $\lec_G^{\max}\le m-1$ and let $T$ be a Gomory--Hu tree of $G$. Every edge of $G$ crosses at least one tree edge, so by \Cref{lem:double-count}, $|E(G)| \le \sum_e \dist_T(e) = \sum_t c(t) \le (m-1)(n-1)$.
 \end{proof}
 
 In simple graphs, the edge and vertex problems have the same answer for $m\le4$.
@@ -646,7 +646,7 @@ For all $n\ge m$ and $2\le m\le4$,
 \end{theorem}
 
 Since $\kap\le\lec$, every graph with $\lec^{\max}\le m-1$ also has $\kap^{\max}\le m-1$.
-So $k_m(n)\ge\ell_m(n)$ (\Cref{fig:divergence}).
+Hence $k_m(n)\ge\ell_m(n)$ (\Cref{fig:divergence}).
 S{\o}rensen and Thomassen showed that the two differ for $m=5$.
 
 \begin{theorem}[S{\o}rensen--Thomassen \cite{SorensenThomassen74}]\label{thm:sorensen-thomassen}
@@ -658,7 +658,7 @@ For simple graphs,
 \]
 \end{theorem}
 
-So $k_5(n)>\ell_5(n)$ for every $n\ge14$.
+In particular $k_5(n)>\ell_5(n)$ for every $n\ge14$.
 S{\o}rensen and Thomassen count the least number of edges that forces $m$ disjoint paths. This is one more than the maximum used here (\Cref{rem:threshold-convention}). They give one formula with exceptions at $n=7$ and $n=12$. Splitting the statement at $n=14$, as above, removes these exceptions.
 
 \begin{figure}[ht]
@@ -733,7 +733,7 @@ For simple directed graphs, $k_2^{\mathrm{dir}}(n) = \ell_2^{\mathrm{dir}}(n)$.
 \end{figure}
 
 The star has more arcs for $n<7$, and the bipartite directed graph has more for $n>7$.
-So the directed value grows quadratically in $n$, while the undirected value grows linearly.
+The directed value thus grows quadratically in $n$, while the undirected value grows linearly.
 In the bipartite directed graph no arc leaves $B$ and no arc enters $A$. Every route is therefore a single arc, and each ordered pair has at most one route.
 An undirected graph with $\lec^{\max}\le1$ has no cycle, because two vertices on a cycle are joined by the two halves of the cycle, which are edge-disjoint paths. Such a graph is a forest and has at most $n-1$ edges.
 
@@ -792,8 +792,8 @@ Then the component of $u$ reaches the component of $v$ in $Q_0$, and so also in 
 Follow the arcs of $Q$ from the first component to the last.
 For each arc of $Q$, the set $R$ has an arc of $D$ between the two components.
 Inside each component, the chosen arcs lead from the vertex where we enter to the vertex where we leave.
-So $u$ reaches $v$ in $R$.
-Since $R$ is part of $D$, it creates no new reachability. So $R$ is a reachability skeleton.
+This shows that $u$ reaches $v$ in $R$.
+Since $R$ is part of $D$, it creates no new reachability, which makes $R$ a reachability skeleton.
 If the components have sizes $n_1, \dots, n_q$, then
 \[
     |A(R)| \;\le\; \sum_{i=1}^{q} 2(n_i - 1) \;+\; |A(Q)| \;\le\; 2(n-q) \;+\; \floorfrac{q^2}{4} \;=:\; f(q).
@@ -877,9 +877,9 @@ Suppose an arc $(u,v)$ of $D$ is not in $R$.
 Since $u$ reaches $v$ in $D$, it also reaches $v$ in $R$, along a directed path $P$.
 The path $P$ is not the arc $(u,v)$, so it has length at least two.
 The arc $u\to v$ has no inner vertex, so $P$ and the arc are two internally vertex-disjoint routes.
-So $\kap_D(u,v) \ge 2$, a contradiction.
+This gives $\kap_D(u,v) \ge 2$, a contradiction.
 
-So $|A(D)| = |A(R)| \le M(n)$. With the lower bound, $k_2^{\mathrm{dir}}(n) = M(n)$.
+Hence $|A(D)| = |A(R)| \le M(n)$. With the lower bound, $k_2^{\mathrm{dir}}(n) = M(n)$.
 \end{proof}
 
 \begin{proof}[Proof of \Cref{thm:dir-arc-m2-exact}]
@@ -906,7 +906,7 @@ $\lec^{\max}_\HH \le k$. Then, the sum running over hyperedge copies,
 \end{lemma}
 
 \begin{proof}
-Induction on $n$. At $n = 1$ there is no hyperedge, since a hyperedge has at least two vertices. So both sides are $0$.
+Induction on $n$. At $n = 1$ there is no hyperedge, since a hyperedge has at least two vertices, and both sides are $0$.
 
 Let $n \ge 2$ and fix two vertices $u \ne v$.
 Since $\lec_\HH(u,v) \le k$, \Cref{thm:menger-hyper} gives a set $F$ of at most $k$ hyperedge copies whose removal separates $u$ from $v$.
@@ -949,7 +949,7 @@ The hyperedges are the sets $\{h\} \cup G_i$. The incidence graph of this hyperg
 Give each hyperedge multiplicity $m-1$.
 Every vertex other than $h$ lies in exactly $m-1$ hyperedge copies.
 Every pair contains such a vertex, and every route from or to it uses one of these copies.
-So removing these $m-1$ copies separates the pair, and every pair has $\lec\le m-1$.
+Removing these $m-1$ copies therefore separates the pair, and every pair has $\lec\le m-1$.
 There are $(m-1)(n-1)/(r-1)$ hyperedges.
 
 If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} below attains the bound with a simple hypergraph.
@@ -960,7 +960,7 @@ A simple hypergraph is also a multihypergraph, so in this range multihypergraphs
 The star hypertree of \Cref{fig:hyper-star} attains the bound at $m=2$.
 It has a hub joined to disjoint groups of $r-1$ vertices.
 For $r\ge3$, simple hypergraphs attain the bound whenever $m-1\le\binom{n-2}{r-2}$ (\Cref{thm:simple-hyper-edge}).
-So for $r\ge3$, unlike for graphs, repeated edges often do not help.
+For $r\ge3$, unlike for graphs, repeated edges therefore often do not help.
 The condition says that there are enough different hyperedges.
 When it fails, the simple value can be smaller.
 For example, at $n=r=m=3$ there is only one possible hyperedge.
@@ -1007,7 +1007,7 @@ help.
 \begin{proof}[Proof of \Cref{thm:hyper-vertex-m2}]
 Let $q$ be the number of hyperedges.
 We claim that $\kap^{\max}_\HH \le 1$ exactly when $I(\HH)$ is a forest.
-The graph $I(\HH)$ is bipartite, with vertex nodes on one side and hyperedge nodes on the other. So a cycle in it alternates between the two kinds of nodes.
+The graph $I(\HH)$ is bipartite, with vertex nodes on one side and hyperedge nodes on the other, so a cycle in it alternates between the two kinds of nodes.
 Suppose $I(\HH)$ has a cycle $v_1, e_1, v_2, e_2, \dots, v_\ell, e_\ell, v_1$, with $\ell\ge2$ and all $v_i$ and $e_i$ distinct.
 Then $v_1, e_1, v_2$ and $v_1, e_\ell, v_\ell, \dots, e_2, v_2$ are two Berge routes from $v_1$ to $v_2$ that share no hyperedge and no inner vertex. So $\kap(v_1, v_2) \ge 2$.
 Conversely, two such routes between $u$ and $v$ are two paths in $I(\HH)$ with the same ends and no common inner node. Together they form a cycle in $I(\HH)$.
@@ -1016,11 +1016,11 @@ This proves the claim.
 \emph{Upper bound.}
 Each hyperedge copy contains $r$ vertices, so $I(\HH)$ has $rq$ edges and $n + q$ nodes.
 A forest on $n + q$ nodes has at most $n + q - 1$ edges, because each of its components is a tree with one edge fewer than nodes.
-So $rq \le n + q - 1$, that is, $q \le (n-1)/(r-1)$. Since $q$ is an integer, $q \le \floor{(n-1)/(r-1)}$.
+This gives $rq \le n + q - 1$, that is, $q \le (n-1)/(r-1)$. Since $q$ is an integer, $q \le \floor{(n-1)/(r-1)}$.
 
 \emph{Lower bound.}
 Take the star hypertree with $\floor{(n-1)/(r-1)}$ hyperedges, and leave the remaining vertices in no hyperedge.
-Its hyperedges meet only at the hub, and every other vertex lies in at most one hyperedge, so its incidence graph is a forest. So it has $\kap^{\max} \le 1$, and it is simple.
+Its hyperedges meet only at the hub, and every other vertex lies in at most one hyperedge, so its incidence graph is a forest. It therefore has $\kap^{\max} \le 1$, and it is simple.
 
 \emph{The three values agree.}
 The star hypertree also has $\lec^{\max} \le 1$, since removing the one hyperedge at a non-hub vertex separates it from every other vertex.
@@ -1131,7 +1131,7 @@ We first split the graph at a cut vertex, then remove vertices of degree two, an
 In each step we build one or two smaller graphs, check that they satisfy (i) to (iv) and are connected, and apply the induction hypothesis to them.
 
 \emph{Base: $|V| \le 2$.}
-A vertex in $Z$ has degree at least $2$ by (iii), and by (ii) its edges go to different vertices. So it has at least two neighbours.
+A vertex in $Z$ has degree at least $2$ by (iii), and by (ii) its edges go to different vertices, so it has at least two neighbours.
 With at most two vertices this is impossible, so $Z$ is empty and all vertices lie in $X$.
 With one vertex, there are no edges, since every edge joins two different vertices, so $\mathrm{rank}=0=|X|-1$.
 With two vertices, the parallel edges between them are internally disjoint routes. By (iv) there are at most two, so $\mathrm{rank} \le 2 - 2 + 1 = 1 = |X| - 1$.
@@ -1164,7 +1164,7 @@ Delete $z_0$ and its two edges, and add a new edge $xx'$.
 Then $|E|$ and $|V|$ both drop by one, so the rank does not change, and the graph stays connected.
 The new edge joins two vertices of $X$, so $|X|$ does not change, and (i), (ii), (iii) still hold.
 A path through $z_0$ uses $x$, $z_0$, $x'$ in a row. Replacing this by the new edge, and back, turns internally disjoint paths of one graph into internally disjoint paths of the other.
-So every $\kap(x_1, x_2)$ with $x_1, x_2 \in X$ stays the same, and (iv) holds.
+Every $\kap(x_1, x_2)$ with $x_1, x_2 \in X$ then stays the same, and (iv) holds.
 The graph is smaller, so the induction hypothesis gives the bound.
 
 Now every $Z$-vertex has degree at least $3$.
@@ -1196,7 +1196,7 @@ So $G$ is not $3$-connected.
 Since $G$ is not $3$-connected, removing some set of at most two vertices disconnects it. A single vertex does not, because $G$ has no cut vertex. This leaves a separating pair $\{a, b\}$.
 Remove it, and divide the components of $G - \{a,b\}$ into two non-empty groups, with vertex sets $U$ and $W$.
 Each component has a neighbour of $a$ and a neighbour of $b$. Otherwise the other one of $a,b$ would be a cut vertex.
-So $U \cup \{a,b\}$ contains an $a$--$b$ path with all inner vertices in $U$, and the same holds for $W$.
+Hence $U \cup \{a,b\}$ contains an $a$--$b$ path with all inner vertices in $U$, and the same holds for $W$.
 Let $s = |X \cap \{a,b\}|$, the number of $a,b$ that lie in $X$.
 We build two smaller graphs $G_U$ and $G_W$ (\Cref{fig:separating-pair}).
 $G_U$ consists of $U \cup \{a,b\}$ and all edges of $G$ among these vertices, except the edge $ab$, together with one extra $a$--$b$ connection. $G_W$ is built in the same way. The extra connection is:
@@ -1227,16 +1227,16 @@ By (iv) for $G$ there are at most two, so (iv) holds in $G_U$.
 
 \emph{$G_U$ and $G_W$ are smaller.}
 $W$ is not a single vertex: in a simple graph that vertex would have only $a$ and $b$ as neighbours, but every degree is at least three.
-So $G_U$ loses the at least two vertices of $W$.
+$G_U$ therefore loses the at least two vertices of $W$.
 Every vertex of $W$ has degree at least three, and an edge inside $W$ is counted at two vertices of $W$, so at least three edges of $G$ touch $W$, and $G_U$ loses them.
-$G_U$ gains at most one vertex and two edges. So $|V| + |E|$ drops by at least $5 - 3 = 2$.
+$G_U$ gains at most one vertex and two edges, so $|V| + |E|$ drops by at least $5 - 3 = 2$.
 The same holds for $G_W$.
 
 \emph{Counting.}
 Let $r_U, r_W$ be the ranks of $G_U$ and $G_W$, and $X_U, X_W$ their $X$-sets.
 Together $G_U$ and $G_W$ contain every vertex of $G$, with $a$ and $b$ counted twice, and every edge of $G$ other than $ab$ once.
 \begin{itemize}
-\item First case. The edge $ab$ is counted twice, so together they have $|V|+2$ vertices and $|E|+1$ edges. So $r_U + r_W = (|E|+1) - (|V|+2) + 2 = \mathrm{rank}(G)$. Exactly one of $a,b$ lies in $X$, so $|X_U| + |X_W| = |X| + 1$.
+\item First case. The edge $ab$ is counted twice, so together they have $|V|+2$ vertices and $|E|+1$ edges, which gives $r_U + r_W = (|E|+1) - (|V|+2) + 2 = \mathrm{rank}(G)$. Exactly one of $a,b$ lies in $X$, so $|X_U| + |X_W| = |X| + 1$.
 \item Second case. Two new edges, so together they have $|V|+2$ vertices and $|E|+2$ edges, and $r_U + r_W = \mathrm{rank}(G) + 1$. The vertices of $X \cap \{a,b\}$ are counted twice, so $|X_U| + |X_W| = |X| + s$.
 \item Third case. Two new vertices and four new edges, so together they have $|V|+4$ vertices and $|E|+4$ edges, and $r_U + r_W = \mathrm{rank}(G) + 1$. The two new vertices lie in $X$ and $a, b$ do not, so $|X_U| + |X_W| = |X| + 2$.
 \end{itemize}
@@ -1260,7 +1260,7 @@ Let $C$ be the number of components.
 Each hyperedge copy contains $r$ vertices, so $I(\HH)$ has $rq$ edges. It has $n + q$ nodes.
 Adding $\mathrm{rank} = |E| - |V| + 1$ over the components, the ranks add up to $rq - (n + q) + C$.
 By the lemma, the rank of a component is at most its number of vertex nodes minus one. These bounds add up to $n - C$.
-So $rq - (n + q) + C \le n - C$, that is, $q(r-1) \le 2(n-1) - 2(C-1) \le 2(n-1)$.
+Comparing the two gives $rq - (n + q) + C \le n - C$, that is, $q(r-1) \le 2(n-1) - 2(C-1) \le 2(n-1)$.
 Since $q$ is an integer, $q \le \floor{2(n-1)/(r-1)}$.
 
 \emph{Lower bound, simple.}
@@ -1308,7 +1308,7 @@ so for each fixed $m$,
 
 \Cref{app:proofs} gives the proof. It counts routes of length two.
 For an ordered pair $(u,v)$, the routes $u\to x\to v$ with different midpoints $x$, together with the arc $u\to v$, are disjoint.
-So a feasible directed graph has at most $m-1$ of them.
+A feasible directed graph therefore has at most $m-1$ of them.
 Take a vertex $v$ of largest out-degree $\Delta$.
 For each of the $n-1$ pairs $(v,w)$, the midpoints $x$ of routes $v\to x\to w$, together with the arc $v\to w$ if it exists, number at most $m-1$.
 Adding this over $w$ counts every arc from an out-neighbour of $v$ to a vertex other than $v$, and the $\Delta$ arcs out of $v$.
@@ -1339,7 +1339,7 @@ Let $D_0$ be a directed multigraph and $k \ge 1$ an integer. Write $k \cdot D_0$
 \begin{proof}
 By Menger's theorem, $\lec_{D_0}(u,v)$ is the smallest number of arcs, counted with multiplicity, in a $u$--$v$ cut.
 Multiplying every multiplicity by $k$ multiplies the size of every cut by $k$.
-So it multiplies the smallest cut by $k$ too.
+It therefore multiplies the smallest cut by $k$ too.
 The number of arcs is also multiplied by $k$.
 \end{proof}
 
@@ -1347,7 +1347,7 @@ The number of arcs is also multiplied by $k$.
 Let $m \ge 2$.
 (a) Take any tree on the $n$ vertices and put $m-1$ arcs in each direction on every tree edge.
 With one arc in each direction this is the bidirected tree. Each ordered pair is joined by exactly one directed path, which follows the path of the tree, giving $\lec^{\max} = 1$.
-So by \Cref{lem:thickening} the thickened tree has $\lec^{\max} = m-1$ and $2(m-1)(n-1)$ arcs.
+By \Cref{lem:thickening}, the thickened tree then has $\lec^{\max} = m-1$ and $2(m-1)(n-1)$ arcs.
 (b) Take the one-way bipartite directed graph of \Cref{const:bipartite} and repeat every arc $m-1$ times.
 By the same lemma it has $\lec^{\max} = m-1$ and $(m-1)\floor{n^2/4}$ arcs.
 \end{construction}
@@ -1369,7 +1369,7 @@ Let $D$ be a directed multigraph with $\lec^{\max}(D) \le k$ for some $k \ge 1$,
 and consequently $\lec^{\max}(D - R) \le k - 1$.
 \end{lemma}
 
-The skeleton keeps reachability. So if routes from $u$ to $v$ remain after the deletion, one more route runs inside the deleted arcs.
+The skeleton keeps reachability, so if routes from $u$ to $v$ remain after the deletion, one more route runs inside the deleted arcs.
 
 \begin{proof}
 Fix $u \ne v$ and let $t = \lec_{D-R}(u,v)$. If $t = 0$ there is nothing to prove.
