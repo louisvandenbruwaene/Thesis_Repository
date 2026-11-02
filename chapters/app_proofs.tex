@@ -979,7 +979,7 @@ Write $K_m(n)$ for the largest number of edges, counted with multiplicity, of a 
 The parallel edges and the longer routes do not interfere, so we can count them separately.
 
 \begin{lemma}[Splitting the local vertex-connectivity]\label{lem:multi-vertex-split}
-Let $G$ be a multigraph with multiplicity function $\mu$ and underlying simple graph $G_0$. For any two vertices $u \ne v$, write $\pi(u,v)$ for the largest number of pairwise internally disjoint $u$--$v$ paths of length at least two in $G_0$. Then
+Let $G$ be a multigraph with multiplicity function $\mu$, and let its \emph{underlying simple graph} $G_0$ be the simple graph with an edge $uv$ whenever $\mu(u,v)\ge1$. For any two vertices $u \ne v$, write $\pi(u,v)$ for the largest number of pairwise internally disjoint $u$--$v$ paths of length at least two in $G_0$. Then
 \[
     \kap_G(u,v) \;=\; \mu(u,v) \;+\; \pi(u,v).
 \]
