@@ -560,7 +560,7 @@ It uses only the list of possible hyperedges, the largest multiplicity, the list
 First \texttt{belongs\_to\_model} checks the size and the model.
 Then, for each pair, the certificate checker counts the removed elements, with every copy of a removed hyperedge, and then follows the remaining hyperedges from $u$, entering each only at an entry vertex.
 If $v$ is never reached, the certificate is correct for this pair.
-Its correctness can be read off from its $43$ lines and these short helpers.
+Its correctness can be read off from its $45$ lines and these short helpers.
 
 \programpart{checker}{The independent certificate checker.}
 
