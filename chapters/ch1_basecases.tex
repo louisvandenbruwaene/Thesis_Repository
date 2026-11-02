@@ -39,7 +39,7 @@ In a multigraph, two parallel edges give two different paths of length one.
 In a simple graph we can write a path as a list of vertices.
 A \emph{walk} is a sequence of the same form in which vertices and edges may repeat.
 A \emph{cycle} is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ with $q\ge2$, distinct edges $e_i$ and distinct vertices $v_0,\ldots,v_{q-1}$, where $v_q=v_0$ and $e_i$ joins $v_{i-1}$ and $v_i$. In a simple graph a cycle has at least three edges, and in a multigraph two parallel edges form a cycle.
-A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{forest} is a graph without cycles. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$. A \emph{spanning tree} of $G$ is a subgraph of $G$ that is a tree on all vertices of $G$.
+A graph is \emph{connected} if every two vertices are joined by a path. A \emph{component} of a graph is a maximal connected subgraph. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{forest} is a graph without cycles. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$. A \emph{spanning tree} of $G$ is a subgraph of $G$ that is a tree on all vertices of $G$.
 We also call a path a \emph{route}.
 Two $u$--$v$ paths are \emph{edge-disjoint} if they have no edge in common.
 The \emph{local edge-connectivity} $\lec_G(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ paths.
@@ -785,13 +785,13 @@ By Mantel's theorem \cite{Mantel07}, a graph on $q$ vertices with no triangle ha
     |A(Q)| \;\le\; \floorfrac{q^2}{4}.
 \]
 
-Let $R$ consist of the two trees chosen above in every component, and, for each arc of $Q$, one arc of $D$ between the corresponding components.
-These trees keep reachability inside each component.
+Let $R$ consist of the $2(n_i-1)$ arcs chosen above in every component, and, for each arc of $Q$, one arc of $D$ between the corresponding components.
+These arcs keep reachability inside each component.
 Now suppose $u$ reaches $v$ in $D$, with $u$ and $v$ in different components.
 Then the component of $u$ reaches the component of $v$ in $Q_0$, and so also in $Q$.
 Follow the arcs of $Q$ from the first component to the last.
 For each arc of $Q$, the set $R$ has an arc of $D$ between the two components.
-Inside each component, the two trees lead from the vertex where we enter to the vertex where we leave.
+Inside each component, the chosen arcs lead from the vertex where we enter to the vertex where we leave.
 So $u$ reaches $v$ in $R$.
 Since $R$ is part of $D$, it creates no new reachability. So $R$ is a reachability skeleton.
 If the components have sizes $n_1, \dots, n_q$, then
@@ -884,11 +884,11 @@ So $|A(D)| = |A(R)| \le M(n)$. With the lower bound, $k_2^{\mathrm{dir}}(n) = M(
 
 \begin{proof}[Proof of \Cref{thm:dir-arc-m2-exact}]
 The two constructions above give $\ell_2^{\mathrm{dir}}(n) \ge M(n)$.
-Since $\kap\le\lec$, every arc-feasible directed graph is vertex-feasible, so \Cref{thm:dir-vertex-m2-exact} bounds it. So
+Since $\kap\le\lec$, every arc-feasible directed graph is vertex-feasible, so \Cref{thm:dir-vertex-m2-exact} bounds it. This gives
 \[
     M(n) \;\le\; \ell_2^{\mathrm{dir}}(n) \;\le\; k_2^{\mathrm{dir}}(n) \;\le\; M(n),
 \]
-so all three are equal.
+and all three are equal.
 \end{proof}
 
 \subsection{Undirected hypergraphs}\label{sec:hyper-results}
@@ -918,8 +918,7 @@ So at most $k$ copies meet both sides.
 Form two \emph{trace} multihypergraphs $\HH[S]$ and $\HH[\bar S]$: replace every copy $e$ by $e \cap S$, or by $e \cap \bar S$, and drop the sets with fewer than two vertices.
 A Berge route in a trace is also a Berge route in $\HH$, if we replace each trace copy by the copy it came from.
 Different trace copies come from different copies of $\HH$.
-So a family of hyperedge-disjoint routes in a trace gives one of the same size in $\HH$.
-So both traces have $\lec^{\max} \le k$. Both have fewer than $n$ vertices, so the induction hypothesis applies to both.
+A family of hyperedge-disjoint routes in a trace therefore gives one of the same size in $\HH$, and both traces have $\lec^{\max} \le k$. Both have fewer than $n$ vertices, so the induction hypothesis applies to both.
 
 Now count. By induction, the copies of $\HH[S]$ contribute at most $k(|S|-1)$, and those of $\HH[\bar S]$ at most $k(|\bar S|-1)$.
 A copy inside one side contributes $|e| - 1$ to that side.
@@ -953,7 +952,7 @@ Every pair contains such a vertex, and every route from or to it uses one of the
 So removing these $m-1$ copies separates the pair, and every pair has $\lec\le m-1$.
 There are $(m-1)(n-1)/(r-1)$ hyperedges.
 
-If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} below attains the bound with a simple hypergraph.
+If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} attains the bound with a simple hypergraph.
 If $r = 2$, this condition means $m = 2$. Then the bound is $n-1$, and a tree attains it.
 A simple hypergraph is also a multihypergraph, so in this range multihypergraphs attain the bound too.
 \end{proof}
@@ -1055,7 +1054,6 @@ For a connected multigraph $G$, the \emph{cycle rank} is $\mathrm{rank}(G) = |E(
 A tree has cycle rank $0$, and each extra edge raises it by one.
 For the incidence graph of a hypergraph, $|E|$ counts the pairs of a vertex and a hyperedge copy that contains it. Take an $r$-uniform hypergraph with $q$ hyperedge copies whose incidence graph is connected. This graph has $n+q$ nodes and $rq$ edges, which gives cycle rank $rq-(n+q)+1=(r-1)q-(n-1)$. A bound on the cycle rank is therefore a bound on the number of hyperedges.
 
-A \emph{component} of a graph is a maximal connected subgraph.
 A \emph{cut vertex} is a vertex whose removal disconnects the graph, that is, leaves more components than before.
 A graph on more than $k$ vertices is \emph{$k$-connected} if removing any $k-1$ vertices leaves it connected.
 A \emph{separating pair} is a pair of vertices whose removal disconnects the graph.
@@ -1191,7 +1189,8 @@ So $G$ is simple. A simple graph in which every degree is at least three has at 
 Suppose $G$ is $3$-connected.
 By Menger's theorem every two vertices are then joined by three internally disjoint paths.
 By (iv), $X$ then has at most one vertex.
-By (i) and (ii), every $z \in Z$ then has degree at most $1$, against (iii). And $Z$ is not empty, since $G$ has at least four vertices.
+Since $G$ has at least four vertices, $Z$ is not empty.
+By (i) and (ii), every $z \in Z$ then has degree at most $1$, against (iii).
 So $G$ is not $3$-connected.
 
 Since $G$ is not $3$-connected, removing some set of at most two vertices disconnects it. A single vertex does not, because $G$ has no cut vertex. This leaves a separating pair $\{a, b\}$.
