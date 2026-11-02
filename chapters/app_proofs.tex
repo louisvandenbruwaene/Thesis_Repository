@@ -39,42 +39,6 @@ The main proof idea here is the two-step budget, a bound on the number of routes
 
 \section{Graphs that attain Mader's bound}\label{sec:mader-extremal}
 
-The hypergraph constructions in Part III need hypergraphs in which no vertex lies in too many hyperedges. Recall that a graph is a $2$-uniform hypergraph, and the \emph{degree} of a vertex is the number of hyperedges that contain it.
-
-\begin{lemma}[Sparse uniform hypergraphs exist]\label{lem:sparse-hypergraph}
-Let $r$, $n$ and $d$ be integers with $r \ge 1$, $n \ge r$ and $0 \le d \le \binom{n-1}{r-1}$. There is a simple
-$r$-uniform hypergraph on $n$ vertices with exactly $\floorfrac{dn}{r}$
-hyperedges and maximum degree at most $d$.
-\end{lemma}
-
-\begin{proof}
-Let $N := \floorfrac{dn}{r}$.
-Since $n\binom{n-1}{r-1} = r\binom{n}{r}$ (both count the pairs of an $r$-set and one of its vertices), we get $N \le \frac{n}{r}\binom{n-1}{r-1} = \binom{n}{r}$.
-So there are at least $N$ different $r$-sets.
-There are finitely many families of $N$ different $r$-sets. Choose one with the smallest value of $\sum_x \deg(x)^2$.
-We show that any two degrees in this family differ by at most one.
-
-Suppose instead that $\deg(x) \ge \deg(y) + 2$ for two vertices $x,y$.
-Let $a$ be the number of sets in the family that contain $x$ but not $y$, let $b$ be the number that contain $y$ but not $x$, and let $c$ be the number that contain both.
-Then $\deg(x) = a+c$ and $\deg(y) = b+c$, so $a - b = \deg(x) - \deg(y) \ge 2$.
-For a set $A$ that contains $x$ but not $y$, the set $A - x + y$ is an $r$-set that contains $y$ but not $x$.
-Different sets $A$ give different sets $A - x + y$, because $A$ can be recovered from $A-x+y$ by removing $y$ and adding $x$.
-So there are $a$ such new sets, but the family has only $b < a$ sets that contain $y$ but not $x$.
-So for some $A$, the set $A - x + y$ is not in the family.
-Replace $A$ by $A - x + y$. The family still has $N$ different sets. The degree of $x$ drops by one, the degree of $y$ rises by one, and the other degrees stay the same. So the sum changes by
-\[
-(\deg(x)-1)^2 + (\deg(y)+1)^2 - \deg(x)^2 - \deg(y)^2
- = 2\bigl(\deg(y) - \deg(x)\bigr) + 2 \le -2.
-\]
-This contradicts the choice of the family.
-So any two degrees differ by at most one.
-
-Each of the $N$ sets has $r$ vertices, so the degrees add up to $rN$.
-Their average is $rN/n$. Any two degrees differ by at most one, which puts every degree in $\{k,k+1\}$, where $k$ is the smallest degree. If all degrees equal $k$, the average is $k$, which is then also the largest degree and equals $\ceil{rN/n}$. Otherwise some degrees are $k$ and others $k+1$. The average then lies strictly between $k$ and $k+1$, and the largest degree $k+1$ again equals $\ceil{rN/n}$.
-Since $N \le dn/r$, we have $rN/n \le d$. As $d$ is an integer, $\ceil{rN/n} \le d$.
-\end{proof}
-
-
 \begin{construction}[Hub-and-spokes graph]\label{const:hub-spokes}\label{const:shared-clique}
 Let $n\ge m\ge2$. The graph $H_{m,n}$ has a vertex $h$ and further vertices $v_0,\dots,v_{n-2}$. Join $h$ to every $v_i$. On $v_0,\dots,v_{n-2}$, add a graph with $\floor{(m-2)(n-1)/2}$ edges in which every vertex has degree at most $m-2$.
 
@@ -763,6 +727,41 @@ The next theorem shows that for $r \ge 3$ and $m-1\le\binom{n-2}{r-2}$, simple h
 For graphs ($r=2$) this is different: there, simplicity lowers the bound from $(m-1)(n-1)$ to $\floor{m(n-1)/2}$.
 
 
+
+The construction needs hypergraphs in which no vertex lies in too many hyperedges. The \emph{degree} of a vertex in a hypergraph is the number of hyperedges that contain it.
+
+\begin{lemma}[Sparse uniform hypergraphs exist]\label{lem:sparse-hypergraph}
+Let $r$, $n$ and $d$ be integers with $r \ge 1$, $n \ge r$ and $0 \le d \le \binom{n-1}{r-1}$. There is a simple
+$r$-uniform hypergraph on $n$ vertices with exactly $\floorfrac{dn}{r}$
+hyperedges and maximum degree at most $d$.
+\end{lemma}
+
+\begin{proof}
+Let $N := \floorfrac{dn}{r}$.
+Since $n\binom{n-1}{r-1} = r\binom{n}{r}$ (both count the pairs of an $r$-set and one of its vertices), we get $N \le \frac{n}{r}\binom{n-1}{r-1} = \binom{n}{r}$.
+So there are at least $N$ different $r$-sets.
+There are finitely many families of $N$ different $r$-sets. Choose one with the smallest value of $\sum_x \deg(x)^2$.
+We show that any two degrees in this family differ by at most one.
+
+Suppose instead that $\deg(x) \ge \deg(y) + 2$ for two vertices $x,y$.
+Let $a$ be the number of sets in the family that contain $x$ but not $y$, let $b$ be the number that contain $y$ but not $x$, and let $c$ be the number that contain both.
+Then $\deg(x) = a+c$ and $\deg(y) = b+c$, so $a - b = \deg(x) - \deg(y) \ge 2$.
+For a set $A$ that contains $x$ but not $y$, the set $A - x + y$ is an $r$-set that contains $y$ but not $x$.
+Different sets $A$ give different sets $A - x + y$, because $A$ can be recovered from $A-x+y$ by removing $y$ and adding $x$.
+So there are $a$ such new sets, but the family has only $b < a$ sets that contain $y$ but not $x$.
+So for some $A$, the set $A - x + y$ is not in the family.
+Replace $A$ by $A - x + y$. The family still has $N$ different sets. The degree of $x$ drops by one, the degree of $y$ rises by one, and the other degrees stay the same. So the sum changes by
+\[
+(\deg(x)-1)^2 + (\deg(y)+1)^2 - \deg(x)^2 - \deg(y)^2
+ = 2\bigl(\deg(y) - \deg(x)\bigr) + 2 \le -2.
+\]
+This contradicts the choice of the family.
+So any two degrees differ by at most one.
+
+Each of the $N$ sets has $r$ vertices, so the degrees add up to $rN$.
+Their average is $rN/n$. Any two degrees differ by at most one, which puts every degree in $\{k,k+1\}$, where $k$ is the smallest degree. If all degrees equal $k$, the average is $k$, which is then also the largest degree and equals $\ceil{rN/n}$. Otherwise some degrees are $k$ and others $k+1$. The average then lies strictly between $k$ and $k+1$, and the largest degree $k+1$ again equals $\ceil{rN/n}$.
+Since $N \le dn/r$, we have $rN/n \le d$. As $d$ is an integer, $\ceil{rN/n} \le d$.
+\end{proof}
 
 \begin{theorem}[Simple hypergraphs attain the edge bound for $r \ge 3$]\label{thm:simple-hyper-edge}
 Let $r \ge 3$, $n \ge r$, and $2 \le m$ with $m-1 \le \binom{n-2}{r-2}$. Then the maximum number of hyperedges in a \emph{simple} $r$-uniform hypergraph on $n$ vertices with $\lec^{\max}\le m-1$ is exactly $\floorfrac{(m-1)(n-1)}{r-1}$.
