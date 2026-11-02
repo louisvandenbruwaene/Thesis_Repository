@@ -43,7 +43,7 @@ def ALL_MODELS(HYPEREDGE_SIZE=3):
         Model("multigraph",               False, True,  2),
         Model("simple hypergraph",        False, False, r),
         Model("multihypergraph",          False, True,  r),
-        Model("simple digraph",           True,  False, 2),
+        Model("simple directed graph",    True,  False, 2),
         Model("directed multigraph",      True,  True,  2),
     ] + [
         Model(f"{name}, {split}", True, repeated, r, tail_counts)
@@ -619,7 +619,7 @@ def verify_witnesses(path="witnesses.json"):
 
 
 def allowed_tail_counts(model, r):
-    if not (model.startswith("directed") or "digraph" in model):
+    if "directed" not in model:
         return {0}
     if r == 2 or model.endswith("forward"):
         return {1}
@@ -631,7 +631,7 @@ def allowed_tail_counts(model, r):
 def verify_record(record):
     n, m, r = record["n"], record["m"], record["edge_size"]
     model, separation = record["model"], record["separation"]
-    directed = model.startswith("directed") or "digraph" in model
+    directed = "directed" in model
     if ("hypergraph" in model) != (r >= 3) or r < 2:
         return False
     if separation not in ("edge", "vertex"):

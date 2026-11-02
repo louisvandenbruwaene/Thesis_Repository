@@ -1437,7 +1437,7 @@ The rest of this section finds the constant for both models. Their exact values 
 The proof uses the one-step shadow directed graph. It bounds the hyperedges by the shadow arcs, shows that the shadow satisfies a two-step budget, and applies \Cref{lem:two-step-budget}.
 
 \begin{definition}[One-step shadow]\label{def:one-step-shadow}
-Let $\HH$ be a forward directed $r$-uniform hypergraph on $V$. Its \emph{shadow} is the simple directed graph $R(\HH)$ on $V$ with an arc $(u,v)$ when some hyperedge of $\HH$ has tail $u$ and head $v$. Let $\mathrm{cod}(u,v)$ be the number of such hyperedges.
+Let $\HH$ be a forward directed $r$-uniform hypergraph on $V$. Its \emph{shadow} is the simple directed graph $R(\HH)$ on $V$ with an arc $(u,v)$ when some hyperedge of $\HH$ has tail $u$ and head $v$. Let $\mu_R(u,v)$ be the number of such hyperedges.
 \end{definition}
 
 
@@ -1454,11 +1454,11 @@ Let $r \ge 2$ and $m \ge 2$. Every forward directed $r$-uniform multihypergraph 
 \begin{proof}[Proof of \Cref{thm:dir-hyper-constant}]
 Let $R = R(\HH)$. It has no loops, since the tail of a hyperedge is not one of its heads.
 
-The $\mathrm{cod}(u,v)$ hyperedges with tail $u$ and head $v$ give that many routes of length one, which are separated.
-So $\mathrm{cod}(u,v) \le m-1$.
+The $\mu_R(u,v)$ hyperedges with tail $u$ and head $v$ give that many routes of length one, which are separated.
+So $\mu_R(u,v) \le m-1$.
 Every hyperedge, with tail $u$ and heads $h_1, \dots, h_{r-1}$, gives the $r-1$ arcs $u \to h_i$ of $R$. Counting the pairs of a hyperedge and one of its arcs in two ways gives
 \[
-    (r-1)\,|E(\HH)| \;=\; \sum_{(u,v) \in A(R)} \mathrm{cod}(u,v)
+    (r-1)\,|E(\HH)| \;=\; \sum_{(u,v) \in A(R)} \mu_R(u,v)
     \;\le\; (m-1)\,|A(R)| .
 \]
 \Cref{prop:dir-hyper-first} used the bound $|A(R)|\le n(n-1)$ here, which loses the factor four. We now bound $|A(R)|$ better.
@@ -1519,13 +1519,13 @@ Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_{\HH} \le m-1$. So f
 \end{theorem}
 
 \begin{proof}
-Let $R$ be the shadow in the general model: $(u,v) \in A(R)$ when some hyperedge has $u$ among its tails and $v$ among its heads. Let $\mathrm{cod}(u,v)$ be the number of such hyperedges. Tails and heads are disjoint, so $R$ has no loops.
+Let $R$ be the shadow in the general model: $(u,v) \in A(R)$ when some hyperedge has $u$ among its tails and $v$ among its heads. Let $\mu_R(u,v)$ be the number of such hyperedges. Tails and heads are disjoint, so $R$ has no loops.
 
-As before, $\mathrm{cod}(u,v) \le m-1$.
+As before, $\mu_R(u,v) \le m-1$.
 A hyperedge $(T,H)$ gives $|T|\,|H| \ge r-1$ arcs of $R$. So
 \[
     (r-1)\,|E(\HH)| \;\le\; \sum_{(T,H) \in E(\HH)} |T|\,|H|
-    \;=\; \sum_{(u,v) \in A(R)} \mathrm{cod}(u,v) \;\le\; (m-1)\,|A(R)| .
+    \;=\; \sum_{(u,v) \in A(R)} \mu_R(u,v) \;\le\; (m-1)\,|A(R)| .
 \]
 
 Next we show that the shadow is budgeted.

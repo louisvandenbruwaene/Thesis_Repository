@@ -15,7 +15,7 @@ The names in the code follow the words of the text.
 \begin{figure}[ht]
 \centering
 \spinediagram
-\caption{One model feeds the max-flow computation. Exhaustive search uses it to find exact values, heuristic search uses it to find dense examples, and the check with \texttt{nauty} uses it to show that no feasible graph has one edge more than the densest one found (\Cref{sec:one-more}).}
+\caption{One model feeds the maximum-flow computation. Exhaustive search uses it to find exact values, heuristic search uses it to find dense examples, and the check with \texttt{nauty} uses it to show that no feasible graph has one edge more than the densest one found (\Cref{sec:one-more}).}
 \label{fig:spine}
 \end{figure}
 
@@ -102,14 +102,14 @@ To compute $\lec(u,v)$ we use a maximum flow.
 In a network every link has a capacity, and a \emph{maximum flow} is the largest amount that can be sent from $u$ to $v$.
 We give each pair of vertices a link with capacity $\mu(u,v)$.
 In a directed graph the link has a direction. In an undirected graph it can be used in both directions.
-The max-flow min-cut theorem of Ford and Fulkerson \cite{FordFulkerson56} says that the maximum flow equals the smallest capacity of a cut.
+The maximum-flow minimum-cut theorem of Ford and Fulkerson \cite{FordFulkerson56} says that the maximum flow equals the smallest capacity of a cut.
 By Menger's theorem, this is $\lec(u,v)$.
 So computing a maximum flow computes $\lec(u,v)$.
-We call this the \emph{max-flow computation}.
+We call this the \emph{maximum-flow computation}.
 
 
 \subsection{Transformations}
-The max-flow computation works on one kind of network for all sixteen problems.
+The maximum-flow computation works on one kind of network for all sixteen problems.
 
 Every hyperedge, including an ordinary edge, becomes a \emph{gate} (\Cref{fig:hyper-gadget}).
 The gate has an entry node and an exit node, joined by one arc whose capacity is the multiplicity of the hyperedge.
@@ -333,7 +333,7 @@ The flow may stop as soon as it reaches $m$, since a larger value changes nothin
 \caption{A directed hyperedge with one tail and two heads is transformed into a gate. This gate has capacity equal to the multiplicity of the hyperedge and every route must enter at the tail and leave at a head. With several tails, each tail has an arc to $e^-$.}
 \label{fig:dir-hyper-gadget}
 \end{subfigure}
-\caption{The building blocks of the max-flow computation: vertex splitting, hyperedge gates and directed hyperedge gates.}
+\caption{The building blocks of the maximum-flow computation: vertex splitting, hyperedge gates and directed hyperedge gates.}
 \label{fig:checker-gadgets}
 \end{figure}
 
@@ -528,11 +528,11 @@ Adding a copy raises $\lec(u,v)$ and $\kap(u,v)$ by at most one for every pair.
 Edge-disjoint routes share no copy by definition, so after the addition at most one of them uses the new copy, and the others were already there.
 Separated routes also share no copy, which is why $\kap\le\lec$ holds in every model (\Cref{sec:incidence-convention}), so the same holds for $\kap$.
 This needs the convention. If two routes were only required to share no vertex, they could pass through the same hyperedge (\Cref{sec:incidence-convention}), and one new hyperedge could start several new routes at once.
-So the search does not need to run the max-flow computation at every step.
+So the search does not need to run the maximum-flow computation at every step.
 Removing a copy from a feasible graph keeps it feasible.
 Adding a copy to a graph in which every pair has at most $m-2$ disjoint routes also keeps it feasible.
 Also, an addition can only push a pair above $m-1$ if that pair is already at $m-1$.
-So \texttt{highest\_after} in \Cref{lst:neighbours} answers without the max-flow computation when the graph stays feasible for sure.
+So \texttt{highest\_after} in \Cref{lst:neighbours} answers without the maximum-flow computation when the graph stays feasible for sure.
 Otherwise it measures only the pairs that already have at least $m-1$ disjoint routes.
 After a move is made, the search measures all pairs once, so the next step again starts from exact values.
 
