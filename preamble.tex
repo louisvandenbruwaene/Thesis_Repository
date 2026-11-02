@@ -681,7 +681,7 @@ for scientific awards or contests.
 % PSEUDOCODE (algorithm2e) AND CODE LISTINGS (listings)
 % ============================================================================
 % These power the computational-centerpiece chapters: pseudocode for the
-% oracle / annealing / certifier, and Python listings in the code appendix.
+% oracle / certifier, and Python listings in the code appendix.
 \usepackage[ruled, vlined, linesnumbered]{algorithm2e}
 % On-brand pseudocode: a blue "Algorithm N" label, keywords in the house blue,
 % comments in the accent blue, and grey line numbers, so the algorithm floats
@@ -722,16 +722,17 @@ for scientific awards or contests.
           entry_vertices,exit_vertices,possible_hyperedges,
           largest_multiplicity,vertex_pairs,edge_count,build_flow_network,
           disjoint_routes,is_feasible,all_connectivities,exhaustive_search,
-          decide,choose,best_digraphs_on_support,undirected_supports,
-          canonical_form,generating_search,energy,moves,highest_after,apply,
-          tabu_search,simulated_annealing,random_greedy_growth,
-          write_certificate,check_certificate,solve,print_table,main},
+          decide,nauty_commands,read_support,start_pipeline,stop_pipeline,
+          supports,add_copies,choose,feasible_graph_with,prove_largest,
+          stays_feasible,next_addition,apply,tabu_search,random_greedy_growth,
+          write_certificate,belongs_to_model,check_certificate,solve,witness,
+          as_list,verify_witnesses,allowed_tail_counts,verify_record,
+          print_table,main},
     emphstyle={[2]\color{codeFunction}\bfseries},
     emph={[3]NAME,IS_DIRECTED,ALLOWS_REPEATED_EDGES,EDGE_SIZE,HYPEREDGE_SIZE,
           EDGE_DISJOINT,VERTEX_DISJOINT,MODEL,SEPARATION,VERTEX_COUNT,
-          THRESHOLD_M,TAIL,MEMBERS,PENALTY_PER_EXCESS_ROUTE,TABU_TENURE,
-          STEPS_WITHOUT_PROGRESS_BEFORE_KICK,START_TEMPERATURE,COOLING_FACTOR,
-          SECONDS_PER_CASE},
+          THRESHOLD_M,TAILS,TAIL_COUNTS,MEMBERS,TABU_LIST_LENGTH,
+          SECONDS_PER_CASE,HEURISTIC_SEARCH,SEARCHES},
     emphstyle={[3]\color{codeConstant}},
     emph={[4]networkx,itertools,math,random,subprocess,time,dataclass,Enum,
           Pool,inf},
@@ -918,8 +919,8 @@ for scientific awards or contests.
   rolenode/.style={rounded corners=2.5pt, draw, very thick, align=center,
      minimum width=23mm, minimum height=12mm, font=\sffamily\footnotesize},
   flow/.style={->, thick, KULblauw3b!70}]
-  \node[rolenode, fill=roleModel!16,    draw=roleModel]    (mod) at (0,0)     {\textbf{MODEL}\\[1pt]\scriptsize hyperedge table};
-  \node[rolenode, fill=roleMeasure!16,  draw=roleMeasure]  (mea) at (3.3,0)   {\textbf{MEASURE}\\[1pt]\scriptsize max-flow computation};
+  \node[rolenode, fill=roleModel!16,    draw=roleModel]    (mod) at (0,0)     {\textbf{MODEL}\\[1pt]\scriptsize hyperedges, copies};
+  \node[rolenode, fill=roleMeasure!16,  draw=roleMeasure]  (mea) at (3.3,0)   {\textbf{MEASURE}\\[1pt]\scriptsize maximum flow};
   \node[rolenode, fill=roleProve!18,    draw=roleProve]    (pro) at (7.0,1.7) {\textbf{EXACT}\\[1pt]\scriptsize exhaustive search};
   \node[rolenode, fill=roleDiscover!20, draw=roleDiscover] (dis) at (7.0,0)   {\textbf{SEARCH}\\[1pt]\scriptsize tabu, greedy growth};
   \node[rolenode, fill=roleProve!18,    draw=roleProve]    (chk) at (7.0,-1.7){\textbf{CHECK}\\[1pt]\scriptsize \texttt{nauty}};

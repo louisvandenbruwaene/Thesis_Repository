@@ -6,7 +6,7 @@ No result in this thesis depends on the output of this program.
 Its output for $n,m\le7$ is printed in \Cref{app:program}.
 \Cref{sec:certificates} shows how an output can be checked without reading the code.
 
-The program is one Python file of about $750$ lines, \texttt{program/erdos915.py}.
+The program is one Python file of about $700$ lines, \texttt{program/erdos915.py}.
 It uses the library \texttt{networkx} for maximum flows, and the programs \texttt{geng}, \texttt{directg} and \texttt{genbg} of \texttt{nauty} to list graphs.
 This chapter prints the main parts of the program, each next to the idea it implements.
 The remaining parts, such as the imports and small helper functions, are in \Cref{app:program}, so every line of the program is printed once.
@@ -134,7 +134,7 @@ The gates keep their capacity, so parallel copies still give separate routes, as
 
 The number of disjoint routes from $u$ to $v$ is the maximum flow from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ (\Cref{lst:measure}).
 A graph is feasible when this number is below $m$ for every pair, ordered in directed models.
-The library raises the value of the flow one unit at a time. It can therefore stop once the value reaches $m$, since a larger value changes nothing: the pair already breaks the condition. This is the \texttt{stop\_at} argument.
+The library builds the flow in steps, and one step can raise its value by more than one. With the \texttt{stop\_at} argument it stops at the first step that brings the value to $m$ or more, since a larger value changes nothing: the pair already breaks the condition.
 
 \programpart{measure}{Counting disjoint routes, and the feasibility test.}
 
@@ -477,56 +477,39 @@ If \texttt{geng} failed and \texttt{directg} did not, \texttt{directg} would rec
 
 \section{The heuristic search}\label{sec:heuristic}
 For larger $n$ the full search is impossible.
-Instead we search for dense graphs with a \emph{heuristic}: a method that usually finds good graphs quickly, without proving that they are the best.
-The searches below change a graph step by step. A single change, such as adding or removing one copy of one edge, is a \emph{move}.
-A search that only made improving moves would get stuck at a graph where every move makes it worse, even when denser graphs exist elsewhere. Such a graph is a \emph{local optimum}.
-To escape from one, the methods below sometimes accept a move that makes the graph worse.
+Instead the program searches for dense graphs with a \emph{heuristic}: a method that usually finds good graphs quickly, without proving that they are the best.
+It has two of them, tabu search and random greedy growth. Both work for every model.
+The setting \texttt{HEURISTIC\_SEARCH} chooses which one runs, and \Cref{sec:compare-searches} compares them.
 
-For graphs and directed graphs, each candidate gets an \emph{energy}
-\[
-    \Phi(G) = -|E(G)| + \Lambda \cdot \max\bigl(0,\ c^{\max}(G) - (m - 1)\bigr).
-\]
-Here $c^{\max}(G)$ is $\lec^{\max}(G)$ or $\kap^{\max}(G)$, depending on the separation, and $\Lambda>0$ is a fixed penalty.
-Low energy means many edges and no excess connectivity.
-In the program $\Lambda$ is \texttt{PENALTY\_PER\_EXCESS\_ROUTE} (\Cref{lst:energy}).
+\subsection{Tabu search}
 
-\programpart{energy}{The energy of a candidate graph.}
+The first heuristic is \emph{tabu search} \cite{Glover89}.
+Tabu search is a \emph{metaheuristic}, meaning it moves through the space of all feasible graphs in a guided way.
+It is a metaheuristic instead of a plain heuristic because it also makes moves that make the graph worse. This keeps it from getting stuck in a \emph{local optimum}, a graph to which no copy can be added although denser graphs may exist.
 
-The search starts from the empty graph and changes one multiplicity by one at each step.
-We use \emph{tabu search} \cite{Glover89}.
-At each step it makes the allowed move with the lowest resulting energy, even when every move raises the energy.
-On its own this would make the search go back and forth. At a local optimum the best move makes the graph worse, after which the best move is to undo it and return.
-To prevent this, the hyperedge changed by a move becomes \emph{tabu}, meaning forbidden, for a fixed number of steps. The search cannot undo the move at once and has to look further.
-A tabu move is still allowed when it gives a feasible graph larger than any seen so far.
-When the search finds no larger feasible graph for a fixed number of steps, it makes a bigger change to escape, removing all copies of three random hyperedges.
-\Cref{lst:neighbours} lists the moves, and \Cref{lst:tabu} is the search itself.
-The search keeps the exact connectivity of every pair of the current graph in \texttt{connectivity}, and \texttt{highest\_after} uses it to judge a move cheaply (\Cref{sec:near-cap}).
+Tabu search does this as follows.
+The search starts at the empty graph and moves to another graph by adding or removing one copy of an edge.
+The choice of move is random. As long as a copy can be added, the search adds one, chosen at random among the copies that can be added. At a local optimum it removes a random copy instead.
+Adding that copy back would lead straight back to the local optimum.
+To prevent this, the search keeps a \emph{tabu list} of the last ten edges it changed, and it may not change an edge on this list. The only exception is a move that gives more edges than any graph seen so far.
+The search runs until its time limit and returns the densest graph it has seen. It stops earlier only on tiny cases, where every move can be forbidden.
 
-\programpart{neighbours}{The moves: one copy more or one copy less of one hyperedge.}
+Whether a copy can be added is tested only when needed, as in the pruned search.
+The search goes through the possible additions in a random order and stops at the first one that is allowed.
+A copy that is not allowed is remembered in \texttt{blocked} and is not tested again until the next removal, because adding copies never lowers a connectivity.
+\Cref{lst:neighbours} contains this choice, and \Cref{lst:tabu} is the search itself.
+
+\programpart{neighbours}{Choosing a random copy that can be added.}
 
 \programpart{tabu}{Tabu search.}
 
-The program also implements simulated annealing on the same energy.
-It accepts a worse move with a probability that decreases over time.
-At temperature $T$ a move that raises the energy by $\Delta$ is accepted with probability $e^{-\Delta/T}$, and $T$ shrinks by a fixed factor at every step.
-The driver in \Cref{lst:driver} does not use it, so its code is in \Cref{app:program} (\Cref{lst:annealing}).
+\subsection{Random greedy growth}
 
-Every feasible graph can be built from the empty graph by adding edges one at a time, staying feasible.
-Still, it can help to pass through infeasible graphs: exchanging two edges may need an extra edge first.
-Tabu search allows this, but it only keeps feasible results.
-
-Each search keeps the densest feasible graph it has seen.
-
-\subsection{Random greedy growth for hypergraphs}
-
-For hypergraphs we use random greedy growth.
-Each run starts with the empty hypergraph and a shuffled list of all possible hyperedges: each hyperedge once in the simple model, and $m-1$ times in the multi model.
-The procedure adds the hyperedges one by one, and keeps each one only if the hypergraph stays feasible.
-This is repeated with new random orders, and the densest result is kept.
-
-At the end of a run no single hyperedge can be added, because a rejected hyperedge stays infeasible when more hyperedges are added.
-This does not mean the result is as large as possible: an early choice can block several later ones.
-We use this method instead of tabu search because there are many possible hyperedges, for example $\binom nr$ in the undirected simple case.
+Random greedy growth makes the same moves as tabu search until the first local optimum.
+There it does not remove a copy. It keeps the graph if it is the densest so far, and starts again from the empty graph with new random choices.
+It repeats this until its time limit and returns the densest graph it has found.
+Different random choices lead to different local optima, some denser than others, and many fresh starts give many chances to reach a dense one.
+The two searches therefore differ only at a local optimum: tabu search changes the graph a little, while random greedy growth starts over.
 
 \programpart{greedy}{Random greedy growth.}
 
@@ -537,12 +520,12 @@ Adding a copy raises $\lec(u,v)$ and $\kap(u,v)$ by at most one for every pair.
 Edge-disjoint routes share no copy by definition, so after the addition at most one of them uses the new copy, and the others were already there.
 Separated routes also share no copy, which is why $\kap\le\lec$ holds in every model (\Cref{sec:incidence-convention}), so the same holds for $\kap$.
 This needs the convention. If two routes were only required to share no vertex, they could pass through the same hyperedge (\Cref{sec:incidence-convention}), and one new hyperedge could start several new routes at once.
-So the search does not need to run the maximum-flow computation at every step.
+So the search does not need to run the maximum-flow computation for every candidate move.
 Removing a copy from a feasible graph keeps it feasible.
 Adding a copy to a graph in which every pair has at most $m-2$ disjoint routes also keeps it feasible.
 Also, an addition can only push a pair above $m-1$ if that pair is already at $m-1$.
-So \texttt{highest\_after} in \Cref{lst:neighbours} answers without the maximum-flow computation when the graph stays feasible for sure.
-Otherwise it measures only the pairs that already have at least $m-1$ disjoint routes.
+So \texttt{stays\_feasible} in \Cref{lst:neighbours} answers without the maximum-flow computation when the graph stays feasible for sure.
+Otherwise it measures only the pairs that already have $m-1$ disjoint routes, and stops each measurement once it reaches $m$.
 After a move is made, the search measures all pairs once, so the next step again starts from exact values.
 
 \section{Checking the output without trusting the program}\label{sec:certificates}
@@ -582,10 +565,10 @@ Its correctness can be read off from its $43$ lines and these short helpers.
 \programpart{checker}{The independent certificate checker.}
 
 So every lower bound the program finds can be checked: the graph is feasible by its certificate, and its size is counted.
-The program saves every graph with its certificate in the file \texttt{witnesses.json}.
+The program saves every graph with its certificate in the file \texttt{witnesses\_tabu.json}, or \texttt{witnesses\_greedy.json} when it runs random greedy growth.
 A second checker, the \emph{file checker}, checks this file (\Cref{lst:verifier} in \Cref{app:program}).
 It reads only the file and calls no other function of the program, so it can be read on its own. It checks the model, the size and every certificate as described above.
-The command \texttt{python erdos915.py verify} runs it.
+The command \texttt{python erdos915.py verify} runs it on \texttt{witnesses\_tabu.json}, and \texttt{python erdos915.py verify witnesses\_greedy.json} on the other file.
 An upper bound is different. A certificate that no graph on $n$ vertices has more edges would be the whole search, which is too long to check.
 So the thesis takes no upper bound or exact value from the program.
 Every upper bound is proved by hand, and every construction in the thesis is checked by hand in \Cref{ch:basecases} or \Cref{app:proofs}.
@@ -596,13 +579,13 @@ The exhaustive and heuristic searches of this chapter show which bounds are wort
 \Cref{lst:driver} puts the parts together.
 For each case, the driver allocates a nominal sixty-second search budget, in three parts of twenty seconds.
 The first part goes to the pruned search.
-If it does not finish, the second part goes to a heuristic search: tabu search for graphs and directed graphs, and random greedy growth for hypergraphs.
+If it does not finish, the second part goes to the heuristic search chosen by \texttt{HEURISTIC\_SEARCH}, tabu search or random greedy growth, in every model.
 The third part goes to checking one edge more (\Cref{sec:one-more}), starting from the densest graph found so far.
 Directed hypergraphs have no third part, so their budget is split into two parts of thirty seconds.
 The program checks the time only between operations, so one operation can run past the budget. Writing and checking the certificate takes extra time.
 Every result is then certified and checked.
 The program saves, for each case, the model, the separation, $n$ and $m$, the hyperedges of the graph with their multiplicities, its size, the certificate for every vertex pair, and whether the search finished and the certificate passed.
-It writes these to the file \texttt{witnesses.json}, so a reader can recount the edges and check every certificate without rerunning the search, by hand or with the file checker of \Cref{lst:verifier}.
+It writes these to the file of its search, \texttt{witnesses\_tabu.json} or \texttt{witnesses\_greedy.json}, so a reader can recount the edges and check every certificate without rerunning the search, by hand or with the file checker of \Cref{lst:verifier}.
 The cases are independent, so the program runs them in parallel, one per processor core.
 For each problem, and each version of a directed hypergraph problem, it prints a table with one row per $n$ and one column per $m$ (\Cref{lst:main}).
 Each entry is the number of edges of the densest feasible graph found. It is marked \texttt{*} when the search finished, and \texttt{!} if the certificate failed.
@@ -616,3 +599,25 @@ So an unfinished search covers a smaller part of a larger search space, and its 
 \programpart{driver}{The driver: a sixty-second budget per case, then a certificate.}
 
 \Cref{sec:output} prints the full output for $2\le m\le7$ and $n\le7$.
+
+\section{Comparing the two searches}\label{sec:compare-searches}
+\Cref{sec:output} prints the output of a run with tabu search, and \Cref{sec:output-greedy} the output of a run with random greedy growth.
+An entry marked \texttt{*} is the true maximum, so no entry of the other run lies above it.
+Whether a run proves an entry exact can still differ, because the check of one edge more starts from the graph the heuristic search found, and it has a time limit.
+For the directed multigraph with vertex separation at $n=4$, $m=5$, both runs find $28$ arcs, but only the run with random greedy growth proves that this is the maximum.
+
+The two searches can be pictured with a Galton board, a board of pegs on which a dropped ball bounces left or right at random until it lands in one of the slots at the bottom.
+Growing a graph from the empty graph by random additions is like dropping a ball, and the local optimum it reaches is the slot where the ball lands.
+Random greedy growth drops many balls and keeps the best slot.
+Tabu search drops one ball and then nudges it to nearby slots.
+Dropping every possible ball would reach every local optimum, and so also the densest graph, but there are far too many balls.
+Within the time limit the program runs one of the two searches.
+A run for a single model, or a single $n$ and $m$, can combine them: many fresh starts, each followed by a short tabu search.
+
+Which search does better depends on how the local optima lie.
+When the local optima are shallow and close together, a small change leads from one to a denser one, and tabu search can follow these steps.
+When they are deep and far apart, a small change only leads back to the same one, and only a fresh start reaches another.
+Tabu search has better results for the general version of directed hypergraphs and directed multihypergraphs, for example $41$ against $35$ hyperedges for the general directed multihypergraph with edge separation at $n=7$, $m=7$.
+Random greedy growth has better results for multigraphs and directed multigraphs with vertex separation, and for the forward and backward versions of directed multihypergraphs, for example $74$ arcs against $68$ for the directed multigraph with vertex separation at $n=7$, $m=6$.
+For the forward and backward versions of directed hypergraphs the two searches differ in at most three entries per table, some in favour of each search.
+In the other problems both searches give the same entries.
