@@ -862,7 +862,7 @@ Since $f(1) = 2(n-1)$ and $f(n) = \floor{n^2/4}$, we get $f(q) \le M(n)$.
 \label{fig:skeleton-example}
 \end{figure}
 
-By \Cref{lem:reach-skeleton}, every directed graph $D$ on $n\ge2$ vertices has a reachability skeleton $R$ with at most $M(n)$ arcs, and $R$ is part of $D$. At $m=2$ it is therefore enough to show that $R$ contains every arc of a feasible simple directed graph $D$. Then $D=R$, which has at most $M(n)$ arcs.
+At $m=2$ it is enough to show that a skeleton $R$ from \Cref{lem:reach-skeleton} contains every arc of a feasible simple directed graph $D$. Then $D=R$, which has at most $M(n)$ arcs.
 
 \begin{proof}[Proof of \Cref{thm:dir-vertex-m2-exact}]
 \emph{Lower bound.} The bidirected star (\Cref{const:directed-hub} at $m=2$) and the one-way bipartite directed graph (\Cref{const:bipartite}) have $\lec^{\max} = 1$.
