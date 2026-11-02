@@ -785,13 +785,13 @@ By Mantel's theorem \cite{Mantel07}, a graph on $q$ vertices with no triangle ha
     |A(Q)| \;\le\; \floorfrac{q^2}{4}.
 \]
 
-Let $R$ consist of the two trees chosen above in every component, and, for each arc of $Q$, one arc of $D$ between the corresponding components.
-These trees keep reachability inside each component.
+Let $R$ consist of the $2(n_i-1)$ arcs chosen above in every component, and, for each arc of $Q$, one arc of $D$ between the corresponding components.
+These arcs keep reachability inside each component.
 Now suppose $u$ reaches $v$ in $D$, with $u$ and $v$ in different components.
 Then the component of $u$ reaches the component of $v$ in $Q_0$, and so also in $Q$.
 Follow the arcs of $Q$ from the first component to the last.
 For each arc of $Q$, the set $R$ has an arc of $D$ between the two components.
-Inside each component, the two trees lead from the vertex where we enter to the vertex where we leave.
+Inside each component, the chosen arcs lead from the vertex where we enter to the vertex where we leave.
 So $u$ reaches $v$ in $R$.
 Since $R$ is part of $D$, it creates no new reachability. So $R$ is a reachability skeleton.
 If the components have sizes $n_1, \dots, n_q$, then
