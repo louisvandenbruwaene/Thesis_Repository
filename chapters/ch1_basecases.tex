@@ -884,11 +884,11 @@ So $|A(D)| = |A(R)| \le M(n)$. With the lower bound, $k_2^{\mathrm{dir}}(n) = M(
 
 \begin{proof}[Proof of \Cref{thm:dir-arc-m2-exact}]
 The two constructions above give $\ell_2^{\mathrm{dir}}(n) \ge M(n)$.
-Since $\kap\le\lec$, every arc-feasible directed graph is vertex-feasible, so \Cref{thm:dir-vertex-m2-exact} bounds it. So
+Since $\kap\le\lec$, every arc-feasible directed graph is vertex-feasible, so \Cref{thm:dir-vertex-m2-exact} bounds it. This gives
 \[
     M(n) \;\le\; \ell_2^{\mathrm{dir}}(n) \;\le\; k_2^{\mathrm{dir}}(n) \;\le\; M(n),
 \]
-so all three are equal.
+and all three are equal.
 \end{proof}
 
 \subsection{Undirected hypergraphs}\label{sec:hyper-results}
@@ -918,8 +918,7 @@ So at most $k$ copies meet both sides.
 Form two \emph{trace} multihypergraphs $\HH[S]$ and $\HH[\bar S]$: replace every copy $e$ by $e \cap S$, or by $e \cap \bar S$, and drop the sets with fewer than two vertices.
 A Berge route in a trace is also a Berge route in $\HH$, if we replace each trace copy by the copy it came from.
 Different trace copies come from different copies of $\HH$.
-So a family of hyperedge-disjoint routes in a trace gives one of the same size in $\HH$.
-So both traces have $\lec^{\max} \le k$. Both have fewer than $n$ vertices, so the induction hypothesis applies to both.
+A family of hyperedge-disjoint routes in a trace therefore gives one of the same size in $\HH$, and both traces have $\lec^{\max} \le k$. Both have fewer than $n$ vertices, so the induction hypothesis applies to both.
 
 Now count. By induction, the copies of $\HH[S]$ contribute at most $k(|S|-1)$, and those of $\HH[\bar S]$ at most $k(|\bar S|-1)$.
 A copy inside one side contributes $|e| - 1$ to that side.

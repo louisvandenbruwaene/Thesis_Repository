@@ -117,9 +117,9 @@ The maximum-flow computation works on one kind of network for all sixteen proble
 Every hyperedge, including an ordinary edge, becomes a \emph{gate} (\Cref{fig:hyper-gadget}).
 The gate has an entry node and an exit node, joined by one arc whose capacity is the multiplicity of the hyperedge.
 Each vertex of the hyperedge gets an arc of unlimited capacity to the entry node and one from the exit node.
-So the arc inside the gate is the only bottleneck.
+The arc inside the gate is therefore the only bottleneck.
 For a directed hyperedge, only the tails have an arc to the entry, and only the heads have an arc from the exit (\Cref{fig:dir-hyper-gadget}).
-So a route must go from a tail to a head.
+A route must then go from a tail to a head.
 We call the result the \emph{gate network}.
 \Cref{thm:menger-hyper} shows that the maximum flow in this network is the number of hyperedge-disjoint Berge routes.
 \Cref{fig:hyper-gadget-example} shows an example.
@@ -373,7 +373,7 @@ Directed hypergraphs have the most candidates, because each $r$-set carries seve
 The separation does not change the candidates. It only changes the test for each candidate.
 
 
-So there are $2^{\binom n2}$ simple graphs and $2^{n(n-1)}$ simple directed graphs on $n$ vertices.
+For example, there are $2^{\binom n2}$ simple graphs and $2^{n(n-1)}$ simple directed graphs on $n$ vertices.
 With multiplicities at most $m-1$ there are $m^{\binom n2}$ multigraphs and $m^{n(n-1)}$ directed multigraphs.
 \Cref{fig:complexity} shows how fast this grows.
 The program uses two exact methods: a pruned search, for every model, and a check of the graphs with one edge more, for every model except directed hypergraphs.
