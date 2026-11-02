@@ -177,6 +177,7 @@ S{\o}rensen and Thomassen, and the Erd\H{o}s Problems database, give instead the
 Their number is one more than the maximum used here.
 
 For example, Theorem~4 of \cite{SorensenThomassen74} gives the forcing number $\floor{8n/3}-3$ for $n\ge6$, except $16$ at $n=7$ and $28$ at $n=12$.
+Subtracting one gives the values used here.
 For $6\le n\le13$ these numbers, the two exceptions included, equal $\floor{5(n-1)/2}+1$.
 Subtracting one gives the two cases of \Cref{thm:sorensen-thomassen}.
 At $n=13$ both maxima are $30$, and the edge and vertex values first differ at $n=14$.
@@ -191,13 +192,13 @@ Each copy of $K_m$ adds $\binom m2$ edges but only $m-1$ vertices, so in the not
 The vertex problem $k_m(n)$ is open for $m\ge6$.
 This section reduces it to $2$-connected graphs (\Cref{thm:simple-vertex-blocks}).
 
-We use the words component, cut vertex and $k$-connected from \Cref{ch:basecases}.
+We use the words component, cut vertex and $k$-connected from \Cref{sec:hyper-results}.
 A \emph{bridge} is an edge whose removal disconnects its component.
 A \emph{block} is a maximal connected subgraph that has an edge and no cut vertex of its own.
 In a simple graph, a block is either a bridge or a maximal $2$-connected subgraph.
 
 Call $|E(G)|/(|V(G)|-1)$ the \emph{rate} of a graph $G$, with edges counted with multiplicity in a multigraph. It is the number of edges per vertex after the first.
-The next theorem says that an extremal graph is built from blocks: choose block sizes $b_i$, where a block of size $b_i$ costs $b_i-1$ vertices and gives at most $h_m(b_i)$ edges, with total cost at most $n-1$.
+The next theorem says that the best graph is built from blocks: choose block sizes $b_i$, where a block of size $b_i$ costs $b_i-1$ vertices and gives at most $h_m(b_i)$ edges, with total cost at most $n-1$.
 
 \begin{theorem}[The vertex problem reduces to blocks]\label{thm:simple-vertex-blocks}
 For $b \ge 2$ let
@@ -558,7 +559,7 @@ The directed graph of \Cref{const:augmented-bipartite} has $\lec^{\max} \le m-1$
     k_m^{\mathrm{dir}}(n) \;\ge\; \ell_m^{\mathrm{dir}}(n) \;\ge\; \floorfrac{(n+m-2)^2}{4}
     \;=\; \frac{n^2}{4} + \frac{(m-2)n}{2} + O_m(1).
 \]
-For $m\ge3$ the term $(m-2)n/2$ is positive. Both functions are therefore $n^2/4$ plus a term that lies between two positive constant multiples of $n$.
+For $m\ge3$ the term $(m-2)n/2$ is positive. So both functions are $n^2/4$ plus a term that is at least and at most a constant times $n$.
 \end{proof}
 
 The linear coefficient is not known.
@@ -599,6 +600,8 @@ We use $\min(a,b) \le \sqrt{ab}$, the Cauchy--Schwarz inequality $\sum_x \sqrt{a
 \end{proof}
 
 
+
+So for $m\ge3$ both directed problems have leading term $n^2/4$ and a linear second term. The linear coefficient and the exact values are open. It is also open whether the two values are equal.
 
 \section{The extremal directed multigraphs}\label{sec:dir-multi}
 
@@ -664,7 +667,7 @@ Let $R$ be as in \Cref{lem:equality-forces}, with parts $A$ and $B$. Then $R$ co
 \begin{proof}
 Suppose $u \to v \to w \to x$ is such a path, with four different vertices.
 Every arc of $R$ joins $A$ and $B$, so the path alternates between the parts. It has three arcs, so $u$ and $x$ lie in different parts.
-With directions ignored, $R$ is complete bipartite, so $R$ has an arc between $u$ and $x$.
+The underlying graph of $R$ is complete bipartite, so $R$ has an arc between $u$ and $x$.
 It cannot be $x \to u$, since that would close a directed cycle, and $D$ is acyclic.
 So $u \to x$ is in $R$.
 But $u$ also reaches $x$ along the path, so $u\to x$ could be removed without changing reachability. This is a contradiction.
@@ -710,9 +713,9 @@ Equality holds, so every pair in $A \times B$ has multiplicity $m-1$, and $|A|\,
 The product $|A|\,|B|$ with $|A|+|B| = n$ equals $\floor{n^2/4}$ only when the parts have sizes $\ceil{n/2}$ and $\floor{n/2}$.
 \end{proof}
 
-Without the hypothesis $n\ge2m$, the following still holds for $n\ge8$.
+The hypothesis $n\ge2m$ is used only to exclude paths with two arcs in $R$.
 Every vertex of an extremal multigraph has degree at least $(m-1)\floor{n/2}$.
-Deleting a vertex leaves a feasible multigraph on $n-1 \ge 7$ vertices, with at most $(m-1)M(n-1) = (m-1)\floor{(n-1)^2/4}$ arcs.
+Deleting the vertex leaves a feasible multigraph on $n-1 \ge 7$ vertices, with at most $(m-1)M(n-1) = (m-1)\floor{(n-1)^2/4}$ arcs.
 So the vertex has at least $(m-1)\bigl(\floor{n^2/4} - \floor{(n-1)^2/4}\bigr) = (m-1)\floor{n/2}$ arcs.
 For even $n$, every vertex of $(m-1)\cdot B_{n/2,\,n/2}$ has degree exactly $(m-1)n/2$.
 
@@ -796,7 +799,7 @@ Add a second copy of $\{h,d,e\}$ and one copy of $\{a,b,c\}$.
 
 \begin{proposition}[The edge value at $(n,m,r)=(6,6,3)$]\label{prop:multihyper-six}
 The multihypergraph of \Cref{const:multihyper-six} has $12$ hyperedge copies and $\lec^{\max}\le5$.
-So the largest number of hyperedge copies of a $3$-uniform multihypergraph on $6$ vertices with $\lec^{\max} \le 5$ is $12$, although neither condition of \Cref{prop:hyper-edge} holds: $r-1 = 2$ does not divide $n-1 = 5$, and $m-1=5$ is larger than $\binom{n-2}{r-2}=4$.
+So the largest number of hyperedge copies of a $3$-uniform multihypergraph on $6$ vertices with $\lec^{\max} \le 5$ is $12$, although $r-1 = 2$ does not divide $n-1 = 5$.
 \end{proposition}
 
 \begin{proof}
@@ -976,7 +979,7 @@ Write $K_m(n)$ for the largest number of edges, counted with multiplicity, of a 
 The parallel edges and the longer routes do not interfere, so we can count them separately.
 
 \begin{lemma}[Splitting the local vertex-connectivity]\label{lem:multi-vertex-split}
-Let $G$ be a multigraph with multiplicity function $\mu$, and let its \emph{underlying simple graph} $G_0$ be the simple graph with an edge $uv$ whenever $\mu(u,v)\ge1$. For any two vertices $u \ne v$, write $\pi(u,v)$ for the largest number of pairwise internally disjoint $u$--$v$ paths of length at least two in $G_0$. Then
+Let $G$ be a multigraph with multiplicity function $\mu$ and underlying simple graph $G_0$. For any two vertices $u \ne v$, write $\pi(u,v)$ for the largest number of pairwise internally disjoint $u$--$v$ paths of length at least two in $G_0$. Then
 \[
     \kap_G(u,v) \;=\; \mu(u,v) \;+\; \pi(u,v).
 \]
@@ -1048,7 +1051,7 @@ For $m \ge 3$ there are three constructions.
 \end{itemize}
 
 For $n \le m+1$ the theta has $2(n-2)(m-2) + (m+1-n)$ edges and the thickened tree has $(m-1)(n-1)$. Their difference is $(n-2)(m-4)$. The two agree at $m=4$, and for $m\ge5$ and $n\ge3$ the theta has more.
-For $n \ge m+2$ the other two constructions are not feasible, so among these three the tree has the most edges.
+For $n \ge m+2$ the other two constructions are not feasible, so among these three the tree is best.
 
 
 
@@ -1505,7 +1508,7 @@ So the upper and lower bounds have the same $n^2$ term.
 \end{proof}
 
 Two remarks.
-For small $n$, the bound of \Cref{prop:dir-hyper-first} is smaller, roughly until $n \approx 4(m-1)(r-1)/3$.
+For small $n$, the bound of \Cref{prop:dir-hyper-first} is smaller, roughly until $n \approx 4(m-1)(r-1)/3$. The theorem is only better asymptotically.
 At $r = 2$ the shadow is the underlying simple directed graph, obtained by suppressing parallel copies, and the theorem gives the quadratic term of \Cref{thm:dir-multi-full} again.
 
 The general model needs a different proof that the shadow is budgeted.

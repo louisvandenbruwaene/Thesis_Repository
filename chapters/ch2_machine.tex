@@ -117,9 +117,9 @@ The maximum-flow computation works on one kind of network for all sixteen proble
 Every hyperedge, including an ordinary edge, becomes a \emph{gate} (\Cref{fig:hyper-gadget}).
 The gate has an entry node and an exit node, joined by one arc whose capacity is the multiplicity of the hyperedge.
 Each vertex of the hyperedge gets an arc of unlimited capacity to the entry node and one from the exit node.
-The arc inside the gate is therefore the only bottleneck.
+So the arc inside the gate is the only bottleneck.
 For a directed hyperedge, only the tails have an arc to the entry, and only the heads have an arc from the exit (\Cref{fig:dir-hyper-gadget}).
-A route must then go from a tail to a head.
+So a route must go from a tail to a head.
 \Cref{thm:menger-hyper} shows that the maximum flow in this network is the number of hyperedge-disjoint Berge routes.
 \Cref{fig:hyper-gadget-example} shows an example.
 
@@ -246,7 +246,7 @@ The library builds the flow in steps, and one step can raise its value by more t
   \node[font=\small] at (4,-1.4) {(b)};
 \end{scope}
 \end{tikzpicture}}
-\caption[The gate network of a hypergraph]{(a) An undirected $3$-uniform hypergraph. (b) The relevant part of its flow network for the pair $u,v$. The four black routes use pairwise disjoint sets of gates, so $\lec(u,v)\ge4$. The vertex $v$ lies in only four hyperedges, and removing those four hyperedges separates $u$ from $v$, so $\lec(u,v)\le4$. Hence $\lec(u,v)=4$. Each gate is drawn as one point. A dotted line joins a gate to the third vertex of its hyperedge, which the route does not use.}
+\caption[The gate network of a hypergraph]{(a) An undirected $3$-uniform hypergraph. (b) The relevant part of its gate network for the pair $u,v$. The four black routes use pairwise disjoint sets of gates, so $\lec(u,v)\ge4$. The vertex $v$ lies in only four hyperedges, and removing those four hyperedges separates $u$ from $v$, so $\lec(u,v)\le4$. Hence $\lec(u,v)=4$. Each gate is drawn as one point. A dotted line joins a gate to the third vertex of its hyperedge, which the route does not use.}
 \label{fig:hyper-gadget-example}
 \end{figure}
 
@@ -372,7 +372,7 @@ Directed hypergraphs have the most candidates, because each $r$-set carries seve
 The separation does not change the candidates. It only changes the test for each candidate.
 
 
-For example, there are $2^{\binom n2}$ simple graphs and $2^{n(n-1)}$ simple directed graphs on $n$ vertices.
+So there are $2^{\binom n2}$ simple graphs and $2^{n(n-1)}$ simple directed graphs on $n$ vertices.
 With multiplicities at most $m-1$ there are $m^{\binom n2}$ multigraphs and $m^{n(n-1)}$ directed multigraphs.
 \Cref{fig:complexity} shows how fast this grows.
 The program uses two exact methods: a pruned search, for every model, and a check of the graphs with one edge more, for every model except directed hypergraphs.
@@ -615,11 +615,10 @@ Dropping every possible ball would reach every local optimum, and so also the de
 Within the time limit the program runs one of the two searches.
 A run for a single model, or a single $n$ and $m$, can combine them: many fresh starts, each followed by a short tabu search.
 
-Tabu search finds more edges in most of the differing entries for the general version of directed hypergraphs and directed multihypergraphs, for example $41$ against $35$ hyperedges for the general directed multihypergraph with edge separation at $n=7$, $m=7$.
-Random greedy growth finds more in most of the differing entries for multigraphs and directed multigraphs with vertex separation, and for the forward and backward versions of directed multihypergraphs, for example $74$ arcs against $68$ for the directed multigraph with vertex separation at $n=7$, $m=6$.
-For the forward and backward versions of directed hypergraphs the two searches differ in at most three entries per table, some in favour of each search.
-In the other problems both searches give the same entries.
-
-One possible explanation for these differences, which this thesis does not test, is how the local optima lie.
+One possible explanation, which this thesis does not test, is how the local optima lie.
 If they are shallow and close together, a small change leads from one to a denser one, and tabu search can follow these steps.
 If they are deep and far apart, a small change mostly leads back to the same one, and fresh starts may help to reach others.
+Tabu search has better results for the general version of directed hypergraphs and directed multihypergraphs, for example $41$ against $35$ hyperedges for the general directed multihypergraph with edge separation at $n=7$, $m=7$.
+Random greedy growth has better results for multigraphs and directed multigraphs with vertex separation, and for the forward and backward versions of directed multihypergraphs, for example $74$ arcs against $68$ for the directed multigraph with vertex separation at $n=7$, $m=6$.
+For the forward and backward versions of directed hypergraphs the two searches differ in at most three entries per table, some in favour of each search.
+In the other problems both searches give the same entries.
