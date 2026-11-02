@@ -118,8 +118,8 @@ For all $n \ge 2$ and $m \ge 2$,
 
 Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62} found graphs that attain this bound when $m-1$ divides $n-1$: copies of $K_m$ that share one vertex.
 For $n\ge m$ the bound is always attained. Mader proved this as well, so $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ \cite{Mader73}. \Cref{thm:extremal-existence} gives a different construction.
-For $2\le n<m$ the complete graph $K_n$ satisfies the condition, so $\ell_m(n)=\binom n2$.
-This is smaller than $\floor{m(n-1)/2}$, except when $(n,m)=(2,3)$.
+For $2\le n<m$ the complete graph $K_n$ satisfies the condition, so $\ell_m(n)=\binom{n}{2}$.
+This is smaller than $\floor{m(n-1)/2}$, except when $(n,m)=(2,3)$. The reason is that $m\ge n+1$ gives $\floor{m(n-1)/2}\ge\binom{n}{2}+\floor{(n-1)/2}$, which exceeds $\binom{n}{2}$ once $n\ge3$. At $n=2$ the two values are $1$ and $\floor{m/2}$, and these agree only at $m=3$.
 
 We prove \Cref{thm:mader} in a different way from Mader, with the Gomory--Hu tree.
 It stores the $\binom n2$ values $\lec_G(u,v)$ in only $n-1$ weights.
@@ -138,7 +138,7 @@ Such a tree is a \emph{Gomory--Hu tree} of $G$. Its edges need not be edges of $
 Let $T$ be a Gomory--Hu tree of $G$.
 For an edge $e$ of $G$, let $\dist_T(e)$ be the number of tree edges on the path in $T$ between the ends of $e$ (\Cref{fig:gomory-hu-dist}).
 An edge $e=uv$ of $G$ \emph{crosses} a tree edge $t$ if $u$ and $v$ lie in different parts when $t$ is removed from $T$.
-This happens exactly when $t$ lies on the $u$--$v$ path of $T$.
+This happens exactly when $t$ lies on the $u$--$v$ path of $T$. If $t$ lies on this path, removing $t$ breaks the only $u$--$v$ path of $T$, which puts $u$ and $v$ in different parts. If $t$ does not lie on it, the path survives the removal and keeps $u$ and $v$ together.
 So $e$ crosses $\dist_T(e)$ tree edges.
 
 The proof has three steps.
@@ -210,7 +210,7 @@ For a simple graph $G$, $\displaystyle\sum_{e \in E(G)} \dist_T(e) \;\ge\; 2|E(G
 Let $E_1$ be the set of edges with $\dist_T(e) = 1$.
 Such an edge joins two vertices that are adjacent in $T$.
 The tree $T$ has $n-1$ edges, and since $G$ is simple, each of them gives at most one edge of $E_1$. So $|E_1| \le n-1$.
-Every other edge has $\dist_T(e) \ge 2$. So
+Every other edge has $\dist_T(e) \ge 2$. Its distance is not $0$, because its two ends are different, and not $1$, because it is not in $E_1$. This gives
 \[
 \sum_{e \in E(G)} \dist_T(e) \;\ge\; |E_1| + 2\bigl(|E(G)| - |E_1|\bigr) \;=\; 2|E(G)| - |E_1| \;\ge\; 2|E(G)| - (n-1). \qedhere
 \]
@@ -407,7 +407,7 @@ In the figures, one colour is one hyperedge, not a path of ordinary edges.
 \label{fig:eight-models}
 \end{figure}
 
-Directed graphs have no Gomory--Hu tree, but Menger's theorem (\Cref{thm:menger}) also holds for directed multigraphs, with directed paths and arcs.
+Directed graphs have no Gomory--Hu tree in general. A tree stores one value per pair, read the same in both directions, while $\lec(u,v)$ and $\lec(v,u)$ can differ. Menger's theorem (\Cref{thm:menger}) does hold for directed multigraphs, with directed paths and arcs.
 In a directed graph, the \emph{out-degree} $d^+(v)$ is the number of arcs that leave $v$.
 The vertices these arcs point to are the \emph{out-neighbours} of $v$.
 The \emph{in-degree} $d^-(v)$ is the number of arcs that enter $v$, and they come from the \emph{in-neighbours} of $v$.
@@ -518,7 +518,7 @@ The fourth assumption is \emph{separation}.
 Two $u$--$v$ paths are \emph{internally vertex-disjoint} if they have no vertex in common except $u$ and $v$.
 The largest number of such paths is the \emph{local vertex-connectivity} $\kap_G(u,v)$.
 Its largest value over all pairs is $\kap_G^{\max}$.
-Internally vertex-disjoint paths are also edge-disjoint, so $\kap_G(u,v)\le\lec_G(u,v)$.
+In a graph, internally vertex-disjoint paths are also edge-disjoint. An edge has two ends, and two such paths share no vertex other than $u$ and $v$. A shared edge would therefore have to join $u$ and $v$. A $u$--$v$ path that uses such an edge consists of that edge alone, which makes two paths through the same edge the same path. This gives $\kap_G(u,v)\le\lec_G(u,v)$.
 \Cref{sec:incidence-convention} extends this to multigraphs and hypergraphs.
 \Cref{fig:edge-vs-vertex} shows that the vertex and edge-disjointness can differ.
 
@@ -551,7 +551,7 @@ This thesis uses the following convention. For simple graphs it gives the usual 
 The \emph{incidence graph} $I(\HH)$ has a node for each vertex and a node for each edge copy.
 An edge copy is joined to the vertices it contains.
 A route from $u$ to $v$ is a path in $I(\HH)$.
-Two routes are \emph{separated} if they have no inner node in common.
+Two routes are \emph{edge-disjoint} if they use no common edge copy. Such routes may still meet in inner vertices. Two routes are \emph{separated} if they have no inner node in common. As for graphs, $\lec(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ routes, and $\kap(u,v)$ the largest number of pairwise separated ones.
 In the directed case we use the directed incidence graph: each tail has an arc to the edge copy, and the edge copy has an arc to each head.
 For example, an arc $u\to v$ becomes $u\to e\to v$.
 
@@ -560,7 +560,7 @@ Sharing no vertex is not enough for hypergraphs, because two Berge routes can us
 Since separated routes also share no edge copy, $\kap\le\lec$ holds in every model.
 
 In a multigraph, $q$ parallel copies of $uv$ give $q$ separated routes.
-So the vertex problems for multigraphs, $K_m(n)$ and $K_m^{\mathrm{dir}}(n)$, differ from the simple ones.
+This is why the vertex problems for multigraphs, written $K_m(n)$ and $K_m^{\mathrm{dir}}(n)$ in \Cref{tab:notation}, differ from the simple ones.
 In a feasible multigraph no multiplicity is larger than $m-1$, since $m$ parallel copies already give $m$ separated routes.
 
 In every model, a graph is \emph{feasible} if no two vertices are joined by $m$ disjoint routes of the kind considered.
@@ -733,8 +733,8 @@ For simple directed graphs, $k_2^{\mathrm{dir}}(n) = \ell_2^{\mathrm{dir}}(n)$.
 
 The star has more arcs for $n<7$, and the bipartite directed graph has more for $n>7$.
 So the directed value grows quadratically in $n$, while the undirected value grows linearly.
-In the bipartite directed graph all arcs point the same way, so a route crosses between the parts only once and never comes back.
-An undirected graph with $\lec^{\max}\le1$ has no cycle, so it has at most $n-1$ edges.
+In the bipartite directed graph no arc leaves $B$ and no arc enters $A$. Every route is therefore a single arc, and each ordered pair has at most one route.
+An undirected graph with $\lec^{\max}\le1$ has no cycle, because two vertices on a cycle are joined by the two halves of the cycle, which are edge-disjoint paths. Such a graph is a forest and has at most $n-1$ edges.
 
 For the upper bound we keep only the arcs that are needed to tell who can reach whom.
 
@@ -754,13 +754,13 @@ Every directed multigraph $D$ on $n \ge 2$ vertices has a reachability skeleton 
 \begin{proof}
 We build $R$ first inside each strongly connected component, then between components, and then we count.
 A \emph{strongly connected component} is a maximal set of vertices in which any two can reach each other.
-Every directed graph splits into such components.
+Every vertex lies in exactly one such component. This is because mutual reachability carries over: when $u$ and $v$ reach each other and $v$ and $w$ reach each other, $u$ and $w$ reach each other through $v$.
 \Cref{fig:skeleton-example} shows an example.
 
 Take a component with $n_i$ vertices and choose a vertex $r$ in it.
 We choose $n_i-1$ arcs along which $r$ reaches every vertex of the component.
 Start with $r$ alone.
-As long as some vertex of the component is not yet reached, there is an arc of $D$ from a reached vertex to an unreached vertex of the component, since $r$ reaches every vertex of the component along arcs inside it.
+As long as some vertex $w$ of the component is not yet reached, take a directed path from $r$ to $w$ in $D$. Every vertex $y$ on this path belongs to the component, because $r$ reaches $y$ and $y$ reaches $w$, which in turn reaches $r$. The path starts at a reached vertex and ends at an unreached one. One of its arcs therefore goes from a reached vertex to an unreached vertex of the component.
 Add this arc. Each arc reaches one new vertex, so this ends after $n_i-1$ arcs.
 In the same way, with all directions reversed, there are $n_i-1$ arcs along which every vertex of the component reaches $r$.
 Any two vertices $u,v$ of the component are then joined by a walk from $u$ to $r$ and on to $v$ along these arcs, and this walk contains a $u$--$v$ path.
@@ -776,7 +776,7 @@ Call the result $Q$. No arc of $Q$ can be deleted without changing this.
 The graph $Q$, with directions ignored, has no triangle.
 Indeed, suppose three points of $Q$ are joined in pairs.
 Two points are never joined both ways, since that would be a directed cycle.
-Three arcs on three points that form no directed cycle always look like $x \to y$, $y \to z$ and $x \to z$, after renaming: $x$ is the point with both arcs leaving, and $z$ the point with both arcs entering.
+Each of the three points lies on two of the three arcs. If every point had exactly one arc leaving it, the arcs would form a directed cycle. Some point $x$ therefore has both of its arcs leaving. Name the other two points $y$ and $z$ so that the third arc is $y\to z$. The three arcs are then $x \to y$, $y \to z$ and $x \to z$.
 But then $x \to z$ could be deleted, since $x$ still reaches $z$ through $y$.
 This contradicts the choice of $Q$.
 By Mantel's theorem \cite{Mantel07}, a graph on $q$ vertices with no triangle has at most $\floor{q^2/4}$ edges. So
@@ -799,12 +799,12 @@ If the components have sizes $n_1, \dots, n_q$, then
 \]
 
 It remains to bound $f(q)$ for $1 \le q \le n$.
-Since $\floor{(q+1)^2/4} - \floor{q^2/4} = \floor{(q+1)/2}$ (check even and odd $q$),
+The identity $\floor{(q+1)^2/4} - \floor{q^2/4} = \floor{(q+1)/2}$ holds for every $q$. For $q=2j$ the two terms are $j^2+j$ and $j^2$, with difference $j$. For $q=2j+1$ they are $(j+1)^2$ and $j^2+j$, with difference $j+1$. This gives
 \[
     f(q+1) - f(q) \;=\; -2 \;+\; \floorfrac{q+1}{2}.
 \]
-These differences never decrease as $q$ grows.
-So $f$ first goes down (or stays level) and then goes up (or stays level). Its largest value on $\{1,\dots,n\}$ is therefore at $q=1$ or at $q=n$.
+The difference is $-1$ for $q\le2$, $0$ for $q=3$ and $q=4$, and positive from $q=5$ on.
+The function $f$ goes down until $q=3$, stays level until $q=5$ and then goes up. Its largest value on $\{1,\dots,n\}$ is therefore at $q=1$ or at $q=n$.
 Since $f(1) = 2(n-1)$ and $f(n) = \floor{n^2/4}$, we get $f(q) \le M(n)$.
 \end{proof}
 
@@ -861,7 +861,7 @@ Since $f(1) = 2(n-1)$ and $f(n) = \floor{n^2/4}$, we get $f(q) \le M(n)$.
 \label{fig:skeleton-example}
 \end{figure}
 
-The skeleton has at most one copy of each arc, so at $m=2$ it is enough to show that a feasible directed graph is its own skeleton.
+By \Cref{lem:reach-skeleton}, every directed graph $D$ on $n\ge2$ vertices has a reachability skeleton $R$ with at most $M(n)$ arcs, and $R$ is part of $D$. At $m=2$ it is therefore enough to show that $R$ contains every arc of a feasible simple directed graph $D$. Then $D=R$, which has at most $M(n)$ arcs.
 
 \begin{proof}[Proof of \Cref{thm:dir-vertex-m2-exact}]
 \emph{Lower bound.} The bidirected star (\Cref{const:directed-hub} at $m=2$) and the one-way bipartite directed graph (\Cref{const:bipartite}) have $\lec^{\max} = 1$.
@@ -927,7 +927,7 @@ A copy that meets both sides satisfies
     |e| - 1 \;=\; \bigl(|e \cap S| - 1\bigr)
               \;+\; \bigl(|e \cap \bar S| - 1\bigr) \;+\; 1,
 \]
-where each bracket is the contribution to one trace (zero if that part was dropped).
+where each bracket is the contribution to one trace. A crossing copy has at least one vertex on each side. Each bracket is therefore at least zero, with zero exactly when that part was dropped.
 Summing over all copies gives
 \[
     \sum_e \bigl(|e|-1\bigr)
@@ -1015,7 +1015,7 @@ This proves the claim.
 
 \emph{Upper bound.}
 Each hyperedge copy contains $r$ vertices, so $I(\HH)$ has $rq$ edges and $n + q$ nodes.
-A forest on $n + q$ nodes has at most $n + q - 1$ edges.
+A forest on $n + q$ nodes has at most $n + q - 1$ edges, because each of its components is a tree with one edge fewer than nodes.
 So $rq \le n + q - 1$, that is, $q \le (n-1)/(r-1)$. Since $q$ is an integer, $q \le \floor{(n-1)/(r-1)}$.
 
 \emph{Lower bound.}
@@ -1052,7 +1052,7 @@ The vertex problem asks for the largest number of hyperedge nodes, each of degre
 The upper bound at $m=3$ follows from a bound on the cycles of a graph, proved next.
 For a connected multigraph $G$, the \emph{cycle rank} is $\mathrm{rank}(G) = |E(G)| - |V(G)| + 1$.
 A tree has cycle rank $0$, and each extra edge raises it by one.
-For the incidence graph of a hypergraph, $|E|$ counts the pairs of a vertex and a hyperedge copy that contains it. So a bound on the cycle rank is a bound on the number of hyperedges.
+For the incidence graph of a hypergraph, $|E|$ counts the pairs of a vertex and a hyperedge copy that contains it. Take an $r$-uniform hypergraph with $q$ hyperedge copies whose incidence graph is connected. This graph has $n+q$ nodes and $rq$ edges, which gives cycle rank $rq-(n+q)+1=(r-1)q-(n-1)$. A bound on the cycle rank is therefore a bound on the number of hyperedges.
 
 A \emph{component} of a graph is a maximal connected subgraph.
 A \emph{cut vertex} is a vertex whose removal disconnects the graph, that is, leaves more components than before.
@@ -1181,7 +1181,7 @@ Now $G$ is $2$-connected, has at least three vertices, and every degree is at le
 
 First, $G$ has no parallel edges. By (ii), parallel edges can only join two vertices $x,x'$ of $X$.
 Suppose $G$ has two parallel edges between $x$ and $x'$.
-Since $G$ has a third vertex and $x'$ is not a cut vertex, $x$ has a neighbour $w \ne x'$.
+Because $x'$ is not a cut vertex, $G-x'$ is connected. It contains $x$ and a third vertex, which forces $x$ to have a neighbour $w\ne x'$.
 Since $x$ is not a cut vertex, $G - x$ has a path from $w$ to $x'$.
 With $x$ in front, this is an $x$--$x'$ path with an inner vertex.
 With the two parallel edges this gives three internally disjoint $x$--$x'$ paths, against (iv).
@@ -1193,7 +1193,7 @@ By (iv), $X$ then has at most one vertex.
 By (i) and (ii), every $z \in Z$ then has degree at most $1$, against (iii). And $Z$ is not empty, since $G$ has at least four vertices.
 So $G$ is not $3$-connected.
 
-So $G$ has a separating pair $\{a, b\}$.
+Since $G$ is not $3$-connected, removing some set of at most two vertices disconnects it. A single vertex does not, because $G$ has no cut vertex. This leaves a separating pair $\{a, b\}$.
 Remove it, and divide the components of $G - \{a,b\}$ into two non-empty groups, with vertex sets $U$ and $W$.
 Each component has a neighbour of $a$ and a neighbour of $b$. Otherwise the other one of $a,b$ would be a cut vertex.
 So $U \cup \{a,b\}$ contains an $a$--$b$ path with all inner vertices in $U$, and the same holds for $W$.
@@ -1264,7 +1264,7 @@ So $rq - (n + q) + C \le n - C$, that is, $q(r-1) \le 2(n-1) - 2(C-1) \le 2(n-1)
 Since $q$ is an integer, $q \le \floor{2(n-1)/(r-1)}$.
 
 \emph{Lower bound, simple.}
-For $2 < r < n$, this is \Cref{prop:hyper-vertex-lower} at $m = 3$. It needs $2 \le \binom{n-2}{r-2}$, which holds exactly when $2 < r < n$.
+For $2 < r < n$, this is \Cref{prop:hyper-vertex-lower} at $m = 3$. It needs $2 \le \binom{n-2}{r-2}$, which holds exactly when $2 < r < n$. At $r=2$ and at $r=n$ the binomial coefficient equals $1$. When $2<r<n$ we have $1\le r-2\le n-3$, and the coefficient is at least $n-2\ge2$.
 
 \emph{Lower bound, multihypergraphs.}
 Every simple hypergraph is also a multihypergraph, so $K_3^{(r)}(n) \ge k_3^{(r)}(n)$.
@@ -1306,7 +1306,7 @@ so for each fixed $m$,
 For an ordered pair $(u,v)$, the routes $u\to x\to v$ with different midpoints $x$, together with the arc $u\to v$, are disjoint.
 So a feasible directed graph has at most $m-1$ of them.
 Take a vertex $v$ of largest out-degree $\Delta$.
-Summing this over the pairs $(v,w)$ shows that the out-neighbours of $v$ send at most $(m-1)(n-1)$ arcs in total.
+Summing this over the $n-1$ pairs $(v,w)$ shows that the out-neighbours of $v$ send at most $(m-1)(n-1)$ arcs in total. The $\Delta$ arcs $v\to w$ also count against this budget. They make room for the at most $\Delta$ arcs from out-neighbours back to $v$, which no pair $(v,w)$ counts.
 The other $n-1-\Delta$ vertices send at most $\Delta$ arcs each.
 Together with the $\Delta$ arcs out of $v$ this gives at most $\Delta(n-\Delta)+(m-1)(n-1)$ arcs, and $\Delta(n-\Delta)\le\floor{n^2/4}$.
 The routes of length two are also internally vertex-disjoint, so the same proof works for vertex separation.
@@ -1339,7 +1339,7 @@ The number of arcs is also multiplied by $k$.
 \begin{construction}[Thickened tree and thickened bipartite directed graph]\label{const:dir-multi-lower}
 Let $m \ge 2$.
 (a) Take any tree on the $n$ vertices and put $m-1$ arcs in each direction on every tree edge.
-With one arc in each direction this is the bidirected tree, with $\lec^{\max} = 1$.
+With one arc in each direction this is the bidirected tree. Each ordered pair is joined by exactly one directed path, which follows the path of the tree, giving $\lec^{\max} = 1$.
 So by \Cref{lem:thickening} the thickened tree has $\lec^{\max} = m-1$ and $2(m-1)(n-1)$ arcs.
 (b) Take the one-way bipartite directed graph of \Cref{const:bipartite} and repeat every arc $m-1$ times.
 By the same lemma it has $\lec^{\max} = m-1$ and $(m-1)\floor{n^2/4}$ arcs.
@@ -1410,7 +1410,7 @@ The backward model is the forward model with every hyperedge reversed, so it has
 The general model has the same leading term, with a larger linear term (\Cref{thm:dir-hyper-general-constant}).
 
 At $r=2$ this also covers directed multigraphs with vertex separation.
-At $m=2$ no arc can be repeated, so $K_2^{\mathrm{dir}}(n)=\ell_2^{\mathrm{dir}}(n)$.
+At $m=2$ no arc can be repeated, because two copies of an arc are two separated routes. A feasible directed multigraph is then a simple directed graph, which gives $K_2^{\mathrm{dir}}(n)=k_2^{\mathrm{dir}}(n)=\ell_2^{\mathrm{dir}}(n)$ by \Cref{thm:dir-vertex-m2-exact}.
 For fixed $m$, the extremal multigraphs of \Cref{thm:dir-multi-full} are feasible here too, since $\kap\le\lec$.
 With \Cref{thm:dir-hyper-constant} at $r=2$ this gives $K_m^{\mathrm{dir}}(n)=(m-1)n^2/4+O_m(n)$ (\Cref{cor:dir-multi-incidence}).
 

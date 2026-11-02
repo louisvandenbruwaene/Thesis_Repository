@@ -58,7 +58,7 @@ Suppose instead that $\deg(x) \ge \deg(y) + 2$ for two vertices $x,y$.
 Let $a$ be the number of sets in the family that contain $x$ but not $y$, let $b$ be the number that contain $y$ but not $x$, and let $c$ be the number that contain both.
 Then $\deg(x) = a+c$ and $\deg(y) = b+c$, so $a - b = \deg(x) - \deg(y) \ge 2$.
 For a set $A$ that contains $x$ but not $y$, the set $A - x + y$ is an $r$-set that contains $y$ but not $x$.
-Different sets $A$ give different sets $A - x + y$.
+Different sets $A$ give different sets $A - x + y$, because $A$ can be recovered from $A-x+y$ by removing $y$ and adding $x$.
 So there are $a$ such new sets, but the family has only $b < a$ sets that contain $y$ but not $x$.
 So for some $A$, the set $A - x + y$ is not in the family.
 Replace $A$ by $A - x + y$. The family still has $N$ different sets. The degree of $x$ drops by one, the degree of $y$ rises by one, and the other degrees stay the same. So the sum changes by
@@ -70,7 +70,7 @@ This contradicts the choice of the family.
 So any two degrees differ by at most one.
 
 Each of the $N$ sets has $r$ vertices, so the degrees add up to $rN$.
-Their average is $rN/n$. Since any two degrees differ by at most one, the largest degree is $\ceil{rN/n}$.
+Their average is $rN/n$. Any two degrees differ by at most one, which puts every degree in $\{k,k+1\}$, where $k$ is the smallest degree. If all degrees equal $k$, the average is $k$, which is then also the largest degree and equals $\ceil{rN/n}$. Otherwise some degrees are $k$ and others $k+1$. The average then lies strictly between $k$ and $k+1$, and the largest degree $k+1$ again equals $\ceil{rN/n}$.
 Since $N \le dn/r$, we have $rN/n \le d$. As $d$ is an integer, $\ceil{rN/n} \le d$.
 \end{proof}
 
@@ -80,7 +80,7 @@ Let $n\ge m\ge2$. The graph $H_{m,n}$ has a vertex $h$ and further vertices $v_0
 
 This graph can be written down directly. Write $N=n-1$ and $d=m-2$, so $0\le d\le N-1$, so these vertices are $v_0,\dots,v_{N-1}$. Place them around a circle in this order, and take indices modulo $N$.
 For each $s=1,\dots,\floor{d/2}$, join every $v_i$ to $v_{i+s}$.
-Since $s\le\floor{d/2}<N/2$, the vertices $v_{i+s}$ and $v_{i-s}$ are different, so these are $N\floor{d/2}$ different edges, and every vertex gets degree $2\floor{d/2}$.
+The numbers $\pm1,\dots,\pm\floor{d/2}$ are $2\floor{d/2}$ different numbers modulo $N$, because none is zero and all are smaller than $N/2$ in absolute value. Each $v_i$ is therefore joined to $2\floor{d/2}$ different vertices $v_{i\pm s}$. Every vertex gets degree $2\floor{d/2}$, and the number of edges, half the sum of the degrees, is $N\floor{d/2}$.
 If $d$ is odd, also join $v_i$ to $v_{i+\floor{N/2}}$ for $i=0,\dots,\floor{N/2}-1$.
 These $\floor{N/2}$ edges share no vertex.
 They are new: going around the circle, the edges of the first kind join vertices at distance at most $\floor{d/2}$, the new edges join vertices at distance $\floor{N/2}$, and $d\le N-1$ with $d$ odd gives $\floor{d/2}<\floor{N/2}$.
@@ -218,7 +218,7 @@ exists, the limit being approached from below. The supremum is finite: \Cref{rem
 \end{theorem}
 
 \begin{proof}
-We use two facts about blocks.
+We use two facts about blocks \cite[Chapter~3]{Diestel17}.
 First, every edge lies in exactly one block.
 Second, a connected graph can be built by adding its blocks one at a time, so that each new block shares exactly one vertex with the blocks before it.
 So a block $B$ adds $|V(B)|-1$ new vertices, and in a component with $c$ vertices, $\sum_B (|V(B)|-1) = c-1$.
@@ -226,8 +226,9 @@ So a block $B$ adds $|V(B)|-1$ new vertices, and in a component with $c$ vertice
 \emph{Upper bound.}
 Let $G$ be feasible, and let $u,v$ lie in a common block $B$.
 Suppose a $u$--$v$ path leaves $B$ at some vertex $c$ of $B$.
-Since $B$ is a block, every way from outside $B$ back into $B$ passes through $c$ again.
-A path visits $c$ only once, so this is impossible.
+Since the path ends at $v\in B$, it comes back to $B$, say first at the vertex $c'$. Let $P$ be the part of the path from $c$ to $c'$. All inner vertices of $P$ lie outside $B$.
+Suppose $c'\ne c$. Then $B$ together with $P$ is connected and has no cut vertex. Removing a vertex of $B$ leaves the rest of $B$ connected, with $P$ still attached at $c$ or at $c'$. Removing an inner vertex of $P$ leaves $B$ whole, with the two pieces of $P$ attached at $c$ and at $c'$. This subgraph is larger than $B$, which contradicts the maximality of $B$.
+This forces $c'=c$. The path would then visit $c$ twice, which a path never does.
 So every $u$--$v$ path stays in $B$, and $\kap_G(u,v) = \kap_B(u,v) \le m-1$.
 So every block is feasible. A block is a single edge or $2$-connected, so $|E(B)| \le h_m(|V(B)|)$.
 Every edge lies in exactly one block, so $|E(G)| = \sum_B |E(B)| \le \sum_B h_m(|V(B)|)$.
@@ -265,7 +266,7 @@ We note three consequences.
 First, at $m = 3$ the reduction gives \Cref{thm:leonard} again.
 A block with $\kap^{\max} \le 2$ is an edge or a cycle.
 To see this, let $B$ be a $2$-connected block that is not a cycle.
-Since $B$ is $2$-connected, it contains a cycle $C$.
+Since $B$ is $2$-connected, it contains a cycle $C$. Without one, $B$ would be a tree on at least three vertices, and every vertex of degree at least two in such a tree is a cut vertex.
 Since $B$ is connected and is not $C$, it has an edge $wz$ that is not on $C$, with $z$ on $C$.
 If $w$ is on $C$, let $P$ be this edge.
 Otherwise, $B - z$ is still connected, so it has a path from $w$ to $C$. Let $y$ be the first vertex of $C$ on it, and let $P$ be the path $z, w, \dots, y$.
@@ -273,12 +274,11 @@ In both cases $P$ joins two different vertices $x, y$ of $C$ and has no inner ve
 The cycle $C$ gives two internally disjoint $x$--$y$ paths, and $P$ is a third. So $\kap(x,y) \ge 3$, which breaks the condition.
 So $h_3(2) = 1$ and $h_3(b) = b$ for $b \ge 3$, where $b$ is the length of the cycle.
 The rate $h_3(b)/(b-1)$ is $1$ at $b=2$, $3/2$ at $b=3$ and $b/(b-1) < 3/2$ for $b \ge 4$.
-So the best choice uses $\floor{(n-1)/2}$ triangles, and one extra edge when $n-1$ is odd:
-$k_3(n) = 3\floor{(n-1)/2} + ((n-1) \bmod 2) = \floorfrac{3(n-1)}{2}$.
+Every block thus gives at most $3/2$ edges per vertex it costs, which bounds $k_3(n)$ by $3(n-1)/2$. As $k_3(n)$ is an integer, $k_3(n)\le\floor{3(n-1)/2}$. The bound is reached by $\floor{(n-1)/2}$ triangles, together with one extra edge when $n-1$ is odd. They cost $n-1$ vertices and give $3\floor{(n-1)/2} + ((n-1) \bmod 2) = \floorfrac{3(n-1)}{2}$ edges.
 
 Second, at $m = 4$, \Cref{thm:leonard} gives $h_4(b) = 2(b-1)$ for every $b \ge 4$.
 So the rate $h_4(b)/(b-1)$ is $2$ for $b\ge4$, against $1$ at $b = 2$ and $3/2$ at $b = 3$.
-The best choice uses blocks of size at least four, and $k_4(n) = 2(n-1)$ for $n \ge 4$.
+Every block thus gives at most $2$ edges per vertex it costs, which bounds $k_4(n)$ by $2(n-1)$. For $n\ge4$ a single block of size $n$ reaches this bound, giving $k_4(n) = 2(n-1)$.
 This uses \Cref{thm:leonard}, so it is not a new proof.
 It does show the extremal block: the hub-and-spokes graph $H_{4,b}$ of \Cref{const:hub-spokes}, with the graph on $v_0,\dots,v_{b-2}$ chosen to be one cycle, so that $H_{4,b}$ is a hub joined to all vertices of a cycle.
 It is a single block with $2(b-1)$ edges.
@@ -310,9 +310,9 @@ So $c_m=m/2$ for $m\le4$, $c_5=8/3$ by \Cref{thm:sorensen-thomassen}, and $m/2<c
 A theorem of Mader \cite{Mader71,Mader73b} states that every simple graph of minimum degree at least $d \ge 2$ contains two adjacent vertices joined by $d$ internally disjoint paths.
 Consequently, every graph feasible for the vertex problem has a vertex of degree at most $m-1$.
 Since taking a subgraph cannot increase local vertex-connectivity, every non-empty subgraph of a feasible graph has such a vertex.
-Thus every feasible graph is \emph{$(m-1)$-degenerate}.
+A graph is \emph{$d$-degenerate} when every non-empty subgraph has a vertex of degree at most $d$. Every feasible graph is therefore $(m-1)$-degenerate.
 
-Deleting vertices successively and counting the edges in reverse order, the $i$-th vertex has at most $\min(i-1,\,m-1)$ neighbours among the earlier ones. This gives
+Delete from $G$ a vertex of degree at most $m-1$, then such a vertex from what is left, and continue until no vertex remains. Number the vertices $x_n,x_{n-1},\dots,x_1$ in the order of deletion. When $x_i$ is deleted, only $x_1,\dots,x_i$ are left. At that moment $x_i$ has at most $m-1$ neighbours among $x_1,\dots,x_{i-1}$, and at most $i-1$ because there are only $i-1$ of them. Every edge is counted once, at its end with the larger number. This gives
 \[
 \begin{aligned}
     k_m(n) \;\le\; \sum_{i=1}^{n}\min(i-1,\,m-1) &\;=\; \binom{m-1}{2} + (n-m+1)(m-1) \\
@@ -363,7 +363,7 @@ For $m \ge 2$ and $n \ge m$, the directed graph of \Cref{const:augmented-biparti
 Each vertex of $B$ receives one arc from every vertex of $A$ and $m-2$ arcs from inside $B$.
 No other arcs exist. So the number of arcs is $|B|\,(|A| + m - 2)$.
 Write $N = n+m-2$. Then $|B| = \ceil{N/2}$ and $|A| + m - 2 = N - |B| = \floor{N/2}$.
-For every integer $N$ we have $\floor{N/2}\ceil{N/2}=\floor{N^2/4}$ (check even and odd $N$).
+For every integer $N$, $\floor{N/2}\ceil{N/2}=\floor{N^2/4}$. When $N=2j$ both sides equal $j^2$, and when $N=2j+1$ both equal $j^2+j$.
 
 \emph{Pairs from $A$ to $B$.}
 Take $a \in A$ and $b \in B$.
@@ -1050,7 +1050,7 @@ For $m \ge 3$ there are three constructions.
     So it is feasible when $n \le m+1$, and it has $2(n-2)(m-2) + \max(0,\, m+1-n)$ edges.
 \end{itemize}
 
-For $n \le m+1$, the theta has as many edges as the thickened tree at $m = 4$, and more for $m \ge 5$ (when $n\ge3$).
+For $n \le m+1$ the theta has $2(n-2)(m-2) + (m+1-n)$ edges and the thickened tree has $(m-1)(n-1)$. Their difference is $(n-2)(m-4)$. The two agree at $m=4$, and for $m\ge5$ and $n\ge3$ the theta has more.
 For $n \ge m+2$ the other two constructions are not feasible, so among these three the tree is best.
 
 
@@ -1119,8 +1119,8 @@ Sharing a vertex lets more copies fit, since each new copy uses only $s-1$ new v
 For example, at $m = 10$, $s = 6$ and $n = 11$, two copies sharing a vertex give $150$ edges.
 Disjoint copies would allow only one copy, with $75$ edges, and $120$ edges after attaching the other five vertices.
 
-The best $s$ is about $(m+1)/2$, where the gain per added vertex, $\mathrm{gain}(s,m)/(s-1)$, is of order $m^2$.
-So for $n/m\to\infty$ the construction gives $K_m(n)\ge\Theta(m^2)\,n$, while the thickened tree gives only $(m-1)(n-1)$.
+Each copy of $K_s$ uses $s-1$ new vertices, which makes the gain per added vertex $\mathrm{gain}(s,m)/(s-1) = (s-2)(m-1-s)/2$. The factors $s-2$ and $m-1-s$ add up to $m-3$. Their product is largest when they are about equal, at $s\approx(m+1)/2$, where the gain per vertex is about $(m-3)^2/8$.
+For $n/m\to\infty$ the construction therefore gives $K_m(n)\ge\bigl(\tfrac18+o_m(1)\bigr)m^2(n-1)$, while the thickened tree gives only $(m-1)(n-1)$.
 
 This construction need not be optimal.
 The next result gives an upper bound of the same order.
@@ -1330,8 +1330,9 @@ It is feasible: every route of length at least two passes through the third vert
 So the extremal multigraphs of the arc problem are not optimal for the vertex problem.
 
 For small $n$ the block construction is larger, and for large $n$ the bipartite construction is larger.
-At $m=3$ the best block is a bidirected edge, so the bouquet is the thickened bidirected tree, and the bipartite construction is larger from $n=8$.
-At $m=6$ the best blocks have three or four vertices. The bouquet has $84$ arcs at $n=8$, against $80$, and the bipartite construction is larger from $n=9$.
+A block of size $b$ costs $b-1$ vertices and has $b(b-1)(m+1-b)$ arcs, which is $b(m+1-b)$ arcs per vertex it costs.
+At $m=3$ this is $4$ for $b=2$ and $3$ for $b=3$. The best block is then a bidirected edge, the bouquet is the thickened bidirected tree, and the bipartite construction is larger from $n=8$.
+At $m=6$ the values are $10$, $12$, $12$, $10$ and $6$ for $b=2,\dots,6$. The best blocks have three or four vertices. The bouquet has $84$ arcs at $n=8$, against $80$, and the bipartite construction is larger from $n=9$.
 
 \section{The directed hypergraph}\label{sec:dir-hyper}
 
@@ -1424,7 +1425,7 @@ Each hyperedge $(T, H)$ with $u \in T$ and $v \in H$ gives a route $u \to v$ of 
 Different such hyperedges give separated routes, so there are at most $m-1$ of them.
 A hyperedge $(T, H)$ joins exactly $|T|\,|H|$ ordered pairs.
 Summing over all pairs gives $\sum_{(T,H)} |T|\,|H| \le (m-1)\,n(n-1)$.
-Since $|T| + |H| = r$ and both are at least one, $|T|\,|H| \ge r-1$.
+Since $|T|+|H|=r$ with both at least one, $|T|\,|H| - (r-1) = (|T|-1)(|H|-1) \ge 0$.
 So $(r-1)|E| \le (m-1)n(n-1)$.
 \end{proof}
 

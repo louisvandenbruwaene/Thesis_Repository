@@ -33,10 +33,10 @@ Every edge is stored as a hyperedge: its vertices, and its tails if the model is
 An ordinary edge $uv$ is the hyperedge $\{u,v\}$ without tails, and an arc $u\to v$ is the hyperedge $\{u,v\}$ with tail $u$.
 A route may enter a hyperedge only at one of its \emph{entry vertices}, and leave it only at one of its \emph{exit vertices} (\texttt{entry\_vertices} and \texttt{exit\_vertices} in the code).
 In an undirected hyperedge every vertex is both. In a directed one only the tails are entries and only the heads are exits.
-A candidate graph is a table that gives every possible hyperedge its multiplicity.
+The program stores a candidate graph by giving every possible hyperedge a multiplicity, the number of copies it has.
 We call the models without repeated edges \emph{simple models}, and the models with repeated edges \emph{multi models}.
 In a simple model every multiplicity is $0$ or $1$. In a multi model it is at most $m-1$, since $m$ copies of one edge already give $m$ disjoint routes (\Cref{lst:hyperedges}).
-\Cref{fig:matrix-rep} shows two such tables.
+\Cref{fig:matrix-rep} shows two graphs stored in this way.
 
 \programpart{hyperedges}{Hyperedges, the list of all possible hyperedges, and the largest useful multiplicity.}
 
@@ -90,7 +90,7 @@ In a simple model every multiplicity is $0$ or $1$. In a multi model it is at mo
   \node[font=\small] at (1.1,-1.6) {(b)};
 \end{scope}
 \end{tikzpicture}
-\caption{The program stores every model in one way: a table that gives each hyperedge its number of copies. (a) A directed multigraph. The arc $u\to v$ is the hyperedge with members $\{u,v\}$ and tail $u$, and the two parallel arcs from $1$ to $2$ are one row with $2$ copies. (b) A directed $3$-uniform hypergraph in the general model. Each hyperedge records its tails and its three members: the red one has tail $3$, the blue one has tails $3$ and $4$ and head $5$. In an undirected model there are no tails. A hyperedge that does not occur has $0$ copies and is left out.}
+\caption{The program stores every model in one way: each hyperedge with its number of copies. (a) A directed multigraph. The arc $u\to v$ is the hyperedge with members $\{u,v\}$ and tail $u$, and the two parallel arcs from $1$ to $2$ are one hyperedge with $2$ copies. (b) A directed $3$-uniform hypergraph in the general model. Each hyperedge records its tails and its three members: the red one has tail $3$, the blue one has tails $3$ and $4$ and head $5$. In an undirected model there are no tails. A hyperedge that does not occur has $0$ copies and is left out.}
 \label{fig:matrix-rep}
 \end{figure}
 
@@ -99,12 +99,15 @@ Every search below needs $\lec^{\max}$ or $\kap^{\max}$ of a candidate graph.
 This section explains how the program computes them.
 
 To compute $\lec(u,v)$ we use a maximum flow.
-In a network every link has a capacity, and a \emph{maximum flow} is the largest amount that can be sent from $u$ to $v$.
+Think of the graph as a network of pipes in which every link has a \emph{capacity}, the most that can pass through it.
+A \emph{flow} from $u$ to $v$ sends an amount along every link, never more than its capacity. At every node other than $u$ and $v$, the amount coming in equals the amount going out.
+The value of the flow is the amount that leaves $u$, which is also the amount that arrives at $v$. A \emph{maximum flow} is a flow of largest value.
 We give each pair of vertices a link with capacity $\mu(u,v)$.
-In a directed graph the link has a direction. In an undirected graph it can be used in both directions.
-The maximum-flow minimum-cut theorem of Ford and Fulkerson \cite{FordFulkerson56} says that the maximum flow equals the smallest capacity of a cut.
-By Menger's theorem, this is $\lec(u,v)$.
-So computing a maximum flow computes $\lec(u,v)$.
+In a directed graph the link has a direction. In an undirected graph it can be used both ways.
+A \emph{cut} is a set of links whose removal leaves no way from $u$ to $v$. Its capacity is the sum of the capacities of its links.
+The maximum-flow minimum-cut theorem of Ford and Fulkerson \cite{FordFulkerson56} says that the largest value of a flow equals the smallest capacity of a cut.
+In this network a cut of smallest capacity is a smallest set of edges, counted with multiplicity, that separates $u$ from $v$. Menger's theorem says its size is $\lec(u,v)$.
+Computing a maximum flow therefore computes $\lec(u,v)$.
 We call this the \emph{maximum-flow computation}.
 
 
@@ -131,7 +134,7 @@ The gates keep their capacity, so parallel copies still give separate routes, as
 
 The number of disjoint routes from $u$ to $v$ is the maximum flow from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ (\Cref{lst:measure}).
 A graph is feasible when this number is below $m$ for every pair, ordered in directed models.
-The flow may stop as soon as it reaches $m$, since a larger value changes nothing. This is the \texttt{stop\_at} argument.
+The library raises the value of the flow one unit at a time. It can therefore stop once the value reaches $m$, since a larger value changes nothing: the pair already breaks the condition. This is the \texttt{stop\_at} argument.
 
 \programpart{measure}{Counting disjoint routes, and the feasibility test.}
 
@@ -338,7 +341,7 @@ The flow may stop as soon as it reaches $m$, since a larger value changes nothin
 \end{figure}
 
 \section{Checking every graph with a fixed number of vertices}\label{sec:certification-standard}
-The program stores a graph as a table that gives each possible hyperedge its number of copies (\Cref{fig:matrix-rep}).
+The program stores a graph by giving each possible hyperedge its number of copies (\Cref{fig:matrix-rep}).
 The possible hyperedges depend on the model:
 \begin{itemize}
 \item in a graph, the $\binom n2$ pairs $\{u,v\}$,
@@ -349,8 +352,8 @@ A forward hyperedge has one tail, so each $r$-set gives $r$ possible hyperedges.
 A backward hyperedge has one head, which also gives $r$.
 In the general model the tails form any non-empty proper subset, which gives $2^r-2$.
 \end{itemize}
-Each entry of the table is between $0$ and the largest multiplicity: $1$ in a simple model and $m-1$ in a multi model.
-To find an exact value, the program must show that no table with more copies than the best feasible graph found is feasible.
+The number of copies of each possible hyperedge is between $0$ and the largest multiplicity: $1$ in a simple model and $m-1$ in a multi model.
+To find an exact value, the program must show that no graph with more edges than the best feasible graph found is feasible.
 If the search stops early, it gives only a lower bound.
 
 \begin{figure}[ht]
@@ -375,19 +378,23 @@ With multiplicities at most $m-1$ there are $m^{\binom n2}$ multigraphs and $m^{
 The program uses two exact methods: a pruned search, for every model, and a check of the graphs with one edge more, for every model except directed hypergraphs.
 
 \subsection{Pruned search}
-A pruned search skips whole families of graphs.
-Fix an order on the possible edges and decide them one at a time.
-A partly built graph stands for all graphs that agree with it so far.
-A pruning rule can discard this whole family.
+Checking every possible graph one by one gives the exact answer, but there are far too many of them.
+A \emph{pruned search} reaches the same answer while skipping most of them.
+
+Fix an order on the possible edges and decide them one at a time: first the number of copies of the first edge, then of the second, and so on.
+These choices form a tree, drawn in \Cref{fig:prune}. At the top nothing is decided yet. Each choice for the next edge leads one level down, and at the bottom every possible graph appears exactly once.
+A point halfway down this tree is a partly built graph. Everything below it is its \emph{branch}: all graphs that agree with it on the edges decided so far.
+\emph{Pruning} means cutting off a whole branch without looking at any of its graphs. This is only allowed when a rule shows that the branch holds no new best graph.
+The search uses two such rules.
 
 The first rule uses that adding an edge never lowers connectivity.
-If a partly built graph already breaks the condition, so does every way to complete it, and the branch is dropped.
+Every graph in a branch contains the edges placed so far. When a partly built graph already breaks the condition, every graph in its branch breaks it as well, and the branch is dropped.
 
-The second rule bounds the size of every completion: the edges already placed, plus the number of undecided edges times the largest allowed multiplicity.
-If this cannot beat the best graph found so far, the branch is dropped (\Cref{fig:prune}).
+The second rule bounds the size of every graph in a branch by the edges already placed plus the number of undecided edges times the largest allowed multiplicity.
+When this bound does not exceed the size of the best feasible graph found so far, nothing in the branch can beat that graph, and the branch is dropped (\Cref{fig:prune}).
+Suppose that $10$ edges are placed, $3$ are undecided, the largest multiplicity is $1$, and a feasible graph with $13$ edges is already known. The bound is then $13$, and the branch is dropped.
 
-Both rules only drop graphs that are infeasible or cannot beat the best one.
-So a finished pruned search gives the same answer as the full search.
+Both rules only drop graphs that are infeasible or cannot beat the best one. A finished pruned search therefore gives the same answer as checking every graph.
 
 \Cref{lst:exhaustive} decides the possible hyperedges one at a time, in a fixed order.
 For each it tries $1, 2, \dots$ copies, and stops at the first number of copies that makes the graph infeasible, since more copies stay infeasible.
@@ -428,9 +435,9 @@ After the time limit the search stops and reports the best graph so far as a low
 \end{figure}
 
 \subsection{Checking one edge more}\label{sec:one-more}
-The pruned search meets every graph many times.
+The pruned search treats two graphs that differ only in the names of their vertices as different graphs. On the vertices $1,2,3$, for example, the path $1,2,3$ and the path $2,1,3$ have different edges, yet one is the other with the names $1$ and $2$ swapped.
 Renaming the vertices of a graph gives a graph with the same number of edges and the same connectivities, so the renamed graph is feasible exactly when the original is.
-A graph on $n$ vertices has up to $n!$ renamings, so most of the work of the pruned search repeats work it has already done.
+A graph on $n$ vertices has up to $n!$ renamings, which means the pruned search may check the same graph up to $n!$ times under different names.
 
 The second method avoids this.
 It starts from a feasible graph with $L$ edges, found by the pruned search or by the heuristic search of \Cref{sec:heuristic}.
@@ -470,9 +477,10 @@ If \texttt{geng} failed and \texttt{directg} did not, \texttt{directg} would rec
 
 \section{The heuristic search}\label{sec:heuristic}
 For larger $n$ the full search is impossible.
-Instead we search for dense graphs in a guided way.
-A \emph{heuristic} is a rule that moves the search towards better graphs.
-The methods below also allow moves that make the graph worse, so that the search does not get stuck.
+Instead we search for dense graphs with a \emph{heuristic}: a method that usually finds good graphs quickly, without proving that they are the best.
+The searches below change a graph step by step. A single change, such as adding or removing one copy of one edge, is a \emph{move}.
+A search that only made improving moves would get stuck at a graph where every move makes it worse, even when denser graphs exist elsewhere. Such a graph is a \emph{local optimum}.
+To escape from one, the methods below sometimes accept a move that makes the graph worse.
 
 For graphs and directed graphs, each candidate gets an \emph{energy}
 \[
@@ -486,10 +494,11 @@ In the program $\Lambda$ is \texttt{PENALTY\_PER\_EXCESS\_ROUTE} (\Cref{lst:ener
 
 The search starts from the empty graph and changes one multiplicity by one at each step.
 We use \emph{tabu search} \cite{Glover89}.
-At each step it makes the best allowed move, even if every move raises the energy.
-After a move, the changed pair is \emph{tabu} for a fixed number of steps, so the search cannot undo the move at once.
-A move that gives a better graph than any seen so far is always allowed.
-When the search stalls, it makes a small change to escape: it removes all copies of three random hyperedges.
+At each step it makes the allowed move with the lowest resulting energy, even when every move raises the energy.
+On its own this would make the search go back and forth. At a local optimum the best move makes the graph worse, after which the best move is to undo it and return.
+To prevent this, the hyperedge changed by a move becomes \emph{tabu}, meaning forbidden, for a fixed number of steps. The search cannot undo the move at once and has to look further.
+A tabu move is still allowed when it gives a feasible graph larger than any seen so far.
+When the search finds no larger feasible graph for a fixed number of steps, it makes a bigger change to escape, removing all copies of three random hyperedges.
 \Cref{lst:neighbours} lists the moves, and \Cref{lst:tabu} is the search itself.
 The search keeps the exact connectivity of every pair of the current graph in \texttt{connectivity}, and \texttt{highest\_after} uses it to judge a move cheaply (\Cref{sec:near-cap}).
 
