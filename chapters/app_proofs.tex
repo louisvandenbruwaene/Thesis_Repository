@@ -711,9 +711,9 @@ Equality holds, so every pair in $A \times B$ has multiplicity $m-1$, and $|A|\,
 The product $|A|\,|B|$ with $|A|+|B| = n$ equals $\floor{n^2/4}$ only when the parts have sizes $\ceil{n/2}$ and $\floor{n/2}$.
 \end{proof}
 
-The hypothesis $n\ge2m$ is used only to exclude paths with two arcs in $R$.
+Without the hypothesis $n\ge2m$, the following still holds for $n\ge8$.
 Every vertex of an extremal multigraph has degree at least $(m-1)\floor{n/2}$.
-Deleting the vertex leaves a feasible multigraph on $n-1 \ge 7$ vertices, with at most $(m-1)M(n-1) = (m-1)\floor{(n-1)^2/4}$ arcs.
+Deleting a vertex leaves a feasible multigraph on $n-1 \ge 7$ vertices, with at most $(m-1)M(n-1) = (m-1)\floor{(n-1)^2/4}$ arcs.
 So the vertex has at least $(m-1)\bigl(\floor{n^2/4} - \floor{(n-1)^2/4}\bigr) = (m-1)\floor{n/2}$ arcs.
 For even $n$, every vertex of $(m-1)\cdot B_{n/2,\,n/2}$ has degree exactly $(m-1)n/2$.
 
