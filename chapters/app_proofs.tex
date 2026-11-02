@@ -197,7 +197,7 @@ A \emph{block} is a maximal connected subgraph that has an edge and no cut verte
 In a simple graph, a block is either a bridge or a maximal $2$-connected subgraph.
 
 Call $|E(G)|/(|V(G)|-1)$ the \emph{rate} of a graph $G$, with edges counted with multiplicity in a multigraph. It is the number of edges per vertex after the first.
-The next theorem says that the best graph is built from blocks: choose block sizes $b_i$, where a block of size $b_i$ costs $b_i-1$ vertices and gives at most $h_m(b_i)$ edges, with total cost at most $n-1$.
+The next theorem says that an extremal graph is built from blocks: choose block sizes $b_i$, where a block of size $b_i$ costs $b_i-1$ vertices and gives at most $h_m(b_i)$ edges, with total cost at most $n-1$.
 
 \begin{theorem}[The vertex problem reduces to blocks]\label{thm:simple-vertex-blocks}
 For $b \ge 2$ let
@@ -558,7 +558,7 @@ The directed graph of \Cref{const:augmented-bipartite} has $\lec^{\max} \le m-1$
     k_m^{\mathrm{dir}}(n) \;\ge\; \ell_m^{\mathrm{dir}}(n) \;\ge\; \floorfrac{(n+m-2)^2}{4}
     \;=\; \frac{n^2}{4} + \frac{(m-2)n}{2} + O_m(1).
 \]
-For $m\ge3$ the term $(m-2)n/2$ is positive. So both functions are $n^2/4$ plus a term that is at least and at most a constant times $n$.
+For $m\ge3$ the term $(m-2)n/2$ is positive. Both functions are therefore $n^2/4$ plus a term that lies between two positive constant multiples of $n$.
 \end{proof}
 
 The linear coefficient is not known.
@@ -1048,7 +1048,7 @@ For $m \ge 3$ there are three constructions.
 \end{itemize}
 
 For $n \le m+1$ the theta has $2(n-2)(m-2) + (m+1-n)$ edges and the thickened tree has $(m-1)(n-1)$. Their difference is $(n-2)(m-4)$. The two agree at $m=4$, and for $m\ge5$ and $n\ge3$ the theta has more.
-For $n \ge m+2$ the other two constructions are not feasible, so among these three the tree is best.
+For $n \ge m+2$ the other two constructions are not feasible, so among these three the tree has the most edges.
 
 
 
