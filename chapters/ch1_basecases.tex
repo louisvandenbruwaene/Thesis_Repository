@@ -39,7 +39,7 @@ In a multigraph, two parallel edges give two different paths of length one.
 In a simple graph we can write a path as a list of vertices.
 A \emph{walk} is a sequence of the same form in which vertices and edges may repeat.
 A \emph{cycle} is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ with $q\ge2$, distinct edges $e_i$ and distinct vertices $v_0,\ldots,v_{q-1}$, where $v_q=v_0$ and $e_i$ joins $v_{i-1}$ and $v_i$. In a simple graph a cycle has at least three edges, and in a multigraph two parallel edges form a cycle.
-A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{forest} is a graph without cycles. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$. A \emph{spanning tree} of $G$ is a subgraph of $G$ that is a tree on all vertices of $G$.
+A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{forest} is a graph without cycles. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$. A \emph{component} of a graph is a maximal connected subgraph. A \emph{spanning tree} of $G$ is a subgraph of $G$ that is a tree on all vertices of $G$.
 We also call a path a \emph{route}.
 Two $u$--$v$ paths are \emph{edge-disjoint} if they have no edge in common.
 The \emph{local edge-connectivity} $\lec_G(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ paths.
@@ -1055,7 +1055,6 @@ For a connected multigraph $G$, the \emph{cycle rank} is $\mathrm{rank}(G) = |E(
 A tree has cycle rank $0$, and each extra edge raises it by one.
 For the incidence graph of a hypergraph, $|E|$ counts the pairs of a vertex and a hyperedge copy that contains it. Take an $r$-uniform hypergraph with $q$ hyperedge copies whose incidence graph is connected. This graph has $n+q$ nodes and $rq$ edges, which gives cycle rank $rq-(n+q)+1=(r-1)q-(n-1)$. A bound on the cycle rank is therefore a bound on the number of hyperedges.
 
-A \emph{component} of a graph is a maximal connected subgraph.
 A \emph{cut vertex} is a vertex whose removal disconnects the graph, that is, leaves more components than before.
 A graph on more than $k$ vertices is \emph{$k$-connected} if removing any $k-1$ vertices leaves it connected.
 A \emph{separating pair} is a pair of vertices whose removal disconnects the graph.
