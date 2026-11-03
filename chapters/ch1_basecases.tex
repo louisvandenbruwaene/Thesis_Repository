@@ -3,12 +3,15 @@ This chapter defines the problem and its variants, and states the results that a
 
 \section{Graphs and routes}
 
-A \emph{multigraph} $G$ consists of a finite set $V(G)$ of \emph{vertices} and a multiset $E(G)$ of \emph{edges}. Each edge joins two different vertices, and edges can have identical copies. 
+A \emph{multigraph} $G$ consists of a finite set $V(G)$ of \emph{vertices} and a multiset $E(G)$ of \emph{edges}. Each edge joins two different vertices, and edges can have identical copies.
 The number of such identical edges between $u$ and $v$ is the multiplicity $\mu(u,v)$.
 If $\mu(u,v)\le1$ for every pair, then $G$ is a \emph{simple graph}.
 The \emph{size} of $G$ is its number of edges, counted with multiplicity: $|E(G)|=\sum_{\{u,v\}}\mu(u,v)$.
-This thesis tries to maximize the size.
-Drawing vertices as dots and edges as lines is the standard way to visualize graphs.
+This thesis tries to maximise the size.
+Drawing vertices as dots and edges as lines between them is the standard way to visualise graphs.
+A multigraph is then any network built by joining different points with lines.
+Some definitions also allow loops, edges that join a vertex to itself.
+This thesis excludes them. A route cannot revisit a vertex, so it never uses a loop, and loops do not change the problem.
 
 \begin{figure}[ht]
 \centering
@@ -99,7 +102,7 @@ How many edges can a graph on $n$ vertices have if no two of its vertices are jo
 \end{ques}
 
 The database \cite{ErdosProblems} notes that the original statement leaves open whether ``disjoint'' means that the paths share no edge, or that they share no vertex except their two ends.
-This thesis takes edge-disjoint paths as the main question and treats vertex-disjoint paths as a variant (\Cref{sec:variants}).
+This thesis takes edge-disjoint paths as the main question and treats internally vertex-disjoint paths as a variant (\Cref{sec:variants}).
 
 We write
 \[
@@ -121,7 +124,7 @@ For $n\ge m$ the bound is always attained. Mader proved this as well, so $\ell_m
 For $2\le n<m$ the complete graph $K_n$ satisfies the condition, so $\ell_m(n)=\binom{n}{2}$.
 This is smaller than $\floor{m(n-1)/2}$, except when $(n,m)=(2,3)$. The reason is that $m\ge n+1$ gives $\floor{m(n-1)/2}\ge\binom{n}{2}+\floor{(n-1)/2}$, which exceeds $\binom{n}{2}$ once $n\ge3$. At $n=2$ the two values are $1$ and $\floor{m/2}$, and these agree only at $m=3$.
 
-We prove \Cref{thm:mader} in a different way from Mader, with the Gomory--Hu tree.
+I prove \Cref{thm:mader} in a different way from Mader, with the Gomory--Hu tree.
 It stores the $\binom n2$ values $\lec_G(u,v)$ in only $n-1$ weights.
 
 \begin{theorem}[Gomory--Hu \cite{GomoryHu61}]\label{thm:gomory-hu}
@@ -233,7 +236,7 @@ The factor $\tfrac12$ comes from step (3). In a multigraph step (3) fails, and t
 \section{Variants of the problem}\label{sec:variants}
 
 We change four assumptions. The first three give eight graph models.
-In each model we can ask for edge-disjoint or for vertex-disjoint routes (\Cref{sec:incidence-convention}).
+In each model we can ask for edge-disjoint or for separated routes, defined in \Cref{sec:incidence-convention}.
 
 The first assumption is the size of an edge.
 A \emph{hyperedge} is a set of $r\ge2$ vertices.
@@ -514,13 +517,13 @@ Every edge-disjoint $u$--$v$ path uses a distinct edge at $u$, so there are at m
 \label{fig:directed-lambda}
 \end{figure}
 
-The fourth assumption is \emph{separation}.
+The fourth assumption is which routes count as disjoint.
 Two $u$--$v$ paths are \emph{internally vertex-disjoint} if they have no vertex in common except $u$ and $v$.
 The largest number of such paths is the \emph{local vertex-connectivity} $\kap_G(u,v)$.
 Its largest value over all pairs is $\kap_G^{\max}$.
 In a graph, internally vertex-disjoint paths are also edge-disjoint. An edge has two ends, and two such paths share no vertex other than $u$ and $v$. A shared edge would therefore have to join $u$ and $v$. A $u$--$v$ path that uses such an edge consists of that edge alone, which makes two paths through the same edge the same path. This gives $\kap_G(u,v)\le\lec_G(u,v)$.
 \Cref{sec:incidence-convention} extends this to multigraphs and hypergraphs.
-\Cref{fig:edge-vs-vertex} shows that the vertex and edge-disjointness can differ.
+\Cref{fig:edge-vs-vertex} shows that edge-disjoint and internally vertex-disjoint routes can differ.
 
 \begin{figure}[ht]
 \centering
@@ -539,19 +542,21 @@ In a graph, internally vertex-disjoint paths are also edge-disjoint. An edge has
   \draw[pA] (s)--(a)--(w)--(b)--(t);
   \draw[pB] (s)--(c)--(w)--(d)--(t);
 \end{tikzpicture}
-\caption{Edge and vertex separation differ: two edge-disjoint $s$--$t$ routes both pass through $w$, so $\lec(s,t)=2$ but $\kap(s,t)=1$.}
+\caption{Edge-disjoint and internally vertex-disjoint routes differ: two edge-disjoint $s$--$t$ routes both pass through $w$, so $\lec(s,t)=2$ but $\kap(s,t)=1$.}
 \label{fig:edge-vs-vertex}
 \end{figure}
 
 \subsection{The incidence convention}\label{sec:incidence-convention}
 
-For multigraphs and hypergraphs we must say when two routes count as vertex-disjoint.
+For multigraphs and hypergraphs we must say when two routes share no inner vertex.
 This thesis uses the following convention. For simple graphs it gives the usual notion.
 
 The \emph{incidence graph} $I(\HH)$ of a multigraph or hypergraph $\HH$ has a node for each vertex and a node for each edge copy.
 An edge copy is joined to the vertices it contains.
 A route from $u$ to $v$ is a path in $I(\HH)$.
-Two routes are \emph{edge-disjoint} if they use no common edge copy. Such routes may still meet in inner vertices. Two routes are \emph{separated} if they have no inner node in common. As for graphs, $\lec(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ routes, and $\kap(u,v)$ the largest number of pairwise separated ones.
+Two routes are \emph{edge-disjoint} if they use no common edge copy. Such routes may still meet in inner vertices. Two routes are \emph{separated} if they have no inner node in common, so they are both internally vertex-disjoint and edge-disjoint.
+For graphs and multigraphs, internally vertex-disjoint routes never share an edge copy, so there separated is the same as internally vertex-disjoint.
+As for graphs, $\lec(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ routes, and $\kap(u,v)$ the largest number of pairwise separated ones.
 In the directed case we use the directed incidence graph: each tail has an arc to the edge copy, and the edge copy has an arc to each head.
 For example, an arc $u\to v$ becomes $u\to e\to v$.
 
@@ -559,9 +564,9 @@ The inner nodes are vertices and edge copies, so separated routes share no inner
 Sharing no vertex is not enough for hypergraphs, because two Berge routes can use the same hyperedge without meeting in a vertex.
 Since separated routes also share no edge copy, $\kap\le\lec$ holds in every model.
 
-In a multigraph, $q$ parallel copies of $uv$ give $q$ separated routes.
+In a multigraph, $q$ parallel copies of $uv$ give $q$ internally vertex-disjoint routes.
 This is why the vertex problems for multigraphs, written $K_m(n)$ and $K_m^{\mathrm{dir}}(n)$ in \Cref{tab:notation}, differ from the simple ones.
-In a feasible multigraph no multiplicity is larger than $m-1$, since $m$ parallel copies already give $m$ separated routes.
+In a feasible multigraph no multiplicity is larger than $m-1$, since $m$ parallel copies already give $m$ internally vertex-disjoint routes.
 
 In every model, a graph is \emph{feasible} if no two vertices are joined by $m$ disjoint routes of the kind considered.
 \Cref{tab:notation} lists the notation for all sixteen problems.
@@ -572,9 +577,9 @@ In every model, a graph is \emph{feasible} if no two vertices are joined by $m$ 
 \caption{Notation for the extremal functions. The third column uses the
 incidence convention defined above, in every model.}
 \label{tab:notation}
-\begin{tabular}{l|c|c}
+\begin{tabular}{l|>{\centering\arraybackslash}p{0.22\textwidth}|>{\centering\arraybackslash}p{0.26\textwidth}}
 \toprule
-Model & edge-disjoint routes & vertex-disjoint routes \\
+Model & edge- or arc-disjoint routes & internally vertex-disjoint or separated routes \\
 \midrule
 Simple graph & $\ell_m(n)$ & $k_m(n)$ \\
 Multigraph & $L_m(n)$ & $K_m(n)$ \\
@@ -589,10 +594,10 @@ Directed $r$-uniform multihypergraph & $L_m^{\mathrm{dir}\,(r)}(n)$ & $K_m^{\mat
 \end{table}
 
 Menger's theorem, the Gomory--Hu tree, Mader's bound and the exact value $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ are classical.
-So are the results of B\'{a}rtfai, Bollob\'{a}s, Leonard, S{\o}rensen and Thomassen.
+The results of B\'{a}rtfai, Bollob\'{a}s, Leonard, S{\o}rensen and Thomassen are classical as well.
 \Cref{tab:contributions} lists the results of this thesis.
-It separates a new proof of a known theorem, a new construction for a known value, and a statement for which we found no earlier source, and it names the closest result we know.
-We did not search the literature exhaustively, so the last kind means only that we found no earlier source.
+It separates a new proof of a known theorem, a new construction for a known value, and a statement for which I found no earlier source, and it names the closest result I know.
+I did not search the literature exhaustively, so the last kind means only that I found no earlier source.
 
 \begin{table}[!t]
 \centering\small
@@ -607,14 +612,14 @@ Multigraph edge value $L_m(n)$ & \Cref{thm:multigraph-edge} & No earlier source 
 Multigraph vertex value at $m=2,3$ & \Cref{thm:multi-vertex-m2,cor:multi-vertex-m3} & No earlier source found & The simple graph values of \Cref{thm:leonard} \\
 Hypergraph edge bound and the ranges where it is attained & \Cref{prop:hyper-edge} & No earlier source found & Mader's bound for simple graphs \\
 Hypergraph vertex value at $m=2,3$ & \Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3} & No earlier source found & The simple graph values of \Cref{thm:leonard} \\
-Simple directed graph values at $m=2$, both separations & \Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact} & No earlier source found & None found \\
-Directed multigraph value with arc separation, and its extremal multigraphs & \Cref{thm:dir-multi-full,thm:dir-multi-uniqueness} & No earlier source found & None found \\
-Directed multigraph with vertex separation: the value at $m=2$ and the leading term & \Cref{cor:dir-multi-incidence} & No earlier source found & None found \\
+Simple directed graph values at $m=2$, for arc-disjoint and for internally vertex-disjoint routes & \Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact} & No earlier source found & None found \\
+Directed multigraph value with arc-disjoint routes, and its extremal multigraphs & \Cref{thm:dir-multi-full,thm:dir-multi-uniqueness} & No earlier source found & None found \\
+Directed multigraph with internally vertex-disjoint routes: the value at $m=2$ and the leading term & \Cref{cor:dir-multi-incidence} & No earlier source found & None found \\
 Simple directed graphs: at most $\floor{n^2/4}+(m-1)(n-1)$ arcs for every $n$ & \Cref{thm:dir-arc-linear-error} & Overlaps a known result & Huang--Lyu \cite[Theorem~2]{HuangLyu26} give the linear term $(m-1)n$ for $n$ large in terms of $m$ \\
 Directed hypergraphs: the leading constant in three orientation models & \Cref{thm:dir-hyper-constant,thm:dir-hyper-general-constant} & No earlier source found & None found \\
 \bottomrule
 \end{tabularx}
-\caption{The results of this thesis, with the closest result we found in the literature.}
+\caption{The results of this thesis, with the closest result I found in the literature.}
 \label{tab:contributions}
 \end{table}
 
@@ -659,7 +664,7 @@ For simple graphs,
 \end{theorem}
 
 In particular $k_5(n)>\ell_5(n)$ for every $n\ge14$.
-S{\o}rensen and Thomassen count the least number of edges that forces $m$ disjoint paths. This is one more than the maximum used here (\Cref{rem:threshold-convention}). They give one formula with exceptions at $n=7$ and $n=12$. Splitting the statement at $n=14$, as above, removes these exceptions.
+S{\o}rensen and Thomassen count the least number of edges that forces $m$ internally vertex-disjoint paths. This is one more than the maximum used here (\Cref{rem:threshold-convention}). They give one formula with exceptions at $n=7$ and $n=12$. Splitting the statement at $n=14$, as above, removes these exceptions.
 
 \begin{figure}[ht]
     \centering
@@ -740,10 +745,10 @@ An undirected graph with $\lec^{\max}\le1$ has no cycle, because two vertices on
 For the upper bound we keep only the arcs that are needed to tell who can reach whom.
 
 \begin{definition}[Reachability skeleton]\label{def:reach-skeleton}
-Let $D$ be a directed multigraph. A \emph{reachability skeleton} of $D$ is a \emph{directed subgraph} $R$ of $D$, that is, a subgraph of the directed graph, on the same vertices, with at most one copy of each arc, such that for all $u\ne v$: $u$ can reach $v$ in $R$ exactly when $u$ can reach $v$ in $D$.
+Let $D$ be a directed multigraph. A \emph{reachability skeleton} of $D$ is a subgraph $R$ of $D$ on the same vertices, with at most one copy of each arc, such that for all $u\ne v$: $u$ can reach $v$ in $R$ exactly when $u$ can reach $v$ in $D$.
 \end{definition}
 
-A skeleton keeps the information about who can reach whom. It does not keep the number of disjoint paths.
+A skeleton keeps the information about who can reach whom. It does not keep the number of arc-disjoint paths.
 
 \begin{lemma}[A sparse reachability skeleton always exists]\label{lem:reach-skeleton}
 Every directed multigraph $D$ on $n \ge 2$ vertices has a reachability skeleton $R$ with
@@ -765,7 +770,7 @@ As long as some vertex $w$ of the component is not yet reached, take a directed 
 Add this arc. Each arc reaches one new vertex, so this ends after $n_i-1$ arcs.
 In the same way, with all directions reversed, there are $n_i-1$ arcs along which every vertex of the component reaches $r$.
 Any two vertices $u,v$ of the component are then joined by a walk from $u$ to $r$ and on to $v$ along these arcs, and this walk contains a $u$--$v$ path.
-So at most $2(n_i - 1)$ arcs keep all reachability inside the component.
+At most $2(n_i - 1)$ arcs therefore keep all reachability inside the component.
 
 Replace each component by one point.
 Put an arc from one point to another if $D$ has an arc from the first component to the second.
@@ -777,7 +782,7 @@ Call the result $Q$. No arc of $Q$ can be deleted without changing this.
 The graph $Q$, with directions ignored, has no triangle.
 To see this, suppose three points of $Q$ are joined in pairs.
 Two points are never joined both ways, since that would be a directed cycle.
-Each of the three points lies on two of the three arcs. If every point had exactly one arc leaving it, the arcs would form a directed cycle. Some point $x$ therefore has both of its arcs leaving. Name the other two points $y$ and $z$ so that the third arc is $y\to z$. The three arcs are then $x \to y$, $y \to z$ and $x \to z$.
+Each of the three points lies on two of the three arcs. Every arc leaves exactly one point, so the numbers of arcs leaving the three points add up to three. If every point had exactly one arc leaving it, the arcs would form a directed cycle. Some point $x$ therefore has both of its arcs leaving. Name the other two points $y$ and $z$ so that the third arc is $y\to z$. The three arcs are then $x \to y$, $y \to z$ and $x \to z$.
 But then $x \to z$ could be deleted, since $x$ still reaches $z$ through $y$.
 This contradicts the choice of $Q$.
 By Mantel's theorem \cite{Mantel07}, a graph on $q$ vertices with no triangle has at most $\floor{q^2/4}$ edges. So
@@ -867,7 +872,7 @@ At $m=2$ it is enough to show that a skeleton $R$ from \Cref{lem:reach-skeleton}
 \begin{proof}[Proof of \Cref{thm:dir-vertex-m2-exact}]
 \emph{Lower bound.} The bidirected star (\Cref{const:directed-hub} at $m=2$) and the one-way bipartite directed graph (\Cref{const:bipartite}) have $\lec^{\max} = 1$.
 Since $\kap\le\lec$, they also have $\kap^{\max} \le 1$.
-So $\ell_2^{\mathrm{dir}}(n) \ge M(n)$ and $k_2^{\mathrm{dir}}(n) \ge M(n)$.
+This gives $\ell_2^{\mathrm{dir}}(n) \ge M(n)$ and $k_2^{\mathrm{dir}}(n) \ge M(n)$.
 
 \emph{Upper bound.} Let $D$ be a simple directed graph on $n \ge 2$ vertices with $\kap^{\max}_D \le 1$.
 By \Cref{lem:reach-skeleton}, $D$ has a reachability skeleton $R$ with $|A(R)| \le M(n)$.
@@ -913,7 +918,7 @@ Since $\lec_\HH(u,v) \le k$, \Cref{thm:menger-hyper} gives a set $F$ of at most 
 Let $S$ be the set of vertices that $u$ can reach in $\HH - F$, and let $\bar S = V \setminus S$.
 Then $u \in S$ and $v \in \bar S$, so both sets are non-empty.
 Every copy that meets both $S$ and $\bar S$ lies in $F$. A copy outside $F$ with a vertex $x \in S$ and a vertex $y \in \bar S$ would let $u$ reach $x$ and then $y$ in $\HH - F$, so $y$ would lie in $S$.
-So at most $k$ copies meet both sides.
+At most $k$ copies therefore meet both sides.
 
 Form two \emph{trace} multihypergraphs $\HH[S]$ and $\HH[\bar S]$: replace every copy $e$ by $e \cap S$, or by $e \cap \bar S$, and drop the sets with fewer than two vertices.
 A Berge route in a trace is also a Berge route in $\HH$, if we replace each trace copy by the copy it came from.
@@ -1009,7 +1014,7 @@ Let $q$ be the number of hyperedges.
 We claim that $\kap^{\max}_\HH \le 1$ exactly when $I(\HH)$ is a forest.
 The graph $I(\HH)$ is bipartite, with vertex nodes on one side and hyperedge nodes on the other, so a cycle in it alternates between the two kinds of nodes.
 Suppose $I(\HH)$ has a cycle $v_1, e_1, v_2, e_2, \dots, v_\ell, e_\ell, v_1$, with $\ell\ge2$ and all $v_i$ and $e_i$ distinct.
-Then $v_1, e_1, v_2$ and $v_1, e_\ell, v_\ell, \dots, e_2, v_2$ are two Berge routes from $v_1$ to $v_2$ that share no hyperedge and no inner vertex. So $\kap(v_1, v_2) \ge 2$.
+Then $v_1, e_1, v_2$ and $v_1, e_\ell, v_\ell, \dots, e_2, v_2$ are two Berge routes from $v_1$ to $v_2$ that share no hyperedge and no inner vertex, which gives $\kap(v_1, v_2) \ge 2$.
 Conversely, two such routes between $u$ and $v$ are two paths in $I(\HH)$ with the same ends and no common inner node. Together they form a cycle in $I(\HH)$.
 This proves the claim.
 
@@ -1024,7 +1029,7 @@ Its hyperedges meet only at the hub, and every other vertex lies in at most one 
 
 \emph{The three values agree.}
 The star hypertree also has $\lec^{\max} \le 1$, since removing the one hyperedge at a non-hub vertex separates it from every other vertex.
-So it is feasible in all three problems, and $\ell_2^{(r)}(n),\, k_2^{(r)}(n),\, K_2^{(r)}(n) \ge \floor{(n-1)/(r-1)}$.
+It is therefore feasible in all three problems, and $\ell_2^{(r)}(n),\, k_2^{(r)}(n),\, K_2^{(r)}(n) \ge \floor{(n-1)/(r-1)}$.
 A simple hypergraph is a multihypergraph, and $\kap \le \lec$, so $\ell_2^{(r)}(n) \le k_2^{(r)}(n) \le K_2^{(r)}(n)$. The upper bound above gives $K_2^{(r)}(n) \le \floor{(n-1)/(r-1)}$, so all three are equal.
 \end{proof}
 
@@ -1047,7 +1052,7 @@ So
     \kap_\HH(u, v) \;=\; \kap_{I(\HH)}(u, v)
 \]
 for all vertices $u \ne v$ (\Cref{fig:incidence} shows an example).
-The vertex problem asks for the largest number of hyperedge nodes, each of degree $r$, such that no two of the $n$ vertex nodes are joined by $m$ internally disjoint paths.
+The vertex problem asks for the largest number of hyperedge nodes, each of degree $r$, such that no two of the $n$ vertex nodes are joined by $m$ internally vertex-disjoint paths.
 
 The upper bound at $m=3$ follows from a bound on the cycles of a graph, proved next.
 For a connected multigraph $G$, the \emph{cycle rank} is $\mathrm{rank}(G) = |E(G)| - |V(G)| + 1$.
@@ -1057,7 +1062,7 @@ For the incidence graph of a hypergraph, $|E|$ counts the pairs of a vertex and 
 A \emph{cut vertex} is a vertex whose removal disconnects the graph, that is, leaves more components than before.
 A graph on more than $k$ vertices is \emph{$k$-connected} if removing any $k-1$ vertices leaves it connected.
 A \emph{separating pair} is a pair of vertices whose removal disconnects the graph.
-By Menger's theorem \cite[Chapter~3]{Diestel17}, a multigraph on at least four vertices is $3$-connected exactly when every two vertices are joined by $3$ internally disjoint paths. The condition of at least four vertices is needed: two vertices joined by three parallel edges have three internally disjoint paths, but the multigraph is not $3$-connected.
+By Menger's theorem \cite[Chapter~3]{Diestel17}, a multigraph on at least four vertices is $3$-connected exactly when every two vertices are joined by $3$ internally vertex-disjoint paths. The condition of at least four vertices is needed: two vertices joined by three parallel edges have three internally vertex-disjoint paths, but the multigraph is not $3$-connected.
 
 \begin{lemma}[Incidence rank lemma]\label{lem:incidence-rank}
 Let $G$ be a connected multigraph with a partition $V(G)=X \mathbin{\dot\cup} Z$ such that
@@ -1134,7 +1139,7 @@ In each step we build one or two smaller graphs, check that they satisfy (i) to 
 A vertex in $Z$ has degree at least $2$ by (iii), and by (ii) its edges go to different vertices, so it has at least two neighbours.
 With at most two vertices this is impossible, so $Z$ is empty and all vertices lie in $X$.
 With one vertex, there are no edges, since every edge joins two different vertices, so $\mathrm{rank}=0=|X|-1$.
-With two vertices, the parallel edges between them are internally disjoint routes. By (iv) there are at most two, so $\mathrm{rank} \le 2 - 2 + 1 = 1 = |X| - 1$.
+With two vertices, the parallel edges between them are internally vertex-disjoint routes. By (iv) there are at most two, so $\mathrm{rank} \le 2 - 2 + 1 = 1 = |X| - 1$.
 
 Suppose $G$ has a cut vertex $c$.
 Split the components of $G-c$ into two non-empty groups.
@@ -1147,7 +1152,7 @@ Every edge of $G$ lies in exactly one of $G_1, G_2$, and the two share only the 
 \]
 Each $G_i$ is connected and smaller than $G$.
 Conditions (i) and (ii) still hold in $G_i$, since it is part of $G$.
-Condition (iv) still holds, since a part of $G$ has no more disjoint paths than $G$.
+Condition (iv) still holds, since a part of $G$ has no more internally vertex-disjoint paths than $G$.
 Condition (iii) can only fail at $c$, when $c \in Z$ has a single neighbour in $G_i$.
 In that case delete $c$ from $G_i$. This removes one vertex and one edge, so $G_i$ stays connected, and its rank and its $X$-vertices do not change.
 By induction, $\mathrm{rank}(G_i) \le |X \cap V(G_i)| - 1$ for $i = 1,2$.
@@ -1163,7 +1168,7 @@ By (i) its two neighbours $x, x'$ lie in $X$, and by (ii) they are different.
 Delete $z_0$ and its two edges, and add a new edge $xx'$.
 Then $|E|$ and $|V|$ both drop by one, so the rank does not change, and the graph stays connected.
 The new edge joins two vertices of $X$, so $|X|$ does not change, and (i), (ii), (iii) still hold.
-A path through $z_0$ uses $x$, $z_0$, $x'$ in a row. Replacing this by the new edge, and back, turns internally disjoint paths of one graph into internally disjoint paths of the other.
+A path through $z_0$ uses $x$, $z_0$, $x'$ in a row. Replacing this by the new edge, and back, turns internally vertex-disjoint paths of one graph into internally vertex-disjoint paths of the other.
 Every $\kap(x_1, x_2)$ with $x_1, x_2 \in X$ then stays the same, and (iv) holds.
 The graph is smaller, so the induction hypothesis gives the bound.
 
@@ -1172,7 +1177,7 @@ Suppose some $x_0 \in X$ has degree $2$, and delete it with its two edges.
 Since $G$ is $2$-connected, the result is connected.
 We remove two edges and one vertex, so the rank drops by one, and $|X|$ drops by one.
 By (ii), a neighbour of $x_0$ in $Z$ loses one edge, so it keeps degree at least $2$, and (iii) holds.
-Conditions (i) and (ii) still hold, and (iv) holds, since deleting a vertex cannot add disjoint paths.
+Conditions (i) and (ii) still hold, and (iv) holds, since deleting a vertex cannot add internally vertex-disjoint paths.
 The result still has a vertex in $X$. Otherwise $X = \{x_0\}$, and by (i) and (ii) every $z$ would have degree at most $1$, against (iii).
 By induction, $\mathrm{rank}(G) - 1 \le (|X| - 1) - 1$, that is, $\mathrm{rank}(G) \le |X| - 1$.
 
@@ -1183,15 +1188,15 @@ Suppose $G$ has two parallel edges between $x$ and $x'$.
 Because $x'$ is not a cut vertex, $G-x'$ is connected. It contains $x$ and a third vertex, which forces $x$ to have a neighbour $w\ne x'$.
 Since $x$ is not a cut vertex, $G - x$ has a path from $w$ to $x'$.
 With $x$ in front, this is an $x$--$x'$ path with an inner vertex.
-With the two parallel edges this gives three internally disjoint $x$--$x'$ paths, against (iv).
-So $G$ is simple. A simple graph in which every degree is at least three has at least four vertices.
+With the two parallel edges this gives three internally vertex-disjoint $x$--$x'$ paths, against (iv).
+Hence $G$ is simple. A simple graph in which every degree is at least three has at least four vertices.
 
 Suppose $G$ is $3$-connected.
-By Menger's theorem every two vertices are then joined by three internally disjoint paths.
+By Menger's theorem every two vertices are then joined by three internally vertex-disjoint paths.
 By (iv), $X$ then has at most one vertex.
 Since $G$ has at least four vertices, $Z$ is not empty.
 By (i) and (ii), every $z \in Z$ then has degree at most $1$, against (iii).
-So $G$ is not $3$-connected.
+This shows that $G$ is not $3$-connected.
 
 Since $G$ is not $3$-connected, removing some set of at most two vertices disconnects it. A single vertex does not, because $G$ has no cut vertex. This leaves a separating pair $\{a, b\}$.
 Remove it, and divide the components of $G - \{a,b\}$ into two non-empty groups, with vertex sets $U$ and $W$.
@@ -1216,13 +1221,13 @@ It is connected, since every component in $U$ is joined to $a$ and $b$, and $a$ 
 (iii): a $Z$-vertex in $U$ keeps all its neighbours. If $a$ or $b$ lies in $Z$, it keeps a neighbour in $U$ and gains the extra connection, so it has degree at least $2$.
 (iv): take two $X$-vertices $x, x'$ of $G_U$.
 If one of them is the new vertex of the third case, it has degree two, so $\kap(x,x') \le 2$.
-Otherwise both are vertices of $G$. Take internally disjoint $x$--$x'$ paths in $G_U$.
+Otherwise both are vertices of $G$. Take internally vertex-disjoint $x$--$x'$ paths in $G_U$.
 At most one of them uses the extra connection.
 Two of them cannot pass the same new vertex, since it would be a shared inner vertex.
 And two of them cannot both use the edge $ab$: both would contain $a$ and $b$, so $a$ and $b$ would have to be the ends $x$ and $x'$, and then both paths would be the edge $ab$ itself.
 If a path uses the extra connection, replace that part by the $a$--$b$ path through $W$.
 The other paths lie in $G_U$, so they do not meet $W$.
-This gives the same number of internally disjoint $x$--$x'$ paths in $G$.
+This gives the same number of internally vertex-disjoint $x$--$x'$ paths in $G$.
 By (iv) for $G$ there are at most two, so (iv) holds in $G_U$.
 
 \emph{$G_U$ and $G_W$ are smaller.}
@@ -1313,13 +1318,13 @@ Take a vertex $v$ of largest out-degree $\Delta$.
 For each of the $n-1$ pairs $(v,w)$, the midpoints $x$ of routes $v\to x\to w$, together with the arc $v\to w$ if it exists, number at most $m-1$.
 Adding this over $w$ counts every arc from an out-neighbour of $v$ to a vertex other than $v$, and the $\Delta$ arcs out of $v$.
 The arcs from out-neighbours back to $v$ are not counted, but there are at most $\Delta$ of them.
-So the out-neighbours of $v$ send at most $(m-1)(n-1)$ arcs in total.
+The out-neighbours of $v$ therefore send at most $(m-1)(n-1)$ arcs in total.
 The other $n-1-\Delta$ vertices send at most $\Delta$ arcs each.
 Together with the $\Delta$ arcs out of $v$ this gives at most $\Delta(n-\Delta)+(m-1)(n-1)$ arcs, and $\Delta(n-\Delta)\le\floor{n^2/4}$.
-The routes of length two are also internally vertex-disjoint, so the same proof works for vertex separation.
+The routes of length two are also internally vertex-disjoint, so the same proof works for internally vertex-disjoint routes.
 
 
-\begin{theorem}[Directed multigraph value with arc separation, every $n$ and $m$]\label{thm:dir-multi-full}
+\begin{theorem}[Directed multigraph value with arc-disjoint routes, every $n$ and $m$]\label{thm:dir-multi-full}
 For all $n \ge 2$ and $m \ge 2$,
 \[
     L_m^{\mathrm{dir}}(n) \;=\; (m-1)\,M(n), \qquad M(n) := \max\!\Bigl(2(n-1),\ \floorfrac{n^2}{4}\Bigr).
@@ -1376,7 +1381,7 @@ Fix $u \ne v$ and let $t = \lec_{D-R}(u,v)$. If $t = 0$ there is nothing to prov
 Otherwise $D-R$ has $t \ge 1$ arc-disjoint $u$--$v$ paths, so $u$ reaches $v$ in $D$.
 Since $R$ is a reachability skeleton, there is a $u$--$v$ path $P$ in $R$.
 The arcs of $P$ are the removed copies, so $P$ shares no arc with the $t$ paths in $D-R$.
-So $D$ has $t+1$ arc-disjoint $u$--$v$ paths, and $t + 1 \le \lec_D(u,v)$.
+Together with $P$, this gives $t+1$ arc-disjoint $u$--$v$ paths in $D$, and $t + 1 \le \lec_D(u,v)$.
 Taking the maximum over all pairs gives $\lec^{\max}(D-R) \le k-1$.
 \end{proof}
 
@@ -1416,8 +1421,8 @@ The route condition on the hypergraph limits the routes of length two in the sha
 The backward model is the forward model with every hyperedge reversed, so it has the same extremal values (\Cref{lem:dir-hyper-duality}).
 The general model has the same leading term, with a larger linear term (\Cref{thm:dir-hyper-general-constant}).
 
-At $r=2$ this also covers directed multigraphs with vertex separation.
-At $m=2$ no arc can be repeated, because two copies of an arc are two separated routes. A feasible directed multigraph is then a simple directed graph, which gives $K_2^{\mathrm{dir}}(n)=k_2^{\mathrm{dir}}(n)=\ell_2^{\mathrm{dir}}(n)$ by \Cref{thm:dir-vertex-m2-exact}.
+At $r=2$ this also covers directed multigraphs with internally vertex-disjoint routes.
+At $m=2$ no arc can be repeated, because two copies of an arc are two internally vertex-disjoint routes. A feasible directed multigraph is then a simple directed graph, which gives $K_2^{\mathrm{dir}}(n)=k_2^{\mathrm{dir}}(n)=\ell_2^{\mathrm{dir}}(n)$ by \Cref{thm:dir-vertex-m2-exact}.
 For fixed $m$, the extremal multigraphs of \Cref{thm:dir-multi-full} are feasible here too, since $\kap\le\lec$.
 With \Cref{thm:dir-hyper-constant} at $r=2$ this gives $K_m^{\mathrm{dir}}(n)=(m-1)n^2/4+O_m(n)$ (\Cref{cor:dir-multi-incidence}).
 
@@ -1432,7 +1437,7 @@ With \Cref{thm:dir-hyper-constant} at $r=2$ this gives $K_m^{\mathrm{dir}}(n)=(m
 \renewcommand{\arraystretch}{1.2}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
 \toprule
-Model & Edge or arc separation & Vertex separation \\
+Model & Edge-disjoint or arc-disjoint routes & Internally vertex-disjoint or separated routes \\
 \midrule
 Simple graph & $\floor{m(n-1)/2}$ for $n\ge m$ & Exact for $m\le5$. Open for $m\ge6$ \\
 Multigraph & $(m-1)(n-1)$ & $n-1$ at $m=2$, $2(n-1)$ at $m=3$. Open for $m\ge4$ \\

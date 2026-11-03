@@ -124,7 +124,7 @@ $S_2 = 0$ says that every edge of $G$ has $\dist_T(e) \le 2$.
 This is (a).
 
 If $m(n-1)$ is odd, then $|E| = (m(n-1)-1)/2$, so $S_1 + S_2 + S_3 = 1$.
-So exactly one gap is one, and the other two are zero.
+Exactly one gap is then one, and the other two are zero.
 $S_1 = 1$ says that one tree edge has weight $m-2$.
 $S_3 = 1$ says that one tree edge is not an edge of $G$.
 $S_2 = 1$ says that one edge of $G$ has $\dist_T(e) = 3$.
@@ -136,14 +136,19 @@ Here $m(n-1) = 2(n-1)$ is even, so by (a) every tree edge is an edge of $G$, whi
 Conversely, a tree has $n-1$ edges and $\lec^{\max} = 1$.
 
 \begin{remark}[Forcing and avoiding counts]\label{rem:threshold-convention}\label{rem:threshold-audit}
-This thesis maximises the number of edges with no $m$ disjoint routes between any pair.
+This thesis maximises the number of edges with no pair joined by $m$ edge-disjoint routes, or by $m$ separated routes in the vertex problems.
 S{\o}rensen and Thomassen, and the Erd\H{o}s Problems database, give instead the least number of edges that forces such a pair \cite{SorensenThomassen74,ErdosProblems}.
 Their number is one more than the maximum used here.
 
-For example, Theorem~4 of \cite{SorensenThomassen74} gives the forcing number $\floor{8n/3}-3$ for $n\ge6$, except $16$ at $n=7$ and $28$ at $n=12$.
-For $6\le n\le13$ these numbers, the two exceptions included, equal $\floor{5(n-1)/2}+1$.
-Subtracting one gives the two cases of \Cref{thm:sorensen-thomassen}.
-At $n=13$ both maxima are $30$, and the edge and vertex values first differ at $n=14$.
+For example, Theorem~4 of \cite{SorensenThomassen74} concerns simple graphs on $n\ge6$ vertices.
+It states that every simple graph on $n$ vertices with at least $\floor{8n/3}-3$ edges has two vertices joined by $5$ internally vertex-disjoint paths, and that no smaller number of edges forces this.
+The exceptions are $n=7$ and $n=12$, where the smallest forcing numbers are $16$ and $28$.
+Subtracting one gives the largest number of edges of a simple graph on $n$ vertices without such a pair, which is $k_5(n)$.
+For $n\ge14$ this is $\floor{8n/3}-4$, the second case of \Cref{thm:sorensen-thomassen}.
+For $6\le n\le13$ the forcing numbers, the two exceptions included, equal $\floor{5(n-1)/2}+1$, so $k_5(n)=\floor{5(n-1)/2}$, the first case.
+Theorem~4 does not cover $n=5$.
+There the complete graph $K_5$ has $\kap^{\max}=4$, so $k_5(5)=\binom52=10=\floor{5\cdot4/2}$, which is the first case as well.
+At $n=13$ both $k_5$ and $\ell_5$ equal $30$, and $k_5(n)$ first exceeds $\ell_5(n)$ at $n=14$.
 
 The same care is needed for the Bollob\'{a}s--Erd\H{o}s conjecture of \Cref{sec:simple-vertex-blocks}.
 Its forcing number $1+\binom m2 p$ is for graphs on $1+(m-1)p$ vertices.
@@ -155,7 +160,7 @@ Each copy of $K_m$ adds $\binom m2$ edges but only $m-1$ vertices, so in the not
 The vertex problem $k_m(n)$ is open for $m\ge6$.
 This section reduces it to $2$-connected graphs (\Cref{thm:simple-vertex-blocks}).
 
-We use the words component, cut vertex and $k$-connected from \Cref{sec:hyper-results}.
+The words component, cut vertex and $k$-connected are defined in \Cref{ch:basecases}.
 A \emph{bridge} is an edge whose removal disconnects its component.
 A \emph{block} is a maximal connected subgraph that has an edge and no cut vertex of its own.
 In a simple graph, a block is either a bridge or a maximal $2$-connected subgraph.
@@ -192,7 +197,7 @@ Suppose a $u$--$v$ path leaves $B$ at some vertex $c$ of $B$.
 Since the path ends at $v\in B$, it comes back to $B$, say first at the vertex $c'$. Let $P$ be the part of the path from $c$ to $c'$. All inner vertices of $P$ lie outside $B$.
 Suppose $c'\ne c$. Then $B$ together with $P$ is connected and has no cut vertex. Removing a vertex of $B$ leaves the rest of $B$ connected, with $P$ still attached at $c$ or at $c'$. Removing an inner vertex of $P$ leaves $B$ whole, with the two pieces of $P$ attached at $c$ and at $c'$. This subgraph is larger than $B$, which contradicts the maximality of $B$.
 This forces $c'=c$. The path would then visit $c$ twice, which a path never does.
-So every $u$--$v$ path stays in $B$, and $\kap_G(u,v) = \kap_B(u,v) \le m-1$.
+Every $u$--$v$ path therefore stays in $B$, and $\kap_G(u,v) = \kap_B(u,v) \le m-1$.
 Every block is therefore feasible. A block is a single edge or $2$-connected, so $|E(B)| \le h_m(|V(B)|)$.
 Every edge lies in exactly one block, so $|E(G)| = \sum_B |E(B)| \le \sum_B h_m(|V(B)|)$.
 Adding the second fact over the components gives $\sum_B (|V(B)|-1) \le n-1$.
@@ -204,7 +209,7 @@ Glue them at one common vertex, and keep them disjoint otherwise.
 This graph has $1 + \sum(b_i-1) \le n$ vertices. Add isolated vertices to reach $n$.
 Its blocks are the $B_i$, so by the argument above a pair inside one block keeps its value of $\kap$, which is at most $m-1$.
 Two vertices in different blocks are separated by removing the common vertex, so $\kap \le 1 \le m-1$.
-So the graph is feasible, with $\sum_i h_m(b_i)$ edges.
+The graph is therefore feasible, with $\sum_i h_m(b_i)$ edges.
 
 \emph{Gluing.}
 Take an extremal graph on $n_1$ vertices and one on $n_2$ vertices, and glue them at one vertex.
@@ -221,7 +226,7 @@ Take $x_t = k_m(t+1)$. Gluing with $n_1 = i+1$ and $n_2 = j+1$ gives $x_{i+j} \g
 Since also $x_t/t = a_{t+1}$, the sequence $a_n$ tends to $\sup_n a_n$.
 This supremum is at most $s$, since every $a_n \le s$.
 It is also at least $s$: one block of size $b$ is a feasible graph on $b$ vertices, so $a_b \ge h_m(b)/(b-1)$ for every $b$.
-So $a_n$ tends to $s$. Since $a_n \le s$ for every $n$, it approaches $s$ from below.
+Hence $a_n$ tends to $s$. Since $a_n \le s$ for every $n$, it approaches $s$ from below.
 \end{proof}
 
 We note three consequences.
@@ -234,7 +239,7 @@ Since $B$ is connected and is not $C$, it has an edge $wz$ that is not on $C$, w
 If $w$ is on $C$, let $P$ be this edge.
 Otherwise, $B - z$ is still connected, so it has a path from $w$ to $C$. Let $y$ be the first vertex of $C$ on it, and let $P$ be the path $z, w, \dots, y$.
 In both cases $P$ joins two different vertices $x, y$ of $C$ and has no inner vertex on $C$.
-The cycle $C$ gives two internally disjoint $x$--$y$ paths, and $P$ is a third. This gives $\kap(x,y) \ge 3$, which breaks the condition.
+The cycle $C$ gives two internally vertex-disjoint $x$--$y$ paths, and $P$ is a third. This gives $\kap(x,y) \ge 3$, which breaks the condition.
 It follows that $h_3(2) = 1$ and $h_3(b) = b$ for $b \ge 3$, where $b$ is the length of the cycle.
 The rate $h_3(b)/(b-1)$ is $1$ at $b=2$, $3/2$ at $b=3$ and $b/(b-1) < 3/2$ for $b \ge 4$.
 Every block thus gives at most $3/2$ edges per vertex it costs, which bounds $k_3(n)$ by $3(n-1)/2$. As $k_3(n)$ is an integer, $k_3(n)\le\floor{3(n-1)/2}$. The bound is reached by $\floor{(n-1)/2}$ triangles, together with one extra edge when $n-1$ is odd. They cost $n-1$ vertices and give $3\floor{(n-1)/2} + ((n-1) \bmod 2) = \floorfrac{3(n-1)}{2}$ edges.
@@ -256,7 +261,7 @@ A bouquet with blocks $B_i$ of sizes $b_i$ has rate
 a weighted average of the rates of its blocks.
 For any graph $G$, the proof of \Cref{thm:simple-vertex-blocks} gives $|E(G)| = \sum_B |E(B)|$ and $|V(G)|-1 \ge \sum_B (|V(B)|-1)$.
 The rate of $G$ is therefore at most this weighted average for its own blocks, and some block has a rate at least the rate of $G$.
-So a counterexample must contain a block with rate above $m/2$. A single edge has rate $1 \le m/2$, so this block is $2$-connected.
+A counterexample must therefore contain a block with rate above $m/2$. A single edge has rate $1 \le m/2$, so this block is $2$-connected.
 
 The conjecture is false. S\o{}rensen and Thomassen \cite{SorensenThomassen74} showed that for each fixed $m$,
 \[
@@ -266,11 +271,11 @@ This is larger than $m/2$ for every $m \ge 5$, because
 \[
     2\bigl(m(m-1)-2\bigr) - m(2m-3) \;=\; m-4 .
 \]
-At $m=5$, \Cref{thm:sorensen-thomassen} gives $k_5(14) = \floor{112/3} - 4 = 33$ edges on $14$ vertices. Its rate is $33/13 > 5/2$, so by the bouquet argument above such a graph contains a block with rate above $5/2$.
+At $m=5$, \Cref{thm:sorensen-thomassen} gives $k_5(14) = \floor{112/3} - 4 = 33$ edges on $14$ vertices. Its rate is $33/13 > 5/2$, so by the bouquet argument above a simple graph on $14$ vertices with $33$ edges and $\kap^{\max}\le4$ contains a block with rate above $5/2$.
 In summary, $c_m=m/2$ for $m\le4$, $c_5=8/3$ by \Cref{thm:sorensen-thomassen}, and $m/2<c_m\le m-1$ for $m\ge6$ by the next remark.
 
 \begin{remark}[Feasible graphs are $(m-1)$-degenerate]\label{rem:vertex-degeneracy}
-A theorem of Mader \cite{Mader71,Mader73b} states that every simple graph of minimum degree at least $d \ge 2$ contains two adjacent vertices joined by $d$ internally disjoint paths.
+A theorem of Mader \cite{Mader71,Mader73b} states that every simple graph of minimum degree at least $d \ge 2$ contains two adjacent vertices joined by $d$ internally vertex-disjoint paths.
 Consequently, every graph feasible for the vertex problem has a vertex of degree at most $m-1$.
 Since taking a subgraph cannot increase local vertex-connectivity, every non-empty subgraph of a feasible graph has such a vertex.
 A graph is \emph{$d$-degenerate} when every non-empty subgraph has a vertex of degree at most $d$. Every feasible graph is therefore $(m-1)$-degenerate.
@@ -334,7 +339,7 @@ The direct arc $a \to b$ is one route.
 For each of the $m-2$ in-neighbours $b'$ of $b$ in $B$, the route $a \to b' \to b$ is another.
 These $m-1$ routes use different arcs.
 Now take any $a$--$b$ route. No arc enters $A$, so the route never comes back to $A$.
-So its last arc is $a \to b$ or one of the $m-2$ arcs into $b$ from $B$.
+Its last arc is therefore $a \to b$ or one of the $m-2$ arcs into $b$ from $B$.
 Removing these $m-1$ arcs therefore separates $a$ from $b$.
 By Menger's theorem, $\lec(a,b) = m-1$.
 
@@ -342,7 +347,7 @@ By Menger's theorem, $\lec(a,b) = m-1$.
 For $b_i, b_j \in B$, a route from $b_i$ stays in $B$, since no arc leaves $B$, which makes its last arc one of the $m-2$ arcs into $b_j$ from $B$, and $\lec(b_i,b_j)\le m-2$.
 No arc leaves $B$, so there is no route from $B$ to $A$.
 No arc goes from $A$ to $A$, and a route from $A$ never comes back to $A$, so there is no route between two vertices of $A$.
-So $\lec^{\max} = m - 1$.
+This gives $\lec^{\max} = m - 1$.
 \end{proof}
 
 For example, take $m = 3$ and $n = 10$.
@@ -424,7 +429,7 @@ Let $D$ be a simple directed graph and $m \ge 2$. If $\lec^{\max}_D \le m-1$, or
 Fix an ordered pair $(u,v)$.
 Take the arc $u\to v$, if it exists, and the route $u\to x\to v$ for each of the $p_2(u,v)$ midpoints $x$.
 Two routes with different midpoints use different arcs, and none of them uses the arc $u\to v$.
-So these routes are arc-disjoint.
+These routes are therefore arc-disjoint.
 Each two-step route has one inner vertex, its midpoint, and the arc has none.
 The routes are therefore also internally vertex-disjoint.
 This makes their number at most $\lec_D(u,v)$ and at most $\kap_D(u,v)$, and either condition gives at most $m-1$.
@@ -482,7 +487,7 @@ Let $N^+(v)$ be the set of the $\Delta$ vertices $x$ with $v \to x$, and let $\d
 First we count the routes of length two that start at $v$.
 We count the pairs $(x,w)$ with $v\to x$, $x\to w$ and $w\ne v$ in two ways.
 Fixing $w \ne v$ first gives the midpoints of the routes $v\to x\to w$. The conditions $x\ne v$ and $x\ne w$ hold automatically, since $v\to x$ and $x\to w$. This count is therefore $\sum_{w\ne v} p_2(v,w)$.
-Fixing $x \in N^+(v)$ first gives the $d^+(x)$ out-neighbours of $x$, minus one exactly when $x\to v$. So this count is $\sum_{x\in N^+(v)} d^+(x) - \delta(v)$.
+Fixing $x \in N^+(v)$ first gives the $d^+(x)$ out-neighbours of $x$, minus one exactly when $x\to v$. This count is therefore $\sum_{x\in N^+(v)} d^+(x) - \delta(v)$.
 Therefore
 \[
     \sum_{w\ne v} p_2(v,w) \;=\; \sum_{x\in N^+(v)} d^+(x) \;-\; \delta(v).
@@ -580,9 +585,9 @@ Take a reachability skeleton $R_1$ of $D$ with at most $M(n)$ arcs (\Cref{lem:re
 By \Cref{lem:reach-delete}, this lowers $\lec^{\max}$ by at least one.
 Repeat this with skeletons $R_2, R_3, \dots$ of what is left.
 After deleting $R_1, \dots, R_{m-1}$, we have $\lec^{\max} = 0$, so no arc is left.
-So $|A(D)| = \sum_i |A(R_i)| \le (m-1)M(n)$.
+Hence $|A(D)| = \sum_i |A(R_i)| \le (m-1)M(n)$.
 
-At $m=2$ a feasible directed multigraph has no parallel arcs, since two copies of an arc are two disjoint routes, and \Cref{thm:dir-multi-full} at $m=2$ is therefore \Cref{thm:dir-arc-m2-exact}.
+At $m=2$ a feasible directed multigraph has no parallel arcs, since two copies of an arc are two arc-disjoint routes, and \Cref{thm:dir-multi-full} at $m=2$ is therefore \Cref{thm:dir-arc-m2-exact}.
 
 \subsection{The extremal multigraphs for large \texorpdfstring{$n$}{n}}\label{sec:quadratic-uniqueness}
 
@@ -610,7 +615,7 @@ We show that this forces $q = n$.
 Since $n\ge8$, $f(1)=2(n-1) < \floor{n^2/4} = f(n)$.
 The differences $f(q+1) - f(q)$ never decrease as $q$ grows, so between $1$ and $n$, the values of $f$ stay on or below the straight line from $f(1)$ to $f(n)$.
 Since $f(1) < f(n)$, this line goes up, so it is below $f(n)$ at every $q < n$.
-So $f(q) < f(n)$ for $q<n$, and therefore $q = n$: every strongly connected component is a single vertex.
+This gives $f(q) < f(n)$ for $q<n$, and therefore $q = n$: every strongly connected component is a single vertex.
 A directed cycle would put its vertices in one component, so $D$ has no directed cycle. This is (1).
 
 With $q = n$, each component has one vertex, so the proof of \Cref{lem:reach-skeleton} chooses no arcs inside components. The skeleton $R$ then consists of the arcs chosen for $Q$, and $Q$ is $R$ itself, with $|A(Q)| = \floor{n^2/4}$.
@@ -630,7 +635,7 @@ Suppose $u \to v \to w \to x$ is such a path, with four different vertices.
 Every arc of $R$ joins $A$ and $B$, so the path alternates between the parts. It has three arcs, so $u$ and $x$ lie in different parts.
 The underlying graph of $R$ is complete bipartite, so $R$ has an arc between $u$ and $x$.
 It cannot be $x \to u$, since that would close a directed cycle, and $D$ is acyclic.
-So $u \to x$ is in $R$.
+The arc $u \to x$ is therefore in $R$.
 But $u$ also reaches $x$ along the path, so $u\to x$ could be removed without changing reachability. This is a contradiction.
 \end{proof}
 
@@ -650,7 +655,7 @@ Suppose $R$ has a path $a \to b \to a'$ with $a, a' \in A$ and $b \in B$.
 Suppose $a$ had an incoming arc $b_0 \to a$. Then $b_0 \ne b$, since $b \to a \to b$ would be a directed cycle, and $D$ has none.
 Also $b_0 \ne a'$, since they lie in different parts.
 Then $b_0 \to a \to b \to a'$ would be a path with three arcs, which \Cref{lem:skeleton-shallow} forbids.
-So $a$ has no incoming arc.
+Hence $a$ has no incoming arc.
 With directions ignored, $R$ is complete bipartite, so $a$ is joined to every $b'' \in B$. All these arcs leave $a$, so $a \to b''$ for every $b'' \in B$.
 In the same way, $a'$ has no outgoing arc, so $b'' \to a'$ for every $b'' \in B$.
 The $\beta$ routes $a \to b'' \to a'$ use different arcs, and they lie in $D$, since $R$ is part of $D$.
@@ -658,7 +663,7 @@ This gives $\lec_D(a,a') \ge \beta = \floor{n/2} \ge m$, since $n \ge 2m$. This 
 A path $b \to a \to b'$ with $b, b' \in B$ is excluded in the same way, with the $\alpha \ge \beta \ge m$ routes through $A$.
 This is the only place where we use $n \ge 2m$.
 
-So no vertex of $R$ has both an incoming and an outgoing arc.
+No vertex of $R$ therefore has both an incoming and an outgoing arc.
 Take $a \in A$. It is joined to every vertex of $B$.
 If all arcs at $a$ go out, then every $b\in B$ has an incoming arc, so it has no outgoing arc. All arcs then go from $A$ to $B$.
 If all arcs at $a$ come in, all arcs go from $B$ to $A$ in the same way.
@@ -668,7 +673,7 @@ Next, every arc of $D$ has the same ordered endpoints as an arc of $R$. Every pa
 As shown above, these are exactly the pairs $(u,x)$ with $u \in A$ and $x \in B$.
 If $D$ has an arc $u\to x$, then $u$ reaches $x$ in $D$, so also in $R$. Hence $u\to x$ is an arc of $R$.
 
-Parallel arcs are disjoint routes, so every multiplicity is at most $m-1$.
+Parallel arcs are arc-disjoint routes, so every multiplicity is at most $m-1$.
 All arcs of $D$ therefore go from $A$ to $B$. There are $|A|\,|B|\le\floor{n^2/4}$ such pairs, so $|A(D)| \le (m-1)|A|\,|B| \le (m-1)\floor{n^2/4}$.
 Equality holds, so every pair in $A \times B$ has multiplicity $m-1$, and $|A|\,|B|=\floor{n^2/4}$.
 The product $|A|\,|B|$ with $|A|+|B| = n$ equals $\floor{n^2/4}$ only when the parts have sizes $\ceil{n/2}$ and $\floor{n/2}$.
@@ -677,11 +682,11 @@ The product $|A|\,|B|$ with $|A|+|B| = n$ equals $\floor{n^2/4}$ only when the p
 Without the hypothesis $n\ge2m$, the following still holds for $n\ge8$.
 Every vertex of an extremal multigraph has degree at least $(m-1)\floor{n/2}$.
 Deleting a vertex leaves a feasible multigraph on $n-1 \ge 7$ vertices, with at most $(m-1)M(n-1) = (m-1)\floor{(n-1)^2/4}$ arcs.
-So the vertex has at least $(m-1)\bigl(\floor{n^2/4} - \floor{(n-1)^2/4}\bigr) = (m-1)\floor{n/2}$ arcs.
+The deleted vertex therefore has at least $(m-1)\bigl(\floor{n^2/4} - \floor{(n-1)^2/4}\bigr) = (m-1)\floor{n/2}$ arcs.
 For even $n$, every vertex of $(m-1)\cdot B_{n/2,\,n/2}$ has degree exactly $(m-1)n/2$.
 
 
-\apppart{Part III. Hypergraphs}{Menger for hypergraphs, simple hypergraphs that attain the edge bound, lower bounds for the vertex problem, multigraphs with vertex separation, and directed hypergraphs.}
+\apppart{Part III. Hypergraphs}{Menger for hypergraphs, simple hypergraphs that attain the edge bound, lower bounds for the vertex problem, multigraphs with internally vertex-disjoint routes, and directed hypergraphs.}
 
 \section{The hypergraph bounds}
 
@@ -712,7 +717,7 @@ The largest families have the same size in $N$ and in $\HH$.
 \emph{Cuts.} Every $u$--$v$ path in $N$ passes a gate, so removing all $c$ gate arcs separates $u$ from $v$, and a smallest separating set of arcs in $N$ has at most $c$ arcs.
 Such a set never contains all $c+1$ copies of an arc that is not a gate arc.
 Removing some but not all copies of an arc stops no path, so we can put these copies back, and the set still separates $u$ from $v$.
-So there is a smallest separating set that consists of gate arcs only.
+Hence some smallest separating set consists of gate arcs only.
 The gate arcs of $e$ stand for the copies of $e$.
 Removing a set of gate arcs therefore separates $u$ from $v$ in $N$ exactly when removing the same hyperedge copies separates $u$ from $v$ in $\HH$.
 The smallest separating sets then have the same size in $N$ and in $\HH$.
@@ -748,7 +753,7 @@ Let $a$ be the number of sets in the family that contain $x$ but not $y$, let $b
 Then $\deg(x) = a+c$ and $\deg(y) = b+c$, so $a - b = \deg(x) - \deg(y) \ge 2$.
 For a set $A$ that contains $x$ but not $y$, the set $A - x + y$ is an $r$-set that contains $y$ but not $x$.
 Different sets $A$ give different sets $A - x + y$, because $A$ can be recovered from $A-x+y$ by removing $y$ and adding $x$.
-So there are $a$ such new sets, but the family has only $b < a$ sets that contain $y$ but not $x$.
+This gives $a$ such new sets, but the family has only $b < a$ sets that contain $y$ but not $x$.
 For some $A$, the set $A - x + y$ is therefore not in the family.
 Replace $A$ by $A - x + y$. The family still has $N$ different sets. The degree of $x$ drops by one, the degree of $y$ rises by one, and the other degrees stay the same. The sum changes by
 \[
@@ -756,7 +761,7 @@ Replace $A$ by $A - x + y$. The family still has $N$ different sets. The degree 
  = 2\bigl(\deg(y) - \deg(x)\bigr) + 2 \le -2.
 \]
 This contradicts the choice of the family.
-So any two degrees differ by at most one.
+Any two degrees therefore differ by at most one.
 
 Each of the $N$ sets has $r$ vertices, so the degrees add up to $rN$.
 Their average is $rN/n$. Any two degrees differ by at most one, which puts every degree in $\{k,k+1\}$, where $k$ is the smallest degree. If all degrees equal $k$, the average is $k$, which is then also the largest degree and equals $\ceil{rN/n}$. Otherwise some degrees are $k$ and others $k+1$. The average then lies strictly between $k$ and $k+1$, and the largest degree $k+1$ again equals $\ceil{rN/n}$.
@@ -795,7 +800,7 @@ Add a second copy of $\{h,d,e\}$ and one copy of $\{a,b,c\}$.
 
 \begin{proposition}[The edge value at $(n,m,r)=(6,6,3)$]\label{prop:multihyper-six}
 The multihypergraph of \Cref{const:multihyper-six} has $12$ hyperedge copies and $\lec^{\max}\le5$.
-So the largest number of hyperedge copies of a $3$-uniform multihypergraph on $6$ vertices with $\lec^{\max} \le 5$ is $12$, although neither condition of \Cref{prop:hyper-edge} holds: $r-1 = 2$ does not divide $n-1 = 5$, and $m-1=5$ is larger than $\binom{n-2}{r-2}=4$.
+The largest number of hyperedge copies of a $3$-uniform multihypergraph on $6$ vertices with $\lec^{\max} \le 5$ is $12$, although neither condition of \Cref{prop:hyper-edge} holds: $r-1 = 2$ does not divide $n-1 = 5$, and $m-1=5$ is larger than $\binom{n-2}{r-2}=4$.
 \end{proposition}
 
 \begin{proof}
@@ -805,12 +810,12 @@ The triple $\{a,b,c\}$ adds one to the degrees of $a$, $b$ and $c$.
 Every non-hub vertex therefore lies in exactly five hyperedge copies.
 Every pair of vertices contains a non-hub vertex $w$.
 Every route from or to $w$ uses one of the five copies at $w$, so removing them separates the pair.
-So $\lec \le 5$ for every pair.
+This gives $\lec \le 5$ for every pair.
 There are $10+1+1=12$ copies.
 \Cref{prop:hyper-edge} gives at most $\floor{5 \cdot 5/2}=12$, so $12$ is the largest value.
 \end{proof}
 
-Since $\kap\le\lec$, the same multihypergraph also gives $12$ for the vertex problem. We do not know whether $12$ is optimal there.
+Since $\kap\le\lec$, the same multihypergraph also gives $12$ for the vertex problem. I do not know whether $12$ is optimal there.
 
 
 
@@ -911,7 +916,7 @@ single hyperedge. Its incidence graph is a tree, so $\kap^{\max}\le1$.}
 \end{subfigure}
 \caption[Incidence translation]{The translation the vertex problem rests on.
 Internally vertex-disjoint Berge paths in $\HH$ correspond exactly to
-internally disjoint paths in $I(\HH)$, so $\kap_\HH(u,v)=\kap_{I(\HH)}(u,v)$.
+internally vertex-disjoint paths in $I(\HH)$, so $\kap_\HH(u,v)=\kap_{I(\HH)}(u,v)$.
 \textbf{(top)} A hypergraph and its incidence graph with one Berge path
 drawn in both. \textbf{(bottom)} The star hypertree of
 \Cref{thm:hyper-vertex-m2}, whose incidence graph is a tree.}
@@ -960,22 +965,22 @@ Every route from or to this vertex uses one of the $m-1$ copies of $\{h\}\cup G_
 This gives $\kap(u,w) \le \lec(u,w) \le m-1$.
 Otherwise $u \in G_i$ and $w \in G_j$ with $i \ne j$.
 The hyperedges at $u$ and the hyperedges at $w$ meet only in $h$, so every route from $u$ to $w$ has $h$ as an inner vertex, and $\kap(u,w) \le 1$.
-So the hypergraph is feasible.
+The hypergraph is therefore feasible.
 
 At $m = 3$ there are $2(n-1)/(r-1)$ hyperedges, which equals the upper bound of \Cref{thm:hyper-vertex-m3}.
 \end{proof}
 
-\section{Multigraphs with vertex separation}\label{sec:multi-vertex}
+\section{Multigraphs with internally vertex-disjoint routes}\label{sec:multi-vertex}
 
 At $r = 2$ the hypergraph vertex problems are about multigraphs.
 They are not the same as the simple problems.
-Recall that $q$ parallel copies of $uv$ count as $q$ separated routes.
+Recall that $q$ parallel copies of $uv$ count as $q$ internally vertex-disjoint routes.
 Write $K_m(n)$ for the largest number of edges, counted with multiplicity, of a multigraph on $n$ vertices with $\kap^{\max} \le m-1$.
 
 The parallel edges and the longer routes do not interfere, so we can count them separately.
 
 \begin{lemma}[Splitting the local vertex-connectivity]\label{lem:multi-vertex-split}
-Let $G$ be a multigraph with multiplicity function $\mu$, and let its \emph{underlying simple graph} $G_0$ be the simple graph with an edge $uv$ whenever $\mu(u,v)\ge1$. For any two vertices $u \ne v$, write $\pi(u,v)$ for the largest number of pairwise internally disjoint $u$--$v$ paths of length at least two in $G_0$. Then
+Let $G$ be a multigraph with multiplicity function $\mu$, and let its \emph{underlying simple graph} $G_0$ be the simple graph with an edge $uv$ whenever $\mu(u,v)\ge1$. For any two vertices $u \ne v$, write $\pi(u,v)$ for the largest number of pairwise internally vertex-disjoint $u$--$v$ paths of length at least two in $G_0$. Then
 \[
     \kap_G(u,v) \;=\; \mu(u,v) \;+\; \pi(u,v).
 \]
@@ -983,29 +988,29 @@ Let $G$ be a multigraph with multiplicity function $\mu$, and let its \emph{unde
 
 \begin{proof}
 A route of length one uses one copy of the edge $uv$ and has no inner vertex.
-Two such routes are therefore separated when they use different copies, and such a route is separated from every longer route.
+Two routes of length one are therefore internally vertex-disjoint when they use different copies, and a route of length one is internally vertex-disjoint from every longer route.
 
-\emph{Lower bound.} Take all $\mu(u,v)$ copies of $uv$, and $\pi(u,v)$ internally disjoint $u$--$v$ paths of length at least two in $G_0$.
+\emph{Lower bound.} Take all $\mu(u,v)$ copies of $uv$, and $\pi(u,v)$ internally vertex-disjoint $u$--$v$ paths of length at least two in $G_0$.
 Use one copy of each edge on these paths.
-The inner vertices do not change, so all these routes are separated.
+The inner vertices do not change, so all these routes are internally vertex-disjoint.
 
-\emph{Upper bound.} Take a family of separated $u$--$v$ routes in $G$.
+\emph{Upper bound.} Take a family of internally vertex-disjoint $u$--$v$ routes in $G$.
 At most $\mu(u,v)$ of them have length one, since they use different copies of $uv$.
 Map each longer route to its sequence of vertices, a path in $G_0$.
 Two longer routes have disjoint, non-empty sets of inner vertices.
-So their images are different and internally disjoint, and there are at most $\pi(u,v)$ of them.
+Their images are therefore different and internally vertex-disjoint, and there are at most $\pi(u,v)$ of them.
 \end{proof}
 
 A multigraph is therefore feasible exactly when $\mu(u,v) \le m-1-\pi(u,v)$ on every edge and $\pi(u,v) \le m-1$ on every pair.
 
 \begin{theorem}[The multigraph vertex value at $m = 2$]\label{thm:multi-vertex-m2}
-$K_2(n) = n-1$, attained exactly by the spanning trees.
+$K_2(n) = n-1$, attained exactly by the trees on the $n$ vertices.
 \end{theorem}
 
 \begin{proof}
 By \Cref{lem:multi-vertex-split}, $\mu(u,v) + \pi(u,v) \le 1$ on every edge.
 If $G_0$ had a cycle, take an edge $uv$ on it. Then $\mu(u,v) \ge 1$, and the rest of the cycle is a $u$--$v$ path of length at least two, so $\pi(u,v) \ge 1$.
-So $G_0$ is a forest and every multiplicity is one.
+Hence $G_0$ is a forest and every multiplicity is one.
 A forest has at most $n-1$ edges, and a spanning tree has exactly $n-1$.
 \end{proof}
 
@@ -1083,7 +1088,7 @@ Write $G_0$ for the underlying simple graph.
 \emph{Feasibility.} The blocks of $G_0$ are the copies of $K_s$ and the path edges.
 As in the proof of \Cref{thm:simple-vertex-blocks}, a path between two vertices of the same block cannot leave the block, since it would pass a cut vertex twice.
 Take an edge $uv$ in a copy of $K_s$.
-The other $s-2$ vertices of the copy give $s-2$ internally disjoint routes of length two.
+The other $s-2$ vertices of the copy give $s-2$ internally vertex-disjoint routes of length two.
 Every longer route stays in the copy, so it passes one of these $s-2$ vertices, which gives $\pi(u,v) = s-2$.
 By \Cref{lem:multi-vertex-split}, $\kap_G(u,v) = q + (s-2) = m-1$.
 Two vertices in different blocks are separated by removing a cut vertex, so $\kap_G(u,v) \le 1$.
@@ -1094,7 +1099,7 @@ Inside a block every two vertices are adjacent, so no other pairs need checking.
 Every edge $uv$ has multiplicity $m-1-\pi(u,v)$, so the number of edges is $(m-1)|E(G_0)| - \sum_{uv} \pi(u,v)$.
 Only the $k$ copies of $K_s$ contain cycles or have $\pi>0$.
 Each copy has rank $\binom s2 - s + 1 = (s-1)(s-2)/2$, and its $\binom{s}{2}$ edges each have $\pi = s-2$.
-So the number of edges is
+The number of edges is therefore
 \[
     (m-1)\Bigl[n-1+k\tfrac{(s-1)(s-2)}{2}\Bigr] - k\tfrac{s(s-1)(s-2)}{2}
     \;=\; (m-1)(n-1) + k\,\mathrm{gain}(s,m).
@@ -1103,11 +1108,11 @@ So the number of edges is
 
 At $s = 3$, $\mathrm{gain}(3,m) = m-4$. This is zero at $m = 4$ and positive for $m \ge 5$.
 For every $m\ge5$ the thickened tree is therefore not optimal, also when $n\ge m+2$.
-Here is the smallest example. Take $m=5$ and $n=7$.
+Here is a small example. Take $m=5$ and $n=7$.
 Put a triangle on $\{u_1, u_2, u_3\}$ with multiplicity $3$, and attach a path of four more vertices to $u_1$ with multiplicity $4$.
 Two triangle vertices have three parallel edges and one route through the third vertex, so $\kap = 4$.
 Every other pair is separated by a cut vertex or joined only by its parallel edges.
-So $\kap^{\max}=4 = m-1$.
+This gives $\kap^{\max}=4 = m-1$.
 There are $3 \cdot 3 + 4 \cdot 4 = 25$ edges, one more than the thickened tree's $24$.
 With $k$ triangles the gain is $k$, so the gap grows linearly in $n$.
 
@@ -1135,7 +1140,7 @@ Let $G$ be feasible, with underlying simple graph $G_0$.
 
 \emph{Every multiplicity is at most $m-1$.} By \Cref{lem:multi-vertex-split}, $\kap_G(u,v) = \mu(u,v) + \pi(u,v) \ge \mu(u,v)$, so feasibility gives $\mu(u,v) \le m-1$ on every pair and the total is at most $(m-1)|E(G_0)|$.
 
-\emph{$G_0$ is feasible for the simple vertex problem.} Take $u \ne v$. If they are adjacent, then $\mu(u,v) \ge 1$, and the routes of $G_0$ between them are the edge $uv$ and the longer routes, so $\kap_{G_0}(u,v) = 1 + \pi(u,v) \le \mu(u,v) + \pi(u,v) = \kap_G(u,v) \le m-1$. If they are not adjacent, then $\kap_{G_0}(u,v) = \pi(u,v) = \kap_G(u,v) \le m-1$. So $|E(G_0)| \le k_m(n)$, which gives the first inequality.
+\emph{$G_0$ is feasible for the simple vertex problem.} Take $u \ne v$. If they are adjacent, then $\mu(u,v) \ge 1$, and the routes of $G_0$ between them are the edge $uv$ and the longer routes, so $\kap_{G_0}(u,v) = 1 + \pi(u,v) \le \mu(u,v) + \pi(u,v) = \kap_G(u,v) \le m-1$. If they are not adjacent, then $\kap_{G_0}(u,v) = \pi(u,v) = \kap_G(u,v) \le m-1$. Hence $|E(G_0)| \le k_m(n)$, which gives the first inequality.
 
 The second inequality is \Cref{rem:vertex-degeneracy}.
 \end{proof}
@@ -1210,7 +1215,7 @@ The best choice of $s$ and $t$ gives the rate $\bigl(3 - 2\sqrt{2} + o_m(1)\bigr
 Write $S$ and $T$ for the two sides, with $|S| = s$ and $|T| = t$. Every edge joins $S$ and $T$.
 
 \emph{Two vertices on the same side.}
-Take $u \ne u'$ in $S$. For each $v \in T$ the route $u, v, u'$ is a route of length two, and these $t$ routes are internally disjoint.
+Take $u \ne u'$ in $S$. For each $v \in T$ the route $u, v, u'$ is a route of length two, and these $t$ routes are internally vertex-disjoint.
 Every route from $u$ first goes to a vertex of $T$, so removing $T$ separates $u$ from $u'$. This gives $\kap(u,u') = t$.
 In the same way, $\kap(v,v') = s$ for $v \ne v'$ in $T$.
 
@@ -1219,7 +1224,7 @@ Take $u \in S$ and $v \in T$, and remove the edge $uv$.
 Every other route from $u$ first goes to a vertex of $T \setminus \{v\}$, and every route into $v$ comes from a vertex of $S \setminus \{u\}$.
 Both sets therefore separate $u$ from $v$, and $\pi(u,v) \le \min(s-1, t-1) = s-1$.
 Choose $s-1$ different vertices $u_i \in S \setminus \{u\}$, and $s-1$ different vertices $v_i \in T \setminus \{v\}$. This is possible because $s \le t$.
-The routes $u, v_i, u_i, v$ are internally disjoint. So $\pi(u,v) = s-1$.
+The routes $u, v_i, u_i, v$ are internally vertex-disjoint, which gives $\pi(u,v) = s-1$.
 
 \emph{Feasibility and count.}
 By \Cref{lem:multi-vertex-split}, an edge $uv$ has $\kap = (m-s) + (s-1) = m-1$.
@@ -1266,14 +1271,14 @@ The splitting of $\kap$ into parallel arcs and longer routes also works for dire
 \begin{lemma}[Splitting the directed local vertex-connectivity]\label{lem:multi-vertex-split-dir}
 Let $D$ be a directed multigraph with multiplicity function $\mu$ and underlying simple
 directed graph $D_0$. For an ordered pair $u \ne v$, write $\pi(u,v)$ for the largest number
-of pairwise internally disjoint directed $u$--$v$ paths of length at least two in
+of pairwise internally vertex-disjoint directed $u$--$v$ paths of length at least two in
 $D_0$. Then $\kap_D(u,v) = \mu(u,v) + \pi(u,v)$.
 \end{lemma}
 
 \begin{proof}
 The proof of \Cref{lem:multi-vertex-split} works word for word with directed paths.
 A route of length one is a copy of the arc $u\to v$ and has no inner vertex.
-Longer routes give internally disjoint directed paths in $D_0$, and conversely, using one copy of each arc.
+Longer routes give internally vertex-disjoint directed paths in $D_0$, and conversely, using one copy of each arc.
 Copies of the reverse arc $v\to u$ are never used.
 
 \end{proof}
@@ -1321,9 +1326,9 @@ Glue blocks of \Cref{const:dir-multi-vertex-blocks} with sizes $b_i$ at one comm
 \begin{proof}
 Take $u \ne v$ in one block of size $b$.
 A route that leaves the block must come back through the common vertex, which a path visits only once, so every $u$--$v$ route stays in the block.
-A longer route inside the block has an inner vertex among the other $b-2$ vertices of the block. Separated routes have different inner vertices, so there are at most $b-2$ longer routes.
+A longer route inside the block has an inner vertex among the other $b-2$ vertices of the block. Internally vertex-disjoint routes have different inner vertices, so there are at most $b-2$ longer routes.
 The $b-2$ routes $u \to w \to v$, one for each other vertex $w$ of the block, reach this number.
-So $\pi(u,v) = b-2$, and \Cref{lem:multi-vertex-split-dir} gives $\kap(u,v) = (m+1-b) + (b-2) = m-1$.
+This gives $\pi(u,v) = b-2$, and \Cref{lem:multi-vertex-split-dir} gives $\kap(u,v) = (m+1-b) + (b-2) = m-1$.
 Two vertices in different blocks are separated by the common vertex, so $\kap \le 1$.
 A block of size $b$ has $b(b-1)$ ordered pairs, each with $m+1-b$ arcs.
 \end{proof}
@@ -1358,7 +1363,7 @@ hyperedges. This construction is simple when $m-1\le\binom{n-\alpha-1}{r-2}$. Fo
 
 \begin{proof}
 \emph{Upper bound.} A hyperedge with tail $u$ and heads $h_1,\dots,h_{r-1}$ joins the $r-1$ ordered pairs $(u,h_i)$.
-If $m$ hyperedges joined the same pair $(u,v)$, they would give $m$ disjoint routes of length one.
+If $m$ hyperedges joined the same pair $(u,v)$, they would give $m$ hyperedge-disjoint routes of length one.
 Each of the $n(n-1)$ ordered pairs is therefore joined by at most $m-1$ hyperedges.
 Counting the pairs (hyperedge, joined pair) in two ways gives
 \[
@@ -1388,13 +1393,13 @@ If $d\le\binom{\beta-1}{k-1}$, we can use \Cref{lem:sparse-hypergraph} instead, 
 \begin{construction}[Bounded outgoing hyperedge count]\label{const:bounded-outdegree-hyper}
 Let $n\ge r\ge2$ and $m\ge2$, and let $d=\min\{m-1,\binom{n-1}{r-1}\}$.
 Give every vertex $d$ different outgoing forward hyperedges, with any $d$ different sets of $r-1$ heads.
-This gives a simple directed hypergraph with $nd$ hyperedges, feasible for both separations.
+This gives a simple directed hypergraph with $nd$ hyperedges, feasible for hyperedge-disjoint and for separated routes.
 If repeated hyperedges are allowed, give every vertex $m-1$ copies of one outgoing hyperedge, for $n(m-1)$ hyperedges in total.
 \end{construction}
 
 \begin{proof}
 Every directed route from $u$ starts with a hyperedge whose tail is $u$.
-So removing the outgoing hyperedges of $u$ separates $u$ from every other vertex.
+Removing the outgoing hyperedges of $u$ therefore separates $u$ from every other vertex.
 There are at most $m-1$ of them, so $\lec(u,v)\le m-1$ for every ordered pair, and so also $\kap(u,v)\le m-1$.
 Hyperedges with different tails are different, so the hypergraph is simple when the head sets at each vertex are different.
 \end{proof}
@@ -1407,7 +1412,7 @@ For $r\ge4$ the general model has splits with both parts of size at least two.
 We show that the backward model is the forward model reversed, and that the general model has the same leading term as the forward model.
 
 \begin{lemma}[Backward is the reverse of forward]\label{lem:dir-hyper-duality}
-Reversing every hyperedge, $(T, H) \mapsto (H, T)$, turns forward hypergraphs into backward ones and keeps the number of hyperedges. The reversed hypergraph $\HH^{R}$ satisfies $\lec_{\HH}(u, v) = \lec_{\HH^{R}}(v, u)$ and $\kap_{\HH}(u, v) = \kap_{\HH^{R}}(v, u)$. So the backward model has the same extremal values as the forward model.
+Reversing every hyperedge, $(T, H) \mapsto (H, T)$, turns forward hypergraphs into backward ones and keeps the number of hyperedges. The reversed hypergraph $\HH^{R}$ satisfies $\lec_{\HH}(u, v) = \lec_{\HH^{R}}(v, u)$ and $\kap_{\HH}(u, v) = \kap_{\HH^{R}}(v, u)$. The backward model therefore has the same extremal values as the forward model.
 \end{lemma}
 
 \begin{proof}
@@ -1415,7 +1420,7 @@ Reversal turns every directed $u$--$v$ Berge path into a $v$--$u$ path with the 
 \end{proof}
 
 \begin{proposition}[The general model obeys the forward bound]\label{prop:dir-hyper-general}
-Take the general model. If every ordered pair has at most $m-1$ hyperedge-disjoint, or at most $m-1$ internally vertex-disjoint, directed Berge routes, then
+Take the general model. If every ordered pair has at most $m-1$ hyperedge-disjoint, or at most $m-1$ separated, directed Berge routes, then
 \[
     |E(\HH)| \;\le\; \frac{(m-1)\,n(n-1)}{r-1}.
 \]
@@ -1429,7 +1434,7 @@ Different such hyperedges give separated routes, so there are at most $m-1$ of t
 A hyperedge $(T, H)$ joins exactly $|T|\,|H|$ ordered pairs.
 Summing over all pairs gives $\sum_{(T,H)} |T|\,|H| \le (m-1)\,n(n-1)$.
 Since $|T|+|H|=r$ with both at least one, $|T|\,|H| - (r-1) = (|T|-1)(|H|-1) \ge 0$.
-So $(r-1)|E| \le (m-1)n(n-1)$.
+This gives $(r-1)|E| \le (m-1)n(n-1)$.
 \end{proof}
 
 These bounds fix the order $n^2$, but not the leading constant.
@@ -1496,7 +1501,7 @@ and $R$ is $(r-1)(m-1)$-budgeted.
     \;=\; \frac{m-1}{r-1}\floorfrac{n^2}{4} + (m-1)^2(n-1).
 \]
 For the lower bound, \Cref{prop:dir-hyper-first} with $\alpha = \floor{n/2}$ gives $(m-1)n^2/(4(r-1)) - O_{m,r}(n)$ hyperedges.
-This construction is feasible for both separations.
+This construction is feasible for hyperedge-disjoint and for separated routes.
 For fixed $r\ge3$ and large $n$ it is simple.
 The upper and lower bounds therefore have the same $n^2$ term.
 \end{proof}
@@ -1518,7 +1523,7 @@ vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
     |E(\HH)| \;\le\; \frac{m-1}{r-1}\floorfrac{n^2}{4}
     \;+\; \frac{(2r+1)(m-1)^2}{r-1}\,(n-1) .
 \]
-Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_{\HH} \le m-1$. For fixed $r$ and $m$ the general model therefore has the same leading term $\bigl(1+o(1)\bigr)(m-1)n^2/\bigl(4(r-1)\bigr)$ as the forward model, under both separations.
+Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_{\HH} \le m-1$. For fixed $r$ and $m$ the general model therefore has the same leading term $\bigl(1+o(1)\bigr)(m-1)n^2/\bigl(4(r-1)\bigr)$ as the forward model, for hyperedge-disjoint and for separated routes.
 \end{theorem}
 
 \begin{proof}
@@ -1539,8 +1544,8 @@ For a midpoint $t$ it is the route $u \to t \to v$ through a hyperedge with $u$ 
 These two hyperedges are different, since $t$ cannot be both a tail and a head of one hyperedge.
 
 Choose such routes for different elements of $\mathcal{T}$, with all hyperedges different, one at a time until no route can be added.
-Let $S$ be the set of the $M$ elements of $\mathcal{T}$ that received a route, and let $U$ be the set of hyperedges these routes use. Then $|U| \le 2M$.
-The routes share no hyperedge, and their inner vertices are different, so $M \le \kap_{\HH}(u,v) \le m-1$.
+Let $S$ be the set of elements of $\mathcal{T}$ that received a route, and let $U$ be the set of hyperedges these routes use. Then $|U| \le 2|S|$.
+The routes share no hyperedge, and their inner vertices are different, so $|S| \le \kap_{\HH}(u,v) \le m-1$.
 
 Now take $t \in \mathcal{T} \setminus S$.
 No route for $t$ can be added, so every hyperedge with $u$ among its tails and $t$ among its heads lies in $U$, or $t$ is a midpoint and every hyperedge with $t$ among its tails and $v$ among its heads lies in $U$.
@@ -1548,10 +1553,10 @@ Such hyperedges exist, so $t$ is a tail or a head of some hyperedge in $U$. So
 \[
     \mathcal{T} \setminus S \;\subseteq\; \bigcup_{e \in U} \bigl(T_e \cup H_e\bigr) ,
     \qquad\text{and}\qquad
-    |\mathcal{T}| \;\le\; M + \sum_{e \in U} \bigl(|T_e| + |H_e|\bigr)
-    \;=\; M + r\,|U| .
+    |\mathcal{T}| \;\le\; |S| + \sum_{e \in U} \bigl(|T_e| + |H_e|\bigr)
+    \;=\; |S| + r\,|U| .
 \]
-With $|U| \le 2M$ this gives $|\mathcal{T}| \le (2r+1)M \le (2r+1)(m-1)$. So $R$ is $(2r+1)(m-1)$-budgeted.
+With $|U| \le 2|S|$ this gives $|\mathcal{T}| \le (2r+1)|S| \le (2r+1)(m-1)$, and $R$ is $(2r+1)(m-1)$-budgeted.
 
 \Cref{lem:two-step-budget} with $C = (2r+1)(m-1)$ gives $|A(R)| \le \floor{n^2/4} + (2r+1)(m-1)(n-1)$, and the bound on $|E(\HH)|$ above gives the theorem.
 The construction of \Cref{prop:dir-hyper-first} also works in the general model, so the $n^2$ terms agree.

@@ -12,7 +12,7 @@ Two helpers list the vertex pairs that must be checked, ordered in directed mode
 
 \programpart{pairs}{The vertex pairs and the edge count.}
 
-The heuristic searches keep the number of disjoint routes of every pair. The exception \texttt{OutOfTime} stops a search at its time limit.
+The heuristic searches keep the value of $\lec$, or of $\kap$ for separated routes, for every pair. The exception \texttt{OutOfTime} stops a search at its time limit.
 
 \programpart{connectivities}{The connectivity of every pair, and the time limit.}
 
