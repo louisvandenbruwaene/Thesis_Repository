@@ -198,7 +198,7 @@ Since the path ends at $v\in B$, it comes back to $B$, say first at the vertex $
 Suppose $c'\ne c$. Then $B$ together with $P$ is connected and has no cut vertex. Removing a vertex of $B$ leaves the rest of $B$ connected, with $P$ still attached at $c$ or at $c'$. Removing an inner vertex of $P$ leaves $B$ whole, with the two pieces of $P$ attached at $c$ and at $c'$. This subgraph is larger than $B$, which contradicts the maximality of $B$.
 This forces $c'=c$. The path would then visit $c$ twice, which a path never does.
 Every $u$--$v$ path therefore stays in $B$, and $\kap_G(u,v) = \kap_B(u,v) \le m-1$.
-Every block is therefore feasible. A block is a single edge or $2$-connected, so $|E(B)| \le h_m(|V(B)|)$.
+This makes every block feasible. A block is a single edge or $2$-connected, so $|E(B)| \le h_m(|V(B)|)$.
 Every edge lies in exactly one block, so $|E(G)| = \sum_B |E(B)| \le \sum_B h_m(|V(B)|)$.
 Adding the second fact over the components gives $\sum_B (|V(B)|-1) \le n-1$.
 The block sizes of $G$ are therefore one of the choices in the maximum, and $|E(G)|$ is at most that maximum.
@@ -261,7 +261,7 @@ A bouquet with blocks $B_i$ of sizes $b_i$ has rate
 a weighted average of the rates of its blocks.
 For any graph $G$, the proof of \Cref{thm:simple-vertex-blocks} gives $|E(G)| = \sum_B |E(B)|$ and $|V(G)|-1 \ge \sum_B (|V(B)|-1)$.
 The rate of $G$ is therefore at most this weighted average for its own blocks, and some block has a rate at least the rate of $G$.
-A counterexample must therefore contain a block with rate above $m/2$. A single edge has rate $1 \le m/2$, so this block is $2$-connected.
+In particular, a counterexample must contain a block with rate above $m/2$. A single edge has rate $1 \le m/2$, so this block is $2$-connected.
 
 The conjecture is false. S\o{}rensen and Thomassen \cite{SorensenThomassen74} showed that for each fixed $m$,
 \[
@@ -339,7 +339,7 @@ The direct arc $a \to b$ is one route.
 For each of the $m-2$ in-neighbours $b'$ of $b$ in $B$, the route $a \to b' \to b$ is another.
 These $m-1$ routes use different arcs.
 Now take any $a$--$b$ route. No arc enters $A$, so the route never comes back to $A$.
-Its last arc is therefore $a \to b$ or one of the $m-2$ arcs into $b$ from $B$.
+Its last arc must be $a \to b$ or one of the $m-2$ arcs into $b$ from $B$.
 Removing these $m-1$ arcs therefore separates $a$ from $b$.
 By Menger's theorem, $\lec(a,b) = m-1$.
 
@@ -428,8 +428,7 @@ Let $D$ be a simple directed graph and $m \ge 2$. If $\lec^{\max}_D \le m-1$, or
 \begin{proof}
 Fix an ordered pair $(u,v)$.
 Take the arc $u\to v$, if it exists, and the route $u\to x\to v$ for each of the $p_2(u,v)$ midpoints $x$.
-Two routes with different midpoints use different arcs, and none of them uses the arc $u\to v$.
-These routes are therefore arc-disjoint.
+Two routes with different midpoints use different arcs, and none of them uses the arc $u\to v$, which makes the routes arc-disjoint.
 Each two-step route has one inner vertex, its midpoint, and the arc has none.
 The routes are therefore also internally vertex-disjoint.
 This makes their number at most $\lec_D(u,v)$ and at most $\kap_D(u,v)$, and either condition gives at most $m-1$.
@@ -486,8 +485,8 @@ Let $N^+(v)$ be the set of the $\Delta$ vertices $x$ with $v \to x$, and let $\d
 
 First we count the routes of length two that start at $v$.
 We count the pairs $(x,w)$ with $v\to x$, $x\to w$ and $w\ne v$ in two ways.
-Fixing $w \ne v$ first gives the midpoints of the routes $v\to x\to w$. The conditions $x\ne v$ and $x\ne w$ hold automatically, since $v\to x$ and $x\to w$. This count is therefore $\sum_{w\ne v} p_2(v,w)$.
-Fixing $x \in N^+(v)$ first gives the $d^+(x)$ out-neighbours of $x$, minus one exactly when $x\to v$. This count is therefore $\sum_{x\in N^+(v)} d^+(x) - \delta(v)$.
+Fixing $w \ne v$ first gives the midpoints of the routes $v\to x\to w$. The conditions $x\ne v$ and $x\ne w$ hold automatically, since $v\to x$ and $x\to w$. This count is $\sum_{w\ne v} p_2(v,w)$.
+Fixing $x \in N^+(v)$ first gives the $d^+(x)$ out-neighbours of $x$, minus one exactly when $x\to v$, which gives $\sum_{x\in N^+(v)} d^+(x) - \delta(v)$ in total.
 Therefore
 \[
     \sum_{w\ne v} p_2(v,w) \;=\; \sum_{x\in N^+(v)} d^+(x) \;-\; \delta(v).
