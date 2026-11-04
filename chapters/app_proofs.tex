@@ -936,37 +936,25 @@ Since $\kap \le \lec$, it is also feasible for the vertex problem.
 \end{proof}
 
 That construction needs different $(r-1)$-sets, which explains the condition $m-1\le\binom{n-2}{r-2}$.
-A multihypergraph can repeat a hyperedge instead. This covers other cases.
+A multihypergraph can repeat a hyperedge instead. This covers every $n \ge r$.
 
 \begin{proposition}[The multihypergraph lower bound]\label{prop:hyper-vertex-lower-multi}
-For $r \ge 2$, $m \ge 2$ and $(r-1) \mid (n-1)$,
+For $r \ge 2$, $m \ge 2$ and $n \ge r$,
 \[
-    K_m^{(r)}(n) \;\ge\; \frac{(m-1)(n-1)}{r-1},
+    K_m^{(r)}(n) \;\ge\; \floorfrac{(m-1)(n-1)}{r-1},
 \]
-attained by the star hypertree of \Cref{fig:star-hypertree} with every hyperedge
-taken at multiplicity $m-1$. At $m = 3$ this meets the upper bound of
-\Cref{thm:hyper-vertex-m3}, so
+attained by the multihypergraph in the proof of \Cref{prop:hyper-edge}.
+At $m = 3$ this meets the upper bound of \Cref{thm:hyper-vertex-m3}, so
 \[
     K_3^{(r)}(n) \;=\; \floorfrac{2(n-1)}{r-1}
-    \qquad\text{whenever } (r-1) \mid (n-1).
+    \qquad\text{for every } n \ge r.
 \]
-
 \end{proposition}
 
 \begin{proof}
-Take the hub $h$ and split the other $n-1$ vertices into groups $G_1, \dots, G_q$ of size $r-1$, where $q = (n-1)/(r-1)$.
-Give each hyperedge $\{h\} \cup G_i$ multiplicity $m-1$. This gives $(m-1)q$ hyperedges.
-
-Now take two vertices $u \ne w$.
-Suppose first that both lie in one hyperedge $\{h\}\cup G_i$.
-At most one of them is $h$, so one of them lies in $G_i$.
-Every route from or to this vertex uses one of the $m-1$ copies of $\{h\}\cup G_i$, so removing these copies separates $u$ from $w$.
-This gives $\kap(u,w) \le \lec(u,w) \le m-1$.
-Otherwise $u \in G_i$ and $w \in G_j$ with $i \ne j$.
-The hyperedges at $u$ and the hyperedges at $w$ meet only in $h$, so every route from $u$ to $w$ has $h$ as an inner vertex, and $\kap(u,w) \le 1$.
-The hypergraph is therefore feasible.
-
-At $m = 3$ there are $2(n-1)/(r-1)$ hyperedges, which equals the upper bound of \Cref{thm:hyper-vertex-m3}.
+The multihypergraph in the proof of \Cref{prop:hyper-edge} has $\floor{(m-1)(n-1)/(r-1)}$ hyperedge copies and $\lec^{\max}\le m-1$.
+Since $\kap \le \lec$, it also has $\kap^{\max}\le m-1$.
+At $m = 3$ its size equals the upper bound of \Cref{thm:hyper-vertex-m3}.
 \end{proof}
 
 \section{Multigraphs with internally vertex-disjoint routes}\label{sec:multi-vertex}
@@ -1025,8 +1013,7 @@ $K_3(n) = 2(n-1)$ for every $n \ge 2$.
 
 \begin{proof}
 Apply \Cref{thm:hyper-vertex-m3,prop:hyper-vertex-lower-multi} at $r=2$.
-The divisibility condition is automatic, and the doubled star attains the
-upper bound $2(n-1)$.
+There the construction is the doubled star, which attains the upper bound $2(n-1)$.
 \end{proof}
 
 At $m = 3$ the vertex value therefore equals the edge value $L_3(n)$ of \Cref{thm:multigraph-edge}.

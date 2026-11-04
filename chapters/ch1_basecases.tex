@@ -899,7 +899,7 @@ and all three are equal.
 \subsection{Undirected hypergraphs}\label{sec:hyper-results}
 
 \begin{theorem}[Hypergraph edge bound]\label{prop:hyper-edge}
-For $n\ge r\ge2$ and $m\ge2$, an $r$-uniform multihypergraph on $n$ vertices with $\lec^{\max}\le m-1$ has size at most $\floorfrac{(m-1)(n-1)}{r-1}$. There are simple hypergraphs attaining the bound when $m - 1 \le \binom{n-2}{r-2}$, and multihypergraphs attaining it when $m - 1 \le \binom{n-2}{r-2}$ or $(r-1) \mid n - 1$.
+For $n\ge r\ge2$ and $m\ge2$, an $r$-uniform multihypergraph on $n$ vertices with $\lec^{\max}\le m-1$ has size at most $\floorfrac{(m-1)(n-1)}{r-1}$. There are multihypergraphs attaining the bound for every $n\ge r$, and simple hypergraphs attaining it when $m - 1 \le \binom{n-2}{r-2}$.
 \end{theorem}
 
 \begin{lemma}[Cut induction for multihypergraphs]\label{lem:hyper-cut-induction}
@@ -948,18 +948,23 @@ A \emph{hypertree} is a hypergraph whose incidence graph (\Cref{sec:incidence-co
 \emph{Upper bound.} Every hyperedge has $|e| = r$, so \Cref{lem:hyper-cut-induction} with $k = m-1$ gives $(r-1)|E(\HH)| \le (m-1)(n-1)$.
 Since $|E(\HH)|$ is an integer, we can round down.
 
-\emph{Lower bound.} Suppose $r-1$ divides $n-1$.
-Take a hub $h$ and split the other $n-1$ vertices into groups $G_1, G_2, \dots$ of size $r-1$.
-The hyperedges are the sets $\{h\} \cup G_i$. The incidence graph of this hypergraph is a tree, so we call it a \emph{star hypertree}.
-Give each hyperedge multiplicity $m-1$.
-Every vertex other than $h$ lies in exactly $m-1$ hyperedge copies.
+\emph{Lower bound.} Write $N = n-1$, $s = r-1$ and $q = \floorfrac{(m-1)N}{s}$.
+Take a hub $h$ and number the other vertices $1, \dots, N$.
+Write the list $1, 2, \dots, N$ out $m-1$ times in a row, keep its first $qs$ entries, and cut these into $q$ consecutive blocks of $s$ entries.
+A block holds $s \le N$ consecutive entries of the list, so its entries are different vertices.
+For every block $G$, take one copy of the hyperedge $\{h\} \cup G$.
+Every vertex other than $h$ appears at most $m-1$ times in the list, so it lies in at most $m-1$ hyperedge copies.
 Every pair contains such a vertex, and every route from or to it uses one of these copies.
-Removing these $m-1$ copies therefore separates the pair, and every pair has $\lec\le m-1$.
-There are $(m-1)(n-1)/(r-1)$ hyperedges.
+Removing these copies therefore separates the pair, and every pair has $\lec\le m-1$.
+There are $q = \floorfrac{(m-1)(n-1)}{r-1}$ hyperedge copies.
+For example, at $n = 6$, $r = 4$ and $m = 3$ the blocks are $\{1,2,3\}$, $\{4,5,1\}$ and $\{2,3,4\}$, and the three hyperedges reach the bound $\floor{2 \cdot 5/3} = 3$.
+
+When $r-1$ divides $n-1$, the blocks are the groups $G_1, G_2, \dots$ of a split of the other $n-1$ vertices into sets of size $r-1$, each repeated $m-1$ times.
+The incidence graph of the hypergraph with hyperedges $\{h\} \cup G_i$ is a tree, so we call it a \emph{star hypertree}.
+The construction is then the star hypertree with every hyperedge at multiplicity $m-1$.
 
 If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} below attains the bound with a simple hypergraph.
 If $r = 2$, this condition means $m = 2$. Then the bound is $n-1$, and a tree attains it.
-A simple hypergraph is also a multihypergraph, so in this range multihypergraphs attain the bound too.
 \end{proof}
 
 The star hypertree of \Cref{fig:hyper-star} attains the bound at $m=2$.
@@ -1276,9 +1281,7 @@ Since $\kap\le\lec$, every hypergraph with $\lec^{\max}\le2$ also has $\kap^{\ma
 For $2<r<n$, \Cref{prop:hyper-edge} gives a simple hypergraph with $\lec^{\max}\le2$ and $\floor{2(n-1)/(r-1)}$ hyperedges, so $\ell_3^{(r)}(n)$ also equals the bound.
 
 \emph{Lower bound, multihypergraphs.}
-Every simple hypergraph is also a multihypergraph, so $K_3^{(r)}(n) \ge k_3^{(r)}(n)$.
-For $2 < r < n$ this gives the lower bound.
-In the remaining cases, $r = 2$ or $r = n$, the number $r-1$ divides $n-1$, and \Cref{prop:hyper-vertex-lower-multi} gives it.
+For every $n \ge r$, \Cref{prop:hyper-vertex-lower-multi} gives it.
 \end{proof}
 
 \begin{remark}[Where the method stops]
@@ -1442,7 +1445,7 @@ Model & Edge-disjoint or arc-disjoint routes & Internally vertex-disjoint or sep
 Simple graph & $\floor{m(n-1)/2}$ for $n\ge m$ & Exact for $m\le5$. Open for $m\ge6$ \\
 Multigraph & $(m-1)(n-1)$ & $n-1$ at $m=2$, $2(n-1)$ at $m=3$. Open for $m\ge4$ \\
 Simple hypergraph & At most $\floor{(m-1)(n-1)/(r-1)}$, equal when $m-1\le\binom{n-2}{r-2}$ & $\floor{(n-1)/(r-1)}$ at $m=2$, $\floor{2(n-1)/(r-1)}$ at $m=3$ for $2<r<n$. Open for $m\ge4$ \\
-Multihypergraph & At most $\floor{(m-1)(n-1)/(r-1)}$, equal when $m-1\le\binom{n-2}{r-2}$ or $(r-1)\mid(n-1)$ & $\floor{(n-1)/(r-1)}$ at $m=2$, $\floor{2(n-1)/(r-1)}$ at $m=3$. Open for $m\ge4$ \\
+Multihypergraph & $\floor{(m-1)(n-1)/(r-1)}$ for $n\ge r$ & $\floor{(n-1)/(r-1)}$ at $m=2$, $\floor{2(n-1)/(r-1)}$ at $m=3$. Open for $m\ge4$ \\
 Simple directed graph & $M(n)$ at $m=2$. $n^2/4+\Theta_m(n)$ for $m\ge3$ & Same \\
 Directed multigraph & $(m-1)M(n)$ & $M(n)$ at $m=2$. $(m-1)n^2/4+O_m(n)$ \\
 Directed simple hypergraph & $(1+o(1))(m-1)n^2/(4(r-1))$ & Same \\
