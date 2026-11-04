@@ -783,12 +783,12 @@ Removing these hyperedges therefore separates $w$ from every other vertex.
 Every pair contains a vertex other than $h$, so $\lec^{\max}_\HH \le m-1$.
 \end{proof}
 
-\begin{remark}[The condition is needed]\label{rem:simple-hyper-necessary}
+\begin{remark}[Simple versus multi]\label{rem:simple-hyper-necessary}
 Without the condition $m-1\le\binom{n-2}{r-2}$, simple hypergraphs may not reach the bound.
 The smallest example is $n = r = m = 3$.
 There is only one $3$-set, so a simple hypergraph has at most one hyperedge, while the bound is $\floor{2 \cdot 2 / 2} = 2$.
 Two copies of the one hyperedge do reach the bound.
-\Cref{thm:hyper-vertex-m3} needs the same condition with $m - 1 = 2$, which is the range $2 < r < n$.
+At $m - 1 = 2$ the condition reads $2 < r < n$, the range of the simple formula in \Cref{thm:hyper-vertex-m3}.
 \end{remark}
 
 \begin{construction}[Twelve hyperedge copies on six vertices]\label{const:multihyper-six}
