@@ -57,7 +57,7 @@ Area & Main results \\
 \midrule
 Undirected graphs and multigraphs & A different proof of Mader's bound, with the Gomory--Hu tree, an explicit construction of graphs that attain it for every $n\ge m$ (the value itself is due to Mader), and the exact multigraph edge value. \\
 Multigraphs, vertex & The exact value at $m=2$ and $m=3$. \\
-Hypergraphs, edge & An upper bound for every $r$-uniform hypergraph, attained on stated ranges. \\
+Hypergraphs, edge & The exact multihypergraph value for every $n\ge r$, and a range where simple hypergraphs attain it. \\
 Hypergraphs, vertex & The exact value at $m=2$ and $m=3$, for simple hypergraphs at $m=3$ when $2<r<n$. \\
 Simple directed graphs, $m=2$ & The exact value, for arc-disjoint and for internally vertex-disjoint routes. \\
 Directed multigraphs & With arc-disjoint routes, the exact value for every $n$ and $m$, and the extremal multigraphs for $n\ge\max(8,2m)$. With internally vertex-disjoint routes, the exact value at $m=2$ and the leading term for fixed $m$. \\
@@ -82,7 +82,7 @@ The thesis also studies the problem in eight models. Edges may be directed or no
 The proved results include:
 \begin{itemize}
 \item Multigraphs: exactly $(m-1)(n-1)$ edges. With internally vertex-disjoint routes, exactly $n-1$ at $m=2$ and $2(n-1)$ at $m=3$.
-\item $r$-uniform hypergraphs: at most $\floor{(m-1)(n-1)/(r-1)}$ hyperedges, attained on stated ranges.
+\item $r$-uniform multihypergraphs: exactly $\floor{(m-1)(n-1)/(r-1)}$ hyperedges for every $n\ge r$. Simple hypergraphs attain the same value when $m-1\le\binom{n-2}{r-2}$.
 \item Hypergraphs with separated routes: exactly $\floor{(n-1)/(r-1)}$ at $m=2$, and exactly $\floor{2(n-1)/(r-1)}$ at $m=3$, for simple hypergraphs when $2<r<n$.
 \item Simple directed graphs at $m=2$: exactly $\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs, for arc-disjoint and for internally vertex-disjoint routes.
 \item Directed multigraphs with arc-disjoint routes: exactly $(m-1)\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs. With internally vertex-disjoint routes the value is $(m-1)n^2/4+O_m(n)$ for fixed $m$.

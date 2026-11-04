@@ -11,7 +11,8 @@ This thesis tries to maximise the size.
 Drawing vertices as dots and edges as lines between them is the standard way to visualise graphs.
 A multigraph is then any network built by joining different points with lines.
 Some definitions also allow loops, edges that join a vertex to itself.
-This thesis excludes them. A route cannot revisit a vertex, so it never uses a loop, and loops do not change the problem.
+This thesis excludes them. A route cannot revisit a vertex, so it never uses a loop, and loops leave every connectivity unchanged.
+They would still count towards the size, and if a vertex may carry any number of loops, the size has no maximum.
 
 \begin{figure}[ht]
 \centering
@@ -610,7 +611,7 @@ Mader's bound $\ell_m(n)\le\floor{m(n-1)/2}$ & \Cref{sec:mader-gomory-hu} & New 
 Graphs attaining Mader's bound for every $n\ge m$ & \Cref{thm:extremal-existence} & New construction & Mader \cite{Mader73}. Bollob\'{a}s--Erd\H{o}s \cite{BollobasErdos62} when $(m-1)\mid(n-1)$ \\
 Multigraph edge value $L_m(n)$ & \Cref{thm:multigraph-edge} & No earlier source found & Mader's bound for simple graphs \\
 Multigraph vertex value at $m=2,3$ & \Cref{thm:multi-vertex-m2,cor:multi-vertex-m3} & No earlier source found & The simple graph values of \Cref{thm:leonard} \\
-Hypergraph edge bound and the ranges where it is attained & \Cref{prop:hyper-edge} & No earlier source found & Mader's bound for simple graphs \\
+Exact multihypergraph edge value, and a range where simple hypergraphs attain it & \Cref{prop:hyper-edge} & No earlier source found & Mader's bound for simple graphs \\
 Hypergraph vertex value at $m=2,3$ & \Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3} & No earlier source found & The simple graph values of \Cref{thm:leonard} \\
 Simple directed graph values at $m=2$, for arc-disjoint and for internally vertex-disjoint routes & \Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact} & No earlier source found & None found \\
 Directed multigraph value with arc-disjoint routes, and its extremal multigraphs & \Cref{thm:dir-multi-full,thm:dir-multi-uniqueness} & No earlier source found & None found \\
@@ -1048,6 +1049,10 @@ is attained by a simple hypergraph, so
 \]
 For multihypergraphs the bound is attained for every $n \ge r$, so
 $K_3^{(r)}(n) = \floor{2(n-1)/(r-1)}$ for all $n \ge r \ge 2$.
+For all $n \ge 1$ and $r \ge 2$,
+\[
+    k_3^{(r)}(n) \;=\; \ell_3^{(r)}(n).
+\]
 \end{theorem}
 
 The upper bound at $m=3$ follows from the edge bound of \Cref{prop:hyper-edge}.
@@ -1104,6 +1109,11 @@ For $2<r<n$, \Cref{prop:hyper-edge} gives a simple hypergraph with $\lec^{\max}\
 
 \emph{Lower bound, multihypergraphs.}
 For every $n \ge r$, \Cref{prop:hyper-vertex-lower-multi} gives it.
+
+\emph{Equal values.}
+A simple hypergraph is a multihypergraph, so by \Cref{lem:theta} a simple hypergraph has $\kap^{\max} \le 2$ exactly when it has $\lec^{\max} \le 2$.
+The two problems allow the same simple hypergraphs, and $k_3^{(r)}(n) = \ell_3^{(r)}(n)$ for all $n \ge 1$ and $r \ge 2$.
+For $n < r$ both values are $0$, and for $n = r$ both are $1$.
 \end{proof}
 
 \begin{remark}[Where the method stops]
@@ -1289,6 +1299,6 @@ The main open problems are:
 \item Find $\ell_m^{\mathrm{dir}}(n)$ for $m\ge3$, or at least the coefficient of the linear term.
 \item Is $k_m^{\mathrm{dir}}(n)=\ell_m^{\mathrm{dir}}(n)$ for $m\ge3$?
 \item Find the simple vertex value $k_m(n)$ for $m\ge6$, and the multigraph vertex value $K_m(n)$ for $m\ge4$. Is $K_4(n)=L_4(n)=3(n-1)$ for every $n$?
-\item Find the hypergraph edge value outside the range where it is attained, and a vertex bound for hypergraphs at $m\ge4$.
+\item Find the simple hypergraph edge value outside the proved attainment range, and a vertex bound for hypergraphs at $m\ge4$.
 \item Find exact values for directed hypergraphs, and compare the different ways to orient a hyperedge (\Cref{sec:dir-hyper}) beyond the leading term.
 \end{enumerate}
