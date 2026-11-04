@@ -9,3 +9,4 @@
 *.synctex.gz
 program/.venv/
 __pycache__/
+.DS_Store
