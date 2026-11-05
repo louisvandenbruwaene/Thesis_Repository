@@ -449,7 +449,7 @@ Count the walks $u \to x \to v$ of length two.
 Choosing the middle vertex $x$, an in-neighbour $u$ and an out-neighbour $v$ gives $\sum_x d^-(x)\,d^+(x)$ walks.
 The walks with $u \ne v$ number $\sum_{u\ne v} p_2(u,v)$.
 A walk with $u = v$ is fixed by its first arc $u \to x$, so there are at most $|A(D)|$ of them.
-Summing the budget over all ordered pairs gives $|A(D)| + \sum_{u\ne v} p_2(u,v) \le C\,n(n-1)$. So
+Summing the budget over all ordered pairs gives $|A(D)| + \sum_{u\ne v} p_2(u,v) \le C\,n(n-1)$. This gives
 \[
     \sum_x d^+(x)\,d^-(x) \;\le\; \sum_{u\ne v} p_2(u,v) + |A(D)| \;\le\; C\,n(n-1). \qedhere
 \]
@@ -1516,7 +1516,7 @@ Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_{\HH} \le m-1$. For 
 Let $R$ be the shadow in the general model: $(u,v) \in A(R)$ when some hyperedge has $u$ among its tails and $v$ among its heads. Let $\mu_R(u,v)$ be the number of such hyperedges. Tails and heads are disjoint, so $R$ has no loops.
 
 As before, $\mu_R(u,v) \le m-1$.
-A hyperedge $(T,H)$ gives $|T|\,|H| \ge r-1$ arcs of $R$. So
+A hyperedge $(T,H)$ gives $|T|\,|H| \ge r-1$ arcs of $R$. This gives
 \[
     (r-1)\,|E(\HH)| \;\le\; \sum_{(T,H) \in E(\HH)} |T|\,|H|
     \;=\; \sum_{(u,v) \in A(R)} \mu_R(u,v) \;\le\; (m-1)\,|A(R)| .
@@ -1535,7 +1535,7 @@ The routes share no hyperedge, and their inner vertices are different, so $|S| \
 
 Now take $t \in \mathcal{T} \setminus S$.
 No route for $t$ can be added, so every hyperedge with $u$ among its tails and $t$ among its heads lies in $U$, or $t$ is a midpoint and every hyperedge with $t$ among its tails and $v$ among its heads lies in $U$.
-Such hyperedges exist, so $t$ is a tail or a head of some hyperedge in $U$. So
+Such hyperedges exist, so $t$ is a tail or a head of some hyperedge in $U$. This gives
 \[
     \mathcal{T} \setminus S \;\subseteq\; \bigcup_{e \in U} \bigl(T_e \cup H_e\bigr) ,
     \qquad\text{and}\qquad

@@ -1229,7 +1229,7 @@ For $k=0$ there are no arcs, since one arc is already one route.
 
 Let $k \ge 1$, and let $R$ be a reachability skeleton of $D$ with $|A(R)| \le M(n)$ (\Cref{lem:reach-skeleton}).
 By \Cref{lem:reach-delete}, $\lec^{\max}(D-R) \le k-1$, so by induction $|A(D-R)| \le (k-1)M(n)$.
-Every arc of $D$ is either in $R$ or in $D-R$. So
+Every arc of $D$ is either in $R$ or in $D-R$, which gives
 \[
     |A(D)| \;=\; |A(R)| \;+\; |A(D-R)| \;\le\; M(n) \;+\; (k-1)M(n) \;=\; k\,M(n).
 \]
