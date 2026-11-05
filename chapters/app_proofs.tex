@@ -449,7 +449,7 @@ Count the walks $u \to x \to v$ of length two.
 Choosing the middle vertex $x$, an in-neighbour $u$ and an out-neighbour $v$ gives $\sum_x d^-(x)\,d^+(x)$ walks.
 The walks with $u \ne v$ number $\sum_{u\ne v} p_2(u,v)$.
 A walk with $u = v$ is fixed by its first arc $u \to x$, so there are at most $|A(D)|$ of them.
-Summing the budget over all ordered pairs gives $|A(D)| + \sum_{u\ne v} p_2(u,v) \le C\,n(n-1)$. This gives
+Summed over all ordered pairs, the budget reads $|A(D)| + \sum_{u\ne v} p_2(u,v) \le C\,n(n-1)$. This gives
 \[
     \sum_x d^+(x)\,d^-(x) \;\le\; \sum_{u\ne v} p_2(u,v) + |A(D)| \;\le\; C\,n(n-1). \qedhere
 \]
