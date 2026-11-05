@@ -81,13 +81,13 @@ The thesis also studies the problem in eight models. Edges may be directed or no
 
 The proved results include:
 \begin{itemize}
-\item Multigraphs: exactly $(m-1)(n-1)$ edges. With internally vertex-disjoint routes, exactly $n-1$ at $m=2$ and $2(n-1)$ at $m=3$.
-\item $r$-uniform multihypergraphs: exactly $\floor{(m-1)(n-1)/(r-1)}$ hyperedges for every $n\ge r$. Simple hypergraphs attain the same value when $m-1\le\binom{n-2}{r-2}$.
+\item Multigraphs with edge-disjoint routes: exactly $(m-1)(n-1)$ edges. With internally vertex-disjoint routes, exactly $n-1$ at $m=2$ and $2(n-1)$ at $m=3$.
+\item $r$-uniform multihypergraphs with edge-disjoint routes: exactly $\floor{(m-1)(n-1)/(r-1)}$ hyperedges for every $n\ge r$. Simple hypergraphs attain the same value when $m-1\le\binom{n-2}{r-2}$.
 \item Hypergraphs with separated routes: exactly $\floor{(n-1)/(r-1)}$ at $m=2$, and exactly $\floor{2(n-1)/(r-1)}$ at $m=3$, for simple hypergraphs when $2<r<n$.
 \item Simple directed graphs at $m=2$: exactly $\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs, for arc-disjoint and for internally vertex-disjoint routes.
 \item Directed multigraphs with arc-disjoint routes: exactly $(m-1)\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs. With internally vertex-disjoint routes the value is $(m-1)n^2/4+O_m(n)$ for fixed $m$.
 \item Simple directed graphs: $n^2/4+\Theta_m(n)$ arcs for fixed $m\ge3$, for arc-disjoint and for internally vertex-disjoint routes.
-\item Directed hypergraphs: $(1+o(1))(m-1)n^2/(4(r-1))$ hyperedges for fixed $m$ and $r$, with $r\ge3$ for simple directed hypergraphs, in the three orientation models.
+\item Directed hypergraphs: $(1+o(1))(m-1)n^2/(4(r-1))$ hyperedges for fixed $m$ and $r$, with $r\ge3$ for simple directed hypergraphs, in the three orientation models, for edge-disjoint and for separated routes.
 \end{itemize}
 
 Chapter~2 explains how a program measures connectivity with maximum flow and searches for dense examples.
