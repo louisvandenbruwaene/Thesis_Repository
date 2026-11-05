@@ -1,18 +1,18 @@
 % !TEX root = ../main.tex
-This chapter defines the problem and its variants, and states the results that are proved.
+This chapter introduces several types of graphs, including \emph{simple graphs}, \emph{multigraphs}, \emph{hypergraphs}, and their directed counterparts. Once the necessary background has been established, the main problem is stated and a new proof is given. Afterwards, the question is restated for the other types of graphs and another way to separate their paths. In total there will be sixteen variants of the original problem. The proven results are stated in this chapter and are accompanied by their proof, except for the more tedious ones, which are collected in \Cref{app:proofs}.
 
 \section{Graphs and routes}
 
-A \emph{multigraph} $G$ consists of a finite set $V(G)$ of \emph{vertices} and a multiset $E(G)$ of \emph{edges}. Each edge joins two different vertices, and edges can have identical copies.
+A \emph{multigraph} $G$ consists of a finite set $V(G)$ of \emph{vertices} and a multiset $E(G)$ of \emph{edges}.
+Each edge joins two different vertices, and edges can have identical copies.
 The number of such identical edges between $u$ and $v$ is the multiplicity $\mu(u,v)$.
 If $\mu(u,v)\le1$ for every pair, then $G$ is a \emph{simple graph}.
 The \emph{size} of $G$ is its number of edges, counted with multiplicity: $|E(G)|=\sum_{\{u,v\}}\mu(u,v)$.
-This thesis tries to maximise the size.
+This thesis tries to maximise the size given connectivity constraints, which are introduced later.
 Drawing vertices as dots and edges as lines between them is the standard way to visualise graphs.
 A multigraph is then any network built by joining different points with lines.
 Some definitions also allow loops, edges that join a vertex to itself.
-This thesis excludes them. A route cannot revisit a vertex, so it never uses a loop, and loops leave every connectivity unchanged.
-They would still count towards the size, and if a vertex may carry any number of loops, the size has no maximum.
+This thesis excludes them, because routes cannot repeat vertices and loops therefore do not change the intrinsic problem.
 
 \begin{figure}[ht]
 \centering
@@ -32,15 +32,15 @@ They would still count towards the size, and if a vertex may carry any number of
     \node[mv] at (\ang:1.4) {$\i$};
   }
 \end{tikzpicture}
-\caption{The simple graph $K_5-\{04,13\}$, the complete graph $K_5$ on five vertices with the edges $04$ and $13$ removed, has eight edges. In general $K_n$ is the complete graph on $n$ vertices.}
+\caption{The simple graph $K_5-\{04,13\}$, the complete graph $K_5$ on five vertices with the edges $04$ and $13$ removed. In general $K_n$ is the simple graph on $n$ vertices that includes every possible edge.}
 \label{fig:k5-example}
 \end{figure}
 
 We write $n\coloneq|V(G)|$. The \emph{degree} of a vertex is the number of edges at it.
-From now on, graphs are simple unless we say otherwise.
+From now on, graphs are simple unless said otherwise.
 A \emph{path} from $u$ to $v$ is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ of distinct vertices $v_i$ and edges $e_i$, where $v_0=u$, $v_q=v$ and $e_i$ joins $v_{i-1}$ and $v_i$. Its \emph{length} is its number of edges $q$.
-In a multigraph, two parallel edges give two different paths of length one.
-In a simple graph we can write a path as a list of vertices.
+In a multigraph, two parallel edges (distinct edges with identical vertices) give two different paths of length one.
+In a simple graph we can write a path as a list of vertices, because two vertices uniquely specify an edge between them when there are no parallel edges.
 A \emph{walk} is a sequence of the same form in which vertices and edges may repeat.
 A \emph{cycle} is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ with $q\ge2$, distinct edges $e_i$ and distinct vertices $v_0,\ldots,v_{q-1}$, where $v_q=v_0$ and $e_i$ joins $v_{i-1}$ and $v_i$. In a simple graph a cycle has at least three edges, and in a multigraph two parallel edges form a cycle.
 A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{forest} is a graph without cycles. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$. A \emph{component} of a graph is a maximal connected subgraph. A \emph{spanning tree} of $G$ is a subgraph of $G$ that is a tree on all vertices of $G$.
@@ -595,7 +595,7 @@ Directed $r$-uniform multihypergraph & $L_m^{\mathrm{dir}\,(r)}(n)$ & $K_m^{\mat
 \end{table}
 
 Menger's theorem, the Gomory--Hu tree, Mader's bound and the exact value $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ are classical.
-The results of B\'{a}rtfai, Bollob\'{a}s, Leonard, S{\o}rensen and Thomassen are classical as well.
+The results of B\'{a}rtfai, Bollob\'{a}s and Leonard (\Cref{thm:leonard}) and of S{\o}rensen and Thomassen (\Cref{thm:sorensen-thomassen}) are classical as well.
 \Cref{tab:contributions} lists the results of this thesis.
 
 \begin{table}[!t]
@@ -672,7 +672,7 @@ S{\o}rensen and Thomassen count the least number of edges that forces $m$ intern
     \label{fig:divergence}
 \end{figure}
 
-\subsection{Directed graphs at the first threshold}
+\subsection{Directed graphs at \texorpdfstring{$m=2$}{m=2}}
 
 \begin{theorem}[Directed arc value at $m = 2$]\label{thm:dir-arc-m2-exact}
 For simple directed graphs,
@@ -1054,7 +1054,7 @@ For all $n \ge 1$ and $r \ge 2$,
 \end{theorem}
 
 The upper bound at $m=3$ follows from the edge bound of \Cref{prop:hyper-edge}.
-At threshold two, the edge problem and the vertex problem allow exactly the same multihypergraphs.
+At $m=3$, the edge problem and the vertex problem allow exactly the same multihypergraphs.
 The proof uses a \emph{theta}: three paths between two vertices $a \ne b$ that pairwise share no edge and no inner vertex.
 
 \begin{lemma}[Three routes give a theta]\label{lem:theta}
@@ -1116,19 +1116,11 @@ For $n < r$ both values are $0$, and for $n = r$ both are $1$.
 
 \begin{remark}[Where the method stops]
 \label{rem:hyper-vertex-m3-scope}
-\Cref{lem:theta} is false at threshold three.
+\Cref{lem:theta} is false at $m=4$.
 In a triangle with every edge doubled, two vertices are joined by their two parallel edges and by one more separated route through the third vertex, so $\kap^{\max} = 3$.
 Using both copies of the other two edges gives four edge-disjoint routes, so $\lec^{\max} = 4$.
 For $m = 4$ a different bound would be needed.
 \end{remark}
-
-The multigraph results of \Cref{sec:multi-vertex} and the block decomposition in \Cref{app:proofs} use three more words.
-For a connected multigraph $G$, the \emph{cycle rank} is $\mathrm{rank}(G) = |E(G)| - |V(G)| + 1$.
-A tree has cycle rank $0$, and each extra edge raises it by one.
-A \emph{cut vertex} is a vertex whose removal disconnects the graph, that is, leaves more components than before.
-A graph on more than $k$ vertices is \emph{$k$-connected} if removing any $k-1$ vertices leaves it connected.
-
-
 
 For $r=2$ these results are about multigraphs.
 They give $K_2(n)=n-1$, attained by trees, and $K_3(n)=2(n-1)$, attained by a tree with every edge doubled (\Cref{cor:multi-vertex-m3}).
@@ -1136,7 +1128,13 @@ For $m=5$ the vertex and edge values differ. On four vertices, join two of them 
 For $m=4$ this is open.
 \Cref{sec:multi-vertex} discusses larger $m$.
 
-\subsection{Directed bounds beyond the first threshold}
+The multigraph results of \Cref{sec:multi-vertex} and the block decomposition in \Cref{app:proofs} use three more words.
+For a connected multigraph $G$, the \emph{cycle rank} is $\mathrm{rank}(G) = |E(G)| - |V(G)| + 1$.
+A tree has cycle rank $0$, and each extra edge raises it by one.
+A \emph{cut vertex} is a vertex whose removal disconnects the graph, that is, leaves more components than before.
+A graph on more than $k$ vertices is \emph{$k$-connected} if removing any $k-1$ vertices leaves it connected.
+
+\subsection{Directed bounds for \texorpdfstring{$m\ge3$}{m>=3}}
 
 \begin{theorem}[The quadratic bound with a linear error]\label{thm:dir-arc-linear-error}
 For all $m \ge 2$ and $n \ge 2$, every simple directed graph $D$ on $n$ vertices with $\lec^{\max}_D \le m-1$, or with $\kap^{\max}_D \le m-1$, satisfies
