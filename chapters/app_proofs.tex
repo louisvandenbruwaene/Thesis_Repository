@@ -182,7 +182,7 @@ Consequently $k_m(n) \ge k_m(n_1) + k_m(n_2)$ whenever $n = n_1 + n_2 - 1$, and
 \[
     c_m \;:=\; \lim_{n \to \infty} \frac{k_m(n)}{n-1} \;=\; \sup_{b \ge 2} \frac{h_m(b)}{b-1}
 \]
-exists, the limit being approached from below. The supremum is finite: \Cref{rem:vertex-degeneracy} gives $c_m \le m-1$.
+exists, and $k_m(n)\le c_m(n-1)$ for every $n\ge2$. The supremum is finite: \Cref{rem:vertex-degeneracy} gives $c_m \le m-1$.
 \end{theorem}
 
 \begin{proof}
@@ -226,7 +226,7 @@ Take $x_t = k_m(t+1)$. Gluing with $n_1 = i+1$ and $n_2 = j+1$ gives $x_{i+j} \g
 Since also $x_t/t = a_{t+1}$, the sequence $a_n$ tends to $\sup_n a_n$.
 This supremum is at most $s$, since every $a_n \le s$.
 It is also at least $s$: one block of size $b$ is a feasible graph on $b$ vertices, so $a_b \ge h_m(b)/(b-1)$ for every $b$.
-Hence $a_n$ tends to $s$. Since $a_n \le s$ for every $n$, it approaches $s$ from below.
+Hence $a_n$ tends to $s$, so $c_m = s$, and the bound $a_n\le s$ above is the inequality $k_m(n)\le c_m(n-1)$.
 \end{proof}
 
 We note three consequences.
@@ -313,7 +313,7 @@ At $m = 2$ there are no ring arcs, and we get the \emph{bidirected star}.
 Split the vertices into parts $A$ and $B$ of sizes $\floor{n/2}$ and $\ceil{n/2}$, and include every arc from $A$ to $B$ and none the other way. The total is $\floor{n^2/4}$ arcs.
 \end{construction}
 
-No arc leaves $B$ and no arc enters $A$.
+In this directed graph every arc goes from $A$ to $B$.
 Every route therefore has length one, and $\lec^{\max} = 1$.
 
 \begin{construction}[Augmented bipartite directed graph]\label{const:augmented-bipartite}
@@ -344,8 +344,8 @@ Removing these $m-1$ arcs therefore separates $a$ from $b$.
 By Menger's theorem, $\lec(a,b) = m-1$.
 
 \emph{Other pairs.}
-For $b_i, b_j \in B$, a route from $b_i$ stays in $B$, since no arc leaves $B$, which makes its last arc one of the $m-2$ arcs into $b_j$ from $B$, and $\lec(b_i,b_j)\le m-2$.
-No arc leaves $B$, so there is no route from $B$ to $A$.
+For $b_i, b_j \in B$, a route from $b_i$ stays in $B$, since no arc goes from $B$ to $A$, which makes its last arc one of the $m-2$ arcs into $b_j$ from $B$, and $\lec(b_i,b_j)\le m-2$.
+Every arc with tail in $B$ has its head in $B$, so there is no route from $B$ to $A$.
 No arc goes from $A$ to $A$, and a route from $A$ never comes back to $A$, so there is no route between two vertices of $A$.
 This gives $\lec^{\max} = m - 1$.
 \end{proof}

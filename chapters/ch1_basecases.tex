@@ -1,7 +1,7 @@
 % !TEX root = ../main.tex
-This chapter introduces several types of graphs, including \emph{simple graphs}, \emph{multigraphs}, \emph{hypergraphs}, and their directed counterparts. Once the necessary background has been established, the main problem is stated and a new proof is given. Afterwards, the question is restated for the other types of graphs and another way to separate their paths. In total there will be sixteen variants of the original problem. The proven results are stated in this chapter and are accompanied by their proof, except for the more tedious ones, which are collected in \Cref{app:proofs}.
+This chapter introduces several types of graphs, including \emph{simple graphs}, \emph{multigraphs}, \emph{hypergraphs}, and their directed counterparts. Once the necessary background has been established, the main problem is stated and a new proof is given. Afterwards, the question is restated for the other types of graphs and another way to separate their paths. In total there will be sixteen variants of the original problem. The proven results are stated in this chapter and are accompanied by their proof, except for the longer ones, which are collected in \Cref{app:proofs} together with supplementary results.
 
-\section{Graphs and routes}
+\section{Graphs and routes}\label{sec:graphs}
 
 A \emph{multigraph} $G$ consists of a finite set $V(G)$ of \emph{vertices} and a multiset $E(G)$ of \emph{edges}.
 Each edge joins two different vertices, and edges can have identical copies.
@@ -12,7 +12,7 @@ This thesis tries to maximise the size given connectivity constraints, which are
 Drawing vertices as dots and edges as lines between them is the standard way to visualise graphs.
 A multigraph is then any network built by joining different points with lines.
 Some definitions also allow loops, edges that join a vertex to itself.
-This thesis excludes them, because routes cannot repeat vertices and loops therefore do not change the intrinsic problem.
+This thesis excludes them. Routes cannot repeat vertices, so a loop never lies on a route. A loop would therefore add to the size without changing any connectivity, and in a multigraph adding loops would make the maximum size unbounded.
 
 \begin{figure}[ht]
 \centering
@@ -1132,7 +1132,7 @@ The multigraph results of \Cref{sec:multi-vertex} and the block decomposition in
 For a connected multigraph $G$, the \emph{cycle rank} is $\mathrm{rank}(G) = |E(G)| - |V(G)| + 1$.
 A tree has cycle rank $0$, and each extra edge raises it by one.
 A \emph{cut vertex} is a vertex whose removal disconnects the graph, that is, leaves more components than before.
-A graph on more than $k$ vertices is \emph{$k$-connected} if removing any $k-1$ vertices leaves it connected.
+A graph on more than $k$ vertices is \emph{$k$-connected} if removing fewer than $k$ vertices always leaves it connected.
 
 \subsection{Directed bounds for \texorpdfstring{$m\ge3$}{m>=3}}
 
@@ -1247,7 +1247,7 @@ $\HH$ on $n \ge 2$ vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
 
 \end{theorem}
 
-Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_\HH\le m-1$. The construction of \Cref{prop:dir-hyper-first} has $(1+o(1))(m-1)n^2/(4(r-1))$ hyperedges, so the leading term is right.
+Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_\HH\le m-1$. The construction of \Cref{prop:dir-hyper-first} has $(1+o(1))(m-1)n^2/(4(r-1))$ hyperedges, so the leading term is right for multihypergraphs. For $r\ge3$ and large $n$ this construction is simple, so the leading term is also right for simple directed hypergraphs.
 
 \Cref{app:proofs} gives the proof.
 It uses the \emph{shadow} directed graph, which has an arc $u\to v$ when some hyperedge has tail $u$ and head $v$.

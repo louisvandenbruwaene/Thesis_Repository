@@ -101,7 +101,7 @@ This section explains how the program computes them.
 To compute $\lec(u,v)$ we use a maximum flow.
 Think of the graph as a network of pipes in which every link has a \emph{capacity}, the most that can pass through it.
 A \emph{flow} from $u$ to $v$ sends an amount along every link, never more than its capacity. At every node other than $u$ and $v$, the amount coming in equals the amount going out.
-The value of the flow is the amount that leaves $u$, which is also the amount that arrives at $v$. A \emph{maximum flow} is a flow of largest value.
+The value of the flow is the net amount leaving $u$: what leaves $u$ minus what comes back into $u$. It equals the net amount arriving at $v$. A \emph{maximum flow} is a flow of largest value.
 We give each pair of vertices a link with capacity $\mu(u,v)$.
 In a directed graph the link has a direction. In an undirected graph it can be used both ways.
 A \emph{cut} is a set of links whose removal leaves no way from $u$ to $v$. Its capacity is the sum of the capacities of its links.
