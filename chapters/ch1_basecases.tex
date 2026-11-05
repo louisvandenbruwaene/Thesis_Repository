@@ -91,25 +91,30 @@ Let $u$ and $v$ be distinct vertices of a multigraph $G$. The largest number of 
 \label{fig:menger}
 \end{figure}
 
-\section{Erd\H{o}s Problem 915}
+\section{Erd\H{o}s Problem 915}\label{sec:erdos915}
+
+Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62} asked the following question. It is Problem 915 in the Erd\H{o}s Problems database \cite{ErdosProblems}.
+
+\begin{ques}[Erd\H{o}s Problem 915 \cite{ErdosProblems}]
+Let $t\ge1$ and $m\ge2$. Must every graph with $1+t(m-1)$ vertices and $1+t\binom m2$ edges contain two vertices joined by $m$ disjoint paths?
+\end{ques}
+
+The database notes that the original statement leaves open whether ``disjoint'' means that the paths share no edge, or that they share no vertex except their two ends.
+This thesis takes edge-disjoint paths as the main question and treats internally vertex-disjoint paths as a variant (\Cref{sec:variants}).
+
+The question asks how many edges force two vertices joined by $m$ disjoint paths.
+This thesis studies the associated extremal function: the largest number of edges of a graph on $n$ vertices in which no two vertices are joined by $m$ disjoint paths.
+For $n\ge m+1$ the complete graph $K_n$ contains such a pair, and the least number of edges that forces one is one more than this largest number.
+For $n\le m$ no graph on $n$ vertices contains such a pair, and no number of edges forces one.
 
 Fix an integer $m\ge2$.
 The condition $\lec_G^{\max}\le m-1$ means that no two vertices are joined by $m$ edge-disjoint paths.
 By Menger's theorem, it also means that any two vertices can be separated by removing at most $m-1$ edges.
-We ask how many edges a graph can have under this condition.
-
-\begin{ques}[Erd\H{o}s Problem 915 \cite{ErdosProblems}]
-How many edges can a graph on $n$ vertices have if no two of its vertices are joined by $m$ disjoint paths?
-\end{ques}
-
-The database \cite{ErdosProblems} notes that the original statement leaves open whether ``disjoint'' means that the paths share no edge, or that they share no vertex except their two ends.
-This thesis takes edge-disjoint paths as the main question and treats internally vertex-disjoint paths as a variant (\Cref{sec:variants}).
-
 We write
 \[
     \ell_m(n) = \max\{\, |E(G)| : |V(G)| = n,\ \lec_G^{\max} \le m - 1 \,\}
 \]
-for the answer.
+for this largest number in the edge-disjoint case.
 A graph with $\lec_G^{\max}\le m-1$ is called \emph{feasible}.
 Mader proved the following upper bound. Here $\floor{x}$ is $x$ rounded down and $\ceil{x}$ is $x$ rounded up.
 
