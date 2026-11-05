@@ -695,7 +695,9 @@ This thesis uses Berge paths throughout.
 We first need Menger's theorem for Berge paths. It also shows that the gate network of \Cref{ch:certify} computes the right value.
 
 \begin{theorem}[Menger for multihypergraphs]\label{thm:menger-hyper}
-Let $u,v$ be distinct vertices of a multihypergraph $\HH$, and count parallel copies of a hyperedge separately. The largest number of $u$--$v$ Berge paths that share no hyperedge copy equals the smallest number of hyperedge copies whose removal separates $u$ from $v$.
+Let $u,v$ be distinct vertices of a multihypergraph $\HH$, and count parallel copies of a hyperedge separately.
+(a) The largest number of $u$--$v$ Berge paths that share no hyperedge copy equals the smallest number of hyperedge copies whose removal separates $u$ from $v$.
+(b) The largest number of pairwise separated $u$--$v$ Berge paths equals the largest number of arc-disjoint directed paths from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ in the split gate network $N'$ defined in the proof.
 \end{theorem}
 
 \begin{proof}
@@ -723,6 +725,11 @@ Removing a set of gate arcs therefore separates $u$ from $v$ in $N$ exactly when
 The smallest separating sets then have the same size in $N$ and in $\HH$.
 
 Menger's theorem in $N$ says that the two sizes are equal in $N$, and therefore also in $\HH$.
+
+\emph{Separated paths.} Build $N'$ from $N$ by splitting every vertex $x$ into two nodes $x^{\mathrm{in}}$ and $x^{\mathrm{out}}$, joined by one arc $x^{\mathrm{in}}\to x^{\mathrm{out}}$. The arcs $x\to e^-$ now leave $x^{\mathrm{out}}$, and the arcs $e^+\to x$ now enter $x^{\mathrm{in}}$. This is the network of \Cref{ch:machine}, with each capacity written as parallel arcs.
+A directed path in $N'$ from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ never visits $u^{\mathrm{in}}$ or $v^{\mathrm{out}}$: the only arc leaving $u^{\mathrm{in}}$ goes to $u^{\mathrm{out}}$, where the path starts, and the only arc entering $v^{\mathrm{out}}$ comes from $v^{\mathrm{in}}$, where it ends. As in (a), the path gives a Berge path from $u$ to $v$, whose inner vertices are the $x$ with $x^{\mathrm{in}}\to x^{\mathrm{out}}$ on the path.
+Arc-disjoint paths in $N'$ use distinct split arcs and distinct gate arcs, so their Berge paths share no inner vertex and no hyperedge copy. They are therefore separated.
+Conversely, take a family of separated Berge paths. Their inner vertices are distinct, so each split arc is used by at most one of them. Their hyperedge copies are distinct, so they get distinct gate arcs, as in (a). The family has at most $c$ paths, so distinct paths can use distinct copies of every other arc. Deleting closed portions of the walks gives arc-disjoint directed paths from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$, as in (a).
 \end{proof}
 
 The same proof works for directed hyperedges and directed Berge paths, with arcs $x \to e^-$ only for the tails $x$ of $e$, and arcs $e^+ \to x$ only for its heads.

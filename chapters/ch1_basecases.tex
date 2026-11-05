@@ -245,11 +245,12 @@ We change four assumptions. The first three give eight graph models.
 In each model we can ask for edge-disjoint or for separated routes, defined in \Cref{sec:incidence-convention}.
 
 The first assumption is the size of an edge.
-A \emph{hyperedge} is a set of $r\ge2$ vertices.
-In an \emph{$r$-uniform hypergraph} every hyperedge has exactly $r$ vertices.
+An edge joins two vertices. A \emph{hyperedge} is a set of $r\ge2$ vertices, so it may join more than two.
+A \emph{hypergraph} is defined as a multigraph in \Cref{sec:graphs}, with hyperedges in place of edges, and its size is again its number of hyperedges, counted with multiplicity.
+In an \emph{$r$-uniform hypergraph} every hyperedge has exactly $r$ vertices. For $r=2$ this is a multigraph.
+For example, the hyperedge $\{a,b,c\}$ is one edge that joins three vertices. It is not the same as the three edges $ab$, $bc$ and $ac$.
 A \emph{Berge path} is a sequence of distinct vertices and distinct hyperedges, alternating, in which each hyperedge contains the vertex before it and the vertex after it.
 For $r=2$ it is an ordinary path.
-The size of a hypergraph is its number of hyperedges, counted with multiplicity.
 
 The second assumption is repetition.
 A \emph{simple} graph or hypergraph has each edge at most once.
@@ -263,7 +264,9 @@ The allowed numbers of tails are a parameter of the directed hypergraph models.
 In the \emph{forward} model every hyperedge has one tail and $r-1$ heads, in the \emph{backward} model it has $r-1$ tails and one head, and the \emph{general} model allows every split.
 For $r=2$ the three coincide, and a hyperedge is an arc.
 Unless a statement names one of them, the directed hypergraph models are forward.
-In the figures, one colour is one hyperedge, not a path of ordinary edges.
+In the figures a hyperedge is drawn in one colour, as lines from one of its vertices to each of the others. In a directed hyperedge the lines start at the tail. These lines only show which vertices the hyperedge contains. A route may pass between any two vertices of an undirected hyperedge, also two that are not joined by a drawn line.
+A picture closer to the definition colours every vertex of a hyperedge in the colour of that hyperedge and treats these vertices as teleportation points: a route that reaches one of them can continue from another. In a directed hyperedge the tails are entry points and the heads are exit points. In an undirected hyperedge every vertex is both. The gate network of \Cref{ch:machine} is built on this picture.
+The figures do not use it, because a vertex that lies in many hyperedges would need many colours, and directions are hard to show this way.
 \Cref{fig:eight-models} shows the eight models.
 
 \begin{figure}[ht]
@@ -568,6 +571,31 @@ For example, an arc $u\to v$ becomes $u\to e\to v$.
 
 The inner nodes are vertices and edge copies, so separated routes share no inner vertex and no edge copy.
 Sharing no vertex is not enough for hypergraphs, because two Berge routes can use the same hyperedge without meeting in a vertex.
+For example, take the hyperedges $e_1=\{u,a,b\}$, $e_2=\{a,v,c\}$ and $e_3=\{b,v,c\}$. The routes $u,e_1,a,e_2,v$ and $u,e_1,b,e_3,v$ have no inner vertex in common, but both use $e_1$. They are therefore not separated, and not edge-disjoint either (\Cref{fig:incidence-example}).
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[stn/.style={metrostop, minimum size=6mm}]
+  \coordinate (u) at (0,0);
+  \coordinate (a) at (1.8, 0.9);
+  \coordinate (b) at (1.8,-0.9);
+  \coordinate (v) at (3.6,0);
+  \coordinate (c) at (5.2,0);
+  \begin{scope}[on background layer]
+    % e1 = {u,a,b}: one red line through u
+    \draw[metro, metroA] (a) -- (u) -- (b);
+    % e2 = {a,v,c} and e3 = {b,v,c} share the stretch v--c, side by side there
+    \draw[metro, metroB] (a) -- (3.6, 0.09) -- (5.2, 0.09);
+    \draw[metro, metroC] (b) -- (3.6,-0.09) -- (5.2,-0.09);
+  \end{scope}
+  \foreach \p in {u,a,b,v,c} {\node[stn] at (\p) {$\p$};}
+  \node[font=\small, text=metroA] at (0.55, 0.75) {$e_1$};
+  \node[font=\small, text=metroB] at (2.95, 0.85) {$e_2$};
+  \node[font=\small, text=metroC] at (2.95,-0.85) {$e_3$};
+\end{tikzpicture}
+\caption{The hyperedges $e_1=\{u,a,b\}$ (red), $e_2=\{a,v,c\}$ (blue) and $e_3=\{b,v,c\}$ (green). The routes $u,e_1,a,e_2,v$ and $u,e_1,b,e_3,v$ have no inner vertex in common, but both use $e_1$, so they are not separated.}
+\label{fig:incidence-example}
+\end{figure}
 Since separated routes also share no edge copy, $\kap\le\lec$ holds in every model.
 
 In a multigraph, $q$ parallel copies of $uv$ give $q$ internally vertex-disjoint routes.
@@ -598,6 +626,14 @@ Directed $r$-uniform multihypergraph & $L_m^{\mathrm{dir}\,(r)}(n)$ & $K_m^{\mat
 \bottomrule
 \end{tabular}
 \end{table}
+
+For undirected graphs the four functions satisfy
+\[
+    \ell_m(n)\;\le\; k_m(n)\;\le\; L_m(n)\;\le\; K_m(n).
+\]
+The outer inequalities come from relaxing a constraint. Separated routes are also edge-disjoint, so $\kap\le\lec$, and every graph with $\lec^{\max}\le m-1$ also has $\kap^{\max}\le m-1$. This gives $\ell_m(n)\le k_m(n)$ and $L_m(n)\le K_m(n)$. Every simple graph is also a multigraph, which gives $\ell_m(n)\le L_m(n)$ and $k_m(n)\le K_m(n)$ as well.
+The middle inequality compares the vertex problem for simple graphs with the edge problem for multigraphs, and no relaxation turns one into the other. It follows from the count in \Cref{rem:vertex-degeneracy}, where every term is at most $m-1$, so $k_m(n)\le(m-1)(n-1)$, and from the exact value $L_m(n)=(m-1)(n-1)$ of \Cref{thm:multigraph-edge}.
+This argument is for undirected graphs, and the chain is stated only for them.
 
 Menger's theorem, the Gomory--Hu tree, Mader's bound and the exact value $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ are classical.
 The results of B\'{a}rtfai, Bollob\'{a}s and Leonard (\Cref{thm:leonard}) and of S{\o}rensen and Thomassen (\Cref{thm:sorensen-thomassen}) are classical as well.

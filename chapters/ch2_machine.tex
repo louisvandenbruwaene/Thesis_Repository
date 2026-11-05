@@ -133,7 +133,7 @@ The gates keep their capacity, so parallel copies still give different routes, a
 
 \programpart{network}{The flow network: split vertices and one gate per hyperedge.}
 
-The largest number of edge-disjoint routes, or of separated routes, from $u$ to $v$ is the maximum flow from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ (\Cref{lst:measure}).
+The largest number of edge-disjoint routes, or of separated routes, from $u$ to $v$ is the maximum flow from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ (\Cref{thm:menger-hyper}, \Cref{lst:measure}).
 A graph is feasible when this number is below $m$ for every pair, ordered in directed models.
 The library builds the flow in steps, and one step can raise its value by more than one. With the \texttt{stop\_at} argument it stops at the first step that brings the value to $m$ or more, since a larger value changes nothing: the pair already breaks the condition.
 
