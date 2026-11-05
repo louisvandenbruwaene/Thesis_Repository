@@ -570,7 +570,7 @@ In the directed case we use the directed incidence graph: each tail has an arc t
 For example, an arc $u\to v$ becomes $u\to e\to v$.
 
 The inner nodes are vertices and edge copies, so separated routes share no inner vertex and no edge copy.
-Sharing no vertex is not enough for hypergraphs, because two Berge routes can use the same hyperedge without meeting in a vertex.
+Sharing no vertex is not enough for hypergraphs, because two Berge routes can use the same hyperedge without sharing an inner vertex.
 For example, take the hyperedges $e_1=\{u,a,b\}$, $e_2=\{a,v,c\}$ and $e_3=\{b,v,c\}$. The routes $u,e_1,a,e_2,v$ and $u,e_1,b,e_3,v$ have no inner vertex in common, but both use $e_1$. They are therefore not separated, and not edge-disjoint either (\Cref{fig:incidence-example}).
 
 \begin{figure}[ht]
@@ -639,7 +639,7 @@ Menger's theorem, the Gomory--Hu tree, Mader's bound and the exact value $\ell_m
 The results of B\'{a}rtfai, Bollob\'{a}s and Leonard (\Cref{thm:leonard}) and of S{\o}rensen and Thomassen (\Cref{thm:sorensen-thomassen}) are classical as well.
 \Cref{tab:contributions} lists the results of this thesis.
 
-\begin{table}[!t]
+\begin{table}[!b]
 \centering\small
 \renewcommand{\arraystretch}{1.2}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}X@{}}

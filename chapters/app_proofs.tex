@@ -726,10 +726,16 @@ The smallest separating sets then have the same size in $N$ and in $\HH$.
 
 Menger's theorem in $N$ says that the two sizes are equal in $N$, and therefore also in $\HH$.
 
-\emph{Separated paths.} Build $N'$ from $N$ by splitting every vertex $x$ into two nodes $x^{\mathrm{in}}$ and $x^{\mathrm{out}}$, joined by one arc $x^{\mathrm{in}}\to x^{\mathrm{out}}$. The arcs $x\to e^-$ now leave $x^{\mathrm{out}}$, and the arcs $e^+\to x$ now enter $x^{\mathrm{in}}$. This is the network of \Cref{ch:machine}, with each capacity written as parallel arcs.
+\emph{Separated paths.} Build $N'$ from $N$ by splitting every vertex $x$ into two nodes $x^{\mathrm{in}}$ and $x^{\mathrm{out}}$, joined by one arc $x^{\mathrm{in}}\to x^{\mathrm{out}}$. The arcs $x\to e^-$ now leave $x^{\mathrm{out}}$, and the arcs $e^+\to x$ now enter $x^{\mathrm{in}}$. This is the network of \Cref{ch:machine} for separated routes, written with parallel arcs as explained at the end of this proof.
 A directed path in $N'$ from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ never visits $u^{\mathrm{in}}$ or $v^{\mathrm{out}}$: the only arc leaving $u^{\mathrm{in}}$ goes to $u^{\mathrm{out}}$, where the path starts, and the only arc entering $v^{\mathrm{out}}$ comes from $v^{\mathrm{in}}$, where it ends. As in (a), the path gives a Berge path from $u$ to $v$, whose inner vertices are the $x$ with $x^{\mathrm{in}}\to x^{\mathrm{out}}$ on the path.
 Arc-disjoint paths in $N'$ use distinct split arcs and distinct gate arcs, so their Berge paths share no inner vertex and no hyperedge copy. They are therefore separated.
 Conversely, take a family of separated Berge paths. Their inner vertices are distinct, so each split arc is used by at most one of them. Their hyperedge copies are distinct, so they get distinct gate arcs, as in (a). The family has at most $c$ paths, so distinct paths can use distinct copies of every other arc. Deleting closed portions of the walks gives arc-disjoint directed paths from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$, as in (a).
+
+\emph{The network of \Cref{ch:machine}.} In that network some arcs have unlimited capacity and the others an integer capacity.
+Every $u$--$v$ path passes a gate, and the gates have total capacity $c$, so a maximum flow has value at most $c$. After removing its cycles it puts at most $c$ on every arc.
+Replacing each unlimited capacity by $c+1$ parallel unit-capacity arcs, and each integer capacity by that many parallel unit-capacity arcs, therefore does not change the maximum flow.
+For separated routes this gives $N'$. For edge-disjoint routes it gives $N$ with every vertex split by $c+1$ parallel arcs, which have room for all $c$ paths, so the families of arc-disjoint paths are the same as in $N$.
+In a network of unit-capacity arcs, the maximum flow is the largest number of arc-disjoint paths, by the maximum-flow minimum-cut theorem and Menger's theorem.
 \end{proof}
 
 The same proof works for directed hyperedges and directed Berge paths, with arcs $x \to e^-$ only for the tails $x$ of $e$, and arcs $e^+ \to x$ only for its heads.
