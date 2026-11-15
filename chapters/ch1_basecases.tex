@@ -600,33 +600,10 @@ For example, take the hyperedges $e_1=\{u,a,b\}$, $e_2=\{a,v,c\}$ and $e_3=\{b,v
 Since separated routes also share no edge copy, $\kap\le\lec$ holds in every model.
 
 In a multigraph, $q$ parallel copies of $uv$ give $q$ internally vertex-disjoint routes.
-This is why the vertex problems for multigraphs, written $K_m(n)$ and $K_m^{\mathrm{dir}}(n)$ in \Cref{tab:notation}, differ from the simple ones.
+This is why the vertex problems for multigraphs, written $K_m(n)$ and $K_m^{\mathrm{dir}}(n)$, differ from the simple ones.
 In a feasible multigraph no multiplicity is larger than $m-1$, since $m$ parallel copies already give $m$ internally vertex-disjoint routes.
 
 In every model, a graph is \emph{feasible} if no two vertices are joined by $m$ disjoint routes of the kind considered.
-\Cref{tab:notation} lists the notation for all sixteen problems.
-
-
-\begin{table}[ht]
-\centering
-\caption{Notation for the extremal functions. The third column uses the
-incidence convention defined above, in every model.}
-\label{tab:notation}
-\begin{tabular}{l|>{\centering\arraybackslash}p{0.22\textwidth}|>{\centering\arraybackslash}p{0.26\textwidth}}
-\toprule
-Model & edge- or arc-disjoint routes & internally vertex-disjoint or separated routes \\
-\midrule
-Simple graph & $\ell_m(n)$ & $k_m(n)$ \\
-Multigraph & $L_m(n)$ & $K_m(n)$ \\
-$r$-uniform simple hypergraph & $\ell_m^{(r)}(n)$ & $k_m^{(r)}(n)$ \\
-$r$-uniform multihypergraph & $L_m^{(r)}(n)$ & $K_m^{(r)}(n)$ \\
-Simple directed graph & $\ell_m^{\mathrm{dir}}(n)$ & $k_m^{\mathrm{dir}}(n)$ \\
-Directed multigraph & $L_m^{\mathrm{dir}}(n)$ & $K_m^{\mathrm{dir}}(n)$ \\
-Directed $r$-uniform simple hypergraph & $\ell_m^{\mathrm{dir}\,(r)}(n)$ & $k_m^{\mathrm{dir}\,(r)}(n)$ \\
-Directed $r$-uniform multihypergraph & $L_m^{\mathrm{dir}\,(r)}(n)$ & $K_m^{\mathrm{dir}\,(r)}(n)$ \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 For undirected graphs the four functions satisfy
 \[
@@ -638,31 +615,7 @@ This argument is for undirected graphs, and the chain is stated only for them.
 
 Menger's theorem, the Gomory--Hu tree, Mader's bound and the exact value $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ are classical.
 The results of B\'{a}rtfai, Bollob\'{a}s and Leonard (\Cref{thm:leonard}) and of S{\o}rensen and Thomassen (\Cref{thm:sorensen-thomassen}) are classical as well.
-\Cref{tab:contributions} lists the results of this thesis.
 
-\begin{table}[!b]
-\centering\small
-\renewcommand{\arraystretch}{1.2}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}X@{}}
-\toprule
-Result & Where & Kind & Closest known result \\
-\midrule
-Mader's bound $\ell_m(n)\le\floor{m(n-1)/2}$ & \Cref{sec:mader-gomory-hu} & New proof & Mader \cite{Mader73} \\
-Graphs attaining Mader's bound for every $n\ge m$ & \Cref{thm:extremal-existence} & Explicit construction & Mader \cite{Mader73}. Bollob\'{a}s--Erd\H{o}s \cite{BollobasErdos62} when $(m-1)\mid(n-1)$ \\
-Multigraph edge value $L_m(n)$ & \Cref{thm:multigraph-edge} & No earlier source found & Mader's bound for simple graphs \\
-Multigraph vertex value at $m=2,3$ & \Cref{thm:multi-vertex-m2,cor:multi-vertex-m3} & No earlier source found & The simple graph values of \Cref{thm:leonard} \\
-Exact multihypergraph edge value, and a range where simple hypergraphs attain it & \Cref{prop:hyper-edge} & No earlier source found & Mader's bound for simple graphs \\
-Hypergraph vertex value at $m=2,3$ & \Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3} & No earlier source found & The simple graph values of \Cref{thm:leonard} \\
-Simple directed graph values at $m=2$, for arc-disjoint and for internally vertex-disjoint routes & \Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact} & No earlier source found & None found \\
-Directed multigraph value with arc-disjoint routes, and its extremal multigraphs & \Cref{thm:dir-multi-full,thm:dir-multi-uniqueness} & No earlier source found & None found \\
-Directed multigraph with internally vertex-disjoint routes: the value at $m=2$ and the leading term & \Cref{cor:dir-multi-incidence} & No earlier source found & None found \\
-Simple directed graphs: at most $\floor{n^2/4}+(m-1)(n-1)$ arcs for every $n$ & \Cref{thm:dir-arc-linear-error} & Overlaps a known result & Huang--Lyu \cite[Theorem~2]{HuangLyu26} give the linear term $(m-1)n$ for $n$ large in terms of $m$ \\
-Directed hypergraphs: the leading constant in three orientation models & \Cref{thm:dir-hyper-constant,thm:dir-hyper-general-constant} & No earlier source found & None found \\
-\bottomrule
-\end{tabularx}
-\caption{The results of this thesis, with the closest result I found in the literature.}
-\label{tab:contributions}
-\end{table}
 
 \section{Results and proofs}
 
@@ -1305,30 +1258,8 @@ With \Cref{thm:dir-hyper-constant} at $r=2$ this gives $K_m^{\mathrm{dir}}(n)=(m
 
 \Cref{sec:two-step-budget} compares \Cref{thm:dir-arc-linear-error} with a theorem of Huang and Lyu \cite{HuangLyu26}.
 
-\section{Overview and open problems}\label{sec:overview}
+\section{Open problems}\label{sec:overview}
 
-\Cref{tab:summary} collects what is known about the sixteen problems.
-
-\begin{table}[htbp]
-\centering\small
-\renewcommand{\arraystretch}{1.2}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
-\toprule
-Model & Edge-disjoint or arc-disjoint routes & Internally vertex-disjoint or separated routes \\
-\midrule
-Simple graph & $\floor{m(n-1)/2}$ for $n\ge m$ & Exact for $m\le5$. Open for $m\ge6$ \\
-Multigraph & $(m-1)(n-1)$ & $n-1$ at $m=2$, $2(n-1)$ at $m=3$. Open for $m\ge4$ \\
-Simple hypergraph & At most $\floor{(m-1)(n-1)/(r-1)}$, equal when $m-1\le\binom{n-2}{r-2}$ & $\floor{(n-1)/(r-1)}$ at $m=2$, $\floor{2(n-1)/(r-1)}$ at $m=3$ for $2<r<n$. Open for $m\ge4$ \\
-Multihypergraph & $\floor{(m-1)(n-1)/(r-1)}$ for $n\ge r$ & $\floor{(n-1)/(r-1)}$ at $m=2$, $\floor{2(n-1)/(r-1)}$ at $m=3$. Open for $m\ge4$ \\
-Simple directed graph & $M(n)$ at $m=2$. $n^2/4+\Theta_m(n)$ for $m\ge3$ & Same \\
-Directed multigraph & $(m-1)M(n)$ & $M(n)$ at $m=2$. $(m-1)n^2/4+O_m(n)$ \\
-Directed simple hypergraph & $(1+o(1))(m-1)n^2/(4(r-1))$ & Same \\
-Directed multihypergraph & $(1+o(1))(m-1)n^2/(4(r-1))$ & Same \\
-\bottomrule
-\end{tabularx}
-\caption{Status of the sixteen problems. Here $m\ge2$, hypergraphs have $r\ge3$, and asymptotic statements are for fixed $m$ and $r$ as $n\to\infty$. The directed hypergraph rows hold in the forward, backward and general models.}
-\label{tab:summary}
-\end{table}
 
 The main open problems are:
 \begin{enumerate}
