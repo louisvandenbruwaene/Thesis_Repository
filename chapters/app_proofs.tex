@@ -457,10 +457,7 @@ Summed over all ordered pairs, the budget reads $|A(D)| + \sum_{u\ne v} p_2(u,v)
 \end{proof}
 
 \begin{lemma}[Making a directed graph one-way bipartite]\label{lem:smaller-half-deletion}
-Every simple directed graph $D$ on $n$ vertices can be made \emph{one-way bipartite}, so that all remaining arcs go from one part to the other, by deleting at most $\sum_{x} \min(d^+(x), d^-(x))$ arcs. So
-\[
-    |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; \sum_{x \in V} \min\bigl(d^+(x), d^-(x)\bigr) .
-\]
+Every simple directed graph $D$ on $n$ vertices can be made \emph{one-way bipartite}, so that all remaining arcs go from one part to the other, by deleting at most $\sum_{x} \min(d^+(x), d^-(x))$ arcs.
 \end{lemma}
 
 \begin{proof}
@@ -470,7 +467,6 @@ At a vertex $x$ of $S$ this deletes its $d^-(x) = \min(d^+(x), d^-(x))$ in-arcs.
 An arc may be deleted at both of its ends, so in total at most the sum above is deleted.
 An arc $a\to b$ survives only if $a \notin T$ and $b \notin S$, that is, $a \in S$ and $b \in T$.
 The remaining arcs therefore all go from $S$ to $T$.
-Since $|S| + |T| = n$, there are at most $|S|\,|T|\le\floor{n^2/4}$ of them.
 \end{proof}
 
 \begin{lemma}[The arc bound for budgeted directed graphs]\label{lem:two-step-budget}
@@ -542,13 +538,9 @@ It applies because a feasible directed graph has at most $m-1$ paths of length t
 The next proposition is about the shape of a feasible directed graph.
 After deleting $O(\sqrt m\,n^{3/2})$ arcs, all remaining arcs go from one part to the other.
 The parts need not be balanced.
-For fixed $m$ this error is larger than the linear error of \Cref{thm:dir-arc-linear-error}.
 
 \begin{proposition}[Almost all arcs go one way]\label{prop:dir-arc-stability}
-Let $D$ be a simple directed graph on $n \ge 2$ vertices with $\lec^{\max}_D \le m-1$. Then deleting at most $\sqrt{m}\, n^{3/2}$ arcs leaves $D$ a subgraph of a one-way bipartite directed graph, and
-\[
-    |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; \sqrt{m}\, n^{3/2}.
-\]
+Let $D$ be a simple directed graph on $n \ge 2$ vertices with $\lec^{\max}_D \le m-1$. Then deleting at most $\sqrt{m}\, n^{3/2}$ arcs leaves $D$ a subgraph of a one-way bipartite directed graph.
 \end{proposition}
 
 \begin{proof}
@@ -564,7 +556,7 @@ We use $\min(a,b) \le \sqrt{ab}$, the Cauchy--Schwarz inequality $\sum_x \sqrt{a
     \;\le\; \sqrt{m}\, n^{3/2}.
 \end{aligned}
 \]
-\Cref{lem:smaller-half-deletion} now gives both statements.
+\Cref{lem:smaller-half-deletion} now gives the statement.
 \end{proof}
 
 

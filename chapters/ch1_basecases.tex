@@ -126,7 +126,7 @@ For all $n \ge 2$ and $m \ge 2$,
 \end{theorem}
 
 Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62} found graphs that attain this bound when $m-1$ divides $n-1$: copies of $K_m$ that share one vertex.
-For $n\ge m$ the bound is always attained. Mader proved this as well, so $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ \cite{Mader73}. \Cref{thm:extremal-existence} gives a different construction.
+For $n\ge m$ the bound is always attained. Mader proved this as well, so $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ \cite{Mader73}. \Cref{thm:extremal-existence} gives an explicit construction.
 For $2\le n<m$ the complete graph $K_n$ satisfies the condition, so $\ell_m(n)=\binom{n}{2}$.
 This is smaller than $\floor{m(n-1)/2}$, except when $(n,m)=(2,3)$. The reason is that $m\ge n+1$ gives $\floor{m(n-1)/2}\ge\binom{n}{2}+\floor{(n-1)/2}$, which exceeds $\binom{n}{2}$ once $n\ge3$. At $n=2$ the two values are $1$ and $\floor{m/2}$, and these agree only at $m=3$.
 
@@ -246,7 +246,7 @@ In each model we can ask for edge-disjoint or for separated routes, defined in \
 
 The first assumption is the size of an edge.
 An edge joins two vertices. A \emph{hyperedge} is a set of $r\ge2$ vertices, so it may join more than two.
-A \emph{hypergraph} is defined as a multigraph in \Cref{sec:graphs}, with hyperedges in place of edges, and its size is again its number of hyperedges, counted with multiplicity.
+A \emph{hypergraph} is defined analogously to a multigraph in \Cref{sec:graphs}, with hyperedges in place of edges, and its size is again its number of hyperedges, counted with multiplicity.
 In an \emph{$r$-uniform hypergraph} every hyperedge has exactly $r$ vertices. For $r=2$ this is a multigraph.
 For example, the hyperedge $\{a,b,c\}$ is one edge that joins three vertices. It is not the same as the three edges $ab$, $bc$ and $ac$.
 A \emph{Berge path} is a sequence of distinct vertices and distinct hyperedges, alternating, in which each hyperedge contains the vertex before it and the vertex after it.
@@ -258,7 +258,8 @@ A \emph{multigraph} or \emph{multihypergraph} may repeat edges.
 
 The third assumption is direction.
 A directed edge, or \emph{arc}, is an ordered pair of distinct vertices.
-A directed hyperedge splits its $r$ vertices into a non-empty set of \emph{tails} and a non-empty set of \emph{heads}.
+A \emph{directed hyperedge} splits its $r$ vertices into a non-empty set of \emph{tails} and a non-empty set of \emph{heads}.
+In a directed hypergraph every hyperedge is directed, and there we write \emph{hyperedge} for short.
 A directed Berge route enters a hyperedge at a tail and leaves it at a head.
 The allowed numbers of tails are a parameter of the directed hypergraph models.
 In the \emph{forward} model every hyperedge has one tail and $r-1$ heads, in the \emph{backward} model it has $r-1$ tails and one head, and the \emph{general} model allows every split.
@@ -647,7 +648,7 @@ The results of B\'{a}rtfai, Bollob\'{a}s and Leonard (\Cref{thm:leonard}) and of
 Result & Where & Kind & Closest known result \\
 \midrule
 Mader's bound $\ell_m(n)\le\floor{m(n-1)/2}$ & \Cref{sec:mader-gomory-hu} & New proof & Mader \cite{Mader73} \\
-Graphs attaining Mader's bound for every $n\ge m$ & \Cref{thm:extremal-existence} & New construction & Mader \cite{Mader73}. Bollob\'{a}s--Erd\H{o}s \cite{BollobasErdos62} when $(m-1)\mid(n-1)$ \\
+Graphs attaining Mader's bound for every $n\ge m$ & \Cref{thm:extremal-existence} & Explicit construction & Mader \cite{Mader73}. Bollob\'{a}s--Erd\H{o}s \cite{BollobasErdos62} when $(m-1)\mid(n-1)$ \\
 Multigraph edge value $L_m(n)$ & \Cref{thm:multigraph-edge} & No earlier source found & Mader's bound for simple graphs \\
 Multigraph vertex value at $m=2,3$ & \Cref{thm:multi-vertex-m2,cor:multi-vertex-m3} & No earlier source found & The simple graph values of \Cref{thm:leonard} \\
 Exact multihypergraph edge value, and a range where simple hypergraphs attain it & \Cref{prop:hyper-edge} & No earlier source found & Mader's bound for simple graphs \\
@@ -849,8 +850,7 @@ The identity $\floor{(q+1)^2/4} - \floor{q^2/4} = \floor{(q+1)/2}$ holds for eve
 \[
     f(q+1) - f(q) \;=\; -2 \;+\; \floorfrac{q+1}{2}.
 \]
-The difference is $-1$ for $q\le2$, $0$ for $q=3$ and $q=4$, and positive from $q=5$ on.
-The function $f$ goes down until $q=3$, stays level until $q=5$ and then goes up. Its largest value on $\{1,\dots,n\}$ is therefore at $q=1$ or at $q=n$.
+These differences never decrease as $q$ grows, so $f$ is convex on the integers. Its largest value on $\{1,\dots,n\}$ is therefore at $q=1$ or at $q=n$.
 Since $f(1) = 2(n-1)$ and $f(n) = \floor{n^2/4}$, we get $f(q) \le M(n)$.
 \end{proof}
 
@@ -992,15 +992,15 @@ Since $|E(\HH)|$ is an integer, we can round down.
 Take a hub $h$ and number the other vertices $1, \dots, N$.
 Write the list $1, 2, \dots, N$ out $m-1$ times in a row, keep its first $qs$ entries, and cut these into $q$ consecutive blocks of $s$ entries.
 A block holds $s \le N$ consecutive entries of the list, so its entries are different vertices.
-For every block $G$, take one copy of the hyperedge $\{h\} \cup G$.
+For every block $B$, take one copy of the hyperedge $\{h\} \cup B$.
 Every vertex other than $h$ appears at most $m-1$ times in the list, so it lies in at most $m-1$ hyperedge copies.
 Every pair contains such a vertex, and every route from or to it uses one of these copies.
 Removing these copies therefore separates the pair, and every pair has $\lec\le m-1$.
 There are $q = \floorfrac{(m-1)(n-1)}{r-1}$ hyperedge copies.
 For example, at $n = 6$, $r = 4$ and $m = 3$ the blocks are $\{1,2,3\}$, $\{4,5,1\}$ and $\{2,3,4\}$, and the three hyperedges reach the bound $\floor{2 \cdot 5/3} = 3$.
 
-When $r-1$ divides $n-1$, the blocks are the groups $G_1, G_2, \dots$ of a split of the other $n-1$ vertices into sets of size $r-1$, each repeated $m-1$ times.
-The incidence graph of the hypergraph with hyperedges $\{h\} \cup G_i$ is a tree, so we call it a \emph{star hypertree}.
+When $r-1$ divides $n-1$, the blocks are the groups $B_1, B_2, \dots$ of a split of the other $n-1$ vertices into sets of size $r-1$, each repeated $m-1$ times.
+The incidence graph of the hypergraph with hyperedges $\{h\} \cup B_i$ is a tree, so we call it a \emph{star hypertree}.
 The construction is then the star hypertree with every hyperedge at multiplicity $m-1$.
 
 If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} below attains the bound with a simple hypergraph.
@@ -1155,9 +1155,8 @@ The two problems allow the same simple hypergraphs, and $k_3^{(r)}(n) = \ell_3^{
 For $n < r$ both values are $0$, and for $n = r$ both are $1$.
 \end{proof}
 
-\begin{remark}[Where the method stops]
+\begin{remark}[\Cref{lem:theta} fails at $m=4$]
 \label{rem:hyper-vertex-m3-scope}
-\Cref{lem:theta} is false at $m=4$.
 In a triangle with every edge doubled, two vertices are joined by their two parallel edges and by one more separated route through the third vertex, so $\kap^{\max} = 3$.
 Using both copies of the other two edges gives four edge-disjoint routes, so $\lec^{\max} = 4$.
 For $m = 4$ a different bound would be needed.
