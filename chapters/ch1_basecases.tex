@@ -1044,19 +1044,16 @@ Every hyperedge copy used by one of the routes is used by only one of them, and 
 Replace the copy by an ordinary edge between these two vertices, and remember the copy it came from.
 This gives a multigraph $G$ on the vertices of $\HH$, in which $P_1, P_2, P_3$ are three edge-disjoint $u$--$v$ paths.
 
-Take an edge $e = xy$ of $P_1$, with $x$ the end closer to $u$ along $P_1$.
-Walk along $P_1$ from $x$ back to $u$, then along $P_2$ to $v$, then along $P_1$ back to $y$.
-This walk does not use $e$, because $P_2$ shares no edge with $P_1$. Cutting out the parts where it repeats a vertex leaves an $x$--$y$ path, which closes with $e$ to a cycle $C_2$ in $P_1 \cup P_2$ through $e$.
+Take an edge $e = xy$ of $P_1$, with $x$ closer to $u$ along $P_1$.
+Going from $x$ along $P_1$ to $u$, along $P_2$ to $v$ and along $P_1$ to $y$ avoids $e$, since $P_2$ shares no edge with $P_1$.
+This walk contains an $x$--$y$ path, which closes with $e$ to a cycle $C_2$ through $e$ in $P_1 \cup P_2$.
 In the same way $P_1 \cup P_3$ contains a cycle $C_3$ through $e$.
-If every edge of $C_3$ were an edge of $C_2$, the cycle $C_3$ would lie in $P_1 \cup P_2$ and in $P_1 \cup P_3$.
-It would then lie in $P_1$, because $P_2$ and $P_3$ share no edge, and the path $P_1$ contains no cycle.
+If every edge of $C_3$ were on $C_2$, then $C_3$ would lie in $P_1$, since $P_2$ and $P_3$ share no edge. But a path contains no cycle.
 
 $C_3$ therefore has an edge that is not an edge of $C_2$.
-Follow $C_3$ from this edge in both directions until it first reaches a vertex of $C_2$.
-This gives a path $S$ between two vertices $a,b$ of $C_2$, with no edge of $C_2$ and no inner vertex on $C_2$.
-The vertices $a$ and $b$ are different. $C_3$ passes each of its vertices once, and it meets $C_2$ in at least the two ends of $e$, so $S$ cannot run all the way round $C_3$.
-The two $a$--$b$ arcs of $C_2$ and the path $S$ are three such paths.
-Parallel edges may occur in $G$, and a cycle may then have only two edges. The argument is the same.
+Follow $C_3$ from this edge in both directions until it first meets $C_2$, at vertices $a$ and $b$. They are different, since $C_3$ meets $C_2$ in at least the two ends of $e$.
+This piece of $C_3$ is an $a$--$b$ path with no edge and no inner vertex on $C_2$.
+Together with the two ways round $C_2$ from $a$ to $b$, it gives three $a$--$b$ paths that pairwise share no edge and no inner vertex.
 
 Now put the hyperedge copies back. The edges of these three paths come from different copies, so they become three $a$--$b$ routes in $\HH$ that share no hyperedge copy.
 Their inner vertices are the inner vertices of the three paths, which are disjoint.
