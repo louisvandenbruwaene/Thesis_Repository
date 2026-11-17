@@ -115,7 +115,7 @@ A graph with $\lec_G^{\max}\le m-1$ is called \emph{feasible}.
 Mader proved the following upper bound. Here $\floor{x}$ is $x$ rounded down and $\ceil{x}$ is $x$ rounded up.
 
 \begin{theorem}[Mader \cite{Mader73}]\label{thm:mader}
-For all $n \ge 2$ and $m \ge 2$,
+For simple graphs and all $n \ge 2$ and $m \ge 2$,
 \[
     \ell_m(n) \le \floorfrac{m(n-1)}{2}.
 \]
@@ -631,7 +631,7 @@ For the upper bound, let $\lec_G^{\max}\le m-1$ and let $T$ be a Gomory--Hu tree
 In simple graphs, the edge and vertex problems have the same answer for $m\le4$.
 
 \begin{theorem}[B\'{a}rtfai \cite{Bartfai60}, Bollob\'{a}s \cite{Bollobas66}, Leonard \cite{Leonard72b}]\label{thm:leonard}
-For all $n\ge m$ and $2\le m\le4$,
+For simple graphs and all $n\ge m$ and $2\le m\le4$,
 \[
     k_m(n) = \ell_m(n) = \floorfrac{m(n-1)}{2}.
 \]
@@ -649,6 +649,7 @@ For simple graphs,
 \end{theorem}
 
 In particular $k_5(n)>\ell_5(n)$ for every $n\ge14$.
+Gluing copies of their graphs at one vertex shows that for separated routes in simple graphs the answer to Problem 915 is no for every $m\ge5$ (\Cref{thm:bollobas-erdos-false}).
 S{\o}rensen and Thomassen count the least number of edges that forces $m$ internally vertex-disjoint paths. This is one more than the maximum used here (\Cref{rem:threshold-convention}).
 
 \begin{figure}[ht]
@@ -1180,7 +1181,7 @@ It applies because a feasible directed graph has at most $m-1$ paths of length t
 \Cref{thm:dir-arc-linear-error} holds for every $n$.
 
 \begin{theorem}[Directed multigraphs]\label{thm:dir-multi-full}
-For all $n \ge 2$ and $m \ge 2$,
+For directed multigraphs and all $n \ge 2$ and $m \ge 2$,
 \[
     L_m^{\mathrm{dir}}(n) \;=\; (m-1)\,M(n), \qquad M(n) := \max\!\Bigl(2(n-1),\ \floorfrac{n^2}{4}\Bigr).
 \]
@@ -1254,8 +1255,6 @@ Every arc of $D$ is either in $R$ or in $D-R$, which gives
 \]
 With $k = m-1$ this gives $L_m^{\mathrm{dir}}(n) \le (m-1)M(n)$.
 \end{proof}
-
-For $n\ge\max(8,2m)$ the bipartite construction is the only extremal multigraph, up to reversing all arcs (\Cref{thm:dir-multi-uniqueness}).
 
 \begin{theorem}[The directed hypergraph constant]\label{thm:dir-hyper-constant}
 Let $r \ge 2$ and $m \ge 2$. Every forward directed $r$-uniform multihypergraph
