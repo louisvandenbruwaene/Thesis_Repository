@@ -212,7 +212,7 @@ Count the pairs $(t,e)$ where $t$ is a tree edge, $e$ is an edge of $G$, and $e$
 \end{proof}
 
 \begin{lemma}[Sum of tree distances]\label{lem:sum-dist}\label{lem:dist-1-count}
-For a simple graph $G$, $\displaystyle\sum_{e \in E(G)} \dist_T(e) \;\ge\; 2|E(G)| - (n-1)$.
+For a simple graph $G$ on $n$ vertices and a Gomory--Hu tree $T$ of $G$, $\displaystyle\sum_{e \in E(G)} \dist_T(e) \;\ge\; 2|E(G)| - (n-1)$.
 \end{lemma}
 
 \begin{proof}
@@ -1067,7 +1067,8 @@ Take an edge $e = xy$ of $P_1$, with $x$ the end closer to $u$ along $P_1$.
 Walk along $P_1$ from $x$ back to $u$, then along $P_2$ to $v$, then along $P_1$ back to $y$.
 This walk does not use $e$, because $P_2$ shares no edge with $P_1$. Cutting out the parts where it repeats a vertex leaves an $x$--$y$ path, which closes with $e$ to a cycle $C_2$ in $P_1 \cup P_2$ through $e$.
 In the same way $P_1 \cup P_3$ contains a cycle $C_3$ through $e$.
-The two cycles are different. A cycle in both would lie in $P_1$, because $P_2$ and $P_3$ share no edge, and the path $P_1$ contains no cycle.
+If every edge of $C_3$ were an edge of $C_2$, the cycle $C_3$ would lie in $P_1 \cup P_2$ and in $P_1 \cup P_3$.
+It would then lie in $P_1$, because $P_2$ and $P_3$ share no edge, and the path $P_1$ contains no cycle.
 
 $C_3$ therefore has an edge that is not an edge of $C_2$.
 Follow $C_3$ from this edge in both directions until it first reaches a vertex of $C_2$.
