@@ -32,18 +32,18 @@ This thesis excludes them. Routes cannot repeat vertices, so a loop never lies o
     \node[mv] at (\ang:1.4) {$\i$};
   }
 \end{tikzpicture}
-\caption{The simple graph $K_5-\{04,13\}$, the complete graph $K_5$ on five vertices with the edges $04$ and $13$ removed. In general $K_n$ is the simple graph on $n$ vertices that includes every possible edge.}
+\caption{The simple graph $K_5-\{04,13\}$, the complete graph $K_5$ on five vertices with the edges $04$ and $13$ removed, where $uv$ is the edge between $u$ and $v$. In general $K_n$ is the simple graph on $n$ vertices that includes every possible edge.}
 \label{fig:k5-example}
 \end{figure}
 
-We write $n\coloneq|V(G)|$. The \emph{degree} of a vertex is the number of edges at it.
+We write $n\coloneq|V(G)|$. The \emph{degree} $\deg(x)$ of a vertex $x$ is the number of edges at it.
 From now on, graphs are simple unless said otherwise.
 A \emph{path} from $u$ to $v$ is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ of distinct vertices $v_i$ and edges $e_i$, where $v_0=u$, $v_q=v$ and $e_i$ joins $v_{i-1}$ and $v_i$. Its \emph{length} is its number of edges $q$.
 In a multigraph, two parallel edges (distinct edges with identical vertices) give two different paths of length one.
 In a simple graph we can write a path as a list of vertices, because two vertices uniquely specify an edge between them when there are no parallel edges.
 A \emph{walk} is a sequence of the same form in which vertices and edges may repeat.
 A \emph{cycle} is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ with $q\ge2$, distinct edges $e_i$ and distinct vertices $v_0,\ldots,v_{q-1}$, where $v_q=v_0$ and $e_i$ joins $v_{i-1}$ and $v_i$. In a simple graph a cycle has at least three edges, and in a multigraph two parallel edges form a cycle.
-A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{forest} is a graph without cycles. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$. A \emph{component} of a graph is a maximal connected subgraph. A \emph{spanning tree} of $G$ is a subgraph of $G$ that is a tree on all vertices of $G$.
+A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{forest} is a graph without cycles. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$. A \emph{component} of a graph is a maximal connected subgraph. A \emph{spanning tree} of $G$ is a subgraph of $G$ that is a tree on all vertices of $G$. A \emph{star} on $n$ vertices is a tree in which one vertex, the \emph{hub}, is joined to each of the other $n-1$ vertices.
 We also call a path a \emph{route}.
 Two $u$--$v$ paths are \emph{edge-disjoint} if they have no edge in common.
 The \emph{local edge-connectivity} $\lec_G(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ paths.
@@ -81,7 +81,7 @@ Let $u$ and $v$ be distinct vertices of a multigraph $G$. The largest number of 
   \draw[rC] (v1)--(v4)--(v3);
   % minimum cut: the three edges meeting vertex 1, a dashed ring around it
   \draw[cut] (v1) circle (0.6);
-  \node[vertexred, font=\scriptsize] at (-1.35,1.55) {cut: $3$ edges};
+  \node[vertexred, font=\scriptsize] at (-1.35,1.55) {removed: $3$ edges};
   \foreach \i in {0,...,4} {
     \pgfmathsetmacro{\ang}{90 + 72*\i}
     \node[mv] at (\ang:1.5) {$\i$};
@@ -257,7 +257,9 @@ A \emph{simple} graph or hypergraph has each edge at most once.
 A \emph{multigraph} or \emph{multihypergraph} may repeat edges.
 
 The third assumption is direction.
-A directed edge, or \emph{arc}, is an ordered pair of distinct vertices.
+A directed edge, or \emph{arc}, is an ordered pair of distinct vertices. The arc $(u,v)$ is written $u\to v$, and it goes from $u$ to $v$.
+A directed graph or directed multigraph has arcs in place of edges.
+A \emph{directed path} from $u$ to $v$ is a path $v_0,e_1,v_1,\ldots,e_q,v_q$ from $u$ to $v$ in which every arc $e_i$ goes from $v_{i-1}$ to $v_i$, and $u$ \emph{reaches} $v$ if there is such a path.
 A \emph{directed hyperedge} splits its $r$ vertices into a non-empty set of \emph{tails} and a non-empty set of \emph{heads}.
 In a directed hypergraph every hyperedge is directed, and there we write \emph{hyperedge} for short.
 A directed Berge route enters a hyperedge at a tail and leaves it at a head.
@@ -430,11 +432,11 @@ Removing three arcs cuts all of them, as Menger's theorem predicts.
 The out-degree of $u$ and the in-degree of $v$ also bound the number of routes:
 
 \begin{lemma}[Degree bound]\label{lem:degree-bound}
-Every pair $u, v$ of distinct vertices of a graph $G$ satisfies $\lec_G(u, v) \le \min(\deg u, \deg v)$, and every ordered pair of a directed graph $D$ satisfies $\lec_D(u, v) \le \min(d^+(u), d^-(v))$.
+Every pair $u, v$ of distinct vertices of a graph $G$ satisfies $\lec_G(u, v) \le \min(\deg(u), \deg(v))$, and every ordered pair of a directed graph $D$ satisfies $\lec_D(u, v) \le \min(d^+(u), d^-(v))$.
 \end{lemma}
 
 \begin{proof}
-Every edge-disjoint $u$--$v$ path uses a distinct edge at $u$, so there are at most $\deg u$ of them, and likewise at most $\deg v$. In the directed case each arc-disjoint path leaves $u$ by a distinct out-arc and enters $v$ by a distinct in-arc.
+Every edge-disjoint $u$--$v$ path uses a distinct edge at $u$, so there are at most $\deg(u)$ of them, and likewise at most $\deg(v)$. In the directed case each arc-disjoint path leaves $u$ by a distinct out-arc and enters $v$ by a distinct in-arc.
 \end{proof}
 
 \begin{figure}[ht]
@@ -505,7 +507,7 @@ Every edge-disjoint $u$--$v$ path uses a distinct edge at $u$, so there are at m
 \path[cuttick] (v1) to[bend right=12] (v2);
 
 \node[vertexred, font=\scriptsize, anchor=east]
-  at (-2.25, 0.2) {cut: $3$ arcs};
+  at (-2.25, 0.2) {removed: $3$ arcs};
 
 % ---- Degree labels ----
 \node[font=\scriptsize, KULblauw1, anchor=east]
@@ -523,7 +525,7 @@ Every edge-disjoint $u$--$v$ path uses a distinct edge at $u$, so there are at m
 
 \end{tikzpicture}
 
-\caption{Three arc-disjoint $u\to v$ routes (coloured) and the corresponding three-arc directed cut (red) in a \emph{simple} directed graph. Thus $\lambda(u,v)=3$, meeting the degree bound $\min(d^+(u),d^-(v))=3$.}
+\caption{Three arc-disjoint $u\to v$ routes (coloured) and three arcs (red) whose removal leaves no $u\to v$ route, in a \emph{simple} directed graph. Thus $\lambda(u,v)=3$, meeting the degree bound $\min(d^+(u),d^-(v))=3$.}
 \label{fig:directed-lambda}
 \end{figure}
 
@@ -600,10 +602,12 @@ For example, take the hyperedges $e_1=\{u,a,b\}$, $e_2=\{a,v,c\}$ and $e_3=\{b,v
 Since separated routes also share no edge copy, $\kap\le\lec$ holds in every model.
 
 In a multigraph, $q$ parallel copies of $uv$ give $q$ internally vertex-disjoint routes.
-This is why the vertex problems for multigraphs, written $K_m(n)$ and $K_m^{\mathrm{dir}}(n)$, differ from the simple ones.
+This is why the vertex problems for multigraphs differ from the simple ones.
 In a feasible multigraph no multiplicity is larger than $m-1$, since $m$ parallel copies already give $m$ internally vertex-disjoint routes.
 
 In every model, a graph is \emph{feasible} if no two vertices are joined by $m$ disjoint routes of the kind considered.
+The largest size of a feasible graph on $n$ vertices is written $\ell$ or $L$ for edge-disjoint routes and $k$ or $K$ for separated routes, with a lower-case letter when edges may not repeat and a capital when they may.
+The superscripts $\mathrm{dir}$ and $(r)$ mark directed graphs and $r$-uniform hypergraphs, as in $\ell_m(n)$, $K_m^{\mathrm{dir}}(n)$ and $L_m^{\mathrm{dir}\,(r)}(n)$.
 
 For undirected graphs the four functions satisfy
 \[
@@ -677,8 +681,8 @@ For simple directed graphs,
 \end{theorem}
 
 Two constructions attain the two terms (\Cref{fig:simple-directed-graph-m2}).
-The \emph{bidirected star} joins one vertex to every other vertex by an arc in each direction, so it has $2(n-1)$ arcs.
-The one-way complete bipartite directed graph has all arcs from one half of the vertices to the other half, so it has $\floor{n^2/4}$ arcs.
+The \emph{bidirected star} is a star with each edge replaced by an arc in each direction, so it has $2(n-1)$ arcs.
+For $a,b\ge1$, the \emph{one-way complete bipartite directed graph} $B_{a,b}$ has its vertices split into a set $A$ of size $a$ and a set $B$ of size $b$, and all $ab$ arcs from $A$ to $B$. With $a=\floor{n/2}$ and $b=\ceil{n/2}$ it has $\floor{n^2/4}$ arcs.
 In both, every ordered pair is joined by at most one directed path.
 \Cref{sec:dir-constructions} gives the details.
 
@@ -695,7 +699,7 @@ For simple directed graphs, $k_2^{\mathrm{dir}}(n) = \ell_2^{\mathrm{dir}}(n)$.
     arc/.style={gdir},
     carc/.style={gdir, vertexorange!80!black}]
 
-  % --- left panel: the bidirected star at n = 7, hub plus six spokes = 12 arcs ---
+  % --- left panel: the bidirected star at n = 7, hub and six other vertices = 12 arcs ---
   \begin{scope}[shift={(-5.4,1.0)}, scale=0.92]
     \node[hubvertex, minimum size=7mm] (h) at (0,0) {$h$};
     \foreach \i/\ang in {0/90, 1/150, 2/210, 3/270, 4/330, 5/30} {
@@ -727,7 +731,7 @@ For simple directed graphs, $k_2^{\mathrm{dir}}(n) = \ell_2^{\mathrm{dir}}(n)$.
   \node[font=\small] at (0,-1.3) {$A$};
   \node[font=\small] at (4,-1.3) {$B$};
 \end{tikzpicture}
-\caption{At $n=7$ the two constructions have the same number of arcs, $12$ each, and both have $\lec^{\max}=1$. Left: the bidirected star, a hub joined to six spokes both ways, $2(n-1)=12$. Right: the one-way complete bipartite directed graph $B_{3,4}$, every arc from $A$ to $B$, $\floor{n^2/4}=12$.}
+\caption{At $n=7$ the two constructions have the same number of arcs, $12$ each, and both have $\lec^{\max}=1$. Left: the bidirected star on seven vertices, $2(n-1)=12$. Right: the one-way complete bipartite directed graph $B_{3,4}$, every arc from $A$ to $B$, $\floor{n^2/4}=12$.}
 \label{fig:simple-directed-graph-m2}
 \end{figure}
 
@@ -882,7 +886,7 @@ Hence $|A(D)| = |A(R)| \le M(n)$. With the lower bound, $k_2^{\mathrm{dir}}(n) =
 
 \begin{proof}[Proof of \Cref{thm:dir-arc-m2-exact}]
 The two constructions above give $\ell_2^{\mathrm{dir}}(n) \ge M(n)$.
-Since $\kap\le\lec$, every arc-feasible directed graph is vertex-feasible, so \Cref{thm:dir-vertex-m2-exact} bounds it. This gives
+Since $\kap\le\lec$, every directed graph with $\lec^{\max}\le1$ also has $\kap^{\max}\le1$, so \Cref{thm:dir-vertex-m2-exact} bounds it. This gives
 \[
     M(n) \;\le\; \ell_2^{\mathrm{dir}}(n) \;\le\; k_2^{\mathrm{dir}}(n) \;\le\; M(n),
 \]
@@ -895,7 +899,7 @@ and all three are equal.
 For $n\ge r\ge2$ and $m\ge2$, an $r$-uniform multihypergraph on $n$ vertices with $\lec^{\max}\le m-1$ has size at most $\floorfrac{(m-1)(n-1)}{r-1}$. There are multihypergraphs attaining the bound for every $n\ge r$, and simple hypergraphs attaining it when $m - 1 \le \binom{n-2}{r-2}$.
 \end{theorem}
 
-\begin{lemma}[Cut induction for multihypergraphs]\label{lem:hyper-cut-induction}
+\begin{lemma}[Hyperedge bound without uniformity]\label{lem:hyper-cut-induction}
 Let $\HH$ be a multihypergraph on $n \ge 1$ vertices, not assumed uniform, with
 $\lec^{\max}_\HH \le k$. Then, the sum running over hyperedge copies,
 \[
@@ -908,6 +912,7 @@ Induction on $n$. At $n = 1$ there is no hyperedge, since a hyperedge has at lea
 
 Let $n \ge 2$ and fix two vertices $u \ne v$.
 Since $\lec_\HH(u,v) \le k$, \Cref{thm:menger-hyper} gives a set $F$ of at most $k$ hyperedge copies whose removal separates $u$ from $v$.
+Write $\HH - F$ for $\HH$ with the copies in $F$ removed.
 Let $S$ be the set of vertices that $u$ can reach in $\HH - F$, and let $\bar S = V \setminus S$.
 Then $u \in S$ and $v \in \bar S$, so both sets are non-empty.
 Every copy that meets both $S$ and $\bar S$ lies in $F$. A copy outside $F$ with a vertex $x \in S$ and a vertex $y \in \bar S$ would let $u$ reach $x$ and then $y$ in $\HH - F$, so $y$ would lie in $S$.
@@ -935,33 +940,30 @@ Summing over all copies gives
 \]
 \end{proof}
 
-A \emph{hypertree} is a hypergraph whose incidence graph (\Cref{sec:incidence-convention}) is a tree.
-
 \begin{proof}[Proof of \Cref{prop:hyper-edge}]
 \emph{Upper bound.} Every hyperedge has $|e| = r$, so \Cref{lem:hyper-cut-induction} with $k = m-1$ gives $(r-1)|E(\HH)| \le (m-1)(n-1)$.
 Since $|E(\HH)|$ is an integer, we can round down.
 
 \emph{Lower bound.} Write $N = n-1$, $s = r-1$ and $q = \floorfrac{(m-1)N}{s}$.
 Take a hub $h$ and number the other vertices $1, \dots, N$.
-Write the list $1, 2, \dots, N$ out $m-1$ times in a row, keep its first $qs$ entries, and cut these into $q$ consecutive blocks of $s$ entries.
-A block holds $s \le N$ consecutive entries of the list, so its entries are different vertices.
-For every block $B$, take one copy of the hyperedge $\{h\} \cup B$.
+Write the list $1, 2, \dots, N$ out $m-1$ times in a row, keep its first $qs$ entries, and cut these into $q$ \emph{segments} of $s$ consecutive entries.
+A segment holds $s \le N$ consecutive entries of the list, so its entries are different vertices.
+For every segment $W$, take one copy of the hyperedge $\{h\} \cup W$.
 Every vertex other than $h$ appears at most $m-1$ times in the list, so it lies in at most $m-1$ hyperedge copies.
 Every pair contains such a vertex, and every route from or to it uses one of these copies.
 Removing these copies therefore separates the pair, and every pair has $\lec\le m-1$.
 There are $q = \floorfrac{(m-1)(n-1)}{r-1}$ hyperedge copies.
-For example, at $n = 6$, $r = 4$ and $m = 3$ the blocks are $\{1,2,3\}$, $\{4,5,1\}$ and $\{2,3,4\}$, and the three hyperedges reach the bound $\floor{2 \cdot 5/3} = 3$.
+For example, at $n = 6$, $r = 4$ and $m = 3$ the segments are $\{1,2,3\}$, $\{4,5,1\}$ and $\{2,3,4\}$, and the three hyperedges reach the bound $\floor{2 \cdot 5/3} = 3$.
 
-When $r-1$ divides $n-1$, the blocks are the groups $B_1, B_2, \dots$ of a split of the other $n-1$ vertices into sets of size $r-1$, each repeated $m-1$ times.
-The incidence graph of the hypergraph with hyperedges $\{h\} \cup B_i$ is a tree, so we call it a \emph{star hypertree}.
-The construction is then the star hypertree with every hyperedge at multiplicity $m-1$.
+When $r-1$ divides $n-1$, the segments are the sets $W_1, W_2, \dots$ of a split of the other $n-1$ vertices into sets of size $r-1$, each repeated $m-1$ times.
+A \emph{star hypertree} has a vertex $h$, its hub, and the hyperedges $\{h\} \cup W_i$ for disjoint sets $W_i$ of $r-1$ vertices other than $h$. Its hyperedges share only $h$, and the vertices outside them lie in no hyperedge.
+The construction is then a star hypertree with every hyperedge at multiplicity $m-1$.
 
 If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} below attains the bound with a simple hypergraph.
 If $r = 2$, this condition means $m = 2$. Then the bound is $n-1$, and a tree attains it.
 \end{proof}
 
 The star hypertree of \Cref{fig:hyper-star} attains the bound at $m=2$.
-It has a hub joined to disjoint groups of $r-1$ vertices.
 For $r\ge3$, simple hypergraphs attain the bound whenever $m-1\le\binom{n-2}{r-2}$ (\Cref{thm:simple-hyper-edge}).
 For $r\ge3$, unlike for graphs, repeated edges therefore often do not help.
 The condition says that there are enough different hyperedges.
@@ -1166,16 +1168,17 @@ The lower bound uses trees and one-way bipartite directed graphs with all multip
 
 
 
-If we multiply every multiplicity by the same integer, every cut and so every connectivity is multiplied by that integer.
+If we multiply every multiplicity by the same integer, every connectivity is multiplied by that integer.
 
 \begin{lemma}[Multiplying all multiplicities]\label{lem:thickening}
 Let $D_0$ be a directed multigraph and $k \ge 1$ an integer. Write $k \cdot D_0$ for the multigraph obtained by multiplying every multiplicity $\mu(u,v)$ by $k$. Then $\lec_{k \cdot D_0}(u,v) = k \cdot \lec_{D_0}(u,v)$ for every ordered pair $u \ne v$, and $|A(k \cdot D_0)| = k\,|A(D_0)|$.
 \end{lemma}
 
 \begin{proof}
-By Menger's theorem, $\lec_{D_0}(u,v)$ is the smallest number of arcs, counted with multiplicity, in a $u$--$v$ cut.
-Multiplying every multiplicity by $k$ multiplies the size of every cut by $k$.
-It therefore multiplies the smallest cut by $k$ too.
+By Menger's theorem, $\lec_{D_0}(u,v)$ is the smallest number of arcs, counted with multiplicity, whose removal leaves no $u$--$v$ path.
+A path can use any copy of an arc, so removing an arc $x\to y$ blocks the paths through it only when all $\mu(x,y)$ copies are removed.
+Hence $\lec_{D_0}(u,v)$ is the smallest value of $\sum_{x\to y\in S}\mu(x,y)$ over all sets $S$ of arcs whose removal leaves no $u$--$v$ path.
+Multiplying every multiplicity by $k$ does not change which sets $S$ leave no $u$--$v$ path, and it multiplies every such sum by $k$, so it multiplies the smallest sum by $k$.
 The number of arcs is also multiplied by $k$.
 \end{proof}
 
@@ -1268,5 +1271,5 @@ The main open problems are:
 \item Is $k_m^{\mathrm{dir}}(n)=\ell_m^{\mathrm{dir}}(n)$ for $m\ge3$?
 \item Find the simple vertex value $k_m(n)$ for $m\ge6$, and the multigraph vertex value $K_m(n)$ for $m\ge4$. Is $K_4(n)=L_4(n)=3(n-1)$ for every $n$?
 \item Find the simple hypergraph edge value outside the proved attainment range, and a vertex bound for hypergraphs at $m\ge4$.
-\item Find exact values for directed hypergraphs, and compare the different ways to orient a hyperedge (\Cref{sec:dir-hyper}) beyond the leading term.
+\item Find exact values for directed hypergraphs, and compare the forward and general models (\Cref{sec:dir-hyper}) beyond the leading term.
 \end{enumerate}

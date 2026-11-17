@@ -30,7 +30,7 @@ Part II introduces the two-step budget, a bound on the number of routes with at 
 
 \section{Graphs that attain Mader's bound}\label{sec:mader-extremal}
 
-\begin{construction}[Hub-and-spokes graph]\label{const:hub-spokes}\label{const:shared-clique}
+\begin{construction}[Hub graph]\label{const:hub-spokes}\label{const:shared-clique}
 Let $n\ge m\ge2$. The graph $H_{m,n}$ has a vertex $h$ and further vertices $v_0,\dots,v_{n-2}$. Join $h$ to every $v_i$. On $v_0,\dots,v_{n-2}$, add a graph with $\floor{(m-2)(n-1)/2}$ edges in which every vertex has degree at most $m-2$.
 
 This graph can be written down directly. Write $N=n-1$ and $d=m-2$. Since $n\ge m$, $0\le d\le N-1$, and the vertices are $v_0,\dots,v_{N-1}$. Place them around a circle in this order, and take indices modulo $N$.
@@ -132,9 +132,9 @@ Theorem~4 does not cover $n=5$.
 There the complete graph $K_5$ has $\kap^{\max}=4$, so $k_5(5)=\binom52=10=\floor{5\cdot4/2}$, which is the first case as well.
 At $n=13$ both $k_5$ and $\ell_5$ equal $30$, and $k_5(n)$ first exceeds $\ell_5(n)$ at $n=14$.
 
-The same care is needed for the Bollob\'{a}s--Erd\H{o}s conjecture of \Cref{sec:simple-vertex-blocks}.
-Its forcing number $1+\binom m2 p$ is for graphs on $1+(m-1)p$ vertices.
-Each copy of $K_m$ adds $\binom m2$ edges but only $m-1$ vertices, so in the notation of this thesis this gives $m/2$ edges per added vertex.
+The same care is needed for the conjecture of Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62}: every graph on $1+(m-1)p$ vertices with $1+\binom m2 p$ edges has two vertices joined by $m$ internally vertex-disjoint paths. The conjecture is false for $m\ge5$, as \Cref{sec:simple-vertex-blocks} shows.
+With one edge fewer there are graphs without such a pair: $p$ copies of $K_m$ that share one vertex.
+Each copy adds $\binom m2$ edges but only $m-1$ vertices, so in the notation of this thesis the conjecture says that $k_m(n)=m(n-1)/2$ when $m-1$ divides $n-1$, which is $m/2$ edges per added vertex.
 \end{remark}
 
 \subsection{The vertex problem is a block problem}\label{sec:simple-vertex-blocks}
@@ -143,9 +143,8 @@ The vertex problem $k_m(n)$ is open for $m\ge6$.
 This section reduces it to $2$-connected graphs (\Cref{thm:simple-vertex-blocks}).
 
 The words component, cut vertex and $k$-connected are defined in \Cref{ch:basecases}.
-A \emph{bridge} is an edge whose removal disconnects its component.
 A \emph{block} is a maximal connected subgraph that has an edge and no cut vertex of its own.
-In a simple graph, a block is either a bridge or a maximal $2$-connected subgraph.
+In a simple graph, a block is either a single edge or a maximal $2$-connected subgraph.
 
 Call $|E(G)|/(|V(G)|-1)$ the \emph{rate} of a graph $G$, with edges counted with multiplicity in a multigraph. It is the number of edges per vertex after the first.
 The next theorem says that an extremal graph is built from blocks: choose block sizes $b_i$, where a block of size $b_i$ costs $b_i-1$ vertices and gives at most $h_m(b_i)$ edges, with total cost at most $n-1$.
@@ -220,7 +219,7 @@ To see this, let $B$ be a $2$-connected block that is not a cycle.
 Since $B$ is $2$-connected, it contains a cycle $C$. Without one, $B$ would be a tree on at least three vertices, and every vertex of degree at least two in such a tree is a cut vertex.
 Since $B$ is connected and is not $C$, it has an edge $wz$ that is not on $C$, with $z$ on $C$.
 If $w$ is on $C$, let $P$ be this edge and let $y = w$.
-Otherwise, $B - z$ is still connected, so it has a path from $w$ to $C$. Let $y$ be the first vertex of $C$ on it, and let $P$ be the path $z, w, \dots, y$.
+Otherwise, $B - z$, the graph $B$ with $z$ and its edges removed, is still connected, so it has a path from $w$ to $C$. Let $y$ be the first vertex of $C$ on it, and let $P$ be the path $z, w, \dots, y$.
 In both cases $P$ joins two different vertices $z, y$ of $C$ and has no inner vertex on $C$.
 The cycle $C$ gives two internally vertex-disjoint $z$--$y$ paths, and $P$ is a third. This gives $\kap(z,y) \ge 3$, which breaks the condition.
 It follows that $h_3(2) = 1$ and $h_3(b) = b$ for $b \ge 3$, where $b$ is the length of the cycle.
@@ -231,7 +230,7 @@ Second, at $m = 4$, \Cref{thm:leonard} gives $h_4(b) = 2(b-1)$ for every $b \ge 
 The rate $h_4(b)/(b-1)$ is then $2$ for $b\ge4$, against $1$ at $b = 2$ and $3/2$ at $b = 3$.
 Every block thus gives at most $2$ edges per vertex it costs, which bounds $k_4(n)$ by $2(n-1)$. For $n\ge4$ a single block of size $n$ reaches this bound, giving $k_4(n) = 2(n-1)$.
 This uses \Cref{thm:leonard}, so it is not a new proof.
-It does show the extremal block: the hub-and-spokes graph $H_{4,b}$ of \Cref{const:hub-spokes}, with the graph on $v_0,\dots,v_{b-2}$ chosen to be one cycle, so that $H_{4,b}$ is a hub joined to all vertices of a cycle.
+It does show the extremal block: the hub graph $H_{4,b}$ of \Cref{const:hub-spokes}, with the graph on $v_0,\dots,v_{b-2}$ chosen to be one cycle, so that $H_{4,b}$ is a hub joined to all vertices of a cycle.
 It is a single block with $2(b-1)$ edges.
 
 Third, the Bollob\'as--Erd\H{o}s construction, copies of $K_m$ sharing one vertex, is the case $b = m$: $h_m(m) = \binom{m}{2}$, with rate $m/2$.
@@ -257,11 +256,10 @@ This is larger than $m/2$ for every $m \ge 5$, because
 At $m=5$, \Cref{thm:sorensen-thomassen} gives $k_5(14) = \floor{112/3} - 4 = 33$ edges on $14$ vertices. Its rate is $33/13 > 5/2$, so by the weighted average above a simple graph on $14$ vertices with $33$ edges and $\kap^{\max}\le4$ contains a block with rate above $5/2$.
 In summary, $c_m=m/2$ for $m\le4$, $c_5=8/3$ by \Cref{thm:sorensen-thomassen}, and $m/2<c_m\le m-1$ for $m\ge6$ by the next remark.
 
-\begin{remark}[Feasible graphs are $(m-1)$-degenerate]\label{rem:vertex-degeneracy}
+\begin{remark}[Feasible graphs have a vertex of small degree]\label{rem:vertex-degeneracy}
 A theorem of Mader \cite{Mader71,Mader73b} states that every simple graph of minimum degree at least $d \ge 2$ contains two adjacent vertices joined by $d$ internally vertex-disjoint paths.
 Consequently, every graph feasible for the vertex problem has a vertex of degree at most $m-1$.
 Since taking a subgraph cannot increase local vertex-connectivity, every non-empty subgraph of a feasible graph has such a vertex.
-A graph is \emph{$d$-degenerate} when every non-empty subgraph has a vertex of degree at most $d$. Every feasible graph is therefore $(m-1)$-degenerate.
 
 Delete from $G$ a vertex of degree at most $m-1$, then such a vertex from what is left, and continue until no vertex remains. Number the vertices $x_n,x_{n-1},\dots,x_1$ in the order of deletion. When $x_i$ is deleted, only $x_1,\dots,x_i$ are left. At that moment $x_i$ has at most $m-1$ neighbours among $x_1,\dots,x_{i-1}$, and at most $i-1$ because there are only $i-1$ of them. Every edge is counted once, at its end with the larger number. This gives
 \[
@@ -290,14 +288,13 @@ The ring arcs at $i$ go to $m-2$ different vertices, since $m-2 < N$. With the h
 Every ordered pair $(u,v)$ contains a vertex other than the hub.
 \Cref{lem:degree-bound} says that $\lec(u,v) \le d^+(u)$ and $\lec(u,v) \le d^-(v)$.
 Hence $\lec(u,v) \le m-1$, that is, $\lec^{\max} \le m-1$.
-At $m = 2$ there are no ring arcs, and we get the \emph{bidirected star}.
+At $m = 2$ there are no ring arcs, and we get the bidirected star.
 
 \begin{construction}[One-way bipartite directed graph]\label{const:bipartite}
-Split the vertices into parts $A$ and $B$ of sizes $\floor{n/2}$ and $\ceil{n/2}$, and include every arc from $A$ to $B$ and none the other way. The total is $\floor{n^2/4}$ arcs.
+Take $B_{\floor{n/2},\ceil{n/2}}$, defined in \Cref{sec:results}. It has $\floor{n^2/4}$ arcs.
 \end{construction}
 
-In this directed graph every arc goes from $A$ to $B$.
-Every route therefore has length one, and $\lec^{\max} = 1$.
+Every arc goes from $A$ to $B$, so every route has length one, and $\lec^{\max} = 1$.
 
 \begin{construction}[Augmented bipartite directed graph]\label{const:augmented-bipartite}
 For $n \ge m \ge 2$, set $|B| = \ceil{(n+m-2)/2}$ and $|A| = n - |B|$. Number the vertices of $B$ as $b_1, \dots, b_{|B|}$, and read the indices modulo $|B|$. Include every arc from $A$ to $B$, and inside $B$ give each $b_j$ the $m-2$ in-arcs from $b_{j-1}, \dots, b_{j-(m-2)}$. The total is $\floor{(n+m-2)^2/4}$ arcs.
@@ -497,6 +494,7 @@ At $m=2$ a feasible directed multigraph has no parallel arcs, since two copies o
 This subsection describes them for large $n$.
 The idea is to look at the proof of \Cref{lem:reach-skeleton} in the case of equality.
 Equality fixes the number of strongly connected components, then the shape of the skeleton, and then the multigraph.
+For $s,t \ge 1$, the \emph{complete bipartite graph} $K_{s,t}$ is the simple graph obtained by dividing $s+t$ vertices into two sets of sizes $s$ and $t$, and joining every two vertices from different sets.
 
 
 \begin{lemma}[What equality forces]\label{lem:equality-forces}
@@ -535,7 +533,7 @@ Let $R$ be as in \Cref{lem:equality-forces}, with parts $A$ and $B$. Then $R$ co
 \begin{proof}
 Suppose $u \to v \to w \to x$ is such a path, with four different vertices.
 Every arc of $R$ joins $A$ and $B$, so the path alternates between the parts. It has three arcs, so $u$ and $x$ lie in different parts.
-The underlying graph of $R$ is complete bipartite, so $R$ has an arc between $u$ and $x$.
+With directions ignored, $R$ is complete bipartite, so $R$ has an arc between $u$ and $x$.
 It cannot be $x \to u$, since that would close a directed cycle, and $D$ is acyclic.
 The arc $u \to x$ is therefore in $R$.
 But $u$ also reaches $x$ along the path, so $u\to x$ could be removed without changing reachability. This is a contradiction.
@@ -546,7 +544,7 @@ Let $m \ge 2$ and $n \ge \max(8,\, 2m)$, so that $M(n) = \floor{n^2/4}$. If $D$ 
 \[
     D \;\in\; \left\{(m-1) \cdot B_{\ceil{n/2},\,\floor{n/2}},\ (m-1) \cdot B_{\floor{n/2},\,\ceil{n/2}}\right\} ,
 \]
-where $B_{a,b}$ has all arcs from its part of size $a$ to its part of size $b$, each once, and $(m-1)\cdot B_{a,b}$ takes every arc $m-1$ times as in \Cref{lem:thickening}. These two directed graphs are the same up to renaming the vertices when $n$ is even, and reverses of each other when $n$ is odd.
+where $(m-1)\cdot B_{a,b}$ takes every arc $m-1$ times as in \Cref{lem:thickening}. These two directed graphs are the same up to renaming the vertices when $n$ is even, and reverses of each other when $n$ is odd.
 \end{theorem}
 
 \begin{proof}
@@ -653,7 +651,7 @@ For graphs ($r=2$) this is different: there, simplicity lowers the bound from $(
 
 
 
-The construction needs hypergraphs in which no vertex lies in too many hyperedges. The \emph{degree} of a vertex in a hypergraph is the number of hyperedges that contain it.
+The construction needs hypergraphs in which no vertex lies in too many hyperedges. The \emph{degree} $\deg(x)$ of a vertex $x$ in a hypergraph is the number of hyperedges that contain it.
 
 \begin{lemma}[Sparse uniform hypergraphs exist]\label{lem:sparse-hypergraph}
 Let $r$, $n$ and $d$ be integers with $r \ge 1$, $n \ge r$ and $0 \le d \le \binom{n-1}{r-1}$. There is a simple
@@ -671,7 +669,7 @@ We show that any two degrees in this family differ by at most one.
 Suppose instead that $\deg(x) \ge \deg(y) + 2$ for two vertices $x,y$.
 Let $a$ be the number of sets in the family that contain $x$ but not $y$, let $b$ be the number that contain $y$ but not $x$, and let $c$ be the number that contain both.
 Then $\deg(x) = a+c$ and $\deg(y) = b+c$, so $a - b = \deg(x) - \deg(y) \ge 2$.
-For a set $A$ that contains $x$ but not $y$, the set $A - x + y$ is an $r$-set that contains $y$ but not $x$.
+For a set $A$ that contains $x$ but not $y$, the set $A - x + y$, obtained from $A$ by removing $x$ and adding $y$, is an $r$-set that contains $y$ but not $x$.
 Different sets $A$ give different sets $A - x + y$, because $A$ can be recovered from $A-x+y$ by removing $y$ and adding $x$.
 This gives $a$ such new sets, but the family has only $b < a$ sets that contain $y$ but not $x$.
 For some $A$, the set $A - x + y$ is therefore not in the family.
@@ -804,9 +802,8 @@ $1\!-\!e_1\!-\!3\!-\!e_2\!-\!5$ alternating sides.}
 }
 \node[hub] at (0,0) {$h$};
 \end{tikzpicture}
-\caption{A star hypertree: every hyperedge $\{h\}\cup G_i$ shares only the
-hub $h$ (orange), and the other $r-1=2$ vertices of each block sit in a
-single hyperedge. Its incidence graph is a tree, so $\kap^{\max}\le1$.}
+\caption{A star hypertree: the hyperedges $\{h\}\cup W_i$ share only the
+hub $h$ (orange). Its incidence graph has no cycle, so $\kap^{\max}\le1$.}
 \label{fig:star-hypertree}
 \end{subfigure}
 \caption[Incidence translation]{The translation the vertex problem rests on.
@@ -814,7 +811,7 @@ Separated Berge paths in $\HH$ correspond exactly to
 internally vertex-disjoint paths in $I(\HH)$, so $\kap_\HH(u,v)=\kap_{I(\HH)}(u,v)$.
 \textbf{(top)} A hypergraph and its incidence graph with one Berge path
 drawn in both. \textbf{(bottom)} The star hypertree of
-\Cref{thm:hyper-vertex-m2}, whose incidence graph is a tree.}
+\Cref{thm:hyper-vertex-m2}, whose incidence graph has no cycle.}
 \label{fig:incidence}
 \end{figure}
 
@@ -909,7 +906,7 @@ $K_3(n) = 2(n-1)$ for every $n \ge 2$.
 
 \begin{proof}
 Apply \Cref{thm:hyper-vertex-m3,prop:hyper-vertex-lower-multi} at $r=2$.
-There the construction is the doubled star, which attains the upper bound $2(n-1)$.
+There the construction is the star with every edge doubled, which attains the upper bound $2(n-1)$.
 \end{proof}
 
 At $m = 3$ the vertex value therefore equals the edge value $L_3(n)$ of \Cref{thm:multigraph-edge}.
@@ -1042,7 +1039,7 @@ For a simple graph $G_0$ on $n$ vertices with $\kap^{\max}_{G_0} \le m-1$, the l
 \[
     W_m(G_0) \;:=\; \sum_{uv \in E(G_0)} \bigl(m - \kap_{G_0}(u,v)\bigr) ,
 \]
-and every simple graph arising as the underlying graph of a feasible multigraph satisfies $\kap^{\max}_{G_0} \le m-1$. Hence
+and every simple graph arising as the underlying simple graph of a feasible multigraph satisfies $\kap^{\max}_{G_0} \le m-1$. Hence
 \[
     K_m(n) \;=\; \max\bigl\{\, W_m(G_0) \;:\; G_0 \text{ simple on } n \text{ vertices},\ \kap^{\max}_{G_0} \le m-1 \,\bigr\} .
 \]
@@ -1051,8 +1048,8 @@ and every simple graph arising as the underlying graph of a feasible multigraph 
 \begin{proof}
 By \Cref{lem:multi-vertex-split}, a multigraph on $G_0$ is feasible exactly when $\mu(u,v) \le m-1-\pi(u,v)$ on every edge, so the best choice is $\mu(u,v) = m-1-\pi(u,v)$.
 On an edge, $\kap_{G_0}(u,v) = 1 + \pi(u,v)$, so this is $m - \kap_{G_0}(u,v)$, and the total is $W_m(G_0)$.
-It is at least one on every edge, since $\kap_{G_0}(u,v) \le m-1$, so the underlying graph is really $G_0$.
-The proof of \Cref{prop:multi-vertex-upper} shows that the underlying graph of a feasible multigraph is feasible.
+It is at least one on every edge, since $\kap_{G_0}(u,v) \le m-1$, so the underlying simple graph is really $G_0$.
+The proof of \Cref{prop:multi-vertex-upper} shows that the underlying simple graph of a feasible multigraph is feasible.
 Maximising $W_m$ over feasible $G_0$ therefore gives $K_m(n)$.
 \end{proof}
 
@@ -1148,8 +1145,8 @@ The splitting of $\kap$ into parallel arcs and longer routes also works for dire
 \Cref{cor:dir-multi-incidence} below gives the exact value at $m=2$ and the leading term for every fixed $m$.
 
 \begin{lemma}[Splitting the directed local vertex-connectivity]\label{lem:multi-vertex-split-dir}
-Let $D$ be a directed multigraph with multiplicity function $\mu$ and underlying simple
-directed graph $D_0$. For an ordered pair $u \ne v$, write $\pi(u,v)$ for the largest number
+Let $D$ be a directed multigraph with multiplicity function $\mu$, and let its underlying simple
+directed graph $D_0$ be the simple directed graph with an arc $u\to v$ whenever $\mu(u,v)\ge1$. For an ordered pair $u \ne v$, write $\pi(u,v)$ for the largest number
 of pairwise internally vertex-disjoint directed $u$--$v$ paths of length at least two in
 $D_0$. Then $\kap_D(u,v) = \mu(u,v) + \pi(u,v)$.
 \end{lemma}
@@ -1255,10 +1252,10 @@ Number the vertices of $B$ as $0,1,\dots,\beta-1$, and read the repeating sequen
 \[
     0,1,\dots,\beta-1,0,1,\dots
 \]
-in consecutive blocks of $k$ numbers.
-The first $N$ blocks are the hyperedges of a $k$-uniform multihypergraph $\mathcal G^*$ on $B$.
-Since $k\le \beta$, each block has $k$ different vertices.
-The blocks use the first $Nk$ positions of the sequence, so every vertex appears $\floor{Nk/\beta}$ or $\ceil{Nk/\beta}$ times.
+in segments of $k$ consecutive numbers.
+The first $N$ segments are the hyperedges of a $k$-uniform multihypergraph $\mathcal G^*$ on $B$.
+Since $k\le \beta$, each segment has $k$ different vertices.
+The segments use the first $Nk$ positions of the sequence, so every vertex appears $\floor{Nk/\beta}$ or $\ceil{Nk/\beta}$ times.
 Since $Nk\le d\beta$, we have $Nk/\beta \le d$, and since $d$ is an integer, $\ceil{Nk/\beta} \le d$. Every vertex therefore has degree at most $d$.
 
 Now, for every $a\in A$ and every $H\in\mathcal G^*$, add the hyperedge with tail $a$ and heads $H$.
