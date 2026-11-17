@@ -236,12 +236,12 @@ It is a single block with $2(b-1)$ edges.
 
 Third, the Bollob\'as--Erd\H{o}s construction, copies of $K_m$ sharing one vertex, is the case $b = m$: $h_m(m) = \binom{m}{2}$, with rate $m/2$.
 Their conjecture says that $c_m = m/2$, so that no block beats $K_m$.
-A \emph{bouquet} is a set of blocks that share one vertex and are otherwise disjoint.
-A bouquet with blocks $B_i$ of sizes $b_i$ has rate
+Take blocks $B_i$ of sizes $b_i$ that share one vertex and are otherwise disjoint.
+Together they have rate
 \[
     \frac{\sum_i |E(B_i)|}{\sum_i (b_i - 1)} \;=\; \sum_i \frac{b_i-1}{\sum_j (b_j-1)} \cdot \frac{|E(B_i)|}{b_i-1},
 \]
-a weighted average of the rates of its blocks.
+a weighted average of the rates of the blocks.
 For any graph $G$, the proof of \Cref{thm:simple-vertex-blocks} gives $|E(G)| = \sum_B |E(B)|$ and $|V(G)|-1 \ge \sum_B (|V(B)|-1)$.
 The rate of $G$ is therefore at most this weighted average for its own blocks, and some block has a rate at least the rate of $G$.
 In particular, a counterexample must contain a block with rate above $m/2$. A single edge has rate $1 \le m/2$, so this block is $2$-connected.
@@ -254,7 +254,7 @@ This is larger than $m/2$ for every $m \ge 5$, because
 \[
     2\bigl(m(m-1)-2\bigr) - m(2m-3) \;=\; m-4 .
 \]
-At $m=5$, \Cref{thm:sorensen-thomassen} gives $k_5(14) = \floor{112/3} - 4 = 33$ edges on $14$ vertices. Its rate is $33/13 > 5/2$, so by the bouquet argument above a simple graph on $14$ vertices with $33$ edges and $\kap^{\max}\le4$ contains a block with rate above $5/2$.
+At $m=5$, \Cref{thm:sorensen-thomassen} gives $k_5(14) = \floor{112/3} - 4 = 33$ edges on $14$ vertices. Its rate is $33/13 > 5/2$, so by the weighted average above a simple graph on $14$ vertices with $33$ edges and $\kap^{\max}\le4$ contains a block with rate above $5/2$.
 In summary, $c_m=m/2$ for $m\le4$, $c_5=8/3$ by \Cref{thm:sorensen-thomassen}, and $m/2<c_m\le m-1$ for $m\ge6$ by the next remark.
 
 \begin{remark}[Feasible graphs are $(m-1)$-degenerate]\label{rem:vertex-degeneracy}
@@ -913,44 +913,44 @@ There the construction is the doubled star, which attains the upper bound $2(n-1
 \end{proof}
 
 At $m = 3$ the vertex value therefore equals the edge value $L_3(n)$ of \Cref{thm:multigraph-edge}.
-At $m=5$ they differ: the thickened theta below gives $K_5(4)\ge14$, while $L_5(4)=12$.
+At $m=5$ they differ: the graph $K_{2,n-2}$ below gives $K_5(4)\ge14$, while $L_5(4)=12$.
 For $m=4$ this is open.
 For $m \ge 3$ there are three constructions.
 
 \begin{itemize}
-    \item \emph{The thickened tree.} Take a spanning tree and give every edge multiplicity $m-1$.
+    \item \emph{A tree.} Take a spanning tree with all multiplicities $m-1$.
     Tree edges have $\pi = 0$, and other pairs have $\pi = 1$, so it is feasible.
     It has $(m-1)(n-1)$ edges, the edge value of \Cref{thm:multigraph-edge}.
-    \item \emph{The thickened complete graph.} Give every edge of $K_n$ multiplicity $q$.
+    \item \emph{A complete graph.} Take $K_n$ with all multiplicities $q$.
     Here $\pi(u,v) = n-2$: each of the other $n-2$ vertices gives a route of length two, and together they separate $u$ from $v$ once the edge $uv$ is removed.
     So $\kap(u,v) = q + n - 2$, and it is feasible when $q \le m+1-n$.
     It has $\binom{n}{2}(m+1-n)$ edges, which is positive only when $n \le m$.
-    \item \emph{The thickened theta.} Choose two vertices, the \emph{poles}. Join each of the other $n-2$ vertices to both poles with multiplicity $m-2$, and join the poles with multiplicity $m+1-n$ if this is positive.
-    A non-pole is joined only to the two poles, so every route from it leaves through a pole.
-    So a pole and a non-pole have $\pi = 1$, and $\kap = (m-2) + 1 = m-1$.
-    Two non-poles are not adjacent and have $\kap = \pi = 2$.
-    The two poles have $\pi = n-2$, one route through each non-pole, so $\kap = \max(0,\,m+1-n) + n - 2$, which is $m-1$ when $n \le m+1$.
+    \item \emph{A complete bipartite graph.} Take $K_{2,n-2}$ with all multiplicities $m-2$, and call the two vertices of its part of size $2$ $x$ and $y$. Join $x$ and $y$ with multiplicity $m+1-n$ if this is positive.
+    A vertex other than $x,y$ is joined only to $x$ and $y$, so every route from it leaves through $x$ or $y$.
+    So $x$ or $y$ and another vertex have $\pi = 1$, and $\kap = (m-2) + 1 = m-1$.
+    Two vertices other than $x,y$ are not adjacent and have $\kap = \pi = 2$.
+    The pair $x,y$ has $\pi = n-2$, one route through each other vertex, so $\kap = \max(0,\,m+1-n) + n - 2$, which is $m-1$ when $n \le m+1$.
     So it is feasible when $n \le m+1$, and it has $2(n-2)(m-2) + \max(0,\, m+1-n)$ edges.
 \end{itemize}
 
-For $n \le m+1$ the theta has $2(n-2)(m-2) + (m+1-n)$ edges and the thickened tree has $(m-1)(n-1)$. Their difference is $(n-2)(m-4)$. The two agree at $m=4$, and for $m\ge5$ and $n\ge3$ the theta has more.
+For $n \le m+1$ the graph $K_{2,n-2}$ has $2(n-2)(m-2) + (m+1-n)$ edges and the tree has $(m-1)(n-1)$. Their difference is $(n-2)(m-4)$. The two agree at $m=4$, and for $m\ge5$ and $n\ge3$ the graph $K_{2,n-2}$ has more.
 For $n \ge m+2$ the other two constructions are not feasible, so among these three the tree has the most edges.
 
 
 
-For $m\ge5$, one triangle added to the thickened tree already beats it, also when $n\ge m+2$. The next result makes this precise.
+For $m\ge5$, one triangle added to the tree with all multiplicities $m-1$ already beats it, also when $n\ge m+2$. The next result makes this precise.
 
 Fix a connected simple graph $G_0$ with $\kap^{\max}_{G_0} \le m-1$.
 By \Cref{lem:multi-vertex-split}, the best multigraph on $G_0$ takes $\mu(u,v) = m-1-\pi(u,v)$ on every edge.
 Its size is $(m-1)\,|E(G_0)| - \sum_{uv \in E(G_0)} \pi(u,v)$.
-Since $|E(G_0)| = n - 1 + \mathrm{rank}(G_0)$, it beats the thickened tree exactly when
+Since $|E(G_0)| = n - 1 + \mathrm{rank}(G_0)$, it beats this tree exactly when
 \[
     \sum_{uv \in E(G_0)} \pi(u,v) \;<\; (m-1)\,\mathrm{rank}(G_0).
 \]
 
 
 
-\begin{theorem}[Bouquets of thickened complete graphs]\label{thm:clique-chain-vertex}
+\begin{theorem}[Complete graphs sharing one vertex]\label{thm:clique-chain-vertex}
 Let $3 \le s \le m$ and $q = m+1-s \ge 1$.
 Let $1 \le k \le \lfloor (n-1)/(s-1) \rfloor$.
 Take $k$ copies of $K_s$ that share one vertex $h$ and are otherwise disjoint, and give every edge multiplicity $q$.
@@ -961,7 +961,7 @@ This multigraph has $\kap^{\max} \le m-1$, and its number of edges is
     \qquad
     \mathrm{gain}(s,m) := \frac{(s-1)(s-2)(m-1-s)}{2}.
 \]
-It therefore beats the thickened tree exactly when $s \le m-2$. Such an $s$ exists when $m \ge 5$.
+It therefore beats the tree with all multiplicities $m-1$ exactly when $s \le m-2$. Such an $s$ exists when $m \ge 5$.
 \end{theorem}
 
 \begin{proof}
@@ -989,20 +989,20 @@ The number of edges is therefore
 \end{proof}
 
 At $s = 3$, $\mathrm{gain}(3,m) = m-4$. This is zero at $m = 4$ and positive for $m \ge 5$.
-For every $m\ge5$ the thickened tree is therefore not optimal, also when $n\ge m+2$.
+For every $m\ge5$ the tree with all multiplicities $m-1$ is therefore not optimal, also when $n\ge m+2$.
 For example, take $m=5$ and $n=7$.
 Put a triangle on $\{u_1, u_2, u_3\}$ with multiplicity $3$, and attach a path of four more vertices to $u_1$ with multiplicity $4$.
 Two triangle vertices have three parallel edges and one route through the third vertex, so $\kap = 4$.
 Every other pair is separated by a cut vertex or joined only by its parallel edges.
 This gives $\kap^{\max}=4 = m-1$.
-There are $3 \cdot 3 + 4 \cdot 4 = 25$ edges, one more than the thickened tree's $24$.
+There are $3 \cdot 3 + 4 \cdot 4 = 25$ edges, one more than the $24$ of the tree with all multiplicities $4$.
 With $k$ triangles the gain is $k$, so the gap grows linearly in $n$.
 
 Sharing a vertex lets more copies fit, since each new copy of $K_s$ uses only $s-1$ new vertices.
 The gain per added vertex is therefore $\mathrm{gain}(s,m)/(s-1) = (s-2)(m-1-s)/2$. The factors $s-2$ and $m-1-s$ add up to $m-3$. Their product is largest when they are about equal, at $s\approx(m+1)/2$, where the gain per vertex is about $(m-3)^2/8$.
 For sufficiently large $m$, choose an integer $s$ nearest to $(m+1)/2$, and take $k = \floor{(n-1)/(s-1)}$, which is at least $1$ once $n \ge m$.
 The gain per added vertex is then $m^2/8 + O(m)$, and rounding $k$ down loses at most one $\mathrm{gain}(s,m) = O(m^3)$ edges.
-This gives $K_m(n) \ge \bigl(\tfrac18 - O(1/m) - O(m/n)\bigr)m^2 n$, while the thickened tree gives only $(m-1)(n-1)$.
+This gives $K_m(n) \ge \bigl(\tfrac18 - O(1/m) - O(m/n)\bigr)m^2 n$, while the tree with all multiplicities $m-1$ gives only $(m-1)(n-1)$.
 
 This construction need not be optimal.
 The next result gives an upper bound of the same order.
@@ -1082,7 +1082,7 @@ In this way $K_m(n)$ can be computed from $2$-connected graphs: compute $W_m$ fo
 
 
 
-\begin{theorem}[Thickened complete bipartite blocks]\label{thm:multi-vertex-bipartite}
+\begin{theorem}[Complete bipartite blocks]\label{thm:multi-vertex-bipartite}
 Let $1 \le s \le t \le m-1$. Give every edge of $K_{s,t}$ multiplicity $m-s$. The result has $s+t$ vertices, $st(m-s)$ edges and $\kap^{\max} \le m-1$. Gluing $k$ such blocks at one shared vertex gives, for $n = k(s+t-1)+1$,
 \[
     K_m(n) \;\ge\; \frac{st\,(m-s)}{s+t-1}\,(n-1) .
@@ -1112,7 +1112,7 @@ The block has $st$ edges, each of multiplicity $m-s$, so $st(m-s)$ edges in tota
 
 \emph{Gluing.}
 If $s\ge2$, then $K_{s,t}$ is $2$-connected. By the gluing in the proof of \Cref{thm:multi-vertex-blocks}, $k$ copies at one shared vertex are feasible, with $k\,st(m-s)$ edges on $n = k(s+t-1)+1$ vertices.
-If $s=1$, then $K_{1,t}$ is a star, which is a tree, and every edge has multiplicity $m-1$. Gluing $k$ copies at one vertex gives a tree with every edge of multiplicity $m-1$. This is the thickened tree above, which is feasible. It has $k\,t(m-1) = k\,st(m-s)$ edges.
+If $s=1$, then $K_{1,t}$ is a star, which is a tree, and every edge has multiplicity $m-1$. Gluing $k$ copies at one vertex gives a tree with every edge of multiplicity $m-1$. This is the tree above, which is feasible. It has $k\,t(m-1) = k\,st(m-s)$ edges.
 Since $k = (n-1)/(s+t-1)$, the number of edges is $\frac{st(m-s)}{s+t-1}(n-1)$ in both cases.
 
 \emph{The best choice.}
@@ -1173,7 +1173,7 @@ and for each fixed $m \ge 2$,
     (m-1)M(n) \;\le\; K_m^{\mathrm{dir}}(n)
     \;\le\; (m-1)\floorfrac{n^2}{4} + (m-1)^2(n-1) .
 \]
-In particular $K_m^{\mathrm{dir}}(n) = (m-1)n^2/4 + O_m(n)$, and the thickened bipartite directed graph of \Cref{thm:dir-multi-full} has the right leading term here too.
+In particular $K_m^{\mathrm{dir}}(n) = (m-1)n^2/4 + O_m(n)$, and the one-way bipartite directed graph with all multiplicities $m-1$ of \Cref{thm:dir-multi-full} has the right leading term here too.
 \end{corollary}
 
 \begin{proof}
@@ -1187,7 +1187,7 @@ A directed multigraph is a forward directed $2$-uniform multihypergraph: each ar
 For $n\ge7$ we have $M(n)=\floor{n^2/4}$. Both bounds are then $(m-1)n^2/4 + O_m(n)$.
 \end{proof}
 
-\begin{construction}[Thickened complete directed graph, and its bouquet]\label{const:dir-multi-vertex-blocks}
+\begin{construction}[Complete directed graph]\label{const:dir-multi-vertex-blocks}
 For $2 \le b \le m$, take the complete directed graph on $b$ vertices and give every arc
 multiplicity $m+1-b$. At $b=2$ this is one bidirected edge at multiplicity $m-1$.
 Hanging $k$ such blocks off one shared vertex, pairwise disjoint otherwise, uses
@@ -1212,14 +1212,14 @@ Two vertices in different blocks are separated by the common vertex, so $\kap \l
 A block of size $b$ has $b(b-1)$ ordered pairs, each with $m+1-b$ arcs.
 \end{proof}
 
-At $n=3$ and $m=6$, the thickened complete directed graph has $24$ arcs, more than $(m-1)M(3)=20$.
+At $n=3$ and $m=6$, the complete directed graph with all multiplicities $4$ has $24$ arcs, more than $(m-1)M(3)=20$.
 It is feasible: every route of length at least two passes through the third vertex, so $\pi = 1$ and $\kap = 4 + 1 = 5 = m-1$ for every ordered pair.
 The extremal multigraphs of the arc problem are therefore not optimal for the vertex problem.
 
 For small $n$ the block construction is larger, and for large $n$ the bipartite construction is larger.
 A block of size $b$ costs $b-1$ vertices and has $b(b-1)(m+1-b)$ arcs, which is $b(m+1-b)$ arcs per vertex it costs.
-At $m=3$ this is $4$ for $b=2$ and $3$ for $b=3$. The best block is then a bidirected edge, the bouquet is the thickened bidirected tree, and the bipartite construction is larger from $n=8$.
-At $m=6$ the values are $10$, $12$, $12$, $10$ and $6$ for $b=2,\dots,6$. The best blocks have three or four vertices. The bouquet has $84$ arcs at $n=8$, against $80$, and the bipartite construction is larger from $n=9$.
+At $m=3$ this is $4$ for $b=2$ and $3$ for $b=3$. The best block is then a bidirected edge, these blocks sharing one vertex form the bidirected tree with all multiplicities $2$, and the bipartite construction is larger from $n=8$.
+At $m=6$ the values are $10$, $12$, $12$, $10$ and $6$ for $b=2,\dots,6$. The best blocks have three or four vertices. Such blocks sharing one vertex have $84$ arcs at $n=8$, against $80$, and the bipartite construction is larger from $n=9$.
 
 \section{The directed hypergraph}\label{sec:dir-hyper}
 

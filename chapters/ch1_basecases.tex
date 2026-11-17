@@ -1049,9 +1049,9 @@ For all $n \ge 1$ and $r \ge 2$,
 
 The upper bound at $m=3$ uses \Cref{lem:hyper-cut-induction}, as in the proof of \Cref{prop:hyper-edge}.
 At $m=3$, the edge problem and the vertex problem allow exactly the same multihypergraphs.
-The proof uses a \emph{theta}: three paths between two vertices $a \ne b$ that pairwise share no edge and no inner vertex.
+The proof looks for three paths between two vertices $a \ne b$ that pairwise share no edge and no inner vertex.
 
-\begin{lemma}[Theta lemma]\label{lem:theta}
+\begin{lemma}[Edge and vertex conditions at $m=3$]\label{lem:theta}
 Let $\HH$ be a multihypergraph, not assumed uniform. Then $\kap^{\max}_\HH \le 2$ exactly when $\lec^{\max}_\HH \le 2$.
 \end{lemma}
 
@@ -1074,15 +1074,15 @@ $C_3$ therefore has an edge that is not an edge of $C_2$.
 Follow $C_3$ from this edge in both directions until it first reaches a vertex of $C_2$.
 This gives a path $S$ between two vertices $a,b$ of $C_2$, with no edge of $C_2$ and no inner vertex on $C_2$.
 The vertices $a$ and $b$ are different. $C_3$ passes each of its vertices once, and it meets $C_2$ in at least the two ends of $e$, so $S$ cannot run all the way round $C_3$.
-The two $a$--$b$ arcs of $C_2$ and the path $S$ form a theta.
+The two $a$--$b$ arcs of $C_2$ and the path $S$ are three such paths.
 Parallel edges may occur in $G$, and a cycle may then have only two edges. The argument is the same.
 
-Now put the hyperedge copies back. The edges of the theta come from different copies, so its three paths become three $a$--$b$ routes in $\HH$ that share no hyperedge copy.
+Now put the hyperedge copies back. The edges of these three paths come from different copies, so they become three $a$--$b$ routes in $\HH$ that share no hyperedge copy.
 Their inner vertices are the inner vertices of the three paths, which are disjoint.
 The three routes are therefore separated, and $\kap_\HH(a,b) \ge 3$.
 \end{proof}
 
-The theta may join a different pair than $u,v$.
+The three paths may join a different pair than $u,v$.
 In two triangles that share one vertex, a vertex of one triangle and a vertex of the other have $\lec = 2$ and $\kap = 1$, while $\lec^{\max} = \kap^{\max} = 2$.
 The lemma is about the largest values over all pairs, not about each pair.
 
@@ -1162,13 +1162,13 @@ For all $n \ge 2$ and $m \ge 2$,
 \]
 \end{theorem}
 
-The lower bound uses thickened trees and thickened one-way bipartite directed graphs.
+The lower bound uses trees and one-way bipartite directed graphs with all multiplicities $m-1$.
 
 
 
 If we multiply every multiplicity by the same integer, every cut and so every connectivity is multiplied by that integer.
 
-\begin{lemma}[Thickening]\label{lem:thickening}
+\begin{lemma}[Multiplying all multiplicities]\label{lem:thickening}
 Let $D_0$ be a directed multigraph and $k \ge 1$ an integer. Write $k \cdot D_0$ for the multigraph obtained by multiplying every multiplicity $\mu(u,v)$ by $k$. Then $\lec_{k \cdot D_0}(u,v) = k \cdot \lec_{D_0}(u,v)$ for every ordered pair $u \ne v$, and $|A(k \cdot D_0)| = k\,|A(D_0)|$.
 \end{lemma}
 
@@ -1179,11 +1179,11 @@ It therefore multiplies the smallest cut by $k$ too.
 The number of arcs is also multiplied by $k$.
 \end{proof}
 
-\begin{construction}[Thickened tree and thickened bipartite directed graph]\label{const:dir-multi-lower}
+\begin{construction}[Tree and bipartite directed graph with all multiplicities $m-1$]\label{const:dir-multi-lower}
 Let $m \ge 2$.
 (a) Take any tree on the $n$ vertices and put $m-1$ arcs in each direction on every tree edge.
 With one arc in each direction this is the bidirected tree. Each ordered pair is joined by exactly one directed path, which follows the path of the tree, giving $\lec^{\max} = 1$.
-By \Cref{lem:thickening}, the thickened tree then has $\lec^{\max} = m-1$ and $2(m-1)(n-1)$ arcs.
+By \Cref{lem:thickening}, the tree with all multiplicities $m-1$ then has $\lec^{\max} = m-1$ and $2(m-1)(n-1)$ arcs.
 (b) Take the one-way bipartite directed graph of \Cref{const:bipartite} and repeat every arc $m-1$ times.
 By the same lemma it has $\lec^{\max} = m-1$ and $(m-1)\floor{n^2/4}$ arcs.
 \end{construction}
