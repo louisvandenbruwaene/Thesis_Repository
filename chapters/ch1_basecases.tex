@@ -615,7 +615,6 @@ For undirected graphs the four functions satisfy
 \]
 The outer inequalities come from relaxing a constraint. Separated routes are also edge-disjoint, so $\kap\le\lec$, and every graph with $\lec^{\max}\le m-1$ also has $\kap^{\max}\le m-1$. This gives $\ell_m(n)\le k_m(n)$ and $L_m(n)\le K_m(n)$. Every simple graph is also a multigraph, which gives $\ell_m(n)\le L_m(n)$ and $k_m(n)\le K_m(n)$ as well.
 The middle inequality compares the vertex problem for simple graphs with the edge problem for multigraphs, and no relaxation turns one into the other. It follows from the count in \Cref{rem:vertex-degeneracy}, where every term is at most $m-1$, so $k_m(n)\le(m-1)(n-1)$, and from the exact value $L_m(n)=(m-1)(n-1)$ of \Cref{thm:multigraph-edge}.
-This argument is for undirected graphs, and the chain is stated only for them.
 
 Menger's theorem, the Gomory--Hu tree, Mader's bound and the exact value $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ are classical.
 The results of B\'{a}rtfai, Bollob\'{a}s and Leonard (\Cref{thm:leonard}) and of S{\o}rensen and Thomassen (\Cref{thm:sorensen-thomassen}) are classical as well.
@@ -648,9 +647,7 @@ For all $n\ge m$ and $2\le m\le4$,
 \]
 \end{theorem}
 
-Since $\kap\le\lec$, every graph with $\lec^{\max}\le m-1$ also has $\kap^{\max}\le m-1$.
-Hence $k_m(n)\ge\ell_m(n)$ (\Cref{fig:divergence}).
-S{\o}rensen and Thomassen showed that the two differ for $m=5$.
+S{\o}rensen and Thomassen showed that the two differ for $m=5$ (\Cref{fig:divergence}).
 
 \begin{theorem}[S{\o}rensen--Thomassen \cite{SorensenThomassen74}]\label{thm:sorensen-thomassen}
 For simple graphs,
@@ -1097,10 +1094,6 @@ Since $q$ is an integer, $q \le \floor{2(n-1)/(r-1)}$.
 
 \emph{Lower bound, simple.}
 For $2 < r < n$, this is \Cref{prop:hyper-vertex-lower} at $m = 3$. It needs $2 \le \binom{n-2}{r-2}$, which holds exactly when $2 < r < n$. At $r=2$ and at $r=n$ the binomial coefficient equals $1$. When $2<r<n$ we have $1\le r-2\le n-3$, and the coefficient is at least $n-2\ge2$.
-
-\emph{The edge value.}
-Since $\kap\le\lec$, every hypergraph with $\lec^{\max}\le2$ also has $\kap^{\max}\le2$, so $\ell_3^{(r)}(n)\le k_3^{(r)}(n)$.
-For $2<r<n$, \Cref{prop:hyper-edge} gives a simple hypergraph with $\lec^{\max}\le2$ and $\floor{2(n-1)/(r-1)}$ hyperedges, so $\ell_3^{(r)}(n)$ also equals the bound.
 
 \emph{Lower bound, multihypergraphs.}
 For every $n \ge r$, \Cref{prop:hyper-vertex-lower-multi} gives it.

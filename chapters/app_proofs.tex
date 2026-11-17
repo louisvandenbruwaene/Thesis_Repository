@@ -719,8 +719,6 @@ The bound at $m=2$ uses the incidence graph, where $\kap_\HH(u,v)=\kap_{I(\HH)}(
 
 \begin{figure}[htbp]
 \centering
-\begin{subfigure}[b]{0.99\textwidth}
-\centering
 \begin{tikzpicture}[scale=1.0]
 % ----- left: hypergraph H, 3-uniform, vertices 1..6, hyperedges e1,e2,e3 ---
 \begin{scope}
@@ -772,46 +770,12 @@ The bound at $m=2$ uses the incidence graph, where $\kap_\HH(u,v)=\kap_{I(\HH)}(
   \node[font=\small] at (1.2,-3.0) {incidence graph $I(\HH)$};
 \end{scope}
 \end{tikzpicture}
-\caption{A $3$-uniform hypergraph $\HH$ (left) and its bipartite incidence
-graph $I(\HH)$ (right): circles for vertices, hollow squares for hyperedges,
-an edge when the vertex lies in the hyperedge. The Berge path
-$1\,e_1\,3\,e_2\,5$ is traced in orange in both pictures. In $\HH$ it rides the
-red line $e_1$ and the blue line $e_2$, changing at the shared vertex $3$, while
-the grey line $e_3$ lies off it. In $I(\HH)$ it is the ordinary path
-$1\!-\!e_1\!-\!3\!-\!e_2\!-\!5$ alternating sides.}
-\label{fig:incidence-berge}
-\end{subfigure}
-
-\medskip
-\begin{subfigure}[b]{0.99\textwidth}
-\centering
-\begin{tikzpicture}[
-   stn/.style={metrostop, minimum size=5.5mm},
-   hub/.style={metrostop, minimum size=8mm, draw=vertexorange!90!black,
-               fill=vertexorange!45, line width=1.3pt}]
-% star hypertree: each hyperedge {h,u_i,w_i} is one metro line through the hub,
-% leaving radially to an inner station and bending to an outer one.
-\begin{scope}[on background layer]
-  \foreach \ang/\col in {90/metroA, 210/metroB, 330/metroC}{
-    \draw[metro, \col] (0,0) -- (\ang:1.5) -- ({\ang+22}:2.5);
-  }
-\end{scope}
-\foreach \ang in {90,210,330}{
-  \node[stn] at (\ang:1.5) {};
-  \node[stn] at ({\ang+22}:2.5) {};
-}
-\node[hub] at (0,0) {$h$};
-\end{tikzpicture}
-\caption{A star hypertree: the hyperedges $\{h\}\cup W_i$ share only the
-hub $h$ (orange). Its incidence graph has no cycle, so $\kap^{\max}\le1$.}
-\label{fig:star-hypertree}
-\end{subfigure}
 \caption[Incidence translation]{The translation the vertex problem rests on.
 Separated Berge paths in $\HH$ correspond exactly to
 internally vertex-disjoint paths in $I(\HH)$, so $\kap_\HH(u,v)=\kap_{I(\HH)}(u,v)$.
-\textbf{(top)} A hypergraph and its incidence graph with one Berge path
-drawn in both. \textbf{(bottom)} The star hypertree of
-\Cref{thm:hyper-vertex-m2}, whose incidence graph has no cycle.}
+A $3$-uniform hypergraph $\HH$ (left) and its incidence graph $I(\HH)$ (right):
+circles for vertices, hollow squares for hyperedges, an edge when the vertex lies
+in the hyperedge. The Berge path $1\,e_1\,3\,e_2\,5$ is traced in orange in both.}
 \label{fig:incidence}
 \end{figure}
 
@@ -855,7 +819,6 @@ At $m = 3$ its size equals the upper bound of \Cref{thm:hyper-vertex-m3}.
 At $r = 2$ the hypergraph vertex problems are about multigraphs.
 They are not the same as the simple problems.
 Recall that $q$ parallel copies of $uv$ count as $q$ internally vertex-disjoint routes.
-Write $K_m(n)$ for the largest number of edges, counted with multiplicity, of a multigraph on $n$ vertices with $\kap^{\max} \le m-1$.
 
 The parallel edges and the longer routes do not interfere, so we can count them separately.
 
@@ -1128,8 +1091,6 @@ Its value there is
 \]
 Since $3 - 2\sqrt{2} \approx 0.172 > \tfrac18$, this is larger than the rate of \Cref{thm:clique-chain-vertex}.
 \end{proof}
-
-In the best choice, one side has about $0.41m$ vertices and the other has $m-1$.
 
 For other $n$ with $n \ge s+t$, glue $k = \floor{(n-1)/(s+t-1)}$ blocks at one shared vertex, and join each remaining vertex to the shared vertex by one edge.
 Each such vertex has one neighbour, so the multigraph stays feasible.
