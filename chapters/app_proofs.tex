@@ -142,7 +142,8 @@ Each copy adds $\binom m2$ edges but only $m-1$ vertices, so in the notation of 
 The vertex problem $k_m(n)$ is open for $m\ge6$.
 This section reduces it to $2$-connected graphs (\Cref{thm:simple-vertex-blocks}).
 
-The words component, cut vertex and $k$-connected are defined in \Cref{ch:basecases}.
+A \emph{cut vertex} is a vertex whose removal disconnects the graph, that is, leaves more components than before.
+A graph on more than $k$ vertices is \emph{$k$-connected} if removing fewer than $k$ vertices always leaves it connected.
 A \emph{block} is a maximal connected subgraph that has an edge and no cut vertex of its own.
 In a simple graph, a block is either a single edge or a maximal $2$-connected subgraph.
 
@@ -897,10 +898,10 @@ For $m \ge 3$ there are three constructions.
 For $n \le m+1$ the graph $K_{2,n-2}$ has $2(n-2)(m-2) + (m+1-n)$ edges and the tree has $(m-1)(n-1)$. Their difference is $(n-2)(m-4)$. The two agree at $m=4$, and for $m\ge5$ and $n\ge3$ the graph $K_{2,n-2}$ has more.
 For $n \ge m+2$ the other two constructions are not feasible, so among these three the tree has the most edges.
 
-
-
 For $m\ge5$, one triangle added to the tree with all multiplicities $m-1$ already beats it, also when $n\ge m+2$. The next result makes this precise.
 
+For a connected multigraph $G$, the \emph{cycle rank} is $\mathrm{rank}(G) = |E(G)| - |V(G)| + 1$.
+A tree has cycle rank $0$, and each extra edge raises it by one.
 Fix a connected simple graph $G_0$ with $\kap^{\max}_{G_0} \le m-1$.
 By \Cref{lem:multi-vertex-split}, the best multigraph on $G_0$ takes $\mu(u,v) = m-1-\pi(u,v)$ on every edge.
 Its size is $(m-1)\,|E(G_0)| - \sum_{uv \in E(G_0)} \pi(u,v)$.

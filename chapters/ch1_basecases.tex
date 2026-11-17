@@ -1083,24 +1083,11 @@ The two problems allow the same simple hypergraphs, and $k_3^{(r)}(n) = \ell_3^{
 For $n < r$ both values are $0$, and for $n = r$ both are $1$.
 \end{proof}
 
-\begin{remark}[\Cref{lem:theta} fails at $m=4$]
-\label{rem:hyper-vertex-m3-scope}
-In a triangle with every edge doubled, two vertices are joined by their two parallel edges and by one more separated route through the third vertex, so $\kap^{\max} = 3$.
-Using both copies of the other two edges gives four edge-disjoint routes, so $\lec^{\max} = 4$.
-For $m = 4$ a different bound would be needed.
-\end{remark}
-
 For $r=2$ these results are about multigraphs.
 They give $K_2(n)=n-1$, attained by trees, and $K_3(n)=2(n-1)$, attained by a tree with every edge doubled (\Cref{cor:multi-vertex-m3}).
 For $m=5$ the vertex and edge values differ. On four vertices, join two of them by $2$ parallel edges, and join each of the other two to both of them by $3$ parallel edges. This multigraph has $14$ edges and $\kap^{\max}=4$ (\Cref{sec:multi-vertex}), while $L_5(4)=12$.
 For $m=4$ this is open.
 \Cref{sec:multi-vertex} discusses larger $m$.
-
-The multigraph results of \Cref{sec:multi-vertex} and the block decomposition in \Cref{app:proofs} use three more words.
-For a connected multigraph $G$, the \emph{cycle rank} is $\mathrm{rank}(G) = |E(G)| - |V(G)| + 1$.
-A tree has cycle rank $0$, and each extra edge raises it by one.
-A \emph{cut vertex} is a vertex whose removal disconnects the graph, that is, leaves more components than before.
-A graph on more than $k$ vertices is \emph{$k$-connected} if removing fewer than $k$ vertices always leaves it connected.
 
 \subsection{Directed bounds for \texorpdfstring{$m\ge3$}{m>=3}}
 
