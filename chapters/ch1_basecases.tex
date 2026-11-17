@@ -938,21 +938,14 @@ Every pair contains such a vertex, and every route from or to it uses one of the
 Removing these copies therefore separates the pair, and every pair has $\lec\le m-1$.
 There are $q = \floorfrac{(m-1)(n-1)}{r-1}$ hyperedge copies.
 
-When $r-1$ divides $n-1$, the segments are the sets $W_1, W_2, \dots$ of a split of the other $n-1$ vertices into sets of size $r-1$, each repeated $m-1$ times.
-A \emph{star hypertree} has a vertex $h$, its hub, and the hyperedges $\{h\} \cup W_i$ for disjoint sets $W_i$ of $r-1$ vertices other than $h$. Its hyperedges share only $h$, and the vertices outside them lie in no hyperedge.
-The construction is then a star hypertree with every hyperedge at multiplicity $m-1$.
-
 If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} below attains the bound with a simple hypergraph.
 If $r = 2$, this condition means $m = 2$. Then the bound is $n-1$, and a tree attains it.
 \end{proof}
 
-The star hypertree of \Cref{fig:hyper-star} attains the bound at $m=2$.
-For $r\ge3$, simple hypergraphs attain the bound whenever $m-1\le\binom{n-2}{r-2}$ (\Cref{thm:simple-hyper-edge}).
-For $r\ge3$, unlike for graphs, repeated edges therefore often do not help.
-The condition says that there are enough different hyperedges.
-When it fails, the simple value can be smaller.
-For example, at $n=r=m=3$ there is only one possible hyperedge.
-A simple hypergraph has one hyperedge, while a multihypergraph can have two copies of it (\Cref{rem:simple-hyper-necessary}).
+A \emph{star hypertree} has a vertex $h$, its hub, and the hyperedges $\{h\} \cup W_i$ for disjoint sets $W_i$ of $r-1$ vertices other than $h$. At $m=2$ it attains the bound (\Cref{fig:hyper-star}).
+For $r\ge3$, unlike for graphs, repeated hyperedges often do not help, since simple hypergraphs attain the bound whenever $m-1\le\binom{n-2}{r-2}$.
+When $m-1>\binom{n-2}{r-2}$ there are too few different hyperedges, and the simple value can be smaller.
+At $n=r=m=3$ there is only one possible hyperedge, so a simple hypergraph has one hyperedge, while a multihypergraph can have two copies of it (\Cref{rem:simple-hyper-necessary}).
 
 \begin{figure}[ht]
 \centering
@@ -1009,8 +1002,9 @@ A forest on $n + q$ nodes has at most $n + q - 1$ edges, because each of its com
 This gives $rq \le n + q - 1$, that is, $q \le (n-1)/(r-1)$. Since $q$ is an integer, $q \le \floor{(n-1)/(r-1)}$.
 
 \emph{Lower bound.}
-Take the star hypertree with $\floor{(n-1)/(r-1)}$ hyperedges, and leave the remaining vertices in no hyperedge.
-Its hyperedges meet only at the hub, and every other vertex lies in at most one hyperedge, so its incidence graph is a forest. It therefore has $\kap^{\max} \le 1$, and it is simple.
+Fix a hub $h$. Since $\floor{(n-1)/(r-1)}\,(r-1) \le n-1$, the other vertices contain $\floor{(n-1)/(r-1)}$ disjoint sets $W_i$ of $r-1$ vertices.
+The star hypertree with the hyperedges $\{h\} \cup W_i$ is simple.
+Its hyperedges meet only at the hub, and every other vertex lies in at most one hyperedge, so its incidence graph is a forest. It therefore has $\kap^{\max} \le 1$.
 
 \emph{The three values agree.}
 The star hypertree also has $\lec^{\max} \le 1$, since removing the one hyperedge at a non-hub vertex separates it from every other vertex.
