@@ -4,7 +4,7 @@ The definitions are in \Cref{ch:basecases}. New terms are defined where they are
 
 The appendix has three parts.
 \textsc{Part I} is about undirected graphs, \textsc{Part II} about directed graphs, and \textsc{Part III} about hypergraphs.
-Part II introduces the two-step budget, a bound on the number of routes with at most one inner vertex between every two vertices, and Part III uses it again for directed hypergraphs.
+Part III uses the two-step budget of \Cref{ch:basecases} for directed hypergraphs.
 
 
 
@@ -273,7 +273,7 @@ Delete from $G$ a vertex of degree at most $m-1$, then such a vertex from what i
 Hence $c_m \le m-1$.
 \end{remark}
 
-\apppart{Part II. Directed graphs}{The directed constructions, the bounds for $m\ge3$, and the extremal directed multigraphs.}
+\apppart{Part II. Directed graphs}{The directed constructions and the extremal directed multigraphs.}
 
 \section{The directed constructions}\label{sec:dir-constructions}
 
@@ -390,93 +390,6 @@ For fixed $m$ and large $n$ the augmented bipartite directed graph has more arcs
 \label{fig:augmented-wall}
 \end{figure}
 
-
-\section{Simple directed graphs for \texorpdfstring{$m\ge3$}{m>=3}}
-
-\subsection{The two-step budget}\label{sec:two-step-budget}
-
-\begin{definition}[Two-step budget]\label{def:two-step-budget}
-Let $D$ be a simple directed graph and $C \ge 1$. For $u\ne v$, let $p_2(u,v)$ be the number of vertices $x \notin \{u,v\}$ with arcs $u\to x$ and $x\to v$. Such an $x$ is the \emph{midpoint} of the route $u \to x \to v$. We call $D$ \emph{$C$-budgeted} if every ordered pair $(u,v)$ of distinct vertices satisfies
-\[
-    \mathbf{1}_{(u,v) \in A(D)} + p_2(u,v) \;\le\; C .
-\]
-\end{definition}
-
-\begin{lemma}[Feasibility implies a budget]\label{lem:feasible-budgeted}
-Let $D$ be a simple directed graph and $m \ge 2$. If $\lec^{\max}_D \le m-1$, or if $\kap^{\max}_D \le m-1$, then $D$ is $(m-1)$-budgeted.
-\end{lemma}
-
-\begin{proof}
-Fix an ordered pair $(u,v)$.
-Take the arc $u\to v$, if it exists, and the route $u\to x\to v$ for each of the $p_2(u,v)$ midpoints $x$.
-Two routes with different midpoints use different arcs, and none of them uses the arc $u\to v$, which makes the routes arc-disjoint.
-Each two-step route has one inner vertex, its midpoint, and the arc has none.
-The routes are therefore also internally vertex-disjoint.
-This makes their number at most $\lec_D(u,v)$ and at most $\kap_D(u,v)$, and either condition gives at most $m-1$.
-\end{proof}
-
-\begin{lemma}[The arc bound for budgeted directed graphs]\label{lem:two-step-budget}
-Every $C$-budgeted simple directed graph $D$ on $n \ge 2$ vertices satisfies
-\[
-    |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; C(n-1).
-\]
-\end{lemma}
-
-\begin{proof}
-Let $v$ be a vertex of largest out-degree, and write $\Delta = d^+(v)$.
-Let $N^+(v)$ be the set of the $\Delta$ vertices $x$ with $v \to x$, and let $\delta(v)$ be the number of those $x$ that also have $x \to v$, so that $\delta(v) \le \Delta$.
-
-First we count the routes of length two that start at $v$.
-We count the pairs $(x,w)$ with $v\to x$, $x\to w$ and $w\ne v$ in two ways.
-Fixing $w \ne v$ first gives the midpoints of the routes $v\to x\to w$. The conditions $x\ne v$ and $x\ne w$ hold automatically, since $v\to x$ and $x\to w$. This count is $\sum_{w\ne v} p_2(v,w)$.
-Fixing $x \in N^+(v)$ first gives the $d^+(x)$ out-neighbours of $x$, minus one exactly when $x\to v$, which gives $\sum_{x\in N^+(v)} d^+(x) - \delta(v)$ in total.
-Therefore
-\[
-    \sum_{w\ne v} p_2(v,w) \;=\; \sum_{x\in N^+(v)} d^+(x) \;-\; \delta(v).
-\]
-
-Adding the budget over the $n-1$ pairs $(v,w)$ with $w\ne v$ gives
-\[
-    \Delta \;+\; \sum_{x\in N^+(v)} d^+(x) \;-\; \delta(v) \;\le\; C(n-1),
-\]
-since $v$ has $\Delta$ out-arcs. With $\delta(v)\le\Delta$ this gives $\sum_{x\in N^+(v)} d^+(x) \le C(n-1)$.
-
-Now we count the arcs by their tails, since every arc has one tail. Split the vertices into $v$, the set $N^+(v)$, and the remaining $n-1-\Delta$ vertices, each of out-degree at most $\Delta$. So
-\[
-    |A(D)| \;\le\; \Delta \;+\; C(n-1) \;+\; (n-1-\Delta)\,\Delta \;=\; C(n-1) \;+\; \Delta(n-\Delta).
-\]
-Finally $\Delta(n-\Delta) = n^2/4 - (\Delta-n/2)^2 \le n^2/4$, and $\Delta(n-\Delta)$ is an integer, so $\Delta(n-\Delta)\le\floor{n^2/4}$.
-\end{proof}
-
-We can now prove \Cref{thm:dir-arc-linear-error}.
-
-\begin{restated}{\Cref{thm:dir-arc-linear-error}}
-For all $m \ge 2$ and $n \ge 2$, every simple directed graph $D$ on $n$ vertices with $\lec^{\max}_D \le m-1$, or with $\kap^{\max}_D \le m-1$, satisfies
-\[
-    |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; (m-1)(n-1),
-\]
-so for each fixed $m \ge 3$, both $\ell_m^{\mathrm{dir}}(n)$ and $k_m^{\mathrm{dir}}(n)$ equal $n^2/4 + \Theta_m(n)$.
-\end{restated}
-
-\begin{proof}[Proof of \Cref{thm:dir-arc-linear-error}]
-\emph{Upper bound.}
-By \Cref{lem:feasible-budgeted}, a simple directed graph with $\lec^{\max}_D \le m-1$ or with $\kap^{\max}_D \le m-1$ is $(m-1)$-budgeted.
-\Cref{lem:two-step-budget} with $C = m-1$ then gives the stated bound.
-
-\emph{Lower bound.}
-The directed graph of \Cref{const:augmented-bipartite} has $\lec^{\max} \le m-1$ (\Cref{lem:augmented-feasible}). Since $\kap \le \lec$, also $\kap^{\max} \le m-1$. For $n\ge m$ this gives
-\[
-    k_m^{\mathrm{dir}}(n) \;\ge\; \ell_m^{\mathrm{dir}}(n) \;\ge\; \floorfrac{(n+m-2)^2}{4}
-    \;=\; \frac{n^2}{4} + \frac{(m-2)n}{2} + O_m(1).
-\]
-For $m\ge3$ the term $(m-2)n/2$ is positive. Both functions are therefore $n^2/4$ plus a term that lies between two positive constant multiples of $n$.
-\end{proof}
-
-The linear coefficient is not known.
-The construction gives $(m-2)n/2$, and \Cref{thm:dir-arc-linear-error} allows $(m-1)n$.
-A theorem of Huang and Lyu \cite[Theorem~2]{HuangLyu26}, with $t=m-1\ge2$, also gives the linear term $(m-1)n$, for $n\ge\max(t^3+4t^2+3t+4,\ 17t^2/2+30t+27)$.
-It applies because a feasible directed graph has at most $m-1$ paths of length two between any two vertices (\Cref{lem:feasible-budgeted}).
-\Cref{thm:dir-arc-linear-error} holds for every $n$.
 
 \section{The extremal directed multigraphs}\label{sec:dir-multi}
 
@@ -1277,78 +1190,9 @@ This gives $(r-1)|E| \le (m-1)n(n-1)$.
 \end{proof}
 
 These bounds fix the order $n^2$, but not the leading constant.
-The rest of this section finds the constant for both models. Their exact values may still differ.
+\Cref{thm:dir-hyper-constant} gives the constant for the forward model, and the rest of this section gives it for the general model. Their exact values may still differ.
 
-
-
-The proof uses the one-step shadow directed graph. It bounds the hyperedges by the shadow arcs, shows that the shadow satisfies a two-step budget, and applies \Cref{lem:two-step-budget}.
-
-\begin{definition}[One-step shadow]\label{def:one-step-shadow}
-Let $\HH$ be a forward directed $r$-uniform hypergraph on $V$. Its \emph{shadow} is the simple directed graph $R(\HH)$ on $V$ with an arc $(u,v)$ when some hyperedge of $\HH$ has tail $u$ and head $v$. Let $\mu_R(u,v)$ be the number of such hyperedges.
-\end{definition}
-
-
-
-We now prove the theorem of \Cref{ch:basecases}.
-
-\begin{restated}{\Cref{thm:dir-hyper-constant}}
-Let $r \ge 2$ and $m \ge 2$. Every forward directed $r$-uniform multihypergraph $\HH$ on $n \ge 2$ vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
-\[
-    |E(\HH)| \;\le\; \frac{m-1}{r-1}\floorfrac{n^2}{4} \;+\; (m-1)^2 (n-1).
-\]
-\end{restated}
-
-\begin{proof}[Proof of \Cref{thm:dir-hyper-constant}]
-Let $R = R(\HH)$. It has no loops, since the tail of a hyperedge is not one of its heads.
-
-The $\mu_R(u,v)$ hyperedges with tail $u$ and head $v$ give that many routes of length one, which are separated.
-This gives $\mu_R(u,v) \le m-1$.
-Every hyperedge, with tail $u$ and heads $h_1, \dots, h_{r-1}$, gives the $r-1$ arcs $u \to h_i$ of $R$. Counting the pairs of a hyperedge and one of its arcs in two ways gives
-\[
-    (r-1)\,|E(\HH)| \;=\; \sum_{(u,v) \in A(R)} \mu_R(u,v)
-    \;\le\; (m-1)\,|A(R)| .
-\]
-\Cref{prop:dir-hyper-first} used the bound $|A(R)|\le n(n-1)$ here, which loses the factor four. We now bound $|A(R)|$ better.
-
-Next we show that the shadow is budgeted.
-Fix an ordered pair $(u,v)$.
-Recall that a midpoint of $(u,v)$ is a vertex $x \notin \{u,v\}$ with arcs $u \to x$ and $x \to v$ in $R$.
-Let $\mathcal{T}$ be the set of midpoints, together with $v$ if $(u,v) \in A(R)$, so that $|\mathcal{T}| = \mathbf{1}_{(u,v) \in A(R)} + p_2(u,v)$.
-Every $t \in \mathcal{T}$ has an arc $u \to t$ in $R$, so it is a head of some hyperedge with tail $u$.
-Choose hyperedges $e_1, e_2, \dots$ with tail $u$ one at a time, where each $e_i$ contains an element $t_i$ of $\mathcal{T}$ that lies in none of $e_1, \dots, e_{i-1}$.
-Stop at $e_k$, when every element of $\mathcal{T}$ lies in one of them.
-Then $e_1, \dots, e_k$ are different hyperedges, and $t_1, \dots, t_k$ are different elements of $\mathcal{T}$.
-Each $e_i$ has $r-1$ heads, so it contains at most $r-1$ elements of $\mathcal{T}$, which gives $k(r-1) \ge |\mathcal{T}|$.
-
-Now turn each $e_i$ into a route.
-If $t_i = v$, take the route $u \to v$ through $e_i$.
-If $t_i$ is a midpoint $x$, take the route $u \to x \to v$: enter through $e_i$, and leave through a hyperedge with tail $x$ and head $v$ (one exists, since $(x,v) \in A(R)$).
-In the forward model every hyperedge has exactly one tail.
-The leaving hyperedges have different tails, namely different midpoints, so they are different.
-They also differ from $e_1, \dots, e_k$, which have tail $u$.
-The $k$ routes therefore share no hyperedge.
-A route has at most one inner vertex, its midpoint, and different routes have different midpoints. The routes are separated as well, and $k \le \kap_\HH(u,v)$. This gives
-\[
-    \frac{\mathbf{1}_{(u,v) \in A(R)} + p_2(u,v)}{r-1}
-    \;\le\; k \;\le\; \kap_{\HH}(u,v) \;\le\; m-1 ,
-\]
-and $R$ is $(r-1)(m-1)$-budgeted.
-
-\Cref{lem:two-step-budget} with $C = (r-1)(m-1)$ gives $|A(R)| \le \floor{n^2/4} + (r-1)(m-1)(n-1)$. With the bound on $|E(\HH)|$ above,
-\[
-    |E(\HH)| \;\le\; \frac{m-1}{r-1}\left[\floorfrac{n^2}{4} + (r-1)(m-1)(n-1)\right]
-    \;=\; \frac{m-1}{r-1}\floorfrac{n^2}{4} + (m-1)^2(n-1).
-\]
-For the lower bound, \Cref{prop:dir-hyper-first} with $\alpha = \floor{n/2}$ gives $(m-1)n^2/(4(r-1)) - O_{m,r}(n)$ hyperedges.
-This construction is feasible for hyperedge-disjoint and for separated routes.
-For fixed $r\ge3$ and large $n$ it is simple.
-The upper and lower bounds therefore have the same $n^2$ term.
-\end{proof}
-
-For small $n$, the bound of \Cref{prop:dir-hyper-first} is smaller, roughly until $n \approx 4(m-1)(r-1)/3$.
-At $r = 2$ the shadow is the underlying simple directed graph, obtained by suppressing parallel copies, and the theorem gives the quadratic term of \Cref{thm:dir-multi-full} again.
-
-With several tails, two routes can share a hyperedge, so the proof above does not show that the shadow is budgeted. Instead we choose routes greedily.
+With several tails, two routes can share a hyperedge, so the proof of \Cref{thm:dir-hyper-constant} does not show that the shadow is budgeted. Instead we choose routes greedily.
 
 \begin{theorem}[The general model]\label{thm:dir-hyper-general-constant}
 Let $r \ge 2$ and $m \ge 2$. In the general model, every directed $r$-uniform multihypergraph $\HH$ on $n \ge 2$
