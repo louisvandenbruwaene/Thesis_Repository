@@ -38,6 +38,9 @@ From now on, graphs are simple unless said otherwise.
 A \emph{path} or \emph{route} from $u$ to $v$ is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ of distinct vertices $v_i$ and edges $e_i$, where $v_0=u$, $v_q=v$ and $e_i$ joins $v_{i-1}$ and $v_i$. Its \emph{length} is its number of edges $q$.
 In a multigraph, two parallel edges (distinct edges with identical vertices) give two different paths of length one.
 In a simple graph we can write a path as a list of vertices, because two vertices uniquely specify an edge between them when there are no parallel edges.
+A \emph{walk} is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ of the same form as a path, in which vertices and edges may repeat.
+A \emph{cycle} is a walk that starts and ends at the same vertex, has at least one edge, and has no repeated edges or vertices except for the start and end.
+In a simple graph a cycle has at least three edges, and in a multigraph two parallel edges form a cycle.
 Two $u$--$v$ paths are \emph{edge-disjoint} if they have no edge in common.
 The \emph{local edge-connectivity} $\lec_G(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ paths.
 Its largest value over all pairs is
@@ -123,7 +126,9 @@ For $n\ge m$ the bound is always attained. Mader proved this as well, so $\ell_m
 For $2\le n<m$ the complete graph $K_n$ satisfies the condition, so $\ell_m(n)=\binom{n}{2}$.
 This is smaller than $\floor{m(n-1)/2}$, except when $(n,m)=(2,3)$. The reason is that $m\ge n+1$ gives $\floor{m(n-1)/2}\ge\binom{n}{2}+\floor{(n-1)/2}$, which exceeds $\binom{n}{2}$ once $n\ge3$. At $n=2$ the two values are $1$ and $\floor{m/2}$, and these agree only at $m=3$.
 
-A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}.
+A graph is \emph{connected} if every two vertices are joined by a path. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$, and a \emph{component} of $G$ is a maximal connected subgraph.
+A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}.
+A \emph{forest} is a graph without cycles. Each of its components is a tree.
 I prove \Cref{thm:mader} with the Gomory--Hu tree.
 It stores the $\binom n2$ values $\lec_G(u,v)$ in only $n-1$ weights.
 
@@ -586,20 +591,20 @@ For example, take the hyperedges $e_1=\{u,a,b\}$, $e_2=\{a,v,c\}$ and $e_3=\{b,v
 \end{figure}
 Since separated routes also share no edge copy, $\kap\le\lec$ holds in every model.
 
-In a multigraph, $q$ parallel copies of $uv$ give $q$ internally vertex-disjoint routes.
-This is why the vertex problems for multigraphs differ from the simple ones.
-In a feasible multigraph no multiplicity is larger than $m-1$, since $m$ parallel copies already give $m$ internally vertex-disjoint routes.
-
 In every model, a graph is \emph{feasible} if no two vertices are joined by $m$ disjoint routes of the kind considered.
+In a multigraph or multihypergraph, $q$ copies of an edge through $u$ and $v$ give $q$ separated $u$--$v$ routes.
+Thus all multiplicities are strictly smaller than $m$ in a feasible multigraph or multihypergraph.
+
 The largest size of a feasible graph on $n$ vertices is written $\ell$ or $L$ for edge-disjoint routes and $k$ or $K$ for separated routes, with a lower-case letter when edges may not repeat and a capital when they may.
-The superscripts $\mathrm{dir}$ and $(r)$ mark directed graphs and $r$-uniform hypergraphs, as in $\ell_m(n)$, $K_m^{\mathrm{dir}}(n)$ and $L_m^{\mathrm{dir}\,(r)}(n)$.
+The superscripts $\mathrm{dir}$ and $(r)$ mark directed graphs and $r$-uniform hypergraphs.
+All sixteen symbols are listed under Abbreviations and Symbols.
 
 For undirected graphs the four functions satisfy
 \[
     \ell_m(n)\;\le\; k_m(n)\;\le\; L_m(n)\;\le\; K_m(n).
 \]
-The outer inequalities come from relaxing a constraint. Separated routes are also edge-disjoint, so $\kap\le\lec$, and every graph with $\lec^{\max}\le m-1$ also has $\kap^{\max}\le m-1$. This gives $\ell_m(n)\le k_m(n)$ and $L_m(n)\le K_m(n)$. Every simple graph is also a multigraph, which gives $\ell_m(n)\le L_m(n)$ and $k_m(n)\le K_m(n)$ as well.
-The middle inequality compares the vertex problem for simple graphs with the edge problem for multigraphs, and no relaxation turns one into the other. It follows from the count in \Cref{rem:vertex-degeneracy}, where every term is at most $m-1$, so $k_m(n)\le(m-1)(n-1)$, and from the exact value $L_m(n)=(m-1)(n-1)$ of \Cref{thm:multigraph-edge}.
+The outer inequalities are immediate from the route separation definitions, because separated routes are also edge-disjoint: $\kap\le\lec$ and every graph with $\lec^{\max}\le m-1$ also has $\kap^{\max}\le m-1$. This gives $\ell_m(n)\le k_m(n)$ and $L_m(n)\le K_m(n)$. Every simple graph is also a multigraph, which gives $\ell_m(n)\le L_m(n)$ and $k_m(n)\le K_m(n)$ as well.
+The middle inequality compares the vertex problem for simple graphs with the edge problem for multigraphs. It follows from the count in \Cref{rem:vertex-degeneracy}, where every term is at most $m-1$, so $k_m(n)\le(m-1)(n-1)$, and from the exact value $L_m(n)=(m-1)(n-1)$ of \Cref{thm:multigraph-edge}.
 
 Menger's theorem, the Gomory--Hu tree, Mader's bound and the exact value $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ are classical.
 The results of B\'{a}rtfai, Bollob\'{a}s and Leonard (\Cref{thm:leonard}) and of S{\o}rensen and Thomassen (\Cref{thm:sorensen-thomassen}) are classical as well.
@@ -644,7 +649,7 @@ For simple graphs,
 \end{theorem}
 
 In particular $k_5(n)>\ell_5(n)$ for every $n\ge14$.
-S{\o}rensen and Thomassen count the least number of edges that forces $m$ internally vertex-disjoint paths. This is one more than the maximum used here (\Cref{rem:threshold-convention}). They give one formula with exceptions at $n=7$ and $n=12$. Splitting the statement at $n=14$, as above, removes these exceptions.
+S{\o}rensen and Thomassen count the least number of edges that forces $m$ internally vertex-disjoint paths. This is one more than the maximum used here (\Cref{rem:threshold-convention}).
 
 \begin{figure}[ht]
     \centering
@@ -721,19 +726,11 @@ For simple directed graphs, $k_2^{\mathrm{dir}}(n) = \ell_2^{\mathrm{dir}}(n)$.
 The star has more arcs for $n<7$, and the bipartite directed graph has more for $n>7$.
 The directed value thus grows quadratically in $n$, while the undirected value grows linearly.
 In the bipartite directed graph no arc leaves $B$ and no arc enters $A$. Every route is therefore a single arc, and each ordered pair has at most one route.
-A \emph{walk} is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ of the same form as a path, in which vertices and edges may repeat.
-A \emph{cycle} is a walk that starts and ends at the same vertex, has at least one edge, and has no repeated edges or vertices except for the start and end.
-In a simple graph a cycle has at least three edges, and in a multigraph two parallel edges form a cycle.
-A \emph{forest} is a graph without cycles. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$. A \emph{component} of a graph is a maximal connected subgraph.
-An undirected graph with $\lec^{\max}\le1$ has no cycle, because two vertices on a cycle are joined by the two halves of the cycle, which are edge-disjoint paths. Such a graph is a forest. Each of its components is a tree with one edge fewer than vertices, so it has at most $n-1$ edges.
-
-For the upper bound we keep only the arcs that are needed to tell who can reach whom.
+An undirected graph with $\lec^{\max}\le1$ has no cycle, because two vertices on a cycle are joined by the two halves of the cycle, which are edge-disjoint paths. Such a graph is a forest. Its components are trees, each with one edge fewer than vertices, so it has at most $n-1$ edges.
 
 \begin{definition}[Reachability skeleton]\label{def:reach-skeleton}
 Let $D$ be a directed multigraph. A \emph{reachability skeleton} of $D$ is a subgraph $R$ of $D$ on the same vertices, with at most one copy of each arc, such that for all $u\ne v$: $u$ can reach $v$ in $R$ exactly when $u$ can reach $v$ in $D$.
 \end{definition}
-
-A skeleton keeps the information about who can reach whom. It does not keep the number of arc-disjoint paths.
 
 \begin{lemma}[Sparse reachability skeletons]\label{lem:reach-skeleton}
 Every directed multigraph $D$ on $n \ge 2$ vertices has a reachability skeleton $R$ with
@@ -940,7 +937,6 @@ Every vertex other than $h$ appears at most $m-1$ times in the list, so it lies 
 Every pair contains such a vertex, and every route from or to it uses one of these copies.
 Removing these copies therefore separates the pair, and every pair has $\lec\le m-1$.
 There are $q = \floorfrac{(m-1)(n-1)}{r-1}$ hyperedge copies.
-For example, at $n = 6$, $r = 4$ and $m = 3$ the segments are $\{1,2,3\}$, $\{4,5,1\}$ and $\{2,3,4\}$, and the three hyperedges reach the bound $\floor{2 \cdot 5/3} = 3$.
 
 When $r-1$ divides $n-1$, the segments are the sets $W_1, W_2, \dots$ of a split of the other $n-1$ vertices into sets of size $r-1$, each repeated $m-1$ times.
 A \emph{star hypertree} has a vertex $h$, its hub, and the hyperedges $\{h\} \cup W_i$ for disjoint sets $W_i$ of $r-1$ vertices other than $h$. Its hyperedges share only $h$, and the vertices outside them lie in no hyperedge.

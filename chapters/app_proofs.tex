@@ -854,7 +854,8 @@ $K_2(n) = n-1$, attained exactly by the trees on the $n$ vertices.
 By \Cref{lem:multi-vertex-split}, $\mu(u,v) + \pi(u,v) \le 1$ on every edge.
 If $G_0$ had a cycle, take an edge $uv$ on it. Then $\mu(u,v) \ge 1$, and the rest of the cycle is a $u$--$v$ path of length at least two, so $\pi(u,v) \ge 1$.
 Hence $G_0$ is a forest and every multiplicity is one.
-A forest has at most $n-1$ edges. A \emph{spanning tree} of a graph is a tree that only includes its edges and has all its vertices, and it has exactly $n-1$ edges.
+A forest on $n$ vertices has at most $n-1$ edges, with equality exactly when it is a tree.
+Conversely, a tree on the $n$ vertices joins every pair by exactly one path, so it has $\kap^{\max}=1$ and is feasible.
 \end{proof}
 
 \begin{remark}\label{rem:multi-vertex-m2-simple}
@@ -878,7 +879,7 @@ For $m=4$ this is open.
 For $m \ge 3$ there are three constructions.
 
 \begin{itemize}
-    \item \emph{A tree.} Take a spanning tree with all multiplicities $m-1$.
+    \item \emph{A tree.} Take a tree on the $n$ vertices with all multiplicities $m-1$.
     Tree edges have $\pi = 0$, and other pairs have $\pi = 1$, so it is feasible.
     It has $(m-1)(n-1)$ edges, the edge value of \Cref{thm:multigraph-edge}.
     \item \emph{A complete graph.} Take $K_n$ with all multiplicities $q$.
