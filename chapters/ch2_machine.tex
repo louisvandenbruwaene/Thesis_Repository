@@ -121,7 +121,7 @@ The arc inside the gate is therefore the only bottleneck.
 For a directed hyperedge, only the tails have an arc to the entry, and only the heads have an arc from the exit (\Cref{fig:dir-hyper-gadget}).
 A route must then go from a tail to a head.
 We call the result the \emph{gate network}.
-\Cref{thm:menger-hyper} shows that the maximum flow in this network is the number of hyperedge-disjoint Berge routes.
+\Cref{thm:menger-hyper,rem:capacities} show that the maximum flow in this network is the number of hyperedge-disjoint Berge routes.
 \Cref{fig:hyper-gadget-example} shows an example.
 
 Every vertex $v$ is split into two nodes $v^{\mathrm{in}}$ and $v^{\mathrm{out}}$, joined by one arc (\Cref{fig:vertex-split}).
@@ -133,7 +133,7 @@ The gates keep their capacity, so parallel copies still give different routes, a
 
 \programpart{network}{The flow network: split vertices and one gate per hyperedge.}
 
-The largest number of edge-disjoint routes, or of separated routes, from $u$ to $v$ is the maximum flow from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ (\Cref{thm:menger-hyper}, \Cref{lst:measure}).
+The largest number of edge-disjoint routes, or of separated routes, from $u$ to $v$ is the maximum flow from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ (\Cref{thm:menger-hyper,rem:capacities}, \Cref{lst:measure}).
 A graph is feasible when this number is below $m$ for every pair, ordered in directed models.
 The library builds the flow in steps, and one step can raise its value by more than one. With the \texttt{stop\_at} argument it stops at the first step that brings the value to $m$ or more, since a larger value changes nothing: the pair already breaks the condition.
 

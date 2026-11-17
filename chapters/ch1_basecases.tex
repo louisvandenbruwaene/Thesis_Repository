@@ -744,7 +744,7 @@ Let $D$ be a directed multigraph. A \emph{reachability skeleton} of $D$ is a sub
 
 A skeleton keeps the information about who can reach whom. It does not keep the number of arc-disjoint paths.
 
-\begin{lemma}[A sparse reachability skeleton always exists]\label{lem:reach-skeleton}
+\begin{lemma}[Sparse reachability skeletons]\label{lem:reach-skeleton}
 Every directed multigraph $D$ on $n \ge 2$ vertices has a reachability skeleton $R$ with
 \[
     |A(R)| \;\le\; M(n) \;:=\; \max\Bigl(2(n-1),\ \floorfrac{n^2}{4}\Bigr).
@@ -754,7 +754,7 @@ Every directed multigraph $D$ on $n \ge 2$ vertices has a reachability skeleton 
 \begin{proof}
 We build $R$ first inside each strongly connected component, then between components, and then we count.
 A \emph{strongly connected component} is a maximal set of vertices in which any two can reach each other.
-Every vertex lies in exactly one such component. This is because mutual reachability carries over: when $u$ and $v$ reach each other and $v$ and $w$ reach each other, $u$ and $w$ reach each other through $v$.
+The strongly connected components partition the vertices.
 \Cref{fig:skeleton-example} shows an example.
 
 Take a component with $n_i$ vertices and choose a vertex $r$ in it.
@@ -775,8 +775,8 @@ Call the result $Q$. No arc of $Q$ can be deleted without changing this.
 
 The graph $Q$, with directions ignored, has no triangle.
 To see this, suppose three points of $Q$ are joined in pairs.
-Two points are never joined both ways, since that would be a directed cycle.
-Each of the three points lies on two of the three arcs. Every arc leaves exactly one point, so the numbers of arcs leaving the three points add up to three. If every point had exactly one arc leaving it, the arcs would form a directed cycle. Some point $x$ therefore has both of its arcs leaving. Name the other two points $y$ and $z$ so that the third arc is $y\to z$. The three arcs are then $x \to y$, $y \to z$ and $x \to z$.
+Since $Q$ has no directed cycle, each pair is joined one way only, and the three arcs do not run around the triangle. Some point $x$ therefore has both of its arcs leaving.
+Name the other two $y$ and $z$ so that the third arc is $y \to z$. The arcs are then $x \to y$, $y \to z$ and $x \to z$.
 But then $x \to z$ could be deleted, since $x$ still reaches $z$ through $y$.
 This contradicts the choice of $Q$.
 By Mantel's theorem \cite{Mantel07}, a graph on $q$ vertices with no triangle has at most $\floor{q^2/4}$ edges. So
@@ -1051,7 +1051,7 @@ The upper bound at $m=3$ follows from the edge bound of \Cref{prop:hyper-edge}.
 At $m=3$, the edge problem and the vertex problem allow exactly the same multihypergraphs.
 The proof uses a \emph{theta}: three paths between two vertices $a \ne b$ that pairwise share no edge and no inner vertex.
 
-\begin{lemma}[Three routes give a theta]\label{lem:theta}
+\begin{lemma}[Theta lemma]\label{lem:theta}
 Let $\HH$ be a multihypergraph, not assumed uniform. Then $\kap^{\max}_\HH \le 2$ exactly when $\lec^{\max}_\HH \le 2$.
 \end{lemma}
 
@@ -1130,7 +1130,7 @@ A graph on more than $k$ vertices is \emph{$k$-connected} if removing fewer than
 
 \subsection{Directed bounds for \texorpdfstring{$m\ge3$}{m>=3}}
 
-\begin{theorem}[The quadratic bound with a linear error]\label{thm:dir-arc-linear-error}
+\begin{theorem}[Simple directed graphs]\label{thm:dir-arc-linear-error}
 For all $m \ge 2$ and $n \ge 2$, every simple directed graph $D$ on $n$ vertices with $\lec^{\max}_D \le m-1$, or with $\kap^{\max}_D \le m-1$, satisfies
 \[
     |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; (m-1)(n-1),
@@ -1155,7 +1155,7 @@ Together with the $\Delta$ arcs out of $v$ this gives at most $\Delta(n-\Delta)+
 The routes of length two are also internally vertex-disjoint, so the same proof works for internally vertex-disjoint routes.
 
 
-\begin{theorem}[Directed multigraph value with arc-disjoint routes, every $n$ and $m$]\label{thm:dir-multi-full}
+\begin{theorem}[Directed multigraphs]\label{thm:dir-multi-full}
 For all $n \ge 2$ and $m \ge 2$,
 \[
     L_m^{\mathrm{dir}}(n) \;=\; (m-1)\,M(n), \qquad M(n) := \max\!\Bigl(2(n-1),\ \floorfrac{n^2}{4}\Bigr).
@@ -1197,7 +1197,7 @@ Deleting one vertex does not work: it need not lower every connectivity.
 Instead we delete a reachability skeleton. By \Cref{lem:reach-skeleton} it has at most $M(n)$ arcs, and the next lemma shows that deleting it lowers every positive connectivity.
 
 
-\begin{lemma}[Deleting a skeleton lowers every positive connectivity]\label{lem:reach-delete}
+\begin{lemma}[Deleting a skeleton]\label{lem:reach-delete}
 Let $D$ be a directed multigraph with $\lec^{\max}(D) \le k$ for some $k \ge 1$, and let $R$ be a reachability skeleton of $D$. Let $D - R$ be $D$ with one copy of each arc of $R$ removed. Then for every ordered pair $u \ne v$,
 \[
     \lec_{D-R}(u,v) \;\le\; \max\bigl(\lec_D(u,v)-1,0\bigr),

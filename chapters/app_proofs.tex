@@ -8,18 +8,11 @@ Part II introduces the two-step budget, a bound on the number of routes with at 
 
 
 
-% ---------------------------------------------------------------------------
-% Part dividers. The appendix is one chapter, so its thirteen sections would
-% otherwise present as a flat list longer than any body chapter. \apppart draws
-% a labelled rule before each group and writes the group into the table of
-% contents, so a reader can find the directed work or the hypergraph work
-% without scanning every section heading. It introduces no numbering and no new
-% label, so every \Cref{app:proofs} in the body still resolves to this chapter.
-% ---------------------------------------------------------------------------
+% Part divider with a table-of-contents entry.
 \newcommand{\apppart}[2]{%
   \par\addvspace{1.2\baselineskip}%
   \Needspace{8\baselineskip}%
-  \phantomsection% own anchor, so the bookmark does not collide with the chapter's
+  \phantomsection%
   \addcontentsline{toc}{section}{\protect\numberline{}\textsc{#1}}%
   \noindent{\color{KULblauw1}\rule{\linewidth}{1.1pt}}\par\nobreak
   \vspace{2pt}\noindent{\normalfont\bfseries\color{KULblauw1}#1}\par\nobreak
@@ -27,9 +20,7 @@ Part II introduces the two-step budget, a bound on the number of routes with at 
   \vspace{2pt}\noindent{\color{KULblauw1}\rule{\linewidth}{0.4pt}}\par\nobreak
   \addvspace{0.4\baselineskip}}
 
-% A result of Chapter 1 that is proved here is first repeated, so that the
-% reader does not have to turn back. It gets no new number: the heading names
-% the original, e.g. "Theorem 1.12 (restated)".
+% Restated result from Chapter 1, without a new number.
 \newenvironment{restated}[1]{%
   \par\addvspace{\medskipamount}\noindent\textbf{#1 (restated).}\ \itshape\ignorespaces}%
   {\par\addvspace{\medskipamount}}
@@ -56,7 +47,7 @@ If $m-1$ divides $n-1$, one can instead take disjoint copies of $K_{m-1}$. In th
 
 
 
-\begin{theorem}[Extremal graphs exist]\label{thm:extremal-existence}
+\begin{theorem}[Extremal graphs]\label{thm:extremal-existence}
 For all $n \ge m \ge 2$ the graph $H_{m,n}$ has $\floorfrac{m(n-1)}{2}$ edges and $\lec^{\max} \le m-1$.
 \end{theorem}
 
@@ -83,17 +74,8 @@ Let $G$ be simple with $\lec^{\max}_G \le m-1$ and $|E(G)| = \floorfrac{m(n-1)}{
 \end{theorem}
 
 \begin{proof}
-We first recall the proof of \Cref{thm:mader} in \Cref{ch:basecases}.
-The tree $T$ has $n-1$ edges, and a tree edge $t$ has weight $c(t)$.
-An edge $e$ of $G$ crosses $\dist_T(e)$ tree edges: the edges of the path in $T$ between the ends of $e$.
 Let $E_1$ be the set of edges $e$ of $G$ with $\dist_T(e) = 1$.
-The proof uses one identity and three inequalities.
-\begin{itemize}
-    \item The identity is $\sum_e \dist_T(e) = \sum_t c(t)$ (\Cref{lem:double-count}).
-    \item Every weight is at most $m-1$, so $\sum_t c(t) \le (m-1)(n-1)$.
-    \item Every edge outside $E_1$ has $\dist_T(e) \ge 2$, so $\sum_e \dist_T(e) \ge |E_1| + 2\bigl(|E| - |E_1|\bigr) = 2|E| - |E_1|$.
-    \item An edge in $E_1$ joins the two ends of a tree edge. Since $G$ is simple, each tree edge gives at most one such edge, so $|E_1| \le n-1$.
-\end{itemize}
+The proof of \Cref{thm:mader} uses the identity of \Cref{lem:double-count} and three inequalities: every weight is at most $m-1$, every edge outside $E_1$ has $\dist_T(e) \ge 2$, and $|E_1| \le n-1$.
 Each inequality has a gap, which is a non-negative integer:
 \[
     S_1 = (m-1)(n-1) - \sum_t c(t),
@@ -102,7 +84,6 @@ Each inequality has a gap, which is a non-negative integer:
     \qquad
     S_3 = (n-1) - |E_1| .
 \]
-In words, $S_1$ is the sum of $(m-1) - c(t)$ over the tree edges, $S_2$ adds up how far edges go beyond tree distance two, and $S_3$ is the number of tree edges whose ends are not joined by an edge of $G$.
 The edges in $E_1$ add $|E_1|$ to $\sum_e \dist_T(e)$. The other edges add $2(|E| - |E_1|) + S_2$. With the identity this gives two expressions for the same sum:
 \[
     \sum_e \dist_T(e) \;=\; 2|E| - |E_1| + S_2
@@ -423,7 +404,7 @@ Let $D$ be a simple directed graph and $C \ge 1$. For $u\ne v$, let $p_2(u,v)$ b
 \]
 \end{definition}
 
-\begin{lemma}[Feasible directed graphs are budgeted]\label{lem:feasible-budgeted}
+\begin{lemma}[Feasibility implies a budget]\label{lem:feasible-budgeted}
 Let $D$ be a simple directed graph and $m \ge 2$. If $\lec^{\max}_D \le m-1$, or if $\kap^{\max}_D \le m-1$, then $D$ is $(m-1)$-budgeted.
 \end{lemma}
 
@@ -434,40 +415,6 @@ Two routes with different midpoints use different arcs, and none of them uses th
 Each two-step route has one inner vertex, its midpoint, and the arc has none.
 The routes are therefore also internally vertex-disjoint.
 This makes their number at most $\lec_D(u,v)$ and at most $\kap_D(u,v)$, and either condition gives at most $m-1$.
-\end{proof}
-
-The next lemma turns the budget into a statement about degrees.
-A vertex with large in-degree and large out-degree is the midpoint of many two-step routes, and the budget limits these.
-
-\begin{lemma}[The budget, read on degrees]\label{lem:budget-degree-sum}
-Every $C$-budgeted simple directed graph $D$ on $n$ vertices satisfies
-\[
-    \sum_{x \in V} d^+(x)\,d^-(x) \;\le\; C\,n(n-1) .
-\]
-\end{lemma}
-
-\begin{proof}
-Count the walks $u \to x \to v$ of length two.
-Choosing the middle vertex $x$, an in-neighbour $u$ and an out-neighbour $v$ gives $\sum_x d^-(x)\,d^+(x)$ walks.
-The walks with $u \ne v$ number $\sum_{u\ne v} p_2(u,v)$.
-A walk with $u = v$ is fixed by its first arc $u \to x$, so there are at most $|A(D)|$ of them.
-Summed over all ordered pairs, the budget reads $|A(D)| + \sum_{u\ne v} p_2(u,v) \le C\,n(n-1)$. This gives
-\[
-    \sum_x d^+(x)\,d^-(x) \;\le\; \sum_{u\ne v} p_2(u,v) + |A(D)| \;\le\; C\,n(n-1). \qedhere
-\]
-\end{proof}
-
-\begin{lemma}[Making a directed graph one-way bipartite]\label{lem:smaller-half-deletion}
-Every simple directed graph $D$ on $n$ vertices can be made \emph{one-way bipartite}, so that all remaining arcs go from one part to the other, by deleting at most $\sum_{x} \min(d^+(x), d^-(x))$ arcs.
-\end{lemma}
-
-\begin{proof}
-Let $S$ be the set of vertices $x$ with $d^+(x) \ge d^-(x)$, and let $T$ be the set of the other vertices.
-Delete every arc into a vertex of $S$ and every arc out of a vertex of $T$.
-At a vertex $x$ of $S$ this deletes its $d^-(x) = \min(d^+(x), d^-(x))$ in-arcs. At a vertex of $T$ it deletes its $d^+(x) = \min(d^+(x), d^-(x))$ out-arcs.
-An arc may be deleted at both of its ends, so in total at most the sum above is deleted.
-An arc $a\to b$ survives only if $a \notin T$ and $b \notin S$, that is, $a \in S$ and $b \in T$.
-The remaining arcs therefore all go from $S$ to $T$.
 \end{proof}
 
 \begin{lemma}[The arc bound for budgeted directed graphs]\label{lem:two-step-budget}
@@ -533,38 +480,7 @@ A theorem of Huang and Lyu \cite[Theorem~2]{HuangLyu26}, with $t=m-1\ge2$, also 
 It applies because a feasible directed graph has at most $m-1$ paths of length two between any two vertices (\Cref{lem:feasible-budgeted}).
 \Cref{thm:dir-arc-linear-error} holds for every $n$.
 
-
-
-
-The next proposition is about the shape of a feasible directed graph.
-After deleting $O(\sqrt m\,n^{3/2})$ arcs, all remaining arcs go from one part to the other.
-The parts need not be balanced.
-
-\begin{proposition}[Almost all arcs go one way]\label{prop:dir-arc-stability}
-Let $D$ be a simple directed graph on $n \ge 2$ vertices with $\lec^{\max}_D \le m-1$. Then deleting at most $\sqrt{m}\, n^{3/2}$ arcs leaves $D$ a subgraph of a one-way bipartite directed graph.
-\end{proposition}
-
-\begin{proof}
-By \Cref{lem:feasible-budgeted}, $D$ is $(m-1)$-budgeted.
-We use $\min(a,b) \le \sqrt{ab}$, the Cauchy--Schwarz inequality $\sum_x \sqrt{a_x} \le \sqrt{n \sum_x a_x}$, and \Cref{lem:budget-degree-sum}:
-\[
-\begin{aligned}
-    \sum_{x \in V} \min\bigl(d^+(x), d^-(x)\bigr)
-    &\;\le\; \sum_{x \in V} \sqrt{d^+(x)\, d^-(x)}
-    \;\le\; \sqrt{\,n \sum_{x \in V} d^+(x)\, d^-(x)\,} \\[2pt]
-    &\;\le\; \sqrt{\,n \cdot (m-1)\,n(n-1)\,}
-    \;=\; n\sqrt{(m-1)(n-1)}
-    \;\le\; \sqrt{m}\, n^{3/2}.
-\end{aligned}
-\]
-\Cref{lem:smaller-half-deletion} now gives the statement.
-\end{proof}
-
-
-
 \section{The extremal directed multigraphs}\label{sec:dir-multi}
-
-We recall the result of \Cref{ch:basecases}.
 
 \begin{restated}{\Cref{thm:dir-multi-full}}
 For all $n \ge 2$ and $m \ge 2$, the largest number of arcs of a directed multigraph on $n$ vertices with $\lec^{\max} \le m-1$ is
@@ -572,13 +488,6 @@ For all $n \ge 2$ and $m \ge 2$, the largest number of arcs of a directed multig
     L_m^{\mathrm{dir}}(n) \;=\; (m-1)\,M(n), \qquad M(n) = \max\!\Bigl(2(n-1),\ \floorfrac{n^2}{4}\Bigr).
 \]
 \end{restated}
-
-Its proof of the upper bound goes as follows.
-Take a reachability skeleton $R_1$ of $D$ with at most $M(n)$ arcs (\Cref{lem:reach-skeleton}), and delete one copy of each of its arcs.
-By \Cref{lem:reach-delete}, this lowers $\lec^{\max}$ by at least one.
-Repeat this with skeletons $R_2, R_3, \dots$ of what is left.
-After deleting $R_1, \dots, R_{m-1}$, we have $\lec^{\max} = 0$, so no arc is left.
-Hence $|A(D)| = \sum_i |A(R_i)| \le (m-1)M(n)$.
 
 At $m=2$ a feasible directed multigraph has no parallel arcs, since two copies of an arc are two arc-disjoint routes, and \Cref{thm:dir-multi-full} at $m=2$ is therefore \Cref{thm:dir-arc-m2-exact}.
 
@@ -599,7 +508,7 @@ Let $m\ge2$ and $n \ge 8$, so that $\floor{n^2/4} > 2(n-1)$ and $M(n) = \floor{n
 \end{lemma}
 
 \begin{proof}
-As recalled above, the proof of \Cref{thm:dir-multi-full} deletes skeletons $R_1, \dots, R_{m-1}$, built as in \Cref{lem:reach-skeleton}, and then no arc is left, which gives $|A(D)| = \sum_i |A(R_i)|$.
+The proof of \Cref{thm:dir-multi-full} deletes skeletons $R_1, \dots, R_{m-1}$ one after another, each built as in \Cref{lem:reach-skeleton}, and then no arc is left. This gives $|A(D)| = \sum_i |A(R_i)|$.
 Each $|A(R_i)| \le M(n)$, and the sum is $(m-1)M(n)$, so $|A(R_i)| = M(n) = \floor{n^2/4}$ for every $i$. Let $R := R_1$.
 
 Let $q$ be the number of strongly connected components of $D$.
@@ -619,7 +528,7 @@ No arc of $Q$ can be removed without changing reachability, by the choice of $Q$
 
 The next lemma uses that no arc of $R$ can be removed.
 
-\begin{lemma}[A minimal bipartite skeleton has no long path]\label{lem:skeleton-shallow}
+\begin{lemma}[Short paths in the skeleton]\label{lem:skeleton-shallow}
 Let $R$ be as in \Cref{lem:equality-forces}, with parts $A$ and $B$. Then $R$ contains no directed path with three arcs.
 \end{lemma}
 
@@ -654,7 +563,6 @@ In the same way, $a'$ has no outgoing arc, so $b'' \to a'$ for every $b'' \in B$
 The $\beta$ routes $a \to b'' \to a'$ use different arcs, and they lie in $D$, since $R$ is part of $D$.
 This gives $\lec_D(a,a') \ge \beta = \floor{n/2} \ge m$, since $n \ge 2m$. This breaks the condition $\lec^{\max}_D \le m-1$.
 A path $b \to a \to b'$ with $b, b' \in B$ is excluded in the same way, with the $\alpha \ge \beta \ge m$ routes through $A$.
-This is the only place where we use $n \ge 2m$.
 
 Now suppose a vertex $y$ of $R$ has an incoming arc $x \to y$ and an outgoing arc $y \to z$.
 Then $x \ne z$, since $x \to y \to x$ would be a directed cycle.
@@ -688,7 +596,7 @@ For even $n$, every vertex of $(m-1)\cdot B_{n/2,\,n/2}$ has degree exactly $(m-
 
 Hypergraphs have several notions of connectivity.
 This thesis uses Berge paths throughout.
-We first need Menger's theorem for Berge paths. It also shows that the gate network of \Cref{ch:certify} computes the right value.
+We first need Menger's theorem for Berge paths. With \Cref{rem:capacities} it also shows that the gate network of \Cref{ch:certify} computes the right value.
 
 \begin{theorem}[Menger for multihypergraphs]\label{thm:menger-hyper}
 Let $u,v$ be distinct vertices of a multihypergraph $\HH$, and count parallel copies of a hyperedge separately.
@@ -722,17 +630,20 @@ The smallest separating sets then have the same size in $N$ and in $\HH$.
 
 Menger's theorem in $N$ says that the two sizes are equal in $N$, and therefore also in $\HH$.
 
-\emph{Separated paths.} Build $N'$ from $N$ by splitting every vertex $x$ into two nodes $x^{\mathrm{in}}$ and $x^{\mathrm{out}}$, joined by one arc $x^{\mathrm{in}}\to x^{\mathrm{out}}$. The arcs $x\to e^-$ now leave $x^{\mathrm{out}}$, and the arcs $e^+\to x$ now enter $x^{\mathrm{in}}$. This is the network of \Cref{ch:machine} for separated routes, written with parallel arcs as explained at the end of this proof.
+\emph{Separated paths.} Build $N'$ from $N$ by splitting every vertex $x$ into two nodes $x^{\mathrm{in}}$ and $x^{\mathrm{out}}$, joined by one arc $x^{\mathrm{in}}\to x^{\mathrm{out}}$. The arcs $x\to e^-$ now leave $x^{\mathrm{out}}$, and the arcs $e^+\to x$ now enter $x^{\mathrm{in}}$. With parallel arcs in place of capacities, this is the network of \Cref{ch:machine} for separated routes (\Cref{rem:capacities}).
 A directed path in $N'$ from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ never visits $u^{\mathrm{in}}$ or $v^{\mathrm{out}}$: the only arc leaving $u^{\mathrm{in}}$ goes to $u^{\mathrm{out}}$, where the path starts, and the only arc entering $v^{\mathrm{out}}$ comes from $v^{\mathrm{in}}$, where it ends. As in (a), the path gives a Berge path from $u$ to $v$, whose inner vertices are the $x$ with $x^{\mathrm{in}}\to x^{\mathrm{out}}$ on the path.
 Arc-disjoint paths in $N'$ use distinct split arcs and distinct gate arcs, so their Berge paths share no inner vertex and no hyperedge copy. They are therefore separated.
 Conversely, take a family of separated Berge paths. Their inner vertices are distinct, so each split arc is used by at most one of them. Their hyperedge copies are distinct, so they get distinct gate arcs, as in (a). The family has at most $c$ paths, so distinct paths can use distinct copies of every other arc. Deleting closed portions of the walks gives arc-disjoint directed paths from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$, as in (a).
 
-\emph{The network of \Cref{ch:machine}.} In that network some arcs have unlimited capacity and the others an integer capacity.
+\end{proof}
+
+\begin{remark}[Capacities]\label{rem:capacities}
+In the network of \Cref{ch:machine} some arcs have unlimited capacity and the others an integer capacity.
 Every $u$--$v$ path passes a gate, and the gates have total capacity $c$, so a maximum flow has value at most $c$. After removing its cycles it puts at most $c$ on every arc.
 Replacing each unlimited capacity by $c+1$ parallel unit-capacity arcs, and each integer capacity by that many parallel unit-capacity arcs, therefore does not change the maximum flow.
 For separated routes this gives $N'$. For edge-disjoint routes it gives $N$ with every vertex split by $c+1$ parallel arcs, which have room for all $c$ paths, so the families of arc-disjoint paths are the same as in $N$.
 In a network of unit-capacity arcs, the maximum flow is the largest number of arc-disjoint paths, by the maximum-flow minimum-cut theorem and Menger's theorem.
-\end{proof}
+\end{remark}
 
 The same proof works for directed hyperedges and directed Berge paths, with arcs $x \to e^-$ only for the tails $x$ of $e$, and arcs $e^+ \to x$ only for its heads.
 
@@ -800,32 +711,6 @@ There is only one $3$-set, so a simple hypergraph has at most one hyperedge, whi
 Two copies of the one hyperedge do reach the bound.
 At $m - 1 = 2$ the condition reads $2 < r < n$, the range of the simple formula in \Cref{thm:hyper-vertex-m3}.
 \end{remark}
-
-\begin{construction}[Twelve hyperedge copies on six vertices]\label{const:multihyper-six}
-Take a hub $h$ and five other vertices $a,b,c,d,e$.
-Take all ten triples that consist of $h$ and two of the other vertices.
-Add a second copy of $\{h,d,e\}$ and one copy of $\{a,b,c\}$.
-\end{construction}
-
-\begin{proposition}[The edge value at $(n,m,r)=(6,6,3)$]\label{prop:multihyper-six}
-The multihypergraph of \Cref{const:multihyper-six} has $12$ hyperedge copies and $\lec^{\max}\le5$.
-The largest number of hyperedge copies of a $3$-uniform multihypergraph on $6$ vertices with $\lec^{\max} \le 5$ is $12$, the value of \Cref{prop:hyper-edge}.
-\end{proposition}
-
-\begin{proof}
-Each non-hub vertex lies in four of the ten triples, one for each other non-hub vertex.
-The second copy of $\{h,d,e\}$ adds one to the degrees of $d$ and $e$.
-The triple $\{a,b,c\}$ adds one to the degrees of $a$, $b$ and $c$.
-Every non-hub vertex therefore lies in exactly five hyperedge copies.
-Every pair of vertices contains a non-hub vertex $w$.
-Every route from or to $w$ uses one of the five copies at $w$, so removing them separates the pair.
-This gives $\lec \le 5$ for every pair.
-There are $10+1+1=12$ copies.
-\Cref{prop:hyper-edge} gives at most $\floor{5 \cdot 5/2}=12$, so $12$ is the largest value.
-\end{proof}
-
-Since $\kap\le\lec$, the same multihypergraph also gives $12$ for the vertex problem. I do not know whether $12$ is optimal there.
-
 
 
 \section{Lower bounds for the hypergraph vertex problem}\label{sec:hyper-vertex-proof}
@@ -1065,7 +950,7 @@ Since $|E(G_0)| = n - 1 + \mathrm{rank}(G_0)$, it beats the thickened tree exact
 
 
 
-\begin{theorem}[Thickened complete graphs sharing a vertex beat the thickened tree]\label{thm:clique-chain-vertex}
+\begin{theorem}[Bouquets of thickened complete graphs]\label{thm:clique-chain-vertex}
 Let $3 \le s \le m$ and $q = m+1-s \ge 1$.
 Let $1 \le k \le \lfloor (n-1)/(s-1) \rfloor$.
 Take $k$ copies of $K_s$ that share one vertex $h$ and are otherwise disjoint, and give every edge multiplicity $q$.
@@ -1105,7 +990,7 @@ The number of edges is therefore
 
 At $s = 3$, $\mathrm{gain}(3,m) = m-4$. This is zero at $m = 4$ and positive for $m \ge 5$.
 For every $m\ge5$ the thickened tree is therefore not optimal, also when $n\ge m+2$.
-Here is a small example. Take $m=5$ and $n=7$.
+For example, take $m=5$ and $n=7$.
 Put a triangle on $\{u_1, u_2, u_3\}$ with multiplicity $3$, and attach a path of four more vertices to $u_1$ with multiplicity $4$.
 Two triangle vertices have three parallel edges and one route through the third vertex, so $\kap = 4$.
 Every other pair is separated by a cut vertex or joined only by its parallel edges.
@@ -1113,11 +998,8 @@ This gives $\kap^{\max}=4 = m-1$.
 There are $3 \cdot 3 + 4 \cdot 4 = 25$ edges, one more than the thickened tree's $24$.
 With $k$ triangles the gain is $k$, so the gap grows linearly in $n$.
 
-Sharing a vertex lets more copies fit, since each new copy uses only $s-1$ new vertices.
-For example, at $m = 10$, $s = 6$ and $n = 11$, two copies sharing a vertex give $150$ edges.
-Disjoint copies would allow only one copy, with $75$ edges, and $120$ edges after attaching the other five vertices.
-
-Each copy of $K_s$ uses $s-1$ new vertices, which makes the gain per added vertex $\mathrm{gain}(s,m)/(s-1) = (s-2)(m-1-s)/2$. The factors $s-2$ and $m-1-s$ add up to $m-3$. Their product is largest when they are about equal, at $s\approx(m+1)/2$, where the gain per vertex is about $(m-3)^2/8$.
+Sharing a vertex lets more copies fit, since each new copy of $K_s$ uses only $s-1$ new vertices.
+The gain per added vertex is therefore $\mathrm{gain}(s,m)/(s-1) = (s-2)(m-1-s)/2$. The factors $s-2$ and $m-1-s$ add up to $m-3$. Their product is largest when they are about equal, at $s\approx(m+1)/2$, where the gain per vertex is about $(m-3)^2/8$.
 For sufficiently large $m$, choose an integer $s$ nearest to $(m+1)/2$, and take $k = \floor{(n-1)/(s-1)}$, which is at least $1$ once $n \ge m$.
 The gain per added vertex is then $m^2/8 + O(m)$, and rounding $k$ down loses at most one $\mathrm{gain}(s,m) = O(m^3)$ edges.
 This gives $K_m(n) \ge \bigl(\tfrac18 - O(1/m) - O(m/n)\bigr)m^2 n$, while the thickened tree gives only $(m-1)(n-1)$.
@@ -1125,7 +1007,7 @@ This gives $K_m(n) \ge \bigl(\tfrac18 - O(1/m) - O(m/n)\bigr)m^2 n$, while the t
 This construction need not be optimal.
 The next result gives an upper bound of the same order.
 
-\begin{proposition}[An upper bound of the same order]\label{prop:multi-vertex-upper}
+\begin{proposition}[Upper bound for $K_m(n)$]\label{prop:multi-vertex-upper}
 For all $m \ge 2$ and $n \ge 2$, the first inequality below holds, and the second holds for $n \ge m-1$:
 \[
     K_m(n) \;\le\; (m-1)\,k_m(n) \;\le\; (m-1)\Bigl[(m-1)n - \binom{m}{2}\Bigr] .
@@ -1205,7 +1087,7 @@ Let $1 \le s \le t \le m-1$. Give every edge of $K_{s,t}$ multiplicity $m-s$. Th
 \[
     K_m(n) \;\ge\; \frac{st\,(m-s)}{s+t-1}\,(n-1) .
 \]
-The best choice of $s$ and $t$ gives the rate $\bigl(3 - 2\sqrt{2} + o_m(1)\bigr)m^2$, at $t = m-1$ and $s \approx (\sqrt{2}-1)m$. \Cref{thm:clique-chain-vertex} gives $\bigl(\tfrac18 + o_m(1)\bigr)m^2$. The new rate is larger by a factor $8(3-2\sqrt{2}) = 24 - 16\sqrt{2} \approx 1.373$.
+The best choice of $s$ and $t$ gives the rate $\bigl(3 - 2\sqrt{2} + o_m(1)\bigr)m^2$, at $t = m-1$ and $s \approx (\sqrt{2}-1)m$. \Cref{thm:clique-chain-vertex} gives $\bigl(\tfrac18 + o_m(1)\bigr)m^2$.
 \end{theorem}
 
 \begin{proof}
@@ -1247,7 +1129,7 @@ Its value there is
 \[
     h(\sqrt2 - 1) \;=\; \frac{(\sqrt2-1)(2-\sqrt2)}{\sqrt2} \;=\; (\sqrt2-1)^2 \;=\; 3 - 2\sqrt{2}.
 \]
-Since $3 - 2\sqrt{2} \approx 0.172 > \tfrac18$, this is larger than the rate of \Cref{thm:clique-chain-vertex}, by the stated factor.
+Since $3 - 2\sqrt{2} \approx 0.172 > \tfrac18$, this is larger than the rate of \Cref{thm:clique-chain-vertex}.
 \end{proof}
 
 In the best choice, one side has about $0.41m$ vertices and the other has $m-1$.
@@ -1503,17 +1385,12 @@ For fixed $r\ge3$ and large $n$ it is simple.
 The upper and lower bounds therefore have the same $n^2$ term.
 \end{proof}
 
-Two remarks.
 For small $n$, the bound of \Cref{prop:dir-hyper-first} is smaller, roughly until $n \approx 4(m-1)(r-1)/3$.
 At $r = 2$ the shadow is the underlying simple directed graph, obtained by suppressing parallel copies, and the theorem gives the quadratic term of \Cref{thm:dir-multi-full} again.
 
-The general model needs a different proof that the shadow is budgeted.
-The proof above used twice that a hyperedge has one tail: leaving hyperedges with different tails are different, and they differ from the entering hyperedges.
-With several tails this fails. Two midpoints can leave through the same hyperedge, and for $r \ge 4$ one hyperedge can be the first hyperedge of one route and the second hyperedge of another.
-Instead we choose routes one at a time until no route can be added.
-Every midpoint, or $v$, that then has no route lies in a hyperedge that is already used, and a used hyperedge has only $r$ vertices.
+With several tails, two routes can share a hyperedge, so the proof above does not show that the shadow is budgeted. Instead we choose routes greedily.
 
-\begin{theorem}[The general orientation model shares the constant]\label{thm:dir-hyper-general-constant}
+\begin{theorem}[The general model]\label{thm:dir-hyper-general-constant}
 Let $r \ge 2$ and $m \ge 2$. In the general model, every directed $r$-uniform multihypergraph $\HH$ on $n \ge 2$
 vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
 \[
@@ -1559,6 +1436,5 @@ With $|U| \le 2|S|$ this gives $|\mathcal{T}| \le (2r+1)|S| \le (2r+1)(m-1)$, an
 The construction of \Cref{prop:dir-hyper-first} also works in the general model, so the $n^2$ terms agree.
 \end{proof}
 
-The constant $2r+1$ only affects the linear term.
 
 
