@@ -553,7 +553,8 @@ In a graph, internally vertex-disjoint paths are also edge-disjoint. An edge has
 \end{figure}
 
 For multigraphs and hypergraphs we must say when two routes share no inner vertex.
-As in \Cref{sec:graphs}, edge-disjoint routes share no edge, here no edge copy, but they may still meet in inner vertices.
+As in \Cref{sec:graphs}, edge-disjoint routes share no edge.
+Notice that copies of an edge are distinct edges, so two routes that use different copies of the same edge do not share an edge.
 Two routes are \emph{separated} if they have no inner vertex and no edge copy in common.
 For graphs and multigraphs, separated is the same as internally vertex-disjoint. By the argument above, two internally vertex-disjoint routes that share an edge copy both consist of that copy alone, so they are the same route.
 In every model, $\lec(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ routes, and $\kap(u,v)$ the largest number of pairwise separated ones. In the directed models the routes are directed.
