@@ -30,12 +30,12 @@ Finally, I thank my promotor, Stijn Cambie, and my readers, Karel Dekimpe and Ja
 
 This thesis asks how many edges a network can have when no two vertices may be joined by too many independent routes.
 The starting point is Erd\H{o}s Problem~915, which asks this for edge-disjoint paths in simple graphs.
-After solving the assigned problem, I widened the scope towards more general networks and other kinds of disjoint routes, sixteen problems in total.
-After almost falling down the rabbit hole of asking the question ``what if I do this instead?'', I answered the same question for the most common assumptions. If more exotic choices are what you seek, this thesis still contains the building blocks to craft the answers yourself alongside the instruction manual.
+After solving the assigned problem, I widened the scope towards more general networks and other kinds of disjoint routes.
+In total, sixteen problems are considered.
 
-Chapter~1 states the problem and its variants, proves the main results, and lists the open problems.
+Chapter~1 states the original problem and its variants, proves the main results, and lists the open questions.
 The definitions are in its first three sections, and the notation is listed under Abbreviations and Symbols.
-A reader who wants only the results can read these sections, then the theorem statements in \Cref{sec:results} and the open problems in \Cref{sec:overview}.
+A reader who wants only the results can read these sections, then the theorem statements in \Cref{sec:results} and the open questions in \Cref{sec:overview}.
 Longer proofs and supplementary results are collected in \Cref{app:proofs}.
 
 Chapter~2 explains how a Python program can measure connectivity and search for dense examples, using pruning and heuristics to make the search faster.
@@ -55,7 +55,7 @@ they are used. The code is available in my personal repository \cite{vandenbruwa
 \toprule
 Area & Main results \\
 \midrule
-Undirected graphs and multigraphs & A different proof of Mader's bound, with the Gomory--Hu tree, an explicit construction of graphs that attain it for every $n\ge m$ (the value itself is due to Mader), and the exact multigraph edge value. \\
+Undirected graphs and multigraphs & A proof of Mader's bound, with the Gomory--Hu tree, an explicit construction of graphs that attain it for every $n\ge m$, and the exact multigraph edge value. \\
 Multigraphs, vertex & The exact value at $m=2$ and $m=3$. \\
 Hypergraphs, edge & The exact multihypergraph value for every $n\ge r$, and a range where simple hypergraphs attain it. \\
 Hypergraphs, vertex & The exact value at $m=2$ and $m=3$, for simple hypergraphs at $m=3$ when $2<r<n$. \\
@@ -77,7 +77,7 @@ Mader's bound is
 \]
 Bollob\'{a}s and Erd\H{o}s showed that the bound is attained when $m-1 \mid n-1$, and Mader showed it for every $n\ge m$. I prove the bound in a different way, with the Gomory--Hu tree, and give an explicit construction of graphs that reach it for every $n\ge m\ge2$.
 
-The thesis also studies the problem in eight models. Edges may be directed or not, may be repeated or not, and may join two vertices or more (hypergraphs). In each model the routes must be edge-disjoint, or separated, which means that they share no inner vertex and no edge. In graphs, separated routes are the internally vertex-disjoint routes. This gives sixteen problems.
+The thesis studies this problem in eight different graph models. Edges may be directed or not, may be repeated or not, and may join two vertices or more (hypergraphs). In each model the routes must either be edge-disjoint or separated. Edge-disjoint means they have no common edges, while separated adds the condition of sharing no inner vertex on top of that.
 
 The proved results include:
 \begin{itemize}
@@ -97,7 +97,7 @@ Chapter~2 explains how a program measures connectivity with maximum flow and sea
 \begingroup
 \setlength{\LTleft}{0pt}
 \setlength{\LTright}{\fill}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{\dimexpr0.78\textwidth-2\tabcolsep\relax}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{\dimexpr0.75\textwidth-2\tabcolsep\relax}@{}}
 \toprule
 Symbol & Meaning \\
 \midrule
@@ -110,17 +110,18 @@ Symbol & Meaning \\
 \bottomrule
 \endfoot
 $G=(V,E)$, $D=(V,A)$ & vertex set $V$, with edge multiset $E$ or arc multiset $A$ \\
-$n$, $m$, $r$ & vertex count, number of edge-disjoint or separated routes that no pair may have, hyperedge size \\
+$n$, $m$, $r$ & vertex count, upper bound for edge-disjoint or separated routes, hyperedge size \\
 $\lambda_G(u,v)$ & maximum number of edge-disjoint $u$--$v$ paths \\
 $\kappa_G(u,v)$ & maximum number of separated $u$--$v$ paths \\
-$\lambda_G^{\max}$, $\kappa_G^{\max}$ & maximum local connectivity over distinct vertex pairs, ordered in directed models \\
+$\lambda_G^{\max}$, $\kappa_G^{\max}$ & maximum local connectivity over distinct vertex pairs \\
 $\ell_m(n)$, $L_m(n)$ & simple and multigraph undirected edge maxima \\
 $k_m(n)$, $K_m(n)$ & simple and multigraph undirected vertex maxima \\
 $\ell_m^{\mathrm{dir}}(n)$, $L_m^{\mathrm{dir}}(n)$ & simple and multigraph directed arc maxima \\
 $k_m^{\mathrm{dir}}(n)$, $K_m^{\mathrm{dir}}(n)$ & simple and multigraph directed vertex maxima \\
 $\ell_m^{(r)}(n)$, $L_m^{(r)}(n)$ & simple and multi $r$-uniform hypergraph edge maxima \\
 $k_m^{(r)}(n)$, $K_m^{(r)}(n)$ & simple and multi $r$-uniform hypergraph vertex maxima \\
-$\ell_m^{\mathrm{dir}\,(r)}(n)$, $L_m^{\mathrm{dir}\,(r)}(n)$, $k_m^{\mathrm{dir}\,(r)}(n)$, $K_m^{\mathrm{dir}\,(r)}(n)$ & the same four maxima for directed $r$-uniform hypergraphs \\
+$\ell_m^{\mathrm{dir}\,(r)}(n)$, $L_m^{\mathrm{dir}\,(r)}(n)$ & simple and multi $r$-uniform hypergraph directed edge maxima \\
+$k_m^{\mathrm{dir}\,(r)}(n)$, $K_m^{\mathrm{dir}\,(r)}(n)$ & simple and multi $r$-uniform hypergraph directed vertex maxima \\
 $M(n)$ & $\max(2(n-1),\floor{n^2/4})$, the directed arc maximum at $m=2$ \\
 $K_n$, $K_{s,t}$ & complete graph on $n$ vertices, complete bipartite graph with sets of sizes $s$ and $t$ \\
 $B_{a,b}$ & one-way complete bipartite directed graph, all arcs from a set of size $a$ to a set of size $b$ \\

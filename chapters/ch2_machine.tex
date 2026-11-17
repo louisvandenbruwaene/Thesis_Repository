@@ -128,7 +128,7 @@ Every vertex $v$ is split into two nodes $v^{\mathrm{in}}$ and $v^{\mathrm{out}}
 Routes arrive at $v^{\mathrm{in}}$ and leave from $v^{\mathrm{out}}$.
 For separated routes this arc has capacity one, so at most one route can pass through $v$.
 For edge-disjoint routes its capacity is unlimited, and it changes nothing.
-The gates keep their capacity, so parallel copies still give different routes, as in the incidence convention of \Cref{sec:incidence-convention}.
+The gates keep their capacity, so parallel copies still give different routes, as in the definition of routes in \Cref{sec:variants}.
 \Cref{lst:network} builds this network.
 
 \programpart{network}{The flow network: split vertices and one gate per hyperedge.}
@@ -519,8 +519,8 @@ A move adds or removes one copy of one hyperedge.
 Removing a copy never raises a connectivity, since every route of the smaller graph is also a route of the larger one.
 Adding a copy raises $\lec(u,v)$ and $\kap(u,v)$ by at most one for every pair.
 Edge-disjoint routes share no copy by definition, so after the addition at most one of them uses the new copy, and the others were already there.
-Separated routes also share no copy, which is why $\kap\le\lec$ holds in every model (\Cref{sec:incidence-convention}), so the same holds for $\kap$.
-This needs the convention. If two routes were only required to share no vertex, they could pass through the same hyperedge (\Cref{sec:incidence-convention}), and one new hyperedge could start several new routes at once.
+Separated routes also share no copy, which is why $\kap\le\lec$ holds in every model (\Cref{sec:variants}), so the same holds for $\kap$.
+This needs the definition of separated routes. If two routes were only required to share no vertex, they could pass through the same hyperedge (\Cref{fig:incidence-example}), and one new hyperedge could start several new routes at once.
 The search therefore does not need to run the maximum-flow computation for every candidate move.
 Removing a copy from a feasible graph keeps it feasible.
 Adding a copy to a graph with $\lec^{\max}\le m-2$, or with $\kap^{\max}\le m-2$ for separated routes, also keeps it feasible.
@@ -544,7 +544,7 @@ For undirected graphs one tree is enough: any tree on the vertices such that, fo
 Take a pair $u,v$ and a tree edge on the tree path between them. Removing this tree edge splits the vertices into two parts, with $u$ and $v$ on different sides. Every $u$--$v$ route uses an edge of $G$ that crosses between the parts, and there are at most $m-1$ of these. In this way $n-1$ counts replace $\binom n2$ checks.
 A Gomory--Hu tree (\Cref{thm:gomory-hu}) of a feasible graph is such a tree.
 
-\emph{Separated routes.} For every pair $u,v$, the certificate gives a set of at most $m-1$ inner nodes of the incidence graph, vertices or edge copies, whose removal leaves no route from $u$ to $v$. It is checked in the same way. Separated routes share no inner node, so again each of them uses a different element of the set.
+\emph{Separated routes.} For every pair $u,v$, the certificate gives a set of at most $m-1$ inner vertices or edge copies whose removal leaves no route from $u$ to $v$. It is checked in the same way. Separated routes share no inner vertex and no edge copy, so again each of them uses a different element of the set.
 
 \emph{Size and model.} The number of edges is counted directly.
 Every hyperedge must also be one that the model allows: its vertices are among the $n$ vertices, it has $r$ of them, its split into tails and heads is allowed, and its number of copies is a whole number between $0$ and the largest multiplicity, which is $1$ in a simple model and $m-1$ otherwise.

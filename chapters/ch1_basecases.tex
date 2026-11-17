@@ -1,5 +1,5 @@
 % !TEX root = ../main.tex
-This chapter introduces several types of graphs, including \emph{simple graphs}, \emph{multigraphs}, \emph{hypergraphs}, and their directed counterparts. Once the necessary background has been established, the main problem is stated and a new proof is given. Afterwards, the question is restated for the other types of graphs and another way to separate their paths. In total there will be sixteen variants of the original problem. The proven results are stated in this chapter and are accompanied by their proof, except for the longer ones, which are collected in \Cref{app:proofs} together with supplementary results.
+This chapter introduces several types of graphs, including \emph{simple graphs}, \emph{multigraphs}, \emph{hypergraphs}, and their directed counterparts. Once the necessary background has been established, the main problem is stated and a proof is given. Afterwards, the question is restated for the other types of graphs and another way to separate their paths. In total there will be sixteen variants of the original problem. The proven results are stated in this chapter and are accompanied by their proof, except for the longer ones, which are collected in \Cref{app:proofs} together with supplementary results.
 
 \section{Graphs and routes}\label{sec:graphs}
 
@@ -10,9 +10,6 @@ If $\mu(u,v)\le1$ for every pair, then $G$ is a \emph{simple graph}.
 The \emph{size} of $G$ is its number of edges, counted with multiplicity: $|E(G)|=\sum_{\{u,v\}}\mu(u,v)$.
 This thesis tries to maximise the size given connectivity constraints, which are introduced later.
 Drawing vertices as dots and edges as lines between them is the standard way to visualise graphs.
-A multigraph is then any network built by joining different points with lines.
-Some definitions also allow loops, edges that join a vertex to itself.
-This thesis excludes them. Routes cannot repeat vertices, so a loop never lies on a route. A loop would therefore add to the size without changing any connectivity, and in a multigraph adding loops would make the maximum size unbounded.
 
 \begin{figure}[ht]
 \centering
@@ -36,15 +33,11 @@ This thesis excludes them. Routes cannot repeat vertices, so a loop never lies o
 \label{fig:k5-example}
 \end{figure}
 
-We write $n\coloneq|V(G)|$. The \emph{degree} $\deg(x)$ of a vertex $x$ is the number of edges at it.
+We write $n\coloneq|V(G)|$.
 From now on, graphs are simple unless said otherwise.
-A \emph{path} from $u$ to $v$ is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ of distinct vertices $v_i$ and edges $e_i$, where $v_0=u$, $v_q=v$ and $e_i$ joins $v_{i-1}$ and $v_i$. Its \emph{length} is its number of edges $q$.
+A \emph{path} or \emph{route} from $u$ to $v$ is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ of distinct vertices $v_i$ and edges $e_i$, where $v_0=u$, $v_q=v$ and $e_i$ joins $v_{i-1}$ and $v_i$. Its \emph{length} is its number of edges $q$.
 In a multigraph, two parallel edges (distinct edges with identical vertices) give two different paths of length one.
 In a simple graph we can write a path as a list of vertices, because two vertices uniquely specify an edge between them when there are no parallel edges.
-A \emph{walk} is a sequence of the same form in which vertices and edges may repeat.
-A \emph{cycle} is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ with $q\ge2$, distinct edges $e_i$ and distinct vertices $v_0,\ldots,v_{q-1}$, where $v_q=v_0$ and $e_i$ joins $v_{i-1}$ and $v_i$. In a simple graph a cycle has at least three edges, and in a multigraph two parallel edges form a cycle.
-A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}. A \emph{forest} is a graph without cycles. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$. A \emph{component} of a graph is a maximal connected subgraph. A \emph{spanning tree} of $G$ is a subgraph of $G$ that is a tree on all vertices of $G$. A \emph{star} on $n$ vertices is a tree in which one vertex, the \emph{hub}, is joined to each of the other $n-1$ vertices.
-We also call a path a \emph{route}.
 Two $u$--$v$ paths are \emph{edge-disjoint} if they have no edge in common.
 The \emph{local edge-connectivity} $\lec_G(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ paths.
 Its largest value over all pairs is
@@ -93,14 +86,14 @@ Let $u$ and $v$ be distinct vertices of a multigraph $G$. The largest number of 
 
 \section{Erd\H{o}s Problem 915}\label{sec:erdos915}
 
-Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62} asked the following question. It is Problem 915 in the Erd\H{o}s Problems database \cite{ErdosProblems}.
+Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62} asked the following question, which is Problem 915 in the Erd\H{o}s Problems database \cite{ErdosProblems}.
 
 \begin{ques}[Erd\H{o}s Problem 915 \cite{ErdosProblems}]
 Let $t\ge1$ and $m\ge2$. Must every graph with $1+t(m-1)$ vertices and $1+t\binom m2$ edges contain two vertices joined by $m$ disjoint paths?
 \end{ques}
 
-The database notes that the original statement leaves open whether ``disjoint'' means that the paths share no edge, or that they share no vertex except their two ends.
-This thesis takes edge-disjoint paths as the main question and treats internally vertex-disjoint paths as a variant (\Cref{sec:variants}).
+The database notes that the original statement leaves open what ``disjoint'' actually means.
+This thesis takes edge-disjoint paths as the main question and treats separated paths as another variant where routes are edge-disjoint and only the end vertices of two routes are allowed to coincide (\Cref{sec:variants}).
 
 The question asks how many edges force two vertices joined by $m$ disjoint paths.
 This thesis studies the associated extremal function: the largest number of edges of a graph on $n$ vertices in which no two vertices are joined by $m$ disjoint paths.
@@ -130,7 +123,8 @@ For $n\ge m$ the bound is always attained. Mader proved this as well, so $\ell_m
 For $2\le n<m$ the complete graph $K_n$ satisfies the condition, so $\ell_m(n)=\binom{n}{2}$.
 This is smaller than $\floor{m(n-1)/2}$, except when $(n,m)=(2,3)$. The reason is that $m\ge n+1$ gives $\floor{m(n-1)/2}\ge\binom{n}{2}+\floor{(n-1)/2}$, which exceeds $\binom{n}{2}$ once $n\ge3$. At $n=2$ the two values are $1$ and $\floor{m/2}$, and these agree only at $m=3$.
 
-I prove \Cref{thm:mader} in a different way from Mader, with the Gomory--Hu tree.
+A graph is \emph{connected} if every two vertices are joined by a path. A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}.
+I prove \Cref{thm:mader} with the Gomory--Hu tree.
 It stores the $\binom n2$ values $\lec_G(u,v)$ in only $n-1$ weights.
 
 \begin{theorem}[Gomory--Hu \cite{GomoryHu61}]\label{thm:gomory-hu}
@@ -241,12 +235,11 @@ The factor $\tfrac12$ comes from step (3). In a multigraph step (3) fails, and t
 
 \section{Variants of the problem}\label{sec:variants}
 
-We change four assumptions. The first three give eight graph models.
-In each model we can ask for edge-disjoint or for separated routes, defined in \Cref{sec:incidence-convention}.
+We change four assumptions: edge-size, edge-copies, edge-direction, and route-separation. Each assumption has two options, giving $2^4=16$ variants of the problem.
 
 The first assumption is the size of an edge.
 An edge joins two vertices. A \emph{hyperedge} is a set of $r\ge2$ vertices, so it may join more than two.
-A \emph{hypergraph} is defined analogously to a multigraph in \Cref{sec:graphs}, with hyperedges in place of edges, and its size is again its number of hyperedges, counted with multiplicity.
+A \emph{hypergraph} is defined analogously to a multigraph in \Cref{sec:graphs}, with hyperedges in place of edges, and its size is its number of hyperedges, counted with multiplicity.
 In an \emph{$r$-uniform hypergraph} every hyperedge has exactly $r$ vertices. For $r=2$ this is a multigraph.
 For example, the hyperedge $\{a,b,c\}$ is one edge that joins three vertices. It is not the same as the three edges $ab$, $bc$ and $ac$.
 A \emph{Berge path} is a sequence of distinct vertices and distinct hyperedges, alternating, in which each hyperedge contains the vertex before it and the vertex after it.
@@ -255,13 +248,14 @@ For $r=2$ it is an ordinary path.
 The second assumption is repetition.
 A \emph{simple} graph or hypergraph has each edge at most once.
 A \emph{multigraph} or \emph{multihypergraph} may repeat edges.
+Each copy of a repeated edge or hyperedge is a separate edge for routes, so routes through different copies are different routes.
 
 The third assumption is direction.
-A directed edge, or \emph{arc}, is an ordered pair of distinct vertices. The arc $(u,v)$ is written $u\to v$, and it goes from $u$ to $v$.
-A directed graph or directed multigraph has arcs in place of edges.
+A directed edge, or rather \emph{arc}, is an ordered pair of distinct vertices. The arc $(u,v)$ is written $u\to v$, and it goes from $u$ to $v$.
+A directed multigraph is defined analogously to a multigraph in \Cref{sec:graphs}, with arcs instead of edges.
 A \emph{directed path} from $u$ to $v$ is a path $v_0,e_1,v_1,\ldots,e_q,v_q$ from $u$ to $v$ in which every arc $e_i$ goes from $v_{i-1}$ to $v_i$, and $u$ \emph{reaches} $v$ if there is such a path.
 A \emph{directed hyperedge} splits its $r$ vertices into a non-empty set of \emph{tails} and a non-empty set of \emph{heads}.
-In a directed hypergraph every hyperedge is directed, and there we write \emph{hyperedge} for short.
+A directed multihypergraph is defined analogously to a multigraph in \Cref{sec:graphs}, with directed hyperedges instead of edges. %make sure to check if directed hyperedges are abbreviated by hyperedge anywhere and fix that.
 A directed Berge route enters a hyperedge at a tail and leaves it at a head.
 The allowed numbers of tails are a parameter of the directed hypergraph models.
 In the \emph{forward} model every hyperedge has one tail and $r-1$ heads, in the \emph{backward} model it has $r-1$ tails and one head, and the \emph{general} model allows every split.
@@ -270,7 +264,7 @@ Unless a statement names one of them, the directed hypergraph models are forward
 In the figures a hyperedge is drawn in one colour, as lines from one of its vertices to each of the others. In a directed hyperedge the lines start at the tail. These lines only show which vertices the hyperedge contains. A route may pass between any two vertices of an undirected hyperedge, also two that are not joined by a drawn line.
 A picture closer to the definition colours every vertex of a hyperedge in the colour of that hyperedge and treats these vertices as teleportation points: a route that reaches one of them can continue from another. In a directed hyperedge the tails are entry points and the heads are exit points. In an undirected hyperedge every vertex is both. The gate network of \Cref{ch:machine} is built on this picture.
 The figures do not use it, because a vertex that lies in many hyperedges would need many colours, and directions are hard to show this way.
-\Cref{fig:eight-models} shows the eight models.
+\Cref{fig:eight-models} shows the eight types of graphs considered, because the fourth assumption concerns routes instead of graphs.
 
 \begin{figure}[ht]
 \centering
@@ -423,6 +417,7 @@ The figures do not use it, because a vertex that lies in many hyperedges would n
 \end{figure}
 
 Directed graphs have no Gomory--Hu tree in general. A tree stores one value per pair, read the same in both directions, while $\lec(u,v)$ and $\lec(v,u)$ can differ. Menger's theorem (\Cref{thm:menger}) does hold for directed multigraphs, with directed paths and arcs.
+The \emph{degree} $\deg(x)$ of a vertex $x$ is the number of edges at it.
 In a directed graph, the \emph{out-degree} $d^+(v)$ is the number of arcs that leave $v$.
 The vertices these arcs point to are the \emph{out-neighbours} of $v$.
 The \emph{in-degree} $d^-(v)$ is the number of arcs that enter $v$, and they come from the \emph{in-neighbours} of $v$.
@@ -534,7 +529,6 @@ Two $u$--$v$ paths are \emph{internally vertex-disjoint} if they have no vertex 
 The largest number of such paths is the \emph{local vertex-connectivity} $\kap_G(u,v)$.
 Its largest value over all pairs is $\kap_G^{\max}$.
 In a graph, internally vertex-disjoint paths are also edge-disjoint. An edge has two ends, and two such paths share no vertex other than $u$ and $v$. A shared edge would therefore have to join $u$ and $v$. A $u$--$v$ path that uses such an edge consists of that edge alone, which makes two paths through the same edge the same path. This gives $\kap_G(u,v)\le\lec_G(u,v)$.
-\Cref{sec:incidence-convention} extends this to multigraphs and hypergraphs.
 \Cref{fig:edge-vs-vertex} shows that edge-disjoint and internally vertex-disjoint routes can differ.
 
 \begin{figure}[ht]
@@ -558,21 +552,11 @@ In a graph, internally vertex-disjoint paths are also edge-disjoint. An edge has
 \label{fig:edge-vs-vertex}
 \end{figure}
 
-\subsection{The incidence convention}\label{sec:incidence-convention}
-
 For multigraphs and hypergraphs we must say when two routes share no inner vertex.
-This thesis uses the following convention. For simple graphs it gives the usual notion.
-
-The \emph{incidence graph} $I(\HH)$ of a multigraph or hypergraph $\HH$ has a node for each vertex and a node for each edge copy.
-An edge copy is joined to the vertices it contains.
-A route from $u$ to $v$ is a path in $I(\HH)$.
-Two routes are \emph{edge-disjoint} if they use no common edge copy. Such routes may still meet in inner vertices. Two routes are \emph{separated} if they have no inner node in common, so they are both internally vertex-disjoint and edge-disjoint.
-For graphs and multigraphs, internally vertex-disjoint routes never share an edge copy, so there separated is the same as internally vertex-disjoint.
-As for graphs, $\lec(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ routes, and $\kap(u,v)$ the largest number of pairwise separated ones.
-In the directed case we use the directed incidence graph: each tail has an arc to the edge copy, and the edge copy has an arc to each head.
-For example, an arc $u\to v$ becomes $u\to e\to v$.
-
-The inner nodes are vertices and edge copies, so separated routes share no inner vertex and no edge copy.
+As in \Cref{sec:graphs}, edge-disjoint routes share no edge, here no edge copy, but they may still meet in inner vertices.
+Two routes are \emph{separated} if they have no inner vertex and no edge copy in common.
+For graphs and multigraphs, separated is the same as internally vertex-disjoint. By the argument above, two internally vertex-disjoint routes that share an edge copy both consist of that copy alone, so they are the same route.
+In every model, $\lec(u,v)$ is the largest number of pairwise edge-disjoint $u$--$v$ routes, and $\kap(u,v)$ the largest number of pairwise separated ones. In the directed models the routes are directed.
 Sharing no vertex is not enough for hypergraphs, because two Berge routes can use the same hyperedge without sharing an inner vertex.
 For example, take the hyperedges $e_1=\{u,a,b\}$, $e_2=\{a,v,c\}$ and $e_3=\{b,v,c\}$. The routes $u,e_1,a,e_2,v$ and $u,e_1,b,e_3,v$ have no inner vertex in common, but both use $e_1$. They are therefore not separated, and not edge-disjoint either (\Cref{fig:incidence-example}).
 
@@ -678,6 +662,7 @@ For simple directed graphs,
 \end{theorem}
 
 Two constructions attain the two terms (\Cref{fig:simple-directed-graph-m2}).
+A \emph{star} on $n$ vertices is a tree in which one vertex, the \emph{hub}, is joined to each of the other $n-1$ vertices.
 The \emph{bidirected star} is a star with each edge replaced by an arc in each direction, so it has $2(n-1)$ arcs.
 For $a,b\ge1$, the \emph{one-way complete bipartite directed graph} $B_{a,b}$ has its vertices split into a set $A$ of size $a$ and a set $B$ of size $b$, and all $ab$ arcs from $A$ to $B$. With $a=\floor{n/2}$ and $b=\ceil{n/2}$ it has $\floor{n^2/4}$ arcs.
 In both, every ordered pair is joined by at most one directed path.
@@ -735,7 +720,11 @@ For simple directed graphs, $k_2^{\mathrm{dir}}(n) = \ell_2^{\mathrm{dir}}(n)$.
 The star has more arcs for $n<7$, and the bipartite directed graph has more for $n>7$.
 The directed value thus grows quadratically in $n$, while the undirected value grows linearly.
 In the bipartite directed graph no arc leaves $B$ and no arc enters $A$. Every route is therefore a single arc, and each ordered pair has at most one route.
-An undirected graph with $\lec^{\max}\le1$ has no cycle, because two vertices on a cycle are joined by the two halves of the cycle, which are edge-disjoint paths. Such a graph is a forest and has at most $n-1$ edges.
+A \emph{walk} is a sequence $v_0,e_1,v_1,\ldots,e_q,v_q$ of the same form as a path, in which vertices and edges may repeat.
+A \emph{cycle} is a walk that starts and ends at the same vertex, has at least one edge, and has no repeated edges or vertices except for the start and end.
+In a simple graph a cycle has at least three edges, and in a multigraph two parallel edges form a cycle.
+A \emph{forest} is a graph without cycles. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$. A \emph{component} of a graph is a maximal connected subgraph.
+An undirected graph with $\lec^{\max}\le1$ has no cycle, because two vertices on a cycle are joined by the two halves of the cycle, which are edge-disjoint paths. Such a graph is a forest. Each of its components is a tree with one edge fewer than vertices, so it has at most $n-1$ edges.
 
 For the upper bound we keep only the arcs that are needed to tell who can reach whom.
 
@@ -1008,6 +997,8 @@ help.
 
 \begin{proof}[Proof of \Cref{thm:hyper-vertex-m2}]
 Let $q$ be the number of hyperedges.
+The \emph{incidence graph} $I(\HH)$ has a node for each vertex and a node for each hyperedge copy, and each hyperedge copy is joined to the vertices it contains.
+A Berge route is a path in $I(\HH)$ between two vertex nodes, and two routes are separated exactly when these paths have no inner node in common.
 We claim that $\kap^{\max}_\HH \le 1$ exactly when $I(\HH)$ is a forest.
 The graph $I(\HH)$ is bipartite, with vertex nodes on one side and hyperedge nodes on the other, so a cycle in it alternates between the two kinds of nodes.
 Suppose $I(\HH)$ has a cycle $v_1, e_1, v_2, e_2, \dots, v_\ell, e_\ell, v_1$, with $\ell\ge2$ and all $v_i$ and $e_i$ distinct.
@@ -1255,10 +1246,10 @@ With \Cref{thm:dir-hyper-constant} at $r=2$ this gives $K_m^{\mathrm{dir}}(n)=(m
 
 \Cref{sec:two-step-budget} compares \Cref{thm:dir-arc-linear-error} with a theorem of Huang and Lyu \cite{HuangLyu26}.
 
-\section{Open problems}\label{sec:overview}
+\section{Open questions}\label{sec:overview}
 
 
-The main open problems are:
+The main open questions are:
 \begin{enumerate}
 \item Find $\ell_m^{\mathrm{dir}}(n)$ for $m\ge3$, or at least the coefficient of the linear term.
 \item Is $k_m^{\mathrm{dir}}(n)=\ell_m^{\mathrm{dir}}(n)$ for $m\ge3$?
