@@ -1263,10 +1263,10 @@ $\HH$ on $n \ge 2$ vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
 \[
     |E(\HH)| \;\le\; \frac{m-1}{r-1}\floorfrac{n^2}{4} \;+\; (m-1)^2 (n-1).
 \]
-Conversely, for fixed $r$ and $m$ there are forward directed $r$-uniform multihypergraphs on $n$ vertices with $(m-1)n^2/(4(r-1))-O_{r,m}(n)$ hyperedges in which no ordered pair has $m$ hyperedge-disjoint routes. For $r\ge3$ and large $n$ they are simple.
+
 \end{theorem}
 
-Since $\kap\le\lec$, the upper bound also holds when $\lec^{\max}_\HH\le m-1$, and the lower bound also holds for separated routes. The leading term $(m-1)n^2/(4(r-1))$ is therefore right for multihypergraphs, and for $r\ge3$ also for simple directed hypergraphs.
+Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_\HH\le m-1$. \Cref{prop:dir-hyper-first} with $\alpha=\floor{n/2}$ gives a lower bound of $(m-1)n^2/(4(r-1))-O_{r,m}(n)$ hyperedges, with simple hypergraphs for $r\ge3$ and large $n$.
 
 The proof bounds the hyperedges by the arcs of a simple directed graph, shows that this graph satisfies a two-step budget, and applies \Cref{lem:two-step-budget}.
 
@@ -1314,10 +1314,8 @@ and $R$ is $(r-1)(m-1)$-budgeted.
 \Cref{lem:two-step-budget} with $C = (r-1)(m-1)$ gives $|A(R)| \le \floor{n^2/4} + (r-1)(m-1)(n-1)$. With the bound on $|E(\HH)|$ above,
 \[
     |E(\HH)| \;\le\; \frac{m-1}{r-1}\left[\floorfrac{n^2}{4} + (r-1)(m-1)(n-1)\right]
-    \;=\; \frac{m-1}{r-1}\floorfrac{n^2}{4} + (m-1)^2(n-1).
+    \;=\; \frac{m-1}{r-1}\floorfrac{n^2}{4} + (m-1)^2(n-1). \qedhere
 \]
-For the lower bound, \Cref{prop:dir-hyper-first} with $\alpha = \floor{n/2}$ gives $(m-1)n^2/(4(r-1)) - O_{r,m}(n)$ hyperedges.
-For fixed $r\ge3$ and large $n$ we have $m-1\le\binom{\ceil{n/2}-1}{r-2}$, so this construction is simple.
 \end{proof}
 
 The backward model is the forward model with every hyperedge reversed, so it has the same extremal values (\Cref{lem:dir-hyper-duality}).
