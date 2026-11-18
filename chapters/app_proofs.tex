@@ -262,7 +262,7 @@ Let $u,v$ be distinct vertices of a multihypergraph $\HH$, and count parallel co
 \end{theorem}
 
 \begin{proof}
-We turn $\HH$ into a directed multigraph $N$, the gate network, and use Menger's theorem for directed multigraphs (\Cref{thm:menger}, \cite[Theorem~6.2.2]{Diestel25}).
+We turn $\HH$ into a directed multigraph $N$, the gate network, and use Menger's theorem for directed multigraphs (\Cref{thm:menger}, \cite[Theorem~6.2.2 and Corollary~6.2.3]{Diestel25}).
 Let $c$ be the total number of hyperedge copies.
 Every hyperedge $e$ with $\mu(e)$ copies gets two new nodes $e^-$ and $e^+$ and $\mu(e)$ parallel arcs $e^- \to e^+$, its \emph{gate}.
 Every vertex $x \in e$ gets $c+1$ parallel arcs $x \to e^-$ and $c+1$ parallel arcs $e^+ \to x$.
@@ -557,22 +557,7 @@ For $m\ge5$ the tree with all multiplicities $m-1$ is not best. Take a tree in w
 
 \subsection{The directed problem}\label{sec:multi-vertex-dir}
 
-The splitting of $\kap$ into parallel arcs and longer routes also works for directed graphs (\Cref{lem:multi-vertex-split-dir}).
 \Cref{cor:dir-multi-incidence} below gives the exact value at $m=2$ and the leading term for every fixed $m$.
-
-\begin{lemma}[Splitting the directed local vertex-connectivity]\label{lem:multi-vertex-split-dir}
-Let $D$ be a directed multigraph with multiplicity function $\mu$, and let its underlying simple
-directed graph $D_0$ be the simple directed graph with an arc $u\to v$ whenever $\mu(u,v)\ge1$. For an ordered pair $u \ne v$, write $\pi(u,v)$ for the largest number
-of pairwise separated directed $u$--$v$ paths of length at least two in
-$D_0$. Then $\kap_D(u,v) = \mu(u,v) + \pi(u,v)$.
-\end{lemma}
-
-\begin{proof}
-The proof of \Cref{lem:multi-vertex-split} works word for word with directed paths.
-A route of length one is a copy of the arc $u\to v$ and has no inner vertex.
-Longer routes give separated directed paths in $D_0$, and conversely, using one copy of each arc.
-Copies of the reverse arc $v\to u$ are never used.
-\end{proof}
 
 \begin{corollary}[The directed multigraph vertex value]\label{cor:dir-multi-incidence}
 For directed multigraphs and every $n \ge 2$,
@@ -580,7 +565,7 @@ For directed multigraphs and every $n \ge 2$,
     K_2^{\mathrm{dir}}(n) \;=\; k_2^{\mathrm{dir}}(n) \;=\; \ell_2^{\mathrm{dir}}(n)
     \;=\; \max\!\Bigl(2(n-1),\ \floorfrac{n^2}{4}\Bigr) ,
 \]
-and for each fixed $m \ge 2$,
+and for every $m \ge 2$,
 \[
     (m-1)M(n) \;\le\; K_m^{\mathrm{dir}}(n)
     \;\le\; (m-1)\floorfrac{n^2}{4} + (m-1)^2(n-1) .
@@ -693,38 +678,38 @@ Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_{\HH} \le m-1$. For 
 \end{theorem}
 
 \begin{proof}
-Let $R$ be the shadow in the general model: $(u,v) \in A(R)$ when some hyperedge has $u$ among its tails and $v$ among its heads. Let $\mu_R(u,v)$ be the number of such hyperedges. Tails and heads are disjoint, so $R$ has no loops.
+Let $S$ be the shadow in the general model: $(u,v) \in A(S)$ when some hyperedge has $u$ among its tails and $v$ among its heads. Let $\mu_S(u,v)$ be the number of such hyperedges. Tails and heads are disjoint, so $S$ has no loops.
 
-As before, $\mu_R(u,v) \le m-1$.
-A hyperedge $(T,H)$ gives $|T|\,|H| \ge r-1$ arcs of $R$. This gives
+As before, $\mu_S(u,v) \le m-1$.
+A hyperedge $(T,H)$ gives $|T|\,|H| \ge r-1$ arcs of $S$. This gives
 \[
     (r-1)\,|E(\HH)| \;\le\; \sum_{(T,H) \in E(\HH)} |T|\,|H|
-    \;=\; \sum_{(u,v) \in A(R)} \mu_R(u,v) \;\le\; (m-1)\,|A(R)| .
+    \;=\; \sum_{(u,v) \in A(S)} \mu_S(u,v) \;\le\; (m-1)\,|A(S)| .
 \]
 
 Next we show that the shadow is budgeted.
-Fix an ordered pair $(u,v)$. Let $\mathcal{T}$ be the set of midpoints counted by $p_2(u,v)$, together with $v$ if $(u,v) \in A(R)$.
+Fix an ordered pair $(u,v)$. Let $\mathcal{T}$ be the set of midpoints counted by $p_2(u,v)$, together with $v$ if $(u,v) \in A(S)$.
 Every $t \in \mathcal{T}$ gives a route from $u$ to $v$.
 For $t = v$ it is the route of length one through a hyperedge with $u$ among its tails and $v$ among its heads.
 For a midpoint $t$ it is the route $u \to t \to v$ through a hyperedge with $u$ among its tails and $t$ among its heads, followed by a hyperedge with $t$ among its tails and $v$ among its heads.
 These two hyperedges are different, since $t$ cannot be both a tail and a head of one hyperedge.
 
 Choose such routes for different elements of $\mathcal{T}$, with all hyperedges different, one at a time until no route can be added.
-Let $S$ be the set of elements of $\mathcal{T}$ that received a route, and let $U$ be the set of hyperedges these routes use. Then $|U| \le 2|S|$.
-The routes share no hyperedge, and their inner vertices are different, so $|S| \le \kap_{\HH}(u,v) \le m-1$.
+Let $X$ be the set of elements of $\mathcal{T}$ that received a route, and let $U$ be the set of hyperedges these routes use. Then $|U| \le 2|X|$.
+The routes share no hyperedge, and their inner vertices are different, so $|X| \le \kap_{\HH}(u,v) \le m-1$.
 
-Now take $t \in \mathcal{T} \setminus S$.
+Now take $t \in \mathcal{T} \setminus X$.
 No route for $t$ can be added, so every hyperedge with $u$ among its tails and $t$ among its heads lies in $U$, or $t$ is a midpoint and every hyperedge with $t$ among its tails and $v$ among its heads lies in $U$.
 Such hyperedges exist, so $t$ is a tail or a head of some hyperedge in $U$. This gives
 \[
-    \mathcal{T} \setminus S \;\subseteq\; \bigcup_{e \in U} \bigl(T_e \cup H_e\bigr) ,
+    \mathcal{T} \setminus X \;\subseteq\; \bigcup_{e \in U} \bigl(T_e \cup H_e\bigr) ,
     \qquad\text{and}\qquad
-    |\mathcal{T}| \;\le\; |S| + \sum_{e \in U} \bigl(|T_e| + |H_e|\bigr)
-    \;=\; |S| + r\,|U| .
+    |\mathcal{T}| \;\le\; |X| + \sum_{e \in U} \bigl(|T_e| + |H_e|\bigr)
+    \;=\; |X| + r\,|U| .
 \]
-With $|U| \le 2|S|$ this gives $|\mathcal{T}| \le (2r+1)|S| \le (2r+1)(m-1)$, and $R$ is $(2r+1)(m-1)$-budgeted.
+With $|U| \le 2|X|$ this gives $|\mathcal{T}| \le (2r+1)|X| \le (2r+1)(m-1)$, and $S$ is $(2r+1)(m-1)$-budgeted.
 
-\Cref{lem:two-step-budget} with $C = (2r+1)(m-1)$ gives $|A(R)| \le \floor{n^2/4} + (2r+1)(m-1)(n-1)$, and the bound on $|E(\HH)|$ above gives the theorem.
+\Cref{lem:two-step-budget} with $C = (2r+1)(m-1)$ gives $|A(S)| \le \floor{n^2/4} + (2r+1)(m-1)(n-1)$, and the bound on $|E(\HH)|$ above gives the theorem.
 The construction of \Cref{prop:dir-hyper-first} also works in the general model, so the $n^2$ terms agree.
 \end{proof}
 

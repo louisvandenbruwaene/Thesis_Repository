@@ -1,7 +1,7 @@
 % !TEX root = ../main.tex
 
 Chapter~1 stated the problem in its sixteen variants, together with the proved results.
-This chapter describes the program that computed the small cases behind them.
+This chapter describes the program that computed small cases of these variants.
 For every variant it measures the connectivity of a graph, checks small graphs one by one, and searches for dense graphs where checking them all would take too long.
 Its output for $n,m\le7$ is printed in \Cref{app:program}, and \Cref{sec:certificates} explains how that output can be checked without reading the code.
 
@@ -22,6 +22,7 @@ The program treats all types of graphs the same way.
 A specific kind of graph is described by its properties: whether it is directed, whether edges may repeat, the edge size $r$, and, for directed hypergraphs, the allowed numbers of tails.
 The program runs each directed hypergraph model in three versions, forward, backward and general (\Cref{sec:variants}).
 Whether the routes must be edge-disjoint or separated is a separate choice, so the eight models give the sixteen problems.
+With three versions of each of the four directed hypergraph problems, the output has $24$ tables.
 The code calls this choice the \emph{separation}.
 A \texttt{Problem} bundles a model, the number of vertices $n$ and the threshold $m$.
 
