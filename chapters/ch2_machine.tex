@@ -13,7 +13,7 @@ The names in the code follow the words of the text, and \Cref{fig:spine} shows h
 \begin{figure}[ht]
 \centering
 \spinediagram
-\caption{One model feeds the maximum-flow computation. Exhaustive search uses it to find exact values, heuristic search uses it to find dense examples, and the check with \texttt{nauty} takes the densest graph either search found and shows that no feasible graph has one edge more (\Cref{sec:one-more}).}
+\caption{One model feeds the maximum-flow computation. Exhaustive search uses it to find exact values, heuristic search uses it to find dense examples, and the check with \texttt{nauty} takes the densest graph either search found and tries to show that no feasible graph has one edge more (\Cref{sec:one-more}).}
 \label{fig:spine}
 \end{figure}
 
@@ -374,7 +374,7 @@ The choice between edge-disjoint and separated routes does not change the candid
 
 Instead of checking every candidate, the program finds exact values in two ways.
 The pruned search skips whole groups of candidates that cannot hold a better graph, and it works for every model.
-The check of one edge more starts from a dense feasible graph and looks only at the graphs with one edge more, each only once up to renaming the vertices. These graphs are listed by \texttt{nauty}, and this check also works for every model.
+The check of one edge more starts from a dense feasible graph and looks only at the graphs with one edge more. These graphs are listed by \texttt{nauty}, each only once up to renaming the vertices, and in the multi models only their supports (\Cref{sec:one-more}). This check also works for every model.
 
 \subsection{Pruned search}
 Checking every possible graph one by one gives the exact answer, but there are far too many of them.
@@ -446,7 +446,7 @@ If none of them is feasible, $s$ is the maximum.
 If one of them is feasible, the program keeps it, replaces $s$ by $s+1$, and checks again.
 
 To list these graphs, each only once up to renaming the vertices, the program uses the toolkit \texttt{nauty} of McKay and Piperno \cite{McKayPiperno14,NautyGuide29}, to which Prof.\ Jan Goedgebeur pointed me.
-\texttt{nauty} lists simple graphs only, so the simple models come first, and the multi models follow at the end of this section.
+The program lists only simple graphs with \texttt{nauty} and assigns the multiplicities itself, so that all models use the same procedure. The simple models therefore come first, and the multi models follow at the end of this section.
 Three programs of \texttt{nauty} are used, and each kind of graph needs its own combination of them.
 
 The program \texttt{geng} lists the simple graphs on $n$ vertices with a given number of edges.
@@ -469,7 +469,7 @@ Without this option, a renaming could swap a vertex with a hyperedge node, and t
 Finally, the program drops every output that the model does not allow: an output in which some hyperedge has a number of tails outside the model, or in which two hyperedges have the same vertices and the same tails.
 The same output of \texttt{nauty} therefore serves the forward, the backward and the general version.
 
-A multigraph is not always simple, so \texttt{nauty} then cannot list it directly.
+A multigraph is not always simple, so the program does not list it with \texttt{nauty} directly.
 The program lists its \emph{support} instead: the simple graph of the edges, arcs or hyperedges that have at least one copy.
 Recall that the check starts from a feasible graph of size $s$, the densest one found so far, and looks for a feasible graph with exactly one edge more, so of size $s+1$.
 On each support the program therefore chooses the number of copies of every edge, between $1$ and $m-1$, so that the multigraph has size $s+1$.
@@ -603,7 +603,7 @@ Each arc of the cut therefore names something to remove: an arc inside a gate na
 \programpart{certificate}{Writing a certificate from smallest cuts.}
 
 The call \texttt{networkx.minimum\_cut(network, s, t)} computes a maximum flow from $s$ to $t$ and returns two things: the capacity of a smallest cut, which the listing discards with \texttt{\_}, and the two sides of that cut.
-The first side, \texttt{source\_side}, is the set of nodes that the source can still reach after the flow is sent, and it contains $s$ but not $t$.
+The first side, \texttt{source\_side}, is the side of a smallest cut that contains $s$, and it does not contain $t$.
 The other side, with $t$ in it, is not needed and is also discarded.
 An arc belongs to the cut when it starts in \texttt{source\_side} and ends outside it.
 The call \texttt{network.successors(node)} lists the nodes that an arc leaving \texttt{node} points to, so the two loops visit exactly the arcs that leave the source side.
@@ -680,10 +680,10 @@ Random greedy growth drops many balls and keeps the best slot, while tabu search
 Dropping every possible ball would reach every local optimum, and so also the densest graph, but there are far too many balls.
 Within its time limit the program runs one of the two searches, but a run could combine them: many fresh starts, each followed by a short tabu search.
 
-Tabu search finds more edges in most of the differing entries for the general version of directed hypergraphs and directed multihypergraphs, for example $41$ against $35$ hyperedges for the general directed multihypergraph with hyperedge-disjoint routes at $n=7$, $m=7$.
-Random greedy growth finds more in every differing entry for multigraphs and directed multigraphs with separated routes, for example $74$ arcs against $68$ for the directed multigraph with separated routes at $n=7$, $m=6$, and in most of the differing entries for the forward and backward versions of directed multihypergraphs.
-For the forward and backward versions of directed hypergraphs the two searches differ in at most three entries per table, some in favour of each search.
-In the other problems both searches give the same entries.
+The run with tabu search finds more edges in most of the differing entries for the general version of directed hypergraphs and directed multihypergraphs, for example $41$ against $35$ hyperedges for the general directed multihypergraph with hyperedge-disjoint routes at $n=7$, $m=7$.
+The run with random greedy growth finds more in every differing entry for multigraphs and directed multigraphs with separated routes, for example $74$ arcs against $68$ for the directed multigraph with separated routes at $n=7$, $m=6$, and in most of the differing entries for the forward and backward versions of directed multihypergraphs.
+For the forward and backward versions of directed hypergraphs the two runs differ in at most three entries per table, some in favour of each run.
+In the other problems both runs give the same entries.
 
 One possible explanation for these differences, which this thesis does not test, is how the local optima lie.
 If they are shallow and close together, a small change leads from one to a denser one, and tabu search can follow these steps.
