@@ -105,7 +105,7 @@ The value of the flow is the net amount leaving $u$: what leaves $u$ minus what 
 We give each pair of vertices a link with capacity $\mu(u,v)$.
 In a directed graph the link has a direction. In an undirected graph it can be used both ways.
 A \emph{cut} is a set of links whose removal leaves no way from $u$ to $v$. Its capacity is the sum of the capacities of its links.
-The maximum-flow minimum-cut theorem of Ford and Fulkerson \cite{FordFulkerson56} says that the largest value of a flow equals the smallest capacity of a cut.
+The maximum-flow minimum-cut theorem of Ford and Fulkerson \cite{FordFulkerson56}, \cite[Theorem~6.2.2]{Diestel25} says that the largest value of a flow equals the smallest capacity of a cut.
 In this network a cut of smallest capacity is a smallest set of edges, counted with multiplicity, that separates $u$ from $v$. Menger's theorem says its size is $\lec(u,v)$.
 Computing a maximum flow therefore computes $\lec(u,v)$.
 We call this the \emph{maximum-flow computation}.

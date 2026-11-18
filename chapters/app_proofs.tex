@@ -74,7 +74,7 @@ Theorem~4 does not cover $n=5$.
 There the complete graph $K_5$ has $\kap^{\max}=4$, so $k_5(5)=\binom52=10=\floor{5\cdot4/2}$, which is the first case as well.
 At $n=13$ both $k_5$ and $\ell_5$ equal $30$, and $k_5(n)$ first exceeds $\ell_5(n)$ at $n=14$.
 
-The same care is needed for the conjecture of Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62}: every graph on $1+(m-1)p$ vertices with $1+\binom m2 p$ edges has two vertices joined by $m$ separated paths. The conjecture is false for $m\ge5$. \Cref{sec:bollobas-erdos} shows this for $m=5$.
+The same care is needed for the conjecture of Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62,ErdosProblems}: every graph on $1+(m-1)p$ vertices with $1+\binom m2 p$ edges has two vertices joined by $m$ separated paths. The conjecture is false for $m\ge5$. \Cref{sec:bollobas-erdos} shows this for $m=5$.
 With one edge fewer there are graphs without such a pair: $p$ copies of $K_m$ that share one vertex.
 Each copy adds $\binom m2$ edges but only $m-1$ vertices, so in the notation of this thesis the conjecture says that $k_m(n)=m(n-1)/2$ when $m-1$ divides $n-1$, which is $m/2$ edges per added vertex.
 \end{remark}
@@ -262,7 +262,7 @@ Let $u,v$ be distinct vertices of a multihypergraph $\HH$, and count parallel co
 \end{theorem}
 
 \begin{proof}
-We turn $\HH$ into a directed multigraph $N$, the gate network, and use Menger's theorem for directed multigraphs (\Cref{thm:menger}).
+We turn $\HH$ into a directed multigraph $N$, the gate network, and use Menger's theorem for directed multigraphs (\Cref{thm:menger}, \cite[Theorem~6.2.2]{Diestel25}).
 Let $c$ be the total number of hyperedge copies.
 Every hyperedge $e$ with $\mu(e)$ copies gets two new nodes $e^-$ and $e^+$ and $\mu(e)$ parallel arcs $e^- \to e^+$, its \emph{gate}.
 Every vertex $x \in e$ gets $c+1$ parallel arcs $x \to e^-$ and $c+1$ parallel arcs $e^+ \to x$.

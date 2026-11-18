@@ -127,7 +127,7 @@ For $2\le n<m$ the complete graph $K_n$ satisfies the condition, so $\ell_m(n)=\
 This is smaller than $\floor{m(n-1)/2}$, except when $(n,m)=(2,3)$. The reason is that $m\ge n+1$ gives $\floor{m(n-1)/2}\ge\binom{n}{2}+\floor{(n-1)/2}$, which exceeds $\binom{n}{2}$ once $n\ge3$. At $n=2$ the two values are $1$ and $\floor{m/2}$, and these agree only at $m=3$.
 
 A graph is \emph{connected} if every two vertices are joined by a path. A \emph{subgraph} of a graph $G$ is a graph whose vertices and edges all belong to $G$, and a \emph{component} of $G$ is a maximal connected subgraph.
-A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite{Diestel17}.
+A \emph{tree} is a connected graph in which every two vertices are joined by exactly one path. A tree on $n$ vertices has $n-1$ edges \cite[Corollary~1.5.2]{Diestel25}.
 A \emph{forest} is a graph without cycles. Each of its components is a tree.
 I prove \Cref{thm:mader} with the Gomory--Hu tree.
 It stores the $\binom n2$ values $\lec_G(u,v)$ in only $n-1$ weights.
@@ -421,7 +421,7 @@ The figures do not use it, because a vertex that lies in many hyperedges would n
 \label{fig:eight-models}
 \end{figure}
 
-Directed graphs have no Gomory--Hu tree in general. A tree stores one value per pair, read the same in both directions, while $\lec(u,v)$ and $\lec(v,u)$ can differ. Menger's theorem (\Cref{thm:menger}) does hold for directed multigraphs, with directed paths and arcs.
+Directed graphs have no Gomory--Hu tree in general. A tree stores one value per pair, read the same in both directions, while $\lec(u,v)$ and $\lec(v,u)$ can differ. Menger's theorem (\Cref{thm:menger}) does hold for directed multigraphs, with directed paths and arcs \cite[Theorem~6.2.2]{Diestel25}.
 The \emph{degree} $\deg(x)$ of a vertex $x$ is the number of edges at it.
 In a directed graph, the \emph{out-degree} $d^+(v)$ is the number of arcs that leave $v$.
 The vertices these arcs point to are the \emph{out-neighbours} of $v$.
