@@ -451,19 +451,7 @@ in the hyperedge. The Berge path $1\,e_1\,3\,e_2\,5$ is traced in orange in both
 \label{fig:incidence}
 \end{figure}
 
-\begin{proposition}[General lower bound]\label{prop:hyper-vertex-lower}
-For simple $r$-uniform hypergraphs with $r \ge 3$, $m \ge 2$ and $m - 1 \le \binom{n-2}{r-2}$,
-\[
-    k_m^{(r)}(n) \;\ge\; \floorfrac{(m-1)(n-1)}{r-1},
-\]
-attained by a simple hypergraph.
-\end{proposition}
-
-\begin{proof}
-The simple hypergraph of \Cref{thm:simple-hyper-edge} has $\lec^{\max}\le m-1$.
-Since $\kap \le \lec$, it is also feasible for the vertex problem.
-\end{proof}
-
+The simple hypergraph of \Cref{thm:simple-hyper-edge} has $\lec^{\max}\le m-1$, and since $\kap \le \lec$ it is also feasible for the vertex problem. For $r \ge 3$, $m \ge 2$ and $m - 1 \le \binom{n-2}{r-2}$ this gives $k_m^{(r)}(n) \ge \floor{(m-1)(n-1)/(r-1)}$.
 That construction needs different $(r-1)$-sets, which explains the condition $m-1\le\binom{n-2}{r-2}$.
 A multihypergraph can repeat a hyperedge instead. This covers every $n \ge r$.
 

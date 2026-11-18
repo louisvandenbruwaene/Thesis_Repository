@@ -1074,7 +1074,7 @@ Every hyperedge has $r$ vertices, so \Cref{lem:hyper-cut-induction} with $k = 2$
 Since $q$ is an integer, $q \le \floor{2(n-1)/(r-1)}$.
 
 \emph{Lower bound, simple.}
-For $2 < r < n$, this is \Cref{prop:hyper-vertex-lower} at $m = 3$. It needs $2 \le \binom{n-2}{r-2}$, which holds exactly when $2 < r < n$. At $r=2$ and at $r=n$ the binomial coefficient equals $1$. When $2<r<n$ we have $1\le r-2\le n-3$, and the coefficient is at least $n-2\ge2$.
+For $2 < r < n$, the simple hypergraph of \Cref{thm:simple-hyper-edge} at $m = 3$ has $\lec^{\max} \le 2$, and since $\kap \le \lec$ also $\kap^{\max} \le 2$. The theorem needs $2 \le \binom{n-2}{r-2}$, which holds exactly when $2 < r < n$. At $r=2$ and at $r=n$ the binomial coefficient equals $1$. When $2<r<n$ we have $1\le r-2\le n-3$, and the coefficient is at least $n-2\ge2$.
 
 \emph{Lower bound, multihypergraphs.}
 For every $n \ge r$, \Cref{prop:hyper-vertex-lower-multi} gives it.
