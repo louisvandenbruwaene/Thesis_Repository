@@ -43,13 +43,13 @@ Wherever the searches for the forward and the backward version both finished, th
 In the general model the search finished almost only at $n=3$. Its other entries are lower bounds, and some lie below the forward entries, although every forward hypergraph also belongs to the general model.
 
 % The file is read directly. First its first six lines (the run record and
-% the legend), then every table by its line range: one row per model, edge
-% separation on the left and vertex separation on the right.
+% the legend), then every table by its line range: one row per model, edge-disjoint
+% routes on the left and separated routes on the right.
 {\lstinputlisting[style=outputlisting, captionpos=t, lastline=6, caption={The output of the program with tabu search, for $2\le m\le 7$ and $n\le 7$.}, label={lst:output}]{program/output_tabu.txt}}
 \newcommand{\outputfile}{program/output_tabu.txt}
 \newcommand{\outputtable}[2]{%
   \begin{minipage}[t]{0.47\textwidth}
-  \lstinputlisting[style=outputlisting, linerange={#1-#2}, basewidth=0.43em, xleftmargin=4pt]{\outputfile}
+  \lstinputlisting[style=outputlisting, linerange={#1-#2}, basewidth=0.42em, xleftmargin=4pt]{\outputfile}
   \end{minipage}}
 \newcommand{\outputpair}[4]{\noindent\outputtable{#1}{#2}\hfill\outputtable{#3}{#4}\par\medskip}
 \outputpair{8}{15}{17}{24}

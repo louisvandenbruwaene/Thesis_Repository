@@ -65,7 +65,7 @@ The database uses the names $k_m(n)$ and $\ell_m(n)$ for these forcing numbers.
 Their number is one more than the maximum used here, whenever such a number exists (\Cref{sec:erdos915}).
 
 For example, Theorem~4 of \cite{SorensenThomassen74} concerns simple graphs on $n\ge6$ vertices.
-It states that every simple graph on $n$ vertices with at least $\floor{8n/3}-3$ edges has two vertices joined by $5$ internally vertex-disjoint paths, and that no smaller number of edges forces this.
+It states that every simple graph on $n$ vertices with at least $\floor{8n/3}-3$ edges has two vertices joined by $5$ separated paths, and that no smaller number of edges forces this.
 The exceptions are $n=7$ and $n=12$, where the smallest forcing numbers are $16$ and $28$.
 Subtracting one gives the largest number of edges of a simple graph on $n$ vertices without such a pair, which is $k_5(n)$.
 For $n\ge14$ this is $\floor{8n/3}-4$, the second case of \Cref{thm:sorensen-thomassen}.
@@ -74,7 +74,7 @@ Theorem~4 does not cover $n=5$.
 There the complete graph $K_5$ has $\kap^{\max}=4$, so $k_5(5)=\binom52=10=\floor{5\cdot4/2}$, which is the first case as well.
 At $n=13$ both $k_5$ and $\ell_5$ equal $30$, and $k_5(n)$ first exceeds $\ell_5(n)$ at $n=14$.
 
-The same care is needed for the conjecture of Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62}: every graph on $1+(m-1)p$ vertices with $1+\binom m2 p$ edges has two vertices joined by $m$ internally vertex-disjoint paths. The conjecture is false for $m\ge5$, as \Cref{sec:bollobas-erdos} shows.
+The same care is needed for the conjecture of Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62}: every graph on $1+(m-1)p$ vertices with $1+\binom m2 p$ edges has two vertices joined by $m$ separated paths. The conjecture is false for $m\ge5$, as \Cref{sec:bollobas-erdos} shows.
 With one edge fewer there are graphs without such a pair: $p$ copies of $K_m$ that share one vertex.
 Each copy adds $\binom m2$ edges but only $m-1$ vertices, so in the notation of this thesis the conjecture says that $k_m(n)=m(n-1)/2$ when $m-1$ divides $n-1$, which is $m/2$ edges per added vertex.
 \end{remark}
@@ -122,7 +122,7 @@ Removing edges keeps it feasible, which gives exactly $1+\binom m2 p$ edges.
 \end{proof}
 
 \begin{remark}[Feasible graphs have a vertex of small degree]\label{rem:vertex-degeneracy}
-A theorem of Mader \cite{Mader71,Mader73b} states that every simple graph of minimum degree at least $d \ge 2$ contains two adjacent vertices joined by $d$ internally vertex-disjoint paths.
+A theorem of Mader \cite{Mader71,Mader73b} states that every simple graph of minimum degree at least $d \ge 2$ contains two adjacent vertices joined by $d$ separated paths.
 Consequently, every graph feasible for the vertex problem has a vertex of degree at most $m-1$.
 Since taking a subgraph cannot increase local vertex-connectivity, every non-empty subgraph of a feasible graph has such a vertex.
 
@@ -253,7 +253,7 @@ For fixed $m$ and large $n$ the augmented bipartite directed graph has more arcs
 \label{fig:augmented-wall}
 \end{figure}
 
-\apppart{Part III. Hypergraphs}{Menger for hypergraphs, simple hypergraphs that attain the edge bound, lower bounds for the vertex problem, multigraphs with internally vertex-disjoint routes, and directed hypergraphs.}
+\apppart{Part III. Hypergraphs}{Menger for hypergraphs, simple hypergraphs that attain the edge bound, lower bounds for the vertex problem, multigraphs with separated routes, and directed hypergraphs.}
 
 \section{The hypergraph bounds}
 
@@ -434,7 +434,7 @@ The bound at $m=2$ uses the incidence graph, where $\kap_\HH(u,v)=\kap_{I(\HH)}(
 \end{tikzpicture}
 \caption[Incidence translation]{The translation the vertex problem rests on.
 Separated Berge paths in $\HH$ correspond exactly to
-internally vertex-disjoint paths in $I(\HH)$, so $\kap_\HH(u,v)=\kap_{I(\HH)}(u,v)$.
+separated paths in $I(\HH)$, so $\kap_\HH(u,v)=\kap_{I(\HH)}(u,v)$.
 A $3$-uniform hypergraph $\HH$ (left) and its incidence graph $I(\HH)$ (right):
 circles for vertices, hollow squares for hyperedges, an edge when the vertex lies
 in the hyperedge. The Berge path $1\,e_1\,3\,e_2\,5$ is traced in orange in both.}
@@ -476,16 +476,16 @@ Since $\kap \le \lec$, it also has $\kap^{\max}\le m-1$.
 At $m = 3$ its size equals the upper bound of \Cref{thm:hyper-vertex-m3}.
 \end{proof}
 
-\section{Multigraphs with internally vertex-disjoint routes}\label{sec:multi-vertex}
+\section{Multigraphs with separated routes}\label{sec:multi-vertex}
 
 At $r = 2$ the hypergraph vertex problems are about multigraphs.
 They are not the same as the simple problems.
-Recall that $q$ parallel copies of $uv$ count as $q$ internally vertex-disjoint routes.
+Recall that $q$ parallel copies of $uv$ count as $q$ separated routes.
 
 The parallel edges and the longer routes do not interfere, so we can count them separately.
 
 \begin{lemma}[Splitting the local vertex-connectivity]\label{lem:multi-vertex-split}
-Let $G$ be a multigraph with multiplicity function $\mu$, and let its \emph{underlying simple graph} $G_0$ be the simple graph with an edge $uv$ whenever $\mu(u,v)\ge1$. For any two vertices $u \ne v$, write $\pi(u,v)$ for the largest number of pairwise internally vertex-disjoint $u$--$v$ paths of length at least two in $G_0$. Then
+Let $G$ be a multigraph with multiplicity function $\mu$, and let its \emph{underlying simple graph} $G_0$ be the simple graph with an edge $uv$ whenever $\mu(u,v)\ge1$. For any two vertices $u \ne v$, write $\pi(u,v)$ for the largest number of pairwise separated $u$--$v$ paths of length at least two in $G_0$. Then
 \[
     \kap_G(u,v) \;=\; \mu(u,v) \;+\; \pi(u,v).
 \]
@@ -493,17 +493,17 @@ Let $G$ be a multigraph with multiplicity function $\mu$, and let its \emph{unde
 
 \begin{proof}
 A route of length one uses one copy of the edge $uv$ and has no inner vertex.
-Two routes of length one are therefore internally vertex-disjoint when they use different copies, and a route of length one is internally vertex-disjoint from every longer route.
+Two routes of length one are therefore separated when they use different copies, and a route of length one is separated from every longer route.
 
-\emph{Lower bound.} Take all $\mu(u,v)$ copies of $uv$, and $\pi(u,v)$ internally vertex-disjoint $u$--$v$ paths of length at least two in $G_0$.
+\emph{Lower bound.} Take all $\mu(u,v)$ copies of $uv$, and $\pi(u,v)$ separated $u$--$v$ paths of length at least two in $G_0$.
 Use one copy of each edge on these paths.
-The inner vertices do not change, so all these routes are internally vertex-disjoint.
+The inner vertices do not change, so all these routes are separated.
 
-\emph{Upper bound.} Take a family of internally vertex-disjoint $u$--$v$ routes in $G$.
+\emph{Upper bound.} Take a family of separated $u$--$v$ routes in $G$.
 At most $\mu(u,v)$ of them have length one, since they use different copies of $uv$.
 Map each longer route to its sequence of vertices, a path in $G_0$.
 Two longer routes have disjoint, non-empty sets of inner vertices.
-Their images are therefore different and internally vertex-disjoint, and there are at most $\pi(u,v)$ of them.
+Their images are therefore different and separated, and there are at most $\pi(u,v)$ of them.
 \end{proof}
 
 A multigraph is therefore feasible exactly when $\mu(u,v) \le m-1-\pi(u,v)$ on every edge and $\pi(u,v) \le m-1$ on every pair.
@@ -569,14 +569,14 @@ The splitting of $\kap$ into parallel arcs and longer routes also works for dire
 \begin{lemma}[Splitting the directed local vertex-connectivity]\label{lem:multi-vertex-split-dir}
 Let $D$ be a directed multigraph with multiplicity function $\mu$, and let its underlying simple
 directed graph $D_0$ be the simple directed graph with an arc $u\to v$ whenever $\mu(u,v)\ge1$. For an ordered pair $u \ne v$, write $\pi(u,v)$ for the largest number
-of pairwise internally vertex-disjoint directed $u$--$v$ paths of length at least two in
+of pairwise separated directed $u$--$v$ paths of length at least two in
 $D_0$. Then $\kap_D(u,v) = \mu(u,v) + \pi(u,v)$.
 \end{lemma}
 
 \begin{proof}
 The proof of \Cref{lem:multi-vertex-split} works word for word with directed paths.
 A route of length one is a copy of the arc $u\to v$ and has no inner vertex.
-Longer routes give internally vertex-disjoint directed paths in $D_0$, and conversely, using one copy of each arc.
+Longer routes give separated directed paths in $D_0$, and conversely, using one copy of each arc.
 Copies of the reverse arc $v\to u$ are never used.
 \end{proof}
 

@@ -24,7 +24,7 @@ A model is described by four facts: whether it is directed, whether edges may re
 A graph is the case $r=2$.
 The program runs each directed hypergraph model in three versions, forward, backward and general (\Cref{sec:variants}), so \texttt{ALL\_MODELS} lists twelve entries for the eight models.
 Whether the routes must be edge-disjoint or separated is a separate choice, so the eight models give the sixteen problems.
-The code calls this choice the \emph{separation}, and its printed tables say \emph{edge separation} for edge-disjoint routes and \emph{vertex separation} for separated routes, which in graphs are the internally vertex-disjoint routes.
+The code calls this choice the \emph{separation}, and its printed tables say \emph{edge-disjoint routes} or \emph{separated routes}.
 A \texttt{Problem} bundles a model, this choice, the number of vertices $n$ and the threshold $m$, and every function below takes one (\Cref{lst:models}).
 
 \programpart{models}{The models, with three versions of each directed hypergraph model, and the choice between edge-disjoint and separated routes.}
@@ -606,7 +606,7 @@ An unfinished search therefore covers a smaller part of a larger search space, a
 \Cref{sec:output} prints the output of a run with tabu search, and \Cref{sec:output-greedy} the output of a run with random greedy growth.
 An entry marked \texttt{*} is the true maximum, so no entry of the other run lies above it.
 Whether a run proves an entry exact can still differ, because the check of one edge more starts from the graph the heuristic search found, and it has a time limit.
-For the directed multigraph with internally vertex-disjoint routes at $n=4$, $m=5$, both runs find $28$ arcs, but only the run with random greedy growth proves that this is the maximum.
+For the directed multigraph with separated routes at $n=4$, $m=5$, both runs find $28$ arcs, but only the run with random greedy growth proves that this is the maximum.
 
 The two searches can be pictured with a Galton board, a board of pegs on which a dropped ball bounces left or right at random until it lands in one of the slots at the bottom.
 Growing a graph from the empty graph by random additions is like dropping a ball, and the local optimum it reaches is the slot where the ball lands.
@@ -617,7 +617,7 @@ Within the time limit the program runs one of the two searches.
 A run for a single model, or a single $n$ and $m$, can combine them: many fresh starts, each followed by a short tabu search.
 
 Tabu search finds more edges in most of the differing entries for the general version of directed hypergraphs and directed multihypergraphs, for example $41$ against $35$ hyperedges for the general directed multihypergraph with hyperedge-disjoint routes at $n=7$, $m=7$.
-Random greedy growth finds more in every differing entry for multigraphs and directed multigraphs with internally vertex-disjoint routes, for example $74$ arcs against $68$ for the directed multigraph with internally vertex-disjoint routes at $n=7$, $m=6$, and in most of the differing entries for the forward and backward versions of directed multihypergraphs.
+Random greedy growth finds more in every differing entry for multigraphs and directed multigraphs with separated routes, for example $74$ arcs against $68$ for the directed multigraph with separated routes at $n=7$, $m=6$, and in most of the differing entries for the forward and backward versions of directed multihypergraphs.
 For the forward and backward versions of directed hypergraphs the two searches differ in at most three entries per table, some in favour of each search.
 In the other problems both searches give the same entries.
 

@@ -56,8 +56,8 @@ def ALL_MODELS(HYPEREDGE_SIZE=3):
 
 
 class Separation(Enum):
-    EDGE_DISJOINT = "edge"
-    VERTEX_DISJOINT = "vertex"
+    EDGE_DISJOINT = "edge-disjoint"
+    SEPARATED = "separated"
 
 
 @dataclass(frozen=True)
@@ -118,7 +118,7 @@ def edge_count(multiplicity):
 #<network>
 def build_flow_network(problem, multiplicity):
     network = networkx.DiGraph()
-    if problem.SEPARATION is Separation.VERTEX_DISJOINT:
+    if problem.SEPARATION is Separation.SEPARATED:
         through_vertex = 1
     else:
         through_vertex = math.inf
@@ -577,7 +577,7 @@ def verify_record(record):
     directed = "directed" in model
     if ("hypergraph" in model) != (r >= 3) or r < 2:
         return False
-    if separation not in ("edge", "vertex"):
+    if separation not in ("edge-disjoint", "separated"):
         return False
     cap = m - 1 if "multi" in model else 1
     tail_counts = allowed_tail_counts(model, r)
@@ -616,7 +616,7 @@ def verify_record(record):
         return False                        # one entry for every pair
     for u, v in pairs:
         removed_vertices, removed_hyperedges = certificate[(u, v)]
-        if separation == "edge" and removed_vertices:
+        if separation == "edge-disjoint" and removed_vertices:
             return False
         if u in removed_vertices or v in removed_vertices:
             return False
@@ -648,7 +648,7 @@ def verify_record(record):
 
 #<main>
 def print_table(model, separation, solved, largest_m, witnesses):
-    print(f"\n{model.NAME}, {separation.value} separation")
+    print(f"\n{model.NAME}, {separation.value} routes")
     print("n \\ m" + "".join(f"{m:>6}" for m in range(2, largest_m + 1)))
     rows = {}
     for problem, (size, exact, checked, found) in solved:

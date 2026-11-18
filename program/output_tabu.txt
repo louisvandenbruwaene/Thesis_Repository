@@ -5,7 +5,7 @@ macOS-26.6.2-arm64-arm-64bit-Mach-O,
 Edges of the densest feasible graph found, every one certified.
 * the search finished, so the value is exact; ! the certificate failed
 
-simple graph, edge separation
+simple graph, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     2    1*    1*    1*    1*    1*    1*
     3    2*    3*    3*    3*    3*    3*
@@ -14,7 +14,7 @@ n \ m     2     3     4     5     6     7
     6    5*    7*   10*   12*   15*   15*
     7    6*    9*   12*   15*   18*   21*
 
-simple graph, vertex separation
+simple graph, separated routes
 n \ m     2     3     4     5     6     7
     2    1*    1*    1*    1*    1*    1*
     3    2*    3*    3*    3*    3*    3*
@@ -23,7 +23,7 @@ n \ m     2     3     4     5     6     7
     6    5*    7*   10*   12*   15*   15*
     7    6*    9*   12*   15*   18*   21*
 
-multigraph, edge separation
+multigraph, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     2    1*    2*    3*    4*    5*    6*
     3    2*    4*    6*    8*   10*   12*
@@ -32,7 +32,7 @@ n \ m     2     3     4     5     6     7
     6    5*   10*   15*   20    25    30 
     7    6*   12*   18    24    30    36 
 
-multigraph, vertex separation
+multigraph, separated routes
 n \ m     2     3     4     5     6     7
     2    1*    2*    3*    4*    5*    6*
     3    2*    4*    6*    9*   12*   15*
@@ -41,7 +41,7 @@ n \ m     2     3     4     5     6     7
     6    5*   10*   15*   24    32    42 
     7    6*   12*   18    28    37    46 
 
-simple hypergraph, edge separation
+simple hypergraph, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     3    1*    1*    1*    1*    1*    1*
     4    1*    3*    4*    4*    4*    4*
@@ -49,7 +49,7 @@ n \ m     2     3     4     5     6     7
     6    2*    5*    7*   10*   11*   13*
     7    3*    6*    9*   12    15    17 
 
-simple hypergraph, vertex separation
+simple hypergraph, separated routes
 n \ m     2     3     4     5     6     7
     3    1*    1*    1*    1*    1*    1*
     4    1*    3*    4*    4*    4*    4*
@@ -57,7 +57,7 @@ n \ m     2     3     4     5     6     7
     6    2*    5*    7*   10*   11*   13*
     7    3*    6*    9*   12    15    17 
 
-multihypergraph, edge separation
+multihypergraph, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     3    1*    2*    3*    4*    5*    6*
     4    1*    3*    4*    6*    7*    9*
@@ -65,7 +65,7 @@ n \ m     2     3     4     5     6     7
     6    2*    5*    7*   10*   12    15 
     7    3*    6*    9    12    15    18 
 
-multihypergraph, vertex separation
+multihypergraph, separated routes
 n \ m     2     3     4     5     6     7
     3    1*    2*    3*    4*    5*    6*
     4    1*    3*    4*    6*    7*    9*
@@ -73,7 +73,7 @@ n \ m     2     3     4     5     6     7
     6    2*    5*    7*   10*   12    16 
     7    3*    6*    9    12    15    18 
 
-simple directed graph, edge separation
+simple directed graph, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     2    2*    2*    2*    2*    2*    2*
     3    4*    6*    6*    6*    6*    6*
@@ -82,7 +82,7 @@ n \ m     2     3     4     5     6     7
     6   10    15    20    25*   30*   30*
     7   12    18    24    30    36*   42*
 
-simple directed graph, vertex separation
+simple directed graph, separated routes
 n \ m     2     3     4     5     6     7
     2    2*    2*    2*    2*    2*    2*
     3    4*    6*    6*    6*    6*    6*
@@ -91,7 +91,7 @@ n \ m     2     3     4     5     6     7
     6   10    15    20    25*   30*   30*
     7   12    18    24    30    36*   42*
 
-directed multigraph, edge separation
+directed multigraph, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     2    2*    4*    6*    8*   10*   12*
     3    4*    8*   12*   16*   20*   24*
@@ -100,7 +100,7 @@ n \ m     2     3     4     5     6     7
     6   10    20    30    40    50    60 
     7   12    24    36    48    60    72 
 
-directed multigraph, vertex separation
+directed multigraph, separated routes
 n \ m     2     3     4     5     6     7
     2    2*    4*    6*    8*   10*   12*
     3    4*    8*   12*   18*   24*   30*
@@ -109,7 +109,7 @@ n \ m     2     3     4     5     6     7
     6   10    20    30    42    61    81 
     7   12    24    36    50    68    95 
 
-directed hypergraph, forward, edge separation
+directed hypergraph, forward, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     3    3*    3*    3*    3*    3*    3*
     4    4*    8*   12*   12*   12*   12*
@@ -117,7 +117,7 @@ n \ m     2     3     4     5     6     7
     6    7    12    18    24    30    36 
     7    8    16    21    28    35    42 
 
-directed hypergraph, forward, vertex separation
+directed hypergraph, forward, separated routes
 n \ m     2     3     4     5     6     7
     3    3*    3*    3*    3*    3*    3*
     4    4*    8*   12*   12*   12*   12*
@@ -125,7 +125,7 @@ n \ m     2     3     4     5     6     7
     6    7    12    18    24    30    36 
     7    8    15    21    28    35    42 
 
-directed hypergraph, backward, edge separation
+directed hypergraph, backward, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     3    3*    3*    3*    3*    3*    3*
     4    4*    8*   12*   12*   12*   12*
@@ -133,7 +133,7 @@ n \ m     2     3     4     5     6     7
     6    7    12    18    24    30    36 
     7    8    14    21    28    35    42 
 
-directed hypergraph, backward, vertex separation
+directed hypergraph, backward, separated routes
 n \ m     2     3     4     5     6     7
     3    3*    3*    3*    3*    3*    3*
     4    4*    8*   12*   12*   12*   12*
@@ -141,7 +141,7 @@ n \ m     2     3     4     5     6     7
     6    7    12    18    24    30    36 
     7    8    14    21    28    35    42 
 
-directed hypergraph, general, edge separation
+directed hypergraph, general, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     3    3*    4*    6*    6*    6*    6*
     4    4*    8    12    14    16    18 
@@ -149,7 +149,7 @@ n \ m     2     3     4     5     6     7
     6    7    11    18    24    30    34 
     7    7    14    21    25    29    37 
 
-directed hypergraph, general, vertex separation
+directed hypergraph, general, separated routes
 n \ m     2     3     4     5     6     7
     3    3*    4*    6*    6*    6*    6*
     4    4*    8    12    14    18    24*
@@ -157,7 +157,7 @@ n \ m     2     3     4     5     6     7
     6    7    11    18    24    28    36 
     7    7    14    21    26    32    43 
 
-directed multihypergraph, forward, edge separation
+directed multihypergraph, forward, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     3    3*    6*    9*   12*   15*   18*
     4    4*    8*   12    16    20    24 
@@ -165,7 +165,7 @@ n \ m     2     3     4     5     6     7
     6    7    12    18    24    30    36 
     7    8    14    21    28    35    42 
 
-directed multihypergraph, forward, vertex separation
+directed multihypergraph, forward, separated routes
 n \ m     2     3     4     5     6     7
     3    3*    6*    9*   12*   15*   18*
     4    4*    8*   12    16    20    24 
@@ -173,7 +173,7 @@ n \ m     2     3     4     5     6     7
     6    7    12    18    24    30    40 
     7    8    14    21    28    35    42 
 
-directed multihypergraph, backward, edge separation
+directed multihypergraph, backward, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     3    3*    6*    9*   12*   15*   18*
     4    4*    8*   12    16    20    24 
@@ -181,7 +181,7 @@ n \ m     2     3     4     5     6     7
     6    7    12    18    24    30    36 
     7    8    14    21    28    35    42 
 
-directed multihypergraph, backward, vertex separation
+directed multihypergraph, backward, separated routes
 n \ m     2     3     4     5     6     7
     3    3*    6*    9*   12*   15*   18*
     4    4*    8*   12    16    20    24 
@@ -189,7 +189,7 @@ n \ m     2     3     4     5     6     7
     6    7    12    18    24    31    37 
     7    8    14    21    28    35    43 
 
-directed multihypergraph, general, edge separation
+directed multihypergraph, general, edge-disjoint routes
 n \ m     2     3     4     5     6     7
     3    3*    6*    9*   12*   15*   18*
     4    4*    8    11    16    20    24 
@@ -197,7 +197,7 @@ n \ m     2     3     4     5     6     7
     6    7    11    18    24    30    36 
     7    7    14    21    28    34    41 
 
-directed multihypergraph, general, vertex separation
+directed multihypergraph, general, separated routes
 n \ m     2     3     4     5     6     7
     3    3*    6*    9*   12*   15*   18*
     4    4*    8    11    16    20    26 
