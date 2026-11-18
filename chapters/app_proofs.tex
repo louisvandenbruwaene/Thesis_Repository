@@ -106,11 +106,12 @@ For every $m\ge5$ and every large enough $p$, there is a simple graph on $1+(m-1
 \end{theorem}
 
 \begin{proof}
-S\o{}rensen and Thomassen \cite{SorensenThomassen74} showed that for each fixed $m$,
+S\o{}rensen and Thomassen \cite[Corollary~2(a)]{SorensenThomassen74} showed that for each $m\ge5$ there are infinitely many $n$ with
 \[
-    k_m(n) \;\ge\; \Bigl(\frac{m(m-1)-2}{2m-3} - o(1)\Bigr)(n-1) \qquad (n\to\infty).
+    k_m(n) \;>\; \frac{m(m-1)-2}{2m-3}\,(n-m) - 1 .
 \]
 The constant is larger than $m/2$ for every $m\ge5$, because $2\bigl(m(m-1)-2\bigr) - m(2m-3) = m-4$.
+The right-hand side is therefore larger than $\frac m2(n-1)$ for all large $n$.
 So there is a feasible graph $G$ on some number $n_0$ of vertices with more than $\frac m2(n_0-1)$ edges.
 At $m=5$ an example is the extremal graph of \Cref{thm:sorensen-thomassen} with $n_0=14$, which has $33 > \frac52\cdot13$ edges.
 
