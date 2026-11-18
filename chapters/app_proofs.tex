@@ -4,7 +4,6 @@ The definitions are in \Cref{ch:basecases}. New terms are defined where they are
 
 The appendix has three parts.
 \textsc{Part I} is about undirected graphs, \textsc{Part II} about directed graphs, and \textsc{Part III} about hypergraphs.
-Part III uses the two-step budget of \Cref{ch:basecases} for directed hypergraphs.
 
 % Part divider with a table-of-contents entry.
 \newcommand{\apppart}[2]{%
@@ -18,45 +17,49 @@ Part III uses the two-step budget of \Cref{ch:basecases} for directed hypergraph
   \vspace{2pt}\noindent{\color{KULblauw1}\rule{\linewidth}{0.4pt}}\par\nobreak
   \addvspace{0.4\baselineskip}}
 
-% Restated result from Chapter 1, without a new number.
-\newenvironment{restated}[1]{%
-  \par\addvspace{\medskipamount}\noindent\textbf{#1 (restated).}\ \itshape\ignorespaces}%
-  {\par\addvspace{\medskipamount}}
-
 \clearpage
-\apppart{Part I. Undirected graphs}{Graphs that attain Mader's bound, and the conjecture of Bollob\'{a}s and Erd\H{o}s.}
+\apppart{Part I. Undirected graphs}{Graphs that attain Mader's bound, forcing numbers, and the conjecture of Bollob\'{a}s and Erd\H{o}s.}
 
 \section{Graphs that attain Mader's bound}\label{sec:mader-extremal}
 
 \begin{construction}[Hub graph]\label{const:hub-spokes}
-Let $n\ge m\ge2$. The simple graph $H_{m,n}$ has a vertex $h$ and further vertices $v_0,\dots,v_{n-2}$. Join $h$ to every $v_i$. On $v_0,\dots,v_{n-2}$, add a graph with $\floor{(m-2)(n-1)/2}$ edges in which every vertex has degree at most $m-2$.
-
-This graph can be written down directly. Write $N=n-1$ and $d=m-2$. Since $n\ge m$, $0\le d\le N-1$, and the vertices are $v_0,\dots,v_{N-1}$. Place them around a circle in this order, and take indices modulo $N$.
+Let $n\ge m\ge2$, and write $N=n-1$ and $d=m-2$. The simple graph $H_{m,n}$ has a vertex $h$ and further vertices $v_0,\dots,v_{N-1}$, placed around a circle in this order, with indices taken modulo $N$. Join $h$ to every $v_i$.
 For each $s=1,\dots,\floor{d/2}$, join every $v_i$ to $v_{i+s}$.
-The numbers $\pm1,\dots,\pm\floor{d/2}$ are $2\floor{d/2}$ different numbers modulo $N$, because none is zero and all are smaller than $N/2$ in absolute value. Each $v_i$ is therefore joined to $2\floor{d/2}$ different vertices $v_{i\pm s}$. Every vertex gets degree $2\floor{d/2}$, and the number of edges, half the sum of the degrees, is $N\floor{d/2}$.
 If $d$ is odd, also join $v_i$ to $v_{i+\floor{N/2}}$ for $i=0,\dots,\floor{N/2}-1$.
-These $\floor{N/2}$ edges share no vertex.
-They are new: going around the circle, the edges of the first kind join vertices at distance at most $\floor{d/2}$, the new edges join vertices at distance $\floor{N/2}$, and $d\le N-1$ with $d$ odd gives $\floor{d/2}<\floor{N/2}$.
-Every degree is therefore at most $d$, and the number of edges is $N\floor{d/2}$ for even $d$ and $N\floor{d/2}+\floor{N/2}$ for odd $d$. In both cases this is $\floor{dN/2}=\floor{(m-2)(n-1)/2}$.
-If $m-1$ divides $n-1$, one can instead take disjoint copies of $K_{m-1}$. In that case $H_{m,n}$ consists of copies of $K_m$ that share the vertex $h$.
 \end{construction}
+
+\begin{lemma}[The ring of the hub graph]\label{lem:hub-ring}
+In $H_{m,n}$ the vertices $v_0,\dots,v_{N-1}$ span $\floor{dN/2}=\floor{(m-2)(n-1)/2}$ edges, and each $v_i$ lies on at most $d=m-2$ of them.
+\end{lemma}
+
+\begin{proof}
+Since $n\ge m$, we have $0\le d\le N-1$.
+The numbers $\pm1,\dots,\pm\floor{d/2}$ are $2\floor{d/2}$ different numbers modulo $N$, because none is zero and all are smaller than $N/2$ in absolute value. Each $v_i$ is therefore joined to $2\floor{d/2}$ different vertices $v_{i\pm s}$. Every vertex gets degree $2\floor{d/2}$, and the number of edges, half the sum of the degrees, is $N\floor{d/2}$.
+If $d$ is odd, the $\floor{N/2}$ further edges share no vertex.
+They are new: going around the circle, the edges of the first kind join vertices at distance at most $\floor{d/2}$, the new edges join vertices at distance $\floor{N/2}$, and $d\le N-1$ with $d$ odd gives $\floor{d/2}<\floor{N/2}$.
+Every degree is therefore at most $d$, and the number of edges is $N\floor{d/2}$ for even $d$ and $N\floor{d/2}+\floor{N/2}$ for odd $d$. In both cases this is $\floor{dN/2}$.
+\end{proof}
+
+If $m-1$ divides $n-1$, disjoint copies of $K_{m-1}$ on $v_0,\dots,v_{N-1}$ also have $(m-2)(n-1)/2$ edges and degrees $m-2$. With these in place of the ring, $H_{m,n}$ consists of copies of $K_m$ that share the vertex $h$.
 
 \begin{theorem}[Extremal graphs]\label{thm:extremal-existence}
 For all $n \ge m \ge 2$ the simple graph $H_{m,n}$ has $\floorfrac{m(n-1)}{2}$ edges and $\lec^{\max} \le m-1$.
 \end{theorem}
 
 \begin{proof}
-The hub $h$ has $n-1$ edges, and the other edges number $\floor{(m-2)(n-1)/2}$.
+The hub $h$ has $n-1$ edges, and by \Cref{lem:hub-ring} the other edges number $\floor{(m-2)(n-1)/2}$.
 Since $n-1$ is an integer, the total is
 \[
     (n-1) + \floorfrac{(m-2)(n-1)}{2} \;=\; \floorfrac{2(n-1) + (m-2)(n-1)}{2} \;=\; \floorfrac{m(n-1)}{2}.
 \]
 Now take two vertices $u,v$. Only one vertex is not of the form $v_i$, so at least one of $u,v$ is some $v_i$.
-This $v_i$ has one edge to $h$ and at most $m-2$ other edges, so its degree is at most $m-1$.
+This $v_i$ has one edge to $h$ and, by \Cref{lem:hub-ring}, at most $m-2$ other edges, so its degree is at most $m-1$.
 \Cref{lem:degree-bound} says that $\lec(u,v)$ is at most the degree of $u$ and at most the degree of $v$, so $\lec(u,v) \le m-1$.
 \end{proof}
 
 For $n\ge m$ the bound of \Cref{thm:mader} is therefore attained.
+
+\section{Forcing numbers and the Bollob\'{a}s--Erd\H{o}s conjecture}\label{sec:bollobas-erdos}
 
 \begin{remark}[Forcing and avoiding counts]\label{rem:threshold-convention}
 This thesis maximises the number of edges with no pair joined by $m$ edge-disjoint routes, or by $m$ separated routes in the vertex problems.
@@ -74,15 +77,12 @@ Theorem~4 does not cover $n=5$.
 There the complete graph $K_5$ has $\kap^{\max}=4$, so $k_5(5)=\binom52=10=\floor{5\cdot4/2}$, which is the first case as well.
 At $n=13$ both $k_5$ and $\ell_5$ equal $30$, and $k_5(n)$ first exceeds $\ell_5(n)$ at $n=14$.
 
-The same care is needed for the conjecture of Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62,ErdosProblems}: every graph on $1+(m-1)t$ vertices with $1+\binom m2 t$ edges has two vertices joined by $m$ separated paths. The conjecture is false for $m\ge5$. \Cref{sec:bollobas-erdos} shows this for $m=5$.
+The same care is needed for the conjecture of Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62,ErdosProblems}: every graph on $1+(m-1)t$ vertices with $1+\binom m2 t$ edges has two vertices joined by $m$ separated paths.
 With one edge fewer there are graphs without such a pair: $t$ copies of $K_m$ that share one vertex.
 Each copy adds $\binom m2$ edges but only $m-1$ vertices, so in the notation of this thesis the conjecture says that $k_m(n)=m(n-1)/2$ when $m-1$ divides $n-1$, which is $m/2$ edges per added vertex.
 \end{remark}
 
-\subsection{The Bollob\'{a}s--Erd\H{o}s conjecture}\label{sec:bollobas-erdos}
-
-The vertex problem $k_m(n)$ is open for $m\ge6$.
-This section shows that the conjecture of Bollob\'{a}s and Erd\H{o}s fails for $m=5$, which Leonard \cite{Leonard73BE} showed first. Mader \cite{Mader73} showed that it fails for every $m\ge6$.
+\Cref{thm:bollobas-erdos-false} below shows that the conjecture fails for $m=5$.
 The tool is gluing: two graphs are \emph{glued at a vertex} by identifying one vertex of the first with one vertex of the second, and keeping them disjoint otherwise.
 
 \begin{lemma}[Gluing at a vertex]\label{lem:glue-vertex}
@@ -130,7 +130,7 @@ Let $G$ be a feasible graph on $n$ vertices. Delete from $G$ a vertex of degree 
 \]
 \end{remark}
 
-\apppart{Part II. Directed graphs}{The directed constructions.}
+\apppart{Part II. Directed graphs}{The hub, the one-way bipartite and the augmented bipartite directed graph.}
 
 \section{The directed constructions}\label{sec:dir-constructions}
 
@@ -139,23 +139,40 @@ Three constructions give the directed lower bounds.
 Here we define them and check their connectivity.
 
 \begin{construction}[Directed hub]\label{const:directed-hub}
-For $n \ge m \ge 2$, build a simple directed graph as follows. Take a hub $h$ and label the other $N = n-1$ vertices $0, \dots, N-1$. Add the $2N$ hub arcs $h \to i$ and $i \to h$, and on the non-hub vertices the $(m-2)N$ ring arcs $i \to i+j \bmod N$ for $j = 1, \dots, m-2$. The total is $m(n-1)$ arcs and every non-hub vertex has $d^+ = d^- = m-1$.
+For $n \ge m \ge 2$, build a simple directed graph as follows. Take a hub $h$ and label the other $N = n-1$ vertices $0, \dots, N-1$. Add the $2N$ hub arcs $h \to i$ and $i \to h$, and on the non-hub vertices the ring arcs $i \to i+j \bmod N$ for $j = 1, \dots, m-2$.
 \end{construction}
 
-The ring arcs at $i$ go to $m-2$ different vertices, since $m-2 < N$. With the hub arcs, every non-hub vertex has out-degree and in-degree $1 + (m-2) = m-1$.
+At $m = 2$ there are no ring arcs, and the directed hub is the bidirected star.
+
+\begin{lemma}[The directed hub is feasible]\label{lem:directed-hub-feasible}
+For $n \ge m \ge 2$, the directed hub has $m(n-1)$ arcs and $\lec^{\max} \le m-1$.
+\end{lemma}
+
+\begin{proof}
+Since $m-2 < m-1 \le N$, the ring arcs at $i$ go to $m-2$ different vertices, and there are $(m-2)N$ of them. With the $2N$ hub arcs this gives $mN = m(n-1)$ arcs.
+Every non-hub vertex has out-degree and in-degree $1 + (m-2) = m-1$.
 Every ordered pair $(u,v)$ contains a vertex other than the hub.
 \Cref{lem:degree-bound} says that $\lec(u,v) \le d^+(u)$ and $\lec(u,v) \le d^-(v)$.
 Hence $\lec(u,v) \le m-1$, that is, $\lec^{\max} \le m-1$.
-At $m = 2$ there are no ring arcs, and we get the bidirected star.
+\end{proof}
 
 \begin{construction}[One-way bipartite directed graph]\label{const:bipartite}
-Take $B_{\floor{n/2},\ceil{n/2}}$, defined in \Cref{sec:results}. It has $\floor{n^2/4}$ arcs.
+Take $B_{\floor{n/2},\ceil{n/2}}$, defined in \Cref{sec:results}.
 \end{construction}
 
-Every arc goes from $A$ to $B$, so every route has length one, and $\lec^{\max} = 1$.
+\begin{lemma}[The one-way bipartite directed graph is feasible]\label{lem:bipartite-feasible}
+For $n \ge 2$, the one-way bipartite directed graph has $\floor{n^2/4}$ arcs and $\lec^{\max} = 1$.
+\end{lemma}
+
+\begin{proof}
+It has $\floor{n/2}\ceil{n/2}$ arcs.
+For every integer $q$, $\floor{q/2}\ceil{q/2}=\floor{q^2/4}$. When $q=2j$ both sides equal $j^2$, and when $q=2j+1$ both equal $j^2+j$.
+Every arc goes from $A$ to $B$, so every route has length one, and two vertices are joined by at most one route.
+There is at least one arc, which gives $\lec^{\max} = 1$.
+\end{proof}
 
 \begin{construction}[Augmented bipartite directed graph]\label{const:augmented-bipartite}
-For $n \ge m \ge 2$, build a simple directed graph on $n$ vertices with parts $A$ and $B$. Set $|B| = \ceil{(n+m-2)/2}$ and $|A| = n - |B|$. Number the vertices of $B$ as $b_1, \dots, b_{|B|}$, and read the indices modulo $|B|$. Include every arc from $A$ to $B$, and inside $B$ give each $b_j$ the $m-2$ in-arcs from $b_{j-1}, \dots, b_{j-(m-2)}$. The total is $\floor{(n+m-2)^2/4}$ arcs.
+For $n \ge m \ge 2$, build a simple directed graph on $n$ vertices with parts $A$ and $B$. Set $|B| = \ceil{(n+m-2)/2}$ and $|A| = n - |B|$. Number the vertices of $B$ as $b_1, \dots, b_{|B|}$, and read the indices modulo $|B|$. Include every arc from $A$ to $B$, and inside $B$ give each $b_j$ the $m-2$ in-arcs from $b_{j-1}, \dots, b_{j-(m-2)}$.
 \end{construction}
 
 Since $n \ge m$, we have $|B| \ge (2m-2)/2 = m-1$, so the vertices $b_{j-1}, \dots, b_{j-(m-2)}$ are different from each other and from $b_j$.
@@ -169,7 +186,7 @@ For $m \ge 2$ and $n \ge m$, the simple directed graph of \Cref{const:augmented-
 Each vertex of $B$ receives one arc from every vertex of $A$ and $m-2$ arcs from inside $B$.
 No other arcs exist, so the number of arcs is $|B|\,(|A| + m - 2)$.
 Write $q = n+m-2$. Then $|B| = \ceil{q/2}$ and $|A| + m - 2 = q - |B| = \floor{q/2}$.
-For every integer $q$, $\floor{q/2}\ceil{q/2}=\floor{q^2/4}$. When $q=2j$ both sides equal $j^2$, and when $q=2j+1$ both equal $j^2+j$.
+As in the proof of \Cref{lem:bipartite-feasible}, $\floor{q/2}\ceil{q/2}=\floor{q^2/4}$.
 
 \emph{Pairs from $A$ to $B$.}
 Take $a \in A$ and $b \in B$.
@@ -247,9 +264,9 @@ For fixed $m$ and large $n$ the augmented bipartite directed graph has more arcs
 \label{fig:augmented-wall}
 \end{figure}
 
-\apppart{Part III. Hypergraphs}{Menger for hypergraphs, simple hypergraphs that attain the edge bound, lower bounds for the vertex problem, multigraphs with separated routes, and directed hypergraphs.}
+\apppart{Part III. Hypergraphs}{Menger's theorem and the edge bound, the vertex problem, multigraphs, and directed hypergraphs.}
 
-\section{The hypergraph bounds}
+\section{Menger's theorem and the edge bound for hypergraphs}\label{sec:hyper-menger}
 
 Hypergraphs have several notions of connectivity.
 This thesis uses Berge paths throughout.
@@ -291,7 +308,6 @@ Menger's theorem in $N$ says that the two sizes are equal in $N$, and therefore 
 A directed path in $N'$ from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$ never visits $u^{\mathrm{in}}$ or $v^{\mathrm{out}}$: the only arc leaving $u^{\mathrm{in}}$ goes to $u^{\mathrm{out}}$, where the path starts, and the only arc entering $v^{\mathrm{out}}$ comes from $v^{\mathrm{in}}$, where it ends. As in (a), the path gives a Berge path from $u$ to $v$, whose inner vertices are the $x$ with $x^{\mathrm{in}}\to x^{\mathrm{out}}$ on the path.
 Arc-disjoint paths in $N'$ use distinct split arcs and distinct gate arcs, so their Berge paths share no inner vertex and no hyperedge copy. They are therefore separated.
 Conversely, take a family of separated Berge paths. Their inner vertices are distinct, so each split arc is used by at most one of them. Their hyperedge copies are distinct, so they get distinct gate arcs, as in (a). The family has at most $c$ paths, so distinct paths can use distinct copies of every other arc. Deleting closed portions of the walks gives arc-disjoint directed paths from $u^{\mathrm{out}}$ to $v^{\mathrm{in}}$, as in (a).
-
 \end{proof}
 
 \begin{remark}[Capacities]\label{rem:capacities}
@@ -530,30 +546,59 @@ There the construction is the star with every edge doubled, which attains the up
 \end{proof}
 
 At $m = 3$ the vertex value therefore equals the edge value $L_3(n)$ of \Cref{thm:multigraph-edge}.
-At $m=5$ they differ: the graph $K_{2,n-2}$ below gives $K_5(4)\ge14$, while $L_5(4)=12$.
-For $m=4$ this is open.
+At $m=5$ they differ. The multigraph on four vertices with $14$ edges in \Cref{ch:basecases} is \Cref{const:multi-bipartite} below at $m=5$ and $n=4$, while $L_5(4)=12$.
 For $m \ge 3$ there are three constructions.
 
-\begin{itemize}
-    \item \emph{A tree.} Take a tree on the $n$ vertices with all multiplicities $m-1$.
-    Tree edges have $\pi = 0$, and other pairs have $\pi = 1$, so it is feasible.
-    It has $(m-1)(n-1)$ edges, the edge value of \Cref{thm:multigraph-edge}.
-    \item \emph{A complete graph.} Take $K_n$ with all multiplicities $q$.
-    Here $\pi(u,v) = n-2$: each of the other $n-2$ vertices gives a route of length two, and together they separate $u$ from $v$ once the edge $uv$ is removed.
-    So $\kap(u,v) = q + n - 2$, and it is feasible when $q \le m+1-n$.
-    It has $\binom{n}{2}(m+1-n)$ edges, which is positive only when $n \le m$.
-    \item \emph{A complete bipartite graph.} Take $K_{2,n-2}$ with all multiplicities $m-2$, and call the two vertices of its part of size $2$ $x$ and $y$. Join $x$ and $y$ with multiplicity $m+1-n$ if this is positive.
-    A vertex other than $x,y$ is joined only to $x$ and $y$, so every route from it leaves through $x$ or $y$.
-    So $x$ or $y$ and another vertex have $\pi = 1$, and $\kap = (m-2) + 1 = m-1$.
-    Two vertices other than $x,y$ are not adjacent and have $\kap = \pi = 2$.
-    The pair $x,y$ has $\pi = n-2$, one route through each other vertex, so $\kap = \max(0,\,m+1-n) + n - 2$, which is $m-1$ when $n \le m+1$.
-    So it is feasible when $n \le m+1$, and it has $2(n-2)(m-2) + \max(0,\, m+1-n)$ edges.
-\end{itemize}
+\begin{construction}[Multitree]\label{const:multi-tree}
+Take a tree on the $n$ vertices with all multiplicities $m-1$.
+\end{construction}
 
-For $n \le m+1$ the graph $K_{2,n-2}$ has $2(n-2)(m-2) + (m+1-n)$ edges and the tree has $(m-1)(n-1)$. Their difference is $(n-2)(m-4)$. The two agree at $m=4$, and for $m\ge5$ and $n\ge3$ the graph $K_{2,n-2}$ has more.
-For $n \ge m+2$ the other two constructions are not feasible, so among these three the tree has the most edges.
+\begin{construction}[Complete multigraph]\label{const:multi-complete}
+For $2 \le n \le m$, take $K_n$ with all multiplicities $m+1-n$.
+\end{construction}
 
-For $m\ge5$ the tree with all multiplicities $m-1$ is not best. Take a tree in which two leaves $a,b$ share a neighbour $c$, add the edge $ab$, and give $ab$, $ac$ and $bc$ multiplicity $m-2$. Each pair of $a,b,c$ then has $m-2$ parallel edges and one route through the third vertex, so $\kap=m-1$. Every other edge is a tree edge, whose removal disconnects its ends, so $\kap=m-1$ there too. Two non-adjacent vertices are separated by any inner vertex of the tree path between them, so $\kap\le1$. Compared with the tree, the edges $ac$ and $bc$ each lose one copy, and the new edge $ab$ has $m-2$ copies. The multigraph therefore has $(m-2)-2=m-4$ more edges than the tree, which is a gain for $m\ge5$.
+\begin{construction}[Bipartite multigraph]\label{const:multi-bipartite}
+For $2 \le n \le m+1$, take $K_{2,n-2}$ with all multiplicities $m-2$, and call the two vertices of its part of size $2$ $x$ and $y$. Join $x$ and $y$ with multiplicity $m+1-n$ if this is positive.
+\end{construction}
+
+\begin{proposition}[Three feasible multigraphs]\label{prop:multi-three}
+Let $m \ge 3$. Each of \Cref{const:multi-tree,const:multi-complete,const:multi-bipartite} has $\kap^{\max} \le m-1$. They have
+\[
+    (m-1)(n-1),\qquad \binom{n}{2}(m+1-n),\qquad 2(n-2)(m-2) + (m+1-n)
+\]
+edges, in this order.
+\end{proposition}
+
+\begin{proof}
+All three values of $\kap$ come from \Cref{lem:multi-vertex-split}.
+
+\emph{Multitree.} Removing a tree edge disconnects its ends, so a tree edge has $\pi = 0$ and $\kap = m-1$.
+Two non-adjacent vertices have $\mu = 0$ and one path between them, so $\kap = 1$.
+
+\emph{Complete multigraph.} Each of the other $n-2$ vertices gives a route of length two from $u$ to $v$, and together they separate $u$ from $v$ once the edge $uv$ is removed.
+This gives $\pi(u,v) = n-2$ and $\kap(u,v) = (m+1-n) + (n-2) = m-1$.
+
+\emph{Bipartite multigraph.} A vertex $w$ other than $x,y$ is joined only to $x$ and $y$, and every route from $w$ leaves through $x$ or through $y$.
+The routes of length at least two from $w$ to $x$ all pass through $y$, which gives $\pi(w,x) = 1$ and $\kap(w,x) = (m-2) + 1 = m-1$. The same holds for $w$ and $y$.
+Two vertices other than $x,y$ are not adjacent and have $\kap = \pi = 2 \le m-1$.
+The pair $x,y$ has one route through each other vertex, which gives $\pi(x,y) = n-2$ and $\kap(x,y) = (m+1-n) + (n-2) = m-1$.
+\end{proof}
+
+For $n \le m+1$ the bipartite multigraph has $2(n-2)(m-2) + (m+1-n)$ edges and the multitree has $(m-1)(n-1)$. Their difference is $(n-2)(m-4)$. The two agree at $m=4$, and for $m\ge5$ and $n\ge3$ the bipartite multigraph has more.
+For $n \ge m+2$ the other two constructions do not exist, and among the three the multitree has the most edges.
+For $m\ge5$ the multitree is not best at any $n \ge 3$.
+
+\begin{proposition}[A triangle in the multitree]\label{prop:multi-triangle}
+Let $m \ge 3$ and $n \ge 3$. There is a multigraph on $n$ vertices with $\kap^{\max} \le m-1$ and $(m-1)(n-1) + m-4$ edges.
+\end{proposition}
+
+\begin{proof}
+Take a tree on the $n$ vertices in which two leaves $a,b$ share a neighbour $c$, for example a star. Give every tree edge multiplicity $m-1$, add the edge $ab$, and give $ab$, $ac$ and $bc$ multiplicity $m-2$.
+Each pair of $a,b,c$ then has $m-2$ parallel edges and one route through the third vertex, and $\kap=m-1$.
+Every other edge is a tree edge, whose removal disconnects its ends, and $\kap=m-1$ there too.
+Two non-adjacent vertices are separated by any inner vertex of the tree path between them, and $\kap\le1$.
+Compared with the multitree, the edges $ac$ and $bc$ each lose one copy, and the new edge $ab$ has $m-2$ copies. The multigraph therefore has $(m-2)-2=m-4$ more edges than the multitree.
+\end{proof}
 
 \subsection{The directed problem}\label{sec:multi-vertex-dir}
 
@@ -575,7 +620,8 @@ In particular $K_m^{\mathrm{dir}}(n) = (m-1)n^2/4 + O_m(n)$, and the one-way bip
 
 \begin{proof}
 \emph{The case $m=2$.}
-This is shown in \Cref{ch:basecases}, after \Cref{thm:dir-hyper-constant}.
+Two copies of an arc are two separated routes, so every feasible directed multigraph at $m=2$ is simple.
+This gives $K_2^{\mathrm{dir}}(n) = k_2^{\mathrm{dir}}(n)$, and \Cref{thm:dir-vertex-m2-exact} gives the value.
 
 \emph{General $m$.}
 The extremal multigraphs of \Cref{thm:dir-multi-full} have $\lec^{\max} \le m-1$. Since $\kap\le\lec$, also $\kap^{\max} \le m-1$. This gives the lower bound.
@@ -584,7 +630,7 @@ A directed multigraph is a forward directed $2$-uniform multihypergraph: each ar
 For $n\ge7$ we have $M(n)=\floor{n^2/4}$. Both bounds are then $(m-1)n^2/4 + O_m(n)$.
 \end{proof}
 
-\section{The directed hypergraph}\label{sec:dir-hyper}
+\section{Directed hypergraphs}\label{sec:dir-hyper}
 
 The last four variants use directed hyperedges, in the forward, backward or general model of \Cref{sec:variants}.
 The first result gives an upper and a lower bound that differ by a factor of four.
@@ -688,7 +734,8 @@ A hyperedge $(T,H)$ gives $|T|\,|H| \ge r-1$ arcs of $S$. This gives
 \]
 
 Next we show that the shadow is budgeted.
-Fix an ordered pair $(u,v)$. Let $\mathcal{T}$ be the set of midpoints counted by $p_2(u,v)$, together with $v$ if $(u,v) \in A(S)$.
+Fix an ordered pair $(u,v)$. Here $p_2(u,v)$ is the number of midpoints in $S$, defined as for simple directed graphs before \Cref{lem:feasible-budgeted}. It counts vertices, so the multiplicities of $S$ play no role.
+Let $\mathcal{T}$ be the set of these midpoints, together with $v$ if $(u,v) \in A(S)$.
 Every $t \in \mathcal{T}$ gives a route from $u$ to $v$.
 For $t = v$ it is the route of length one through a hyperedge with $u$ among its tails and $v$ among its heads.
 For a midpoint $t$ it is the route $u \to t \to v$ through a hyperedge with $u$ among its tails and $t$ among its heads, followed by a hyperedge with $t$ among its tails and $v$ among its heads.
