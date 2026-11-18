@@ -208,7 +208,7 @@ This gives $\lec^{\max} = m - 1$.
 For example, take $m = 3$ and $n = 10$.
 Then $|B| = 6$ and $|A| = 4$.
 There are $24$ arcs from $A$ to $B$, and $6$ arcs forming a cycle inside $B$.
-Each pair $a_i, b_j$ has the direct arc and one detour, so $\lec^{\max} = 2$.
+Each pair $a_i, b_j$ has the direct arc and one detour, and all detours share their last arc, so $\lec^{\max} = 2$.
 This gives $30$ arcs, more than the $\max(m(n-1),\floor{n^2/4})=27$ of the first two constructions.
 The gain comes from making $B$ larger than half of the vertices.
 For $n\ge m$ the constructions therefore give
@@ -260,7 +260,7 @@ For fixed $m$ and large $n$ the augmented bipartite directed graph has more arcs
   \node[font=\scriptsize, align=center, vertexorange!75!black] at (5.6,-2.55)
     {$6$ cyclic in-arcs inside $B$};
 \end{tikzpicture}
-\caption{The augmented bipartite directed graph of \Cref{const:augmented-bipartite} at $m = 3$, $n = 10$. All arcs between the parts go from $A$ to $B$. Inside $B$, each vertex gets one arc from the previous vertex on a cycle. A pair $a_i, b_j$ has the direct arc and one detour, so $\lec^{\max} = 2$. The directed graph has $24 + 6 = 30$ arcs, against $27$ for the hub.}
+\caption{The augmented bipartite directed graph of \Cref{const:augmented-bipartite} at $m = 3$, $n = 10$. All arcs between the parts go from $A$ to $B$. Inside $B$, each vertex gets one arc from the previous vertex on a cycle. A pair $a_i, b_j$ has the direct arc and one detour, and all detours share their last arc, so $\lec^{\max} = 2$. The directed graph has $24 + 6 = 30$ arcs, against $27$ for the hub.}
 \label{fig:augmented-wall}
 \end{figure}
 
@@ -322,7 +322,7 @@ The same proof works for directed hyperedges and directed Berge paths, with arcs
 
 \Cref{prop:hyper-edge} says that an $r$-uniform multihypergraph on $n$ vertices with $\lec^{\max} \le m-1$ has at most $\floor{(m-1)(n-1)/(r-1)}$ hyperedge copies.
 The next theorem shows that for $r \ge 3$ and $m-1\le\binom{n-2}{r-2}$, simple hypergraphs attain this bound.
-For graphs ($r=2$) this is different: there, for $n\ge m$, simplicity lowers the bound from $(m-1)(n-1)$ to $\floor{m(n-1)/2}$.
+For graphs ($r=2$) this is different: there, for $n\ge m\ge3$, simplicity lowers the bound from $(m-1)(n-1)$ to $\floor{m(n-1)/2}$.
 
 The construction needs hypergraphs in which no vertex lies in too many hyperedges. The \emph{degree} $\deg(x)$ of a vertex $x$ in a hypergraph is the number of hyperedges that contain it.
 
@@ -527,7 +527,7 @@ By \Cref{lem:multi-vertex-split}, $\mu(u,v) + \pi(u,v) \le 1$ on every edge.
 If $G_0$ had a cycle, take an edge $uv$ on it. Then $\mu(u,v) \ge 1$, and the rest of the cycle is a $u$--$v$ path of length at least two, so $\pi(u,v) \ge 1$.
 Hence $G_0$ is a forest and every multiplicity is one.
 A forest on $n$ vertices has at most $n-1$ edges, with equality exactly when it is a tree.
-Conversely, a tree on the $n$ vertices joins every pair by exactly one path, so it has $\kap^{\max}=1$ and is feasible.
+Conversely, a tree on the $n$ vertices joins every pair by exactly one path, so it has $\kap^{\max}\le1$ and is feasible.
 \end{proof}
 
 \begin{remark}\label{rem:multi-vertex-m2-simple}

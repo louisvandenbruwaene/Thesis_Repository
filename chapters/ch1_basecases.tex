@@ -534,6 +534,7 @@ The fourth assumption is which routes count as disjoint.
 Two $u$--$v$ paths are \emph{separated} if they have no vertex in common except $u$ and $v$.
 The largest number of such paths is the \emph{local vertex-connectivity} $\kap_G(u,v)$.
 Its largest value over all pairs is $\kap_G^{\max}$.
+If $G$ has fewer than two vertices, we set $\kap_G^{\max}=0$.
 In a graph, separated paths are also edge-disjoint. An edge has two ends, and two such paths share no vertex other than $u$ and $v$. A shared edge would therefore have to join $u$ and $v$. A $u$--$v$ path that uses such an edge consists of that edge alone, which makes two paths through the same edge the same path. This gives $\kap_G(u,v)\le\lec_G(u,v)$.
 \Cref{fig:edge-vs-vertex} shows that edge-disjoint and separated routes can differ.
 
@@ -774,7 +775,7 @@ By Mantel's theorem \cite{Mantel07}, a graph on $q$ vertices with no triangle ha
     |A(Q)| \;\le\; \floorfrac{q^2}{4}.
 \]
 
-Let $R$ consist of the $2(n_i-1)$ arcs chosen above in every component, and, for each arc of $Q$, one arc of $D$ between the corresponding components.
+Let $R$ consist of the at most $2(n_i-1)$ arcs chosen above in every component, and, for each arc of $Q$, one arc of $D$ between the corresponding components.
 These arcs keep reachability inside each component.
 Now suppose $u$ reaches $v$ in $D$, with $u$ and $v$ in different components.
 Then the component of $u$ reaches the component of $v$ in $Q_0$, and so also in $Q$.
@@ -946,7 +947,7 @@ If $r = 2$, this condition means $m = 2$. Then the bound is $n-1$, and a tree at
 
 A \emph{star hypertree} has a vertex $h$, its hub, and the hyperedges $\{h\} \cup W_i$ for disjoint sets $W_i$ of $r-1$ vertices other than $h$. At $m=2$ it attains the bound (\Cref{fig:hyper-star}).
 For $r\ge3$, unlike for graphs, repeated hyperedges often do not help, since simple hypergraphs attain the bound whenever $m-1\le\binom{n-2}{r-2}$.
-When $m-1>\binom{n-2}{r-2}$ there are too few different hyperedges, and the simple value can be smaller.
+When $m-1>\binom{n-2}{r-2}$ there may be too few different hyperedges, and the simple value can be smaller.
 At $n=r=m=3$ there is only one possible hyperedge, so a simple hypergraph has one hyperedge, while a multihypergraph can have two copies of it (\Cref{rem:simple-hyper-necessary}).
 
 \begin{figure}[ht]
