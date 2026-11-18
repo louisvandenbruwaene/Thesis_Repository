@@ -201,44 +201,75 @@ def exhaustive_search(problem, deadline):
 def nauty_commands(problem, size):
     """The nauty programs that list every support that can carry size
     edges, each once up to renaming the vertices. Each entry is one
-    pipeline: a list of commands, the output of one feeding the next.
-    None for directed hypergraphs, for which nauty has no program."""
+    pipeline: a list of commands, the output of one feeding the next."""
     model, n = problem.MODEL, problem.VERTEX_COUNT
     r = model.EDGE_SIZE
     fewest_edges = math.ceil(size / largest_multiplicity(problem))
     most_edges = min(size, len(possible_hyperedges(problem)))
-    if model.IS_DIRECTED and r > 2:
-        return None
     if fewest_edges > most_edges:
         return []                   # no graph has this many edges
-    edges = f"{fewest_edges}:{most_edges}"
-    if not model.IS_DIRECTED and r == 2:
-        return [[["geng", "-q", str(n), edges]]]
-    if model.IS_DIRECTED:                   # one or two arcs per pair
-        pairs = f"{math.ceil(fewest_edges / 2)}:{most_edges}"
-        return [[["geng", "-q", str(n), pairs],
-                 ["directg", "-q", "-T", f"-e{edges}"]]]
-    return [[["genbg", "-q", "-z", f"-d0:{r}", f"-D{k}:{r}",
-              str(n), str(k)]]
-            for k in range(fewest_edges, most_edges + 1)]
+    if r == 2 and not model.IS_DIRECTED:
+        return [[["geng", "-q", str(n), f"{fewest_edges}:{most_edges}"]]]
+    if r == 2:
+        # a pair carries one or two arcs, so fewer pairs can suffice
+        fewest_pairs = math.ceil(fewest_edges / 2)
+        list_graphs = ["geng", "-q", str(n),
+                       f"{fewest_pairs}:{most_edges}"]
+        direct_edges = ["directg", "-q", "-T",
+                        f"-e{fewest_edges}:{most_edges}"]
+        return [[list_graphs, direct_edges]]
+    pipelines = []
+    for hyperedge_count in range(fewest_edges, most_edges + 1):
+        # the n vertices on one side, the hyperedges on the other side,
+        # each hyperedge joined to its r vertices
+        list_hypergraphs = ["genbgL", "-q", f"-d0:{r}",
+                            f"-D{hyperedge_count}:{r}",
+                            str(n), str(hyperedge_count)]
+        if not model.IS_DIRECTED:
+            list_hypergraphs.insert(2, "-z")    # no two hyperedges alike
+            pipelines.append([list_hypergraphs])
+        else:
+            # -o: every edge one way, from a tail or to a head
+            # -f: compare only under renamings that keep vertices vertices
+            direct_edges = ["directg", "-q", "-T", "-o", f"-f{n}"]
+            pipelines.append([list_hypergraphs, direct_edges])
+    return pipelines
+#</nauty>
 
 
+#<reading>
 def read_support(problem, line):
-    """One line of nauty output as a list of hyperedges."""
-    n = problem.VERTEX_COUNT
-    if problem.MODEL.IS_DIRECTED:   # directg: n, arc count, arcs
-        numbers = [int(word) for word in line.split()[2:]]
+    """One line of nauty output as a list of hyperedges, or None if the
+    model does not allow it."""
+    model, n = problem.MODEL, problem.VERTEX_COUNT
+    if not model.IS_DIRECTED:       # geng or genbgL, in graph6 format
+        graph = networkx.from_graph6_bytes(line.strip())
+        if model.EDGE_SIZE == 2:
+            return [Hyperedge((), tuple(sorted(edge)))
+                    for edge in graph.edges()]
+        # first the n vertices, then one node per hyperedge
+        return [Hyperedge((), tuple(sorted(graph[node])))
+                for node in range(n, graph.number_of_nodes())]
+    # directg: the number of nodes, the number of arcs, then the arcs
+    numbers = [int(word) for word in line.split()]
+    node_count = numbers[0]
+    arcs = list(zip(numbers[2::2], numbers[3::2]))
+    if model.EDGE_SIZE == 2:
         return [Hyperedge((tail,), tuple(sorted((tail, head))))
-                for tail, head in zip(numbers[::2], numbers[1::2])]
-    graph = networkx.from_graph6_bytes(line.strip())
-    if problem.MODEL.EDGE_SIZE == 2:        # geng: the graph itself
-        return [Hyperedge((), tuple(sorted(edge)))
-                for edge in graph.edges()]
-    # genbg: first the n vertices, then one node per hyperedge
-    return [Hyperedge((), tuple(sorted(graph[x])))
-            for x in range(n, graph.number_of_nodes())]
+                for tail, head in arcs]
+    support = []
+    for node in range(n, node_count):       # one node per hyperedge
+        tails = tuple(sorted(start for start, end in arcs if end == node))
+        heads = tuple(end for start, end in arcs if start == node)
+        support.append(Hyperedge(tails, tuple(sorted(tails + heads))))
+    allowed_tails = all(len(hyperedge.TAILS) in model.TAIL_COUNTS
+                        for hyperedge in support)
+    all_different = len(set(support)) == len(support)
+    return support if allowed_tails and all_different else None
+#</reading>
 
 
+#<pipeline>
 def start_pipeline(pipeline):
     """Starts the programs of a pipeline. If one cannot start, those
     already started are stopped before the error is passed on."""
@@ -263,8 +294,10 @@ def stop_pipeline(processes):
     for process in processes:
         if process.poll() is None:
             process.kill()
+#</pipeline>
 
 
+#<supports>
 def supports(problem, size, deadline):
     """Streams the supports from nauty, one at a time. The list counts
     as complete only if every program of every pipeline exits normally,
@@ -279,7 +312,9 @@ def supports(problem, size, deadline):
             for line in processes[-1].stdout:
                 if time.time() > deadline:
                     raise OutOfTime
-                yield read_support(problem, line)
+                support = read_support(problem, line)
+                if support is not None:     # the model allows it
+                    yield support
             statuses = [process.wait() for process in processes]
             if any(statuses):
                 if time.time() > deadline:
@@ -290,10 +325,10 @@ def supports(problem, size, deadline):
             stop_pipeline(processes)        # the search stopped early
             for process in processes:
                 process.wait()
-#</nauty>
+#</supports>
 
 
-#<larger>
+#<copies>
 def add_copies(problem, support, size, deadline):
     """Gives every edge of the support between 1 and the largest
     multiplicity copies, size in total. Returns a feasible choice, or
@@ -322,8 +357,10 @@ def add_copies(problem, support, size, deadline):
     if not is_feasible(problem, multiplicity):
         return None
     return choose(0, size - len(support))
+#</copies>
 
 
+#<larger>
 def feasible_graph_with(problem, size, deadline):
     listed = supports(problem, size, deadline)
     try:
@@ -339,8 +376,6 @@ def feasible_graph_with(problem, size, deadline):
 def prove_largest(problem, size, graph, deadline):
     """Raises size while a feasible graph with one edge more exists.
     When none exists, size is the maximum."""
-    if nauty_commands(problem, size + 1) is None:
-        return size, graph, False
     try:
         while larger := feasible_graph_with(problem, size + 1,
                                             deadline):
@@ -517,8 +552,7 @@ SEARCHES = {"tabu": tabu_search, "greedy": random_greedy_growth}
 
 
 def solve(problem, search_name=HEURISTIC_SEARCH):
-    has_nauty = nauty_commands(problem, 1) is not None
-    part = SECONDS_PER_CASE / (3 if has_nauty else 2)
+    part = SECONDS_PER_CASE / 3
     size, graph, exact = exhaustive_search(problem, time.time() + part)
     if not exact:
         search = SEARCHES[search_name]
@@ -569,8 +603,10 @@ def allowed_tail_counts(model, r):
     if model.endswith("backward"):
         return {r - 1}
     return set(range(1, r))                 # general: any split
+#</verifier>
 
 
+#<record>
 def verify_record(record):
     n, m, r = record["n"], record["m"], record["edge_size"]
     model, separation = record["model"], record["separation"]
@@ -601,6 +637,8 @@ def verify_record(record):
         copies[key] = count
     if sum(copies.values()) != record["size"]:
         return False
+#</record>
+#<recordcheck>
     certificate = {}
     for u, v, removed_vertices, removed_hyperedges in \
             record["certificate"]:
@@ -643,10 +681,10 @@ def verify_record(record):
         if v in reached:
             return False
     return True
-#</verifier>
+#</recordcheck>
 
 
-#<main>
+#<table>
 def print_table(model, separation, solved, largest_m, witnesses):
     print(f"\n{model.NAME}, {separation.value} routes")
     print("n \\ m" + "".join(f"{m:>6}" for m in range(2, largest_m + 1)))
@@ -662,8 +700,10 @@ def print_table(model, separation, solved, largest_m, witnesses):
         rows.setdefault(problem.VERTEX_COUNT, []).append(f"{size:>5}{mark}")
     for n, cells in rows.items():
         print(f"{n:>5}" + "".join(cells), flush=True)
+#</table>
 
 
+#<main>
 def main(search_name=HEURISTIC_SEARCH, largest_n=7, largest_m=7):
     problems = [Problem(model, separation, n, m)
                 for model in ALL_MODELS() for separation in Separation

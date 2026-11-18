@@ -604,7 +604,7 @@ For undirected graphs the four functions satisfy
     \ell_m(n)\;\le\; k_m(n)\;\le\; L_m(n)\;\le\; K_m(n).
 \]
 The outer inequalities are immediate from the route separation definitions, because separated routes are also edge-disjoint: $\kap\le\lec$ and every graph with $\lec^{\max}\le m-1$ also has $\kap^{\max}\le m-1$. This gives $\ell_m(n)\le k_m(n)$ and $L_m(n)\le K_m(n)$. Every simple graph is also a multigraph, which gives $\ell_m(n)\le L_m(n)$ and $k_m(n)\le K_m(n)$ as well.
-The middle inequality compares the vertex problem for simple graphs with the edge problem for multigraphs. It follows from the count in \Cref{rem:vertex-degeneracy}, where every term is at most $m-1$, so $k_m(n)\le(m-1)(n-1)$, and from the exact value $L_m(n)=(m-1)(n-1)$ of \Cref{thm:multigraph-edge}.
+The middle inequality compares the vertex problem for simple graphs with the edge problem for multigraphs. It follows from the count in \Cref{rem:vertex-degeneracy}, where the first term is $0$ and each of the other $n-1$ terms is at most $m-1$, so $k_m(n)\le(m-1)(n-1)$, and from the exact value $L_m(n)=(m-1)(n-1)$ of \Cref{thm:multigraph-edge}.
 
 Menger's theorem, the Gomory--Hu tree, Mader's bound and the exact value $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ are classical.
 The results of B\'{a}rtfai, Bollob\'{a}s and Leonard (\Cref{thm:leonard}) and of S{\o}rensen and Thomassen (\Cref{thm:sorensen-thomassen}) are classical as well.
@@ -939,7 +939,7 @@ Every pair contains such a vertex, and every route from or to it uses one of the
 Removing these copies therefore separates the pair, and every pair has $\lec\le m-1$.
 There are $q = \floorfrac{(m-1)(n-1)}{r-1}$ hyperedge copies.
 
-If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} below attains the bound with a simple hypergraph.
+If $m-1 \le \binom{n-2}{r-2}$ and $r\ge3$, \Cref{thm:simple-hyper-edge} attains the bound with a simple hypergraph.
 If $r = 2$, this condition means $m = 2$. Then the bound is $n-1$, and a tree attains it.
 \end{proof}
 
@@ -1183,15 +1183,16 @@ It applies because a feasible directed graph has at most $m-1$ paths of length t
 \begin{theorem}[Directed multigraphs]\label{thm:dir-multi-full}
 For directed multigraphs and all $n \ge 2$ and $m \ge 2$,
 \[
-    L_m^{\mathrm{dir}}(n) \;=\; (m-1)\,M(n), \qquad M(n) := \max\!\Bigl(2(n-1),\ \floorfrac{n^2}{4}\Bigr).
+    L_m^{\mathrm{dir}}(n) \;=\; (m-1)\,M(n),
 \]
+with $M(n)=\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ as in \Cref{lem:reach-skeleton}.
 \end{theorem}
 
 The lower bound uses trees and one-way bipartite directed graphs with all multiplicities $m-1$.
 
 
 
-If we multiply every multiplicity by the same integer, every connectivity is multiplied by that integer.
+If we multiply every multiplicity by the same integer, every local edge-connectivity $\lec(u,v)$ is multiplied by that integer.
 
 \begin{lemma}[Multiplying all multiplicities]\label{lem:thickening}
 Let $D_0$ be a directed multigraph and $k \ge 1$ an integer. Write $k \cdot D_0$ for the multigraph obtained by multiplying every multiplicity $\mu(u,v)$ by $k$. Then $\lec_{k \cdot D_0}(u,v) = k \cdot \lec_{D_0}(u,v)$ for every ordered pair $u \ne v$, and $|A(k \cdot D_0)| = k\,|A(D_0)|$.
@@ -1224,11 +1225,11 @@ Instead we delete a reachability skeleton. By \Cref{lem:reach-skeleton} it has a
 
 
 \begin{lemma}[Deleting a skeleton]\label{lem:reach-delete}
-Let $D$ be a directed multigraph with $\lec^{\max}(D) \le k$ for some $k \ge 1$, and let $R$ be a reachability skeleton of $D$. Let $D - R$ be $D$ with one copy of each arc of $R$ removed. Then for every ordered pair $u \ne v$,
+Let $D$ be a directed multigraph with $\lec^{\max}_D \le k$ for some $k \ge 1$, and let $R$ be a reachability skeleton of $D$. Let $D - R$ be $D$ with one copy of each arc of $R$ removed. Then for every ordered pair $u \ne v$,
 \[
     \lec_{D-R}(u,v) \;\le\; \max\bigl(\lec_D(u,v)-1,0\bigr),
 \]
-and consequently $\lec^{\max}(D - R) \le k - 1$.
+and consequently $\lec^{\max}_{D-R} \le k - 1$.
 \end{lemma}
 
 The skeleton keeps reachability, so if routes from $u$ to $v$ remain after the deletion, one more route runs inside the deleted arcs.
@@ -1239,16 +1240,16 @@ Otherwise $D-R$ has $t \ge 1$ arc-disjoint $u$--$v$ paths, so $u$ reaches $v$ in
 Since $R$ is a reachability skeleton, there is a $u$--$v$ path $P$ in $R$.
 The arcs of $P$ are the removed copies, so $P$ shares no arc with the $t$ paths in $D-R$.
 Together with $P$, this gives $t+1$ arc-disjoint $u$--$v$ paths in $D$, and $t + 1 \le \lec_D(u,v)$.
-Taking the maximum over all pairs gives $\lec^{\max}(D-R) \le k-1$.
+Taking the maximum over all pairs gives $\lec^{\max}_{D-R} \le k-1$.
 \end{proof}
 
 \begin{proof}[Proof of \Cref{thm:dir-multi-full}]
 The lower bound is \Cref{const:dir-multi-lower}.
-For the upper bound, fix $n$. We show by induction on $k \ge 0$ that every directed multigraph $D$ on $n$ vertices with $\lec^{\max}(D) \le k$ has $|A(D)| \le k\,M(n)$.
+For the upper bound, fix $n$. We show by induction on $k \ge 0$ that every directed multigraph $D$ on $n$ vertices with $\lec^{\max}_D \le k$ has $|A(D)| \le k\,M(n)$.
 For $k=0$ there are no arcs, since one arc is already one route.
 
 Let $k \ge 1$, and let $R$ be a reachability skeleton of $D$ with $|A(R)| \le M(n)$ (\Cref{lem:reach-skeleton}).
-By \Cref{lem:reach-delete}, $\lec^{\max}(D-R) \le k-1$, so by induction $|A(D-R)| \le (k-1)M(n)$.
+By \Cref{lem:reach-delete}, $\lec^{\max}_{D-R} \le k-1$, so by induction $|A(D-R)| \le (k-1)M(n)$.
 Every arc of $D$ is either in $R$ or in $D-R$, which gives
 \[
     |A(D)| \;=\; |A(R)| \;+\; |A(D-R)| \;\le\; M(n) \;+\; (k-1)M(n) \;=\; k\,M(n).
@@ -1262,15 +1263,15 @@ $\HH$ on $n \ge 2$ vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
 \[
     |E(\HH)| \;\le\; \frac{m-1}{r-1}\floorfrac{n^2}{4} \;+\; (m-1)^2 (n-1).
 \]
-
+Conversely, for fixed $r$ and $m$ there are forward directed $r$-uniform multihypergraphs on $n$ vertices with $(m-1)n^2/(4(r-1))-O_{r,m}(n)$ hyperedges in which no ordered pair has $m$ hyperedge-disjoint routes. For $r\ge3$ and large $n$ they are simple.
 \end{theorem}
 
-Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_\HH\le m-1$. The construction of \Cref{prop:dir-hyper-first} has $(1+o(1))(m-1)n^2/(4(r-1))$ hyperedges, so the leading term is right for multihypergraphs. For $r\ge3$ and large $n$ this construction is simple, so the leading term is also right for simple directed hypergraphs.
+Since $\kap\le\lec$, the upper bound also holds when $\lec^{\max}_\HH\le m-1$, and the lower bound also holds for separated routes. The leading term $(m-1)n^2/(4(r-1))$ is therefore right for multihypergraphs, and for $r\ge3$ also for simple directed hypergraphs.
 
 The proof bounds the hyperedges by the arcs of a simple directed graph, shows that this graph satisfies a two-step budget, and applies \Cref{lem:two-step-budget}.
 
 \begin{definition}[One-step shadow]\label{def:one-step-shadow}
-Let $\HH$ be a forward directed $r$-uniform hypergraph on $V$. Its \emph{shadow} is the simple directed graph $R(\HH)$ on $V$ with an arc $(u,v)$ when some hyperedge of $\HH$ has tail $u$ and head $v$. Let $\mu_R(u,v)$ be the number of such hyperedges.
+Let $\HH$ be a forward directed $r$-uniform multihypergraph on $V$. Its \emph{shadow} is the simple directed graph $R(\HH)$ on $V$ with an arc $(u,v)$ when some hyperedge of $\HH$ has tail $u$ and head $v$. Let $\mu_R(u,v)$ be the number of such hyperedges, counting copies.
 \end{definition}
 
 \begin{proof}[Proof of \Cref{thm:dir-hyper-constant}]
@@ -1315,14 +1316,12 @@ and $R$ is $(r-1)(m-1)$-budgeted.
     |E(\HH)| \;\le\; \frac{m-1}{r-1}\left[\floorfrac{n^2}{4} + (r-1)(m-1)(n-1)\right]
     \;=\; \frac{m-1}{r-1}\floorfrac{n^2}{4} + (m-1)^2(n-1).
 \]
-For the lower bound, \Cref{prop:dir-hyper-first} with $\alpha = \floor{n/2}$ gives $(m-1)n^2/(4(r-1)) - O_{m,r}(n)$ hyperedges.
-This construction is feasible for hyperedge-disjoint and for separated routes.
-For fixed $r\ge3$ and large $n$ it is simple.
-The upper and lower bounds therefore have the same $n^2$ term.
+For the lower bound, \Cref{prop:dir-hyper-first} with $\alpha = \floor{n/2}$ gives $(m-1)n^2/(4(r-1)) - O_{r,m}(n)$ hyperedges.
+For fixed $r\ge3$ and large $n$ we have $m-1\le\binom{\ceil{n/2}-1}{r-2}$, so this construction is simple.
 \end{proof}
 
 The backward model is the forward model with every hyperedge reversed, so it has the same extremal values (\Cref{lem:dir-hyper-duality}).
-The general model has the same leading term, with a larger linear term (\Cref{thm:dir-hyper-general-constant}).
+The general model has the same leading term, and its upper bound has a larger linear term (\Cref{thm:dir-hyper-general-constant}).
 
 At $r=2$ a hyperedge is an arc, so \Cref{thm:dir-hyper-constant} bounds the number of arcs of a directed multigraph with $\kap^{\max}\le m-1$ by $(m-1)\floor{n^2/4}+(m-1)^2(n-1)$.
 The extremal multigraphs of \Cref{thm:dir-multi-full} have $\lec^{\max}\le m-1$, so also $\kap^{\max}\le m-1$, and $(m-1)M(n)$ arcs.

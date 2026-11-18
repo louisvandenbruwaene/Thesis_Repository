@@ -74,8 +74,8 @@ Theorem~4 does not cover $n=5$.
 There the complete graph $K_5$ has $\kap^{\max}=4$, so $k_5(5)=\binom52=10=\floor{5\cdot4/2}$, which is the first case as well.
 At $n=13$ both $k_5$ and $\ell_5$ equal $30$, and $k_5(n)$ first exceeds $\ell_5(n)$ at $n=14$.
 
-The same care is needed for the conjecture of Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62,ErdosProblems}: every graph on $1+(m-1)p$ vertices with $1+\binom m2 p$ edges has two vertices joined by $m$ separated paths. The conjecture is false for $m\ge5$. \Cref{sec:bollobas-erdos} shows this for $m=5$.
-With one edge fewer there are graphs without such a pair: $p$ copies of $K_m$ that share one vertex.
+The same care is needed for the conjecture of Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62,ErdosProblems}: every graph on $1+(m-1)t$ vertices with $1+\binom m2 t$ edges has two vertices joined by $m$ separated paths. The conjecture is false for $m\ge5$. \Cref{sec:bollobas-erdos} shows this for $m=5$.
+With one edge fewer there are graphs without such a pair: $t$ copies of $K_m$ that share one vertex.
 Each copy adds $\binom m2$ edges but only $m-1$ vertices, so in the notation of this thesis the conjecture says that $k_m(n)=m(n-1)/2$ when $m-1$ divides $n-1$, which is $m/2$ edges per added vertex.
 \end{remark}
 
@@ -98,11 +98,11 @@ A path from $G_1 \setminus \{c\}$ to $G_2 \setminus \{c\}$ passes through $c$, s
 Gluing extremal graphs on $n_1$ and $n_2$ vertices gives a feasible graph on $n_1+n_2-1$ vertices with $k_m(n_1)+k_m(n_2)$ edges.
 \end{proof}
 
-The copies of $K_m$ sharing one vertex are $p$ copies of $K_m$ glued at one vertex.
-They have $1+(m-1)p$ vertices and $\binom m2 p$ edges, so $\binom m2$ edges for every $m-1$ vertices after the first.
+The copies of $K_m$ sharing one vertex are $t$ copies of $K_m$ glued at one vertex.
+They have $1+(m-1)t$ vertices and $\binom m2 t$ edges, so $\binom m2$ edges for every $m-1$ vertices after the first.
 
 \begin{theorem}[The Bollob\'{a}s--Erd\H{o}s conjecture fails for $m=5$]\label{thm:bollobas-erdos-false}
-For every $p\ge13$, there is a simple graph on $1+4p$ vertices with $1+10p$ edges and $\kap^{\max}\le 4$.
+For every $t\ge13$, there is a simple graph on $1+4t$ vertices with $1+10t$ edges and $\kap^{\max}\le 4$.
 \end{theorem}
 
 \begin{proof}
@@ -110,9 +110,9 @@ Let $G$ be the extremal graph of \Cref{thm:sorensen-thomassen} with $14$ vertice
 
 Glue $4$ copies of $G$ at one vertex. This uses $4\cdot13=52$ vertices after the first, the same number as $13$ copies of $K_5$.
 It has $4\cdot33=132$ edges, so two more than the $130$ edges of those $13$ copies of $K_5$.
-For $p \ge 13$, glue these $4$ copies of $G$ and $p-13$ copies of $K_5$ at one common vertex.
-The result has $1+4p$ vertices and $10p+2$ edges, and it is feasible by \Cref{lem:glue-vertex}.
-Removing one edge keeps it feasible, which gives exactly $1+10p$ edges.
+For $t\ge13$, glue these $4$ copies of $G$ and $t-13$ copies of $K_5$ at one common vertex.
+The result has $1+4t$ vertices and $10t+2$ edges, and it is feasible by \Cref{lem:glue-vertex}.
+Removing one edge keeps it feasible, which gives exactly $1+10t$ edges.
 \end{proof}
 
 \begin{remark}[Feasible graphs have a vertex of small degree]\label{rem:vertex-degeneracy}
@@ -168,8 +168,8 @@ For $m \ge 2$ and $n \ge m$, the simple directed graph of \Cref{const:augmented-
 \emph{Counting.}
 Each vertex of $B$ receives one arc from every vertex of $A$ and $m-2$ arcs from inside $B$.
 No other arcs exist, so the number of arcs is $|B|\,(|A| + m - 2)$.
-Write $N = n+m-2$. Then $|B| = \ceil{N/2}$ and $|A| + m - 2 = N - |B| = \floor{N/2}$.
-For every integer $N$, $\floor{N/2}\ceil{N/2}=\floor{N^2/4}$. When $N=2j$ both sides equal $j^2$, and when $N=2j+1$ both equal $j^2+j$.
+Write $q = n+m-2$. Then $|B| = \ceil{q/2}$ and $|A| + m - 2 = q - |B| = \floor{q/2}$.
+For every integer $q$, $\floor{q/2}\ceil{q/2}=\floor{q^2/4}$. When $q=2j$ both sides equal $j^2$, and when $q=2j+1$ both equal $j^2+j$.
 
 \emph{Pairs from $A$ to $B$.}
 Take $a \in A$ and $b \in B$.
@@ -317,10 +317,10 @@ hyperedges and maximum degree at most $d$.
 \end{lemma}
 
 \begin{proof}
-Let $N := \floorfrac{dn}{r}$.
-Since $n\binom{n-1}{r-1} = r\binom{n}{r}$ (both count the pairs of an $r$-set and one of its vertices), we get $N \le \frac{n}{r}\binom{n-1}{r-1} = \binom{n}{r}$.
-There are therefore at least $N$ different $r$-sets.
-There are finitely many families of $N$ different $r$-sets. Choose one with the smallest value of $\sum_x \deg(x)^2$.
+Let $q := \floorfrac{dn}{r}$.
+Since $n\binom{n-1}{r-1} = r\binom{n}{r}$ (both count the pairs of an $r$-set and one of its vertices), we get $q \le \frac{n}{r}\binom{n-1}{r-1} = \binom{n}{r}$.
+There are therefore at least $q$ different $r$-sets.
+There are finitely many families of $q$ different $r$-sets. Choose one with the smallest value of $\sum_x \deg(x)^2$.
 We show that any two degrees in this family differ by at most one.
 
 Suppose instead that $\deg(x) \ge \deg(y) + 2$ for two vertices $x,y$.
@@ -330,7 +330,7 @@ For a set $A$ that contains $x$ but not $y$, the set $A - x + y$, obtained from 
 Different sets $A$ give different sets $A - x + y$, because $A$ can be recovered from $A-x+y$ by removing $y$ and adding $x$.
 This gives $a$ such new sets, but the family has only $b < a$ sets that contain $y$ but not $x$.
 For some $A$, the set $A - x + y$ is therefore not in the family.
-Replace $A$ by $A - x + y$. The family still has $N$ different sets. The degree of $x$ drops by one, the degree of $y$ rises by one, and the other degrees stay the same. The sum changes by
+Replace $A$ by $A - x + y$. The family still has $q$ different sets. The degree of $x$ drops by one, the degree of $y$ rises by one, and the other degrees stay the same. The sum changes by
 \[
 (\deg(x)-1)^2 + (\deg(y)+1)^2 - \deg(x)^2 - \deg(y)^2
  = 2\bigl(\deg(y) - \deg(x)\bigr) + 2 \le -2.
@@ -338,9 +338,9 @@ Replace $A$ by $A - x + y$. The family still has $N$ different sets. The degree 
 This contradicts the choice of the family.
 Any two degrees therefore differ by at most one.
 
-Each of the $N$ sets has $r$ vertices, so the degrees add up to $rN$.
-Their average is $rN/n$. Any two degrees differ by at most one, which puts every degree in $\{k,k+1\}$, where $k$ is the smallest degree. If all degrees equal $k$, the average is $k$, which is then also the largest degree and equals $\ceil{rN/n}$. Otherwise some degrees are $k$ and others $k+1$. The average then lies strictly between $k$ and $k+1$, and the largest degree $k+1$ again equals $\ceil{rN/n}$.
-Since $N \le dn/r$, we have $rN/n \le d$. As $d$ is an integer, $\ceil{rN/n} \le d$.
+Each of the $q$ sets has $r$ vertices, so the degrees add up to $rq$.
+Their average is $rq/n$. Any two degrees differ by at most one, which puts every degree in $\{k,k+1\}$, where $k$ is the smallest degree. If all degrees equal $k$, the average is $k$, which is then also the largest degree and equals $\ceil{rq/n}$. Otherwise some degrees are $k$ and others $k+1$. The average then lies strictly between $k$ and $k+1$, and the largest degree $k+1$ again equals $\ceil{rq/n}$.
+Since $q \le dn/r$, we have $rq/n \le d$. As $d$ is an integer, $\ceil{rq/n} \le d$.
 \end{proof}
 
 \begin{theorem}[Simple hypergraphs attain the edge bound for $r \ge 3$]\label{thm:simple-hyper-edge}
@@ -628,22 +628,22 @@ Counting the pairs (hyperedge, joined pair) in two ways gives
 \]
 
 \emph{Lower bound.} Split $V$ into a set $A$ of $\alpha$ tails and a set $B$ of $\beta:=n-\alpha\ge r-1$ heads.
-Let $k:=r-1$, $d:=m-1$ and $N:=\floorfrac{d\beta}{k}$.
+Let $k:=r-1$, $d:=m-1$ and $q:=\floorfrac{d\beta}{k}$.
 Number the vertices of $B$ as $0,1,\dots,\beta-1$, and read the repeating sequence
 \[
     0,1,\dots,\beta-1,0,1,\dots
 \]
 in segments of $k$ consecutive numbers.
-The first $N$ segments are the hyperedges of a $k$-uniform multihypergraph $\mathcal G^*$ on $B$.
+The first $q$ segments are the hyperedges of a $k$-uniform multihypergraph $\mathcal G^*$ on $B$.
 Since $k\le \beta$, each segment has $k$ different vertices.
-The segments use the first $Nk$ positions of the sequence, so every vertex appears $\floor{Nk/\beta}$ or $\ceil{Nk/\beta}$ times.
-Since $Nk\le d\beta$, we have $Nk/\beta \le d$, and since $d$ is an integer, $\ceil{Nk/\beta} \le d$. Every vertex therefore has degree at most $d$.
+The segments use the first $qk$ positions of the sequence, so every vertex appears $\floor{qk/\beta}$ or $\ceil{qk/\beta}$ times.
+Since $qk\le d\beta$, we have $qk/\beta \le d$, and since $d$ is an integer, $\ceil{qk/\beta} \le d$. Every vertex therefore has degree at most $d$.
 
 Now, for every $a\in A$ and every $H\in\mathcal G^*$, add the hyperedge with tail $a$ and heads $H$.
 No vertex of $B$ is a tail, so a route can never leave $B$, and every route has length one.
 Hence, for $a\in A$ and $w\in B$, the routes from $a$ to $w$ are the hyperedges with tail $a$ whose heads contain $w$. There are $\deg_{\mathcal G^*}(w)\le m-1$ of them.
 There are no routes from $B$, and no routes between two vertices of $A$, since all heads lie in $B$.
-The number of hyperedges is $\alpha N=\alpha\floorfrac{(m-1)(n-\alpha)}{r-1}$.
+The number of hyperedges is $\alpha q=\alpha\floorfrac{(m-1)(n-\alpha)}{r-1}$.
 If $d\le\binom{\beta-1}{k-1}$, we can use \Cref{lem:sparse-hypergraph} instead, which gives different hyperedges, so the directed hypergraph is simple.
 \end{proof}
 

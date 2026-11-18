@@ -920,15 +920,16 @@ for scientific awards or contests.
   rolenode/.style={rounded corners=2.5pt, draw, very thick, align=center,
      minimum width=23mm, minimum height=12mm, font=\sffamily\footnotesize},
   flow/.style={->, thick, KULblauw3b!70}]
-  \node[rolenode, fill=roleModel!16,    draw=roleModel]    (mod) at (0,0)     {\textbf{MODEL}\\[1pt]\scriptsize hyperedges, copies};
+  \node[rolenode, fill=roleMeasure!16,  draw=roleMeasure]  (mod) at (0,0)     {\textbf{MODEL}\\[1pt]\scriptsize hyperedges, copies};
   \node[rolenode, fill=roleMeasure!16,  draw=roleMeasure]  (mea) at (3.3,0)   {\textbf{MEASURE}\\[1pt]\scriptsize maximum flow};
-  \node[rolenode, fill=roleProve!18,    draw=roleProve]    (pro) at (7.0,1.7) {\textbf{EXACT}\\[1pt]\scriptsize exhaustive search};
-  \node[rolenode, fill=roleDiscover!20, draw=roleDiscover] (dis) at (7.0,0)   {\textbf{SEARCH}\\[1pt]\scriptsize tabu, greedy growth};
-  \node[rolenode, fill=roleProve!18,    draw=roleProve]    (chk) at (7.0,-1.7){\textbf{CHECK}\\[1pt]\scriptsize \texttt{nauty}};
+  \node[rolenode, fill=roleProve!18,    draw=roleProve]    (pro) at (6.6,1.0) {\textbf{EXACT}\\[1pt]\scriptsize exhaustive search};
+  \node[rolenode, fill=roleDiscover!20, draw=roleDiscover] (dis) at (6.6,-1.0){\textbf{SEARCH}\\[1pt]\scriptsize tabu, greedy growth};
+  \node[rolenode, fill=roleMeasure!16,  draw=roleMeasure]  (chk) at (9.9,0)   {\textbf{CHECK}\\[1pt]\scriptsize \texttt{nauty}};
   \draw[flow] (mod) -- (mea);
   \draw[flow] (mea) -- (pro);
   \draw[flow] (mea) -- (dis);
-  \draw[flow] (mea) -- (chk);
+  \draw[flow] (pro) -- (chk);
+  \draw[flow] (dis) -- (chk);
 \end{tikzpicture}}
 
 % --- the variant tree: root -> model (3) -> direction (2) -> separation (2) --
@@ -995,10 +996,28 @@ for scientific awards or contests.
 % One part of the Chapter 2 program, cut from program/erdos915.py between the
 % marker comments #<name> and #</name>, so the thesis always shows the code
 % that runs.
-\newcommand{\programpart}[2]{%
+% A part that fits on one page floats whole, here or at the top of a later page,
+% so it is never cut and the text keeps filling the pages around it. A longer
+% part is set normally and may break, and the log names it so it can be split
+% at a good place in the source.
+\newsavebox{\programpartbox}
+\newcounter{programpartsaved}
+\newcommand{\programpartlisting}[2]{%
   \lstinputlisting[style=pythonkul, caption={#2}, label={lst:#1},
     rangeprefix=\#, rangesuffix=, includerangemarker=false,
     linerange={<#1>-</#1>}]{program/erdos915.py}}
+\newcommand{\programpart}[2]{%
+  \par
+  \setcounter{programpartsaved}{\value{lstlisting}}%
+  \sbox{\programpartbox}{\begin{minipage}{\linewidth}%
+    \programpartlisting{#1}{#2}\end{minipage}}%
+  \setcounter{lstlisting}{\value{programpartsaved}}%
+  \ifdim\dimexpr\ht\programpartbox+\dp\programpartbox\relax<\textheight
+    \begin{figure}[htbp]\programpartlisting{#1}{#2}\end{figure}
+  \else
+    \typeout{PROGRAMPART TOO LONG: #1}%
+    \programpartlisting{#1}{#2}%
+  \fi}
 
 % No single line of a paragraph alone at the top or bottom of a page.
 \widowpenalty=10000
