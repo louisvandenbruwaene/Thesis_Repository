@@ -445,7 +445,7 @@ If a feasible graph with more than $s$ edges existed, removing edges from it one
 If none of them is feasible, $s$ is the maximum.
 If one of them is feasible, the program keeps it, replaces $s$ by $s+1$, and checks again.
 
-To list these graphs, each only once up to renaming the vertices, the program uses the toolkit \texttt{nauty} of McKay and Piperno \cite{McKayPiperno14,NautyGuide29}, to which Prof.\ Jan Goedgebeur pointed me.
+To list simple graphs, each only once up to renaming the vertices, the program uses the toolkit \texttt{nauty} of McKay and Piperno \cite{McKayPiperno14,NautyGuide29}, to which Prof.\ Jan Goedgebeur pointed me.
 The program lists only simple graphs with \texttt{nauty} and assigns the multiplicities itself, so that all models use the same procedure. The simple models therefore come first, and the multi models follow at the end of this section.
 Three programs of \texttt{nauty} are used, and each kind of graph needs its own combination of them.
 
