@@ -621,7 +621,7 @@ In particular $K_m^{\mathrm{dir}}(n) = (m-1)n^2/4 + O_m(n)$, and the one-way bip
 \begin{proof}
 \emph{The case $m=2$.}
 Two copies of an arc are two separated routes, so every feasible directed multigraph at $m=2$ is simple.
-This gives $K_2^{\mathrm{dir}}(n) = k_2^{\mathrm{dir}}(n)$, and \Cref{thm:dir-vertex-m2-exact} gives the value.
+This gives $K_2^{\mathrm{dir}}(n) = k_2^{\mathrm{dir}}(n)$, which equals $\ell_2^{\mathrm{dir}}(n)$ by \Cref{thm:dir-vertex-m2-exact}, and $\ell_2^{\mathrm{dir}}(n) = M(n)$ by \Cref{thm:dir-arc-m2-exact}.
 
 \emph{General $m$.}
 The extremal multigraphs of \Cref{thm:dir-multi-full} have $\lec^{\max} \le m-1$. Since $\kap\le\lec$, also $\kap^{\max} \le m-1$. This gives the lower bound.
@@ -734,7 +734,7 @@ A hyperedge $(T,H)$ gives $|T|\,|H| \ge r-1$ arcs of $S$. This gives
 \]
 
 Next we show that the shadow is budgeted.
-Fix an ordered pair $(u,v)$. Here $p_2(u,v)$ is the number of midpoints in $S$, defined as for simple directed graphs before \Cref{lem:feasible-budgeted}. It counts vertices, so the multiplicities of $S$ play no role.
+Fix an ordered pair $(u,v)$. Here $p_2(u,v)$ is the number of midpoints in $S$, defined as in \Cref{def:two-step-budget}. It counts vertices, so the multiplicities of $S$ play no role.
 Let $\mathcal{T}$ be the set of these midpoints, together with $v$ if $(u,v) \in A(S)$.
 Every $t \in \mathcal{T}$ gives a route from $u$ to $v$.
 For $t = v$ it is the route of length one through a hyperedge with $u$ among its tails and $v$ among its heads.
