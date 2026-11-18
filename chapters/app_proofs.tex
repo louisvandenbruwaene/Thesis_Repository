@@ -74,7 +74,7 @@ Theorem~4 does not cover $n=5$.
 There the complete graph $K_5$ has $\kap^{\max}=4$, so $k_5(5)=\binom52=10=\floor{5\cdot4/2}$, which is the first case as well.
 At $n=13$ both $k_5$ and $\ell_5$ equal $30$, and $k_5(n)$ first exceeds $\ell_5(n)$ at $n=14$.
 
-The same care is needed for the conjecture of Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62}: every graph on $1+(m-1)p$ vertices with $1+\binom m2 p$ edges has two vertices joined by $m$ separated paths. The conjecture is false for $m\ge5$, as \Cref{sec:bollobas-erdos} shows.
+The same care is needed for the conjecture of Bollob\'{a}s and Erd\H{o}s \cite{BollobasErdos62}: every graph on $1+(m-1)p$ vertices with $1+\binom m2 p$ edges has two vertices joined by $m$ separated paths. The conjecture is false for $m\ge5$. \Cref{sec:bollobas-erdos} shows this for $m=5$.
 With one edge fewer there are graphs without such a pair: $p$ copies of $K_m$ that share one vertex.
 Each copy adds $\binom m2$ edges but only $m-1$ vertices, so in the notation of this thesis the conjecture says that $k_m(n)=m(n-1)/2$ when $m-1$ divides $n-1$, which is $m/2$ edges per added vertex.
 \end{remark}
@@ -82,7 +82,7 @@ Each copy adds $\binom m2$ edges but only $m-1$ vertices, so in the notation of 
 \subsection{The Bollob\'{a}s--Erd\H{o}s conjecture}\label{sec:bollobas-erdos}
 
 The vertex problem $k_m(n)$ is open for $m\ge6$.
-This section shows that the conjecture of Bollob\'{a}s and Erd\H{o}s fails for every $m\ge5$, which Leonard \cite{Leonard73BE} and Mader \cite{Mader73} showed first.
+This section shows that the conjecture of Bollob\'{a}s and Erd\H{o}s fails for $m=5$, which Leonard \cite{Leonard73BE} showed first. Mader \cite{Mader73} showed that it fails for every $m\ge6$.
 The tool is gluing: two graphs are \emph{glued at a vertex} by identifying one vertex of the first with one vertex of the second, and keeping them disjoint otherwise.
 
 \begin{lemma}[Gluing at a vertex]\label{lem:glue-vertex}
@@ -101,25 +101,18 @@ Gluing extremal graphs on $n_1$ and $n_2$ vertices gives a feasible graph on $n_
 The copies of $K_m$ sharing one vertex are $p$ copies of $K_m$ glued at one vertex.
 They have $1+(m-1)p$ vertices and $\binom m2 p$ edges, so $\binom m2$ edges for every $m-1$ vertices after the first.
 
-\begin{theorem}[The Bollob\'{a}s--Erd\H{o}s conjecture fails for $m\ge5$]\label{thm:bollobas-erdos-false}
-For every $m\ge5$ and every large enough $p$, there is a simple graph on $1+(m-1)p$ vertices with $1+\binom m2 p$ edges and $\kap^{\max}\le m-1$.
+\begin{theorem}[The Bollob\'{a}s--Erd\H{o}s conjecture fails for $m=5$]\label{thm:bollobas-erdos-false}
+For every $p\ge13$, there is a simple graph on $1+4p$ vertices with $1+10p$ edges and $\kap^{\max}\le 4$.
 \end{theorem}
 
 \begin{proof}
-S\o{}rensen and Thomassen \cite[Corollary~2(a)]{SorensenThomassen74} showed that for each $m\ge5$ there are infinitely many $n$ with
-\[
-    k_m(n) \;>\; \frac{m(m-1)-2}{2m-3}\,(n-m) - 1 .
-\]
-The constant is larger than $m/2$ for every $m\ge5$, because $2\bigl(m(m-1)-2\bigr) - m(2m-3) = m-4$.
-The right-hand side is therefore larger than $\frac m2(n-1)$ for all large $n$.
-So there is a feasible graph $G$ on some number $n_0$ of vertices with more than $\frac m2(n_0-1)$ edges.
-At $m=5$ an example is the extremal graph of \Cref{thm:sorensen-thomassen} with $n_0=14$, which has $33 > \frac52\cdot13$ edges.
+Let $G$ be the extremal graph of \Cref{thm:sorensen-thomassen} with $14$ vertices. It has $33$ edges and $\kap^{\max}\le4$.
 
-Glue $m-1$ copies of $G$ at one vertex. This uses $(m-1)(n_0-1)$ vertices after the first, the same number as $n_0-1$ copies of $K_m$.
-It has $(m-1)|E(G)| > \binom m2 (n_0-1)$ edges, so at least one more edge than those $n_0-1$ copies of $K_m$.
-For $p \ge n_0-1$, glue these $m-1$ copies of $G$ and $p-(n_0-1)$ copies of $K_m$ at one common vertex.
-The result has $1+(m-1)p$ vertices and at least $1+\binom m2 p$ edges, and it is feasible by \Cref{lem:glue-vertex}.
-Removing edges keeps it feasible, which gives exactly $1+\binom m2 p$ edges.
+Glue $4$ copies of $G$ at one vertex. This uses $4\cdot13=52$ vertices after the first, the same number as $13$ copies of $K_5$.
+It has $4\cdot33=132$ edges, so two more than the $130$ edges of those $13$ copies of $K_5$.
+For $p \ge 13$, glue these $4$ copies of $G$ and $p-13$ copies of $K_5$ at one common vertex.
+The result has $1+4p$ vertices and $10p+2$ edges, and it is feasible by \Cref{lem:glue-vertex}.
+Removing one edge keeps it feasible, which gives exactly $1+10p$ edges.
 \end{proof}
 
 \begin{remark}[Feasible graphs have a vertex of small degree]\label{rem:vertex-degeneracy}
