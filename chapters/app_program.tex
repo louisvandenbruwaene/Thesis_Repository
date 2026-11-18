@@ -30,8 +30,9 @@ The main function first prints the versions of Python, \texttt{networkx} and \te
 
 \section{Output}\label{sec:output}
 
-\Cref{lst:output} is the output of the program with tabu search, unchanged.
-The command \texttt{python erdos915.py > output\_tabu.txt} in the folder \texttt{program} writes it to a file, and this thesis reads that file directly, so no step lies between the program and the page.
+\Cref{lst:output} is the output of the program with tabu search.
+The command \texttt{python erdos915.py > output\_tabu.txt} in the folder \texttt{program} writes it to a file, and this thesis reads that file directly.
+After the runs, only the table headers of both output files were renamed to the names the program prints now. The numbers are unchanged.
 The first four lines of the output give the software versions, the operating system, the number of processor cores, the time budget per case, the heuristic search and the date of the run. The computer was an Apple M5 with ten processor cores.
 The searches stop at time limits and run in parallel, so the unfinished searches depend on the speed and the load of the computer. A run on another computer, or a second run on the same one, can print other lower bounds, even with the same random seed.
 Every entry is the number of edges, arcs or hyperedges of the densest feasible graph found, and every one of these graphs passed its certificate. The same run wrote these graphs and their certificates to \texttt{program/witnesses\_tabu.json}.
