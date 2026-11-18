@@ -69,13 +69,13 @@ Simple directed graphs and directed hypergraphs & Upper bounds with the right le
 \chapter*{Short Summary}
 \addcontentsline{toc}{chapter}{Short Summary}
 Erd\H{o}s Problem~915 asks how many edges a simple graph on $n$ vertices can
-have if no pair is joined by $m$ edge-disjoint paths
+have if no pair is joined by $m$ disjoint paths
 \cite{BollobasErdos62,ErdosProblems}. Writing the maximum as $\ell_m(n)$,
 Mader's bound is
 \[
  \ell_m(n)\le\floorfrac{m(n-1)}2.
 \]
-Bollob\'{a}s and Erd\H{o}s showed that the bound is attained when $m-1 \mid n-1$, and Mader showed it for every $n\ge m$. I prove the bound in a different way, with the Gomory--Hu tree, and give an explicit construction of graphs that reach it for every $n\ge m\ge2$.
+Copies of $K_m$ sharing one vertex attain the bound when $m-1 \mid n-1$, and Mader showed it is attained for every $n\ge m$. I prove the bound in a different way, with the Gomory--Hu tree, and give an explicit construction of graphs that reach it for every $n\ge m\ge2$.
 
 The thesis studies this problem in eight different graph models. Edges may be directed or not, may be repeated or not, and may join two vertices or more (hypergraphs). In each model the routes must either be edge-disjoint or separated. Edge-disjoint means they have no common edges, while separated adds the condition of sharing no inner vertex on top of that.
 
