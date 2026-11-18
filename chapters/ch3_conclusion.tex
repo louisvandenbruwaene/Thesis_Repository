@@ -1,54 +1,39 @@
 % !TEX root = ../main.tex
 This thesis studied Erd\H{o}s Problem 915 in sixteen variants: simple graphs or multigraphs, edges or hyperedges, undirected or directed, with edge-disjoint or separated routes.
-\Cref{tab:conclusion} lists the proved values and bounds together with the constructions that attain them.
+\Cref{tab:conclusion} collects the proved values.
 
-For simple graphs with edge-disjoint routes, \Cref{thm:mader} gives $\ell_m(n)\le\floor{m(n-1)/2}$, proved here with a Gomory--Hu tree, and the hub graph of \Cref{const:hub-spokes} attains it for every $n\ge m\ge2$ (\Cref{thm:extremal-existence}).
-The same tree gives the multigraph value $L_m(n)=(m-1)(n-1)$, attained by a tree with all multiplicities $m-1$ (\Cref{thm:multigraph-edge}).
-A cut argument extends this to $r$-uniform multihypergraphs, with the value $\floor{(m-1)(n-1)/(r-1)}$ for every $n\ge r$ (\Cref{prop:hyper-edge}).
-For $r\ge3$ simple hypergraphs reach the same value when $m-1\le\binom{n-2}{r-2}$ (\Cref{thm:simple-hyper-edge}).
+For simple graphs with edge-disjoint routes, Mader's bound is proved here with a Gomory--Hu tree (\Cref{thm:mader}), and the hub graph attains it for every $n\ge m$ (\Cref{const:hub-spokes,thm:extremal-existence}).
+The same tree gives the exact value for multigraphs, attained by a tree with all multiplicities $m-1$ (\Cref{thm:multigraph-edge}), and a cut argument extends it to multihypergraphs (\Cref{prop:hyper-edge}).
+For $r\ge3$, a hub joined to a sparse $(r-1)$-uniform hypergraph shows that simple hypergraphs reach the same value (\Cref{thm:simple-hyper-edge}).
 
-For separated routes, the values for hypergraphs and multigraphs are exact at $m=2$ and $m=3$, and there they equal the values for edge-disjoint routes (\Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3}).
-For multigraphs the two kinds of routes give different values at $m=5$ (\Cref{const:multi-bipartite}).
-For simple graphs they give the same values for $m\le4$, and for every $m\ge5$ they differ for some $n$. Gluing graphs of S{\o}rensen and Thomassen at one vertex shows that the conjecture of Bollob\'{a}s and Erd\H{o}s fails at $m=5$ (\Cref{thm:bollobas-erdos-false}).
+For separated routes, the values for hypergraphs and multigraphs are exact at $m=2$ and $m=3$, attained by star hypertrees at $m=2$ and by the constructions for edge-disjoint routes at $m=3$ (\Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3,cor:multi-vertex-m3}).
+For larger $m$ the multitree, the complete and the bipartite multigraph, and the multitree with a triangle give lower bounds for multigraphs (\Cref{prop:multi-three,prop:multi-triangle}), and the bipartite multigraph on four vertices shows that the two kinds of routes differ at $m=5$.
+For simple graphs, gluing graphs of S{\o}rensen and Thomassen at one vertex disproves the conjecture of Bollob\'{a}s and Erd\H{o}s at $m=5$ (\Cref{thm:bollobas-erdos-false}).
 
-Directed routes make the values grow quadratically in $n$.
-At $m=2$ simple directed graphs have exactly $M(n)=\max(2(n-1),\floor{n^2/4})$ arcs, for both kinds of routes (\Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact}).
-Directed multigraphs with arc-disjoint routes have exactly $(m-1)M(n)$ arcs for every $m$ (\Cref{thm:dir-multi-full}).
-For simple directed graphs with $m\ge3$, for directed multigraphs with separated routes, and for directed hypergraphs in the forward, backward and general models, the upper bounds hold for every $n$, and the constructions attain their leading term.
+For directed routes the values grow quadratically in $n$.
+The bidirected star and the one-way bipartite directed graph give the exact values at $m=2$ (\Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact}), and the bidirected tree and the one-way bipartite directed graph with all multiplicities $m-1$ are extremal for directed multigraphs with arc-disjoint routes (\Cref{thm:dir-multi-full}).
+The augmented bipartite directed graph (\Cref{const:augmented-bipartite}) and a split of the vertices into tails and heads for directed hypergraphs (\Cref{prop:dir-hyper-first}) attain the leading terms of the upper bounds (\Cref{thm:dir-arc-linear-error,cor:dir-multi-incidence,thm:dir-hyper-constant,thm:dir-hyper-general-constant}).
 
 The program of \Cref{ch:machine} computed values for $n\le7$ and $2\le m\le7$ in all sixteen problems.
 Every value it marks as exact agrees with the results above, and every graph it reports carries a checked certificate.
 
 \begin{table}[ht]
 \centering
-\footnotesize
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.15\textwidth}>{\raggedright\arraybackslash}p{0.395\textwidth}>{\raggedright\arraybackslash}p{0.395\textwidth}@{}}
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}lll@{}}
 \toprule
 Model & Edge-disjoint routes & Separated routes \\
 \midrule
-Simple graph
-& $\ell_m(n)=\floor{m(n-1)/2}$ for $n\ge m$ (\Cref{thm:mader,thm:extremal-existence}). Hub graph $H_{m,n}$ (\Cref{const:hub-spokes}).
-& $k_m(n)=\ell_m(n)$ for $n\ge m$ and $m\le4$, attained by the hub graph, and the values of S{\o}rensen and Thomassen at $m=5$ (\Cref{thm:leonard,thm:sorensen-thomassen}). Their graphs, glued at one vertex, disprove the conjecture of Bollob\'{a}s and Erd\H{o}s at $m=5$ (\Cref{thm:bollobas-erdos-false}). \\
-Multigraph
-& $L_m(n)=(m-1)(n-1)$ (\Cref{thm:multigraph-edge}). Tree with all multiplicities $m-1$.
-& $K_2(n)=n-1$ and $K_3(n)=2(n-1)$, attained by trees and by trees with every edge doubled (\Cref{thm:multi-vertex-m2,cor:multi-vertex-m3}). Lower bounds from the multitree, the complete and the bipartite multigraph, and the multitree with a triangle (\Cref{prop:multi-three,prop:multi-triangle}). \\
-Simple hypergraph, $r\ge3$
-& $\floor{(m-1)(n-1)/(r-1)}$ when $m-1\le\binom{n-2}{r-2}$ (\Cref{thm:simple-hyper-edge}). Hub joined to a sparse $(r-1)$-uniform hypergraph.
-& $\floor{(n-1)/(r-1)}$ at $m=2$, star hypertree (\Cref{thm:hyper-vertex-m2}). $\floor{2(n-1)/(r-1)}$ at $m=3$ for $2<r<n$ (\Cref{thm:hyper-vertex-m3}). At least $\floor{(m-1)(n-1)/(r-1)}$ when $m-1\le\binom{n-2}{r-2}$ (\Cref{prop:hyper-vertex-lower}). \\
-Multi\-hypergraph
-& $\floor{(m-1)(n-1)/(r-1)}$ for $n\ge r$ (\Cref{prop:hyper-edge}). Hub with hyperedges cut from a repeated list.
-& The same value at $m=2$ and at $m=3$ for $n\ge r$ (\Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3}), and at least this value for every $m$ (\Cref{prop:hyper-vertex-lower-multi}). \\
-Simple directed graph
-& $M(n)$ at $m=2$ (\Cref{thm:dir-arc-m2-exact}). For $m\ge3$ and $n\ge m$, between $\floor{(n+m-2)^2/4}$ and $\floor{n^2/4}+(m-1)(n-1)$ (\Cref{thm:dir-arc-linear-error}). Bidirected star, one-way bipartite and augmented bipartite directed graph (\Cref{const:directed-hub,const:bipartite,const:augmented-bipartite}).
-& The same values and bounds, and the same constructions (\Cref{thm:dir-vertex-m2-exact,thm:dir-arc-linear-error}). \\
-Directed multigraph
-& $L_m^{\mathrm{dir}}(n)=(m-1)M(n)$ (\Cref{thm:dir-multi-full}). Bidirected tree or one-way bipartite directed graph with all multiplicities $m-1$ (\Cref{const:dir-multi-lower}).
-& $M(n)$ at $m=2$. Between $(m-1)M(n)$ and $(m-1)\floor{n^2/4}+(m-1)^2(n-1)$ (\Cref{cor:dir-multi-incidence}). The same constructions. \\
-Directed hypergraph and multihypergraph
-& \multicolumn{2}{>{\raggedright\arraybackslash}p{0.79\textwidth}@{}}{$\bigl(1+o(1)\bigr)(m-1)n^2/\bigl(4(r-1)\bigr)$ for fixed $m$ and $r$, for both kinds of routes, with $r\ge3$ for simple directed hypergraphs. Upper bound $\frac{m-1}{r-1}\floor{n^2/4}+(m-1)^2(n-1)$ in the forward and backward models (\Cref{thm:dir-hyper-constant,lem:dir-hyper-duality}), with a larger linear term in the general model (\Cref{thm:dir-hyper-general-constant}). Tails and heads split in two halves (\Cref{prop:dir-hyper-first}).} \\
+Simple graph & $\floor{m(n-1)/2}$ & $\floor{m(n-1)/2}$ for $m\le4$ \\
+Multigraph & $(m-1)(n-1)$ & $n-1$ at $m=2$, $2(n-1)$ at $m=3$ \\
+Simple hypergraph & $\floor{(m-1)(n-1)/(r-1)}$ & $\floor{(m-1)(n-1)/(r-1)}$ for $m\le3$ \\
+Multihypergraph & $\floor{(m-1)(n-1)/(r-1)}$ & $\floor{(m-1)(n-1)/(r-1)}$ for $m\le3$ \\
+Simple directed graph & $M(n)$ at $m=2$, $n^2/4+\Theta_m(n)$ & $M(n)$ at $m=2$, $n^2/4+\Theta_m(n)$ \\
+Directed multigraph & $(m-1)M(n)$ & $M(n)$ at $m=2$, $(m-1)n^2/4+O_m(n)$ \\
+Directed hypergraph & $\bigl(1+o(1)\bigr)\frac{(m-1)n^2}{4(r-1)}$ & $\bigl(1+o(1)\bigr)\frac{(m-1)n^2}{4(r-1)}$ \\
 \bottomrule
 \end{tabular}
-\caption{The proved values and bounds for the sixteen problems, and the constructions that attain them. Values hold for $n\ge2$ unless a range is given, and for $n\ge r$ in the hypergraph models.}
+\caption{The proved values. Simple graphs for $n\ge m$, hypergraphs for $n\ge r$, simple hypergraphs with $r\ge3$ when $m-1\le\binom{n-2}{r-2}$, and at $m=3$ with separated routes when $2<r<n$. The directed hypergraph values hold for fixed $m$ and $r$, for simple directed hypergraphs and multihypergraphs in all three models, with $r\ge3$ for simple ones.}
 \label{tab:conclusion}
 \end{table}
