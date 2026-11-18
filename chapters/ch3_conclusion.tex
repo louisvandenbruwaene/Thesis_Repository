@@ -23,19 +23,19 @@ Every value it marks as exact agrees with the results above, and every graph it 
 \centering
 \small
 \renewcommand{\arraystretch}{1.35}
-\begin{tabular}{@{}lll@{}}
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
 \toprule
 Model & Edge-disjoint routes & Separated routes \\
 \midrule
 Simple graph & $\floor{m(n-1)/2}$ & $\floor{m(n-1)/2}$ for $m\le4$ \\
-Multigraph & $(m-1)(n-1)$ & $n-1$ at $m=2$, $2(n-1)$ at $m=3$ \\
+Multigraph & $(m-1)(n-1)$ & $(m-1)(n-1)$ for $m\le3$ \\
 Simple hypergraph & $\floor{(m-1)(n-1)/(r-1)}$ & $\floor{(m-1)(n-1)/(r-1)}$ for $m\le3$ \\
 Multihypergraph & $\floor{(m-1)(n-1)/(r-1)}$ & $\floor{(m-1)(n-1)/(r-1)}$ for $m\le3$ \\
-Simple directed graph & $M(n)$ at $m=2$, $n^2/4+\Theta_m(n)$ & $M(n)$ at $m=2$, $n^2/4+\Theta_m(n)$ \\
-Directed multigraph & $(m-1)M(n)$ & $M(n)$ at $m=2$, $(m-1)n^2/4+O_m(n)$ \\
+Simple directed graph & $M(n)$ for $m=2$, else $n^2/4+\Theta_m(n)$ & $M(n)$ for $m=2$, else $n^2/4+\Theta_m(n)$ \\
+Directed multigraph & $(m-1)M(n)$ & $M(n)$ for $m=2$, else $(m-1)n^2/4+O_m(n)$ \\
 Directed hypergraph & $\bigl(1+o(1)\bigr)\frac{(m-1)n^2}{4(r-1)}$ & $\bigl(1+o(1)\bigr)\frac{(m-1)n^2}{4(r-1)}$ \\
 \bottomrule
-\end{tabular}
-\caption{The proved values. Simple graphs for $n\ge m$, hypergraphs for $n\ge r$, simple hypergraphs with $r\ge3$ when $m-1\le\binom{n-2}{r-2}$, and at $m=3$ with separated routes when $2<r<n$. The directed hypergraph values hold for fixed $m$ and $r$, for simple directed hypergraphs and multihypergraphs in all three models, with $r\ge3$ for simple ones.}
+\end{tabularx}
+\caption{The proved values, with $M(n)=\max\bigl(2(n-1),\floor{n^2/4}\bigr)$. Simple graphs for $n\ge m$, hypergraphs for $n\ge r$, simple hypergraphs with $r\ge3$ when $m-1\le\binom{n-2}{r-2}$, and at $m=3$ with separated routes when $2<r<n$. The directed hypergraph values hold for fixed $m$ and $r$, for simple directed hypergraphs and multihypergraphs in all three models, with $r\ge3$ for simple ones.}
 \label{tab:conclusion}
 \end{table}
