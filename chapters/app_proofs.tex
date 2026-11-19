@@ -506,25 +506,15 @@ Let $G$ be a multigraph with multiplicity function $\mu$, and let its \emph{unde
 \end{lemma}
 
 \begin{proof}
-A route of length one uses one copy of the edge $uv$ and has no inner vertex.
-Two routes of length one are therefore separated when they use different copies, and a route of length one is separated from every longer route.
-
-\emph{Lower bound.} Take all $\mu(u,v)$ copies of $uv$, and $\pi(u,v)$ separated $u$--$v$ paths of length at least two in $G_0$.
-Use one copy of each edge on these paths.
-The inner vertices do not change, so all these routes are separated.
-
-\emph{Upper bound.} Take a family of separated $u$--$v$ routes in $G$.
-At most $\mu(u,v)$ of them have length one, since they use different copies of $uv$.
-Map each longer route to its sequence of vertices, a path in $G_0$.
-Two longer routes have disjoint, non-empty sets of inner vertices.
-Their images are therefore different and separated, and there are at most $\pi(u,v)$ of them.
+A route of length one is a copy of $uv$ and has no inner vertex, so it is separated from every other route. A family of separated routes therefore contains at most $\mu(u,v)$ routes of length one, and all $\mu(u,v)$ copies can be added to it.
+A longer route has the same inner vertices as its vertex sequence, a $u$--$v$ path of length at least two in $G_0$, and every such path becomes a route by choosing one copy of each edge. The longer routes therefore contribute exactly $\pi(u,v)$.
 \end{proof}
 
 A multigraph is therefore feasible exactly when $\mu(u,v) \le m-1-\pi(u,v)$ on every edge and $\pi(u,v) \le m-1$ on every pair.
 
-\begin{theorem}[The multigraph vertex value at $m = 2$]\label{thm:multi-vertex-m2}
+\begin{corollary}[The multigraph vertex value at $m = 2$]\label{cor:multi-vertex-m2}
 For multigraphs, $K_2(n) = n-1$, attained exactly by the trees on the $n$ vertices.
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
 By \Cref{lem:multi-vertex-split}, $\mu(u,v) + \pi(u,v) \le 1$ on every edge.
