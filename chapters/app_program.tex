@@ -17,7 +17,10 @@ The heuristic searches keep the value of $\lec$, or of $\kap$ for separated rout
 
 \programpart{connectivities}{The connectivity of every pair, and the time limit.}
 
-The check of one edge more lists its supports with \texttt{nauty} (\Cref{sec:one-more}). The function \texttt{nauty\_commands} builds the commands for each model, and \texttt{read\_support} turns one line of their output into a list of hyperedges, or into \texttt{None} if the model does not allow it. The functions \texttt{start\_pipeline} and \texttt{stop\_pipeline} start and stop the \texttt{nauty} programs, and \texttt{supports} streams the supports one at a time until the deadline.
+The check of one edge more lists its supports with \texttt{nauty} (\Cref{sec:one-more}). The function \texttt{nauty\_commands} builds the commands for each model, and \texttt{read\_support} turns one line of their output into a list of hyperedges, or into \texttt{None} if the model does not allow it.
+For hypergraphs, \texttt{genbgL} prints a bipartite graph (\Cref{sec:one-more}) whose nodes $0,\dots,n-1$ are the vertices and whose further nodes are the hyperedges. The neighbours \texttt{graph[node]} of such a further node are therefore exactly the vertices of its hyperedge, and \texttt{read\_support} sorts them so that every hyperedge has one written form.
+For directed hypergraphs, \texttt{directg} also gives every edge of this bipartite graph a direction. An arc from a vertex to a hyperedge node makes that vertex a tail, and an arc from the hyperedge node to a vertex makes it a head.
+The functions \texttt{start\_pipeline} and \texttt{stop\_pipeline} start and stop the \texttt{nauty} programs, and \texttt{supports} streams the supports one at a time until the deadline.
 
 \programpart{nauty}{The \texttt{nauty} commands for each model.}
 
