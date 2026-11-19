@@ -17,16 +17,22 @@ The heuristic searches keep the value of $\lec$, or of $\kap$ for separated rout
 
 \programpart{connectivities}{The connectivity of every pair, and the time limit.}
 
-The check of one edge more lists its supports with \texttt{nauty} (\Cref{sec:one-more}). The function \texttt{nauty\_commands} builds the commands for each model, and \texttt{read\_support} turns one line of their output into a list of hyperedges, or into \texttt{None} if the model does not allow it.
-For hypergraphs, \texttt{genbgL} prints a bipartite graph (\Cref{sec:one-more}) whose nodes $0,\dots,n-1$ are the vertices and whose further nodes are the hyperedges. The neighbours \texttt{graph[node]} of such a further node are therefore exactly the vertices of its hyperedge, and \texttt{read\_support} sorts them so that every hyperedge has one written form.
-For directed hypergraphs, \texttt{directg} also gives every edge of this bipartite graph a direction. An arc from a vertex to a hyperedge node makes that vertex a tail, and an arc from the hyperedge node to a vertex makes it a head.
-The functions \texttt{start\_pipeline} and \texttt{stop\_pipeline} start and stop the \texttt{nauty} programs, and \texttt{supports} streams the supports one at a time until the deadline.
+The check of one edge more lists its supports with \texttt{nauty} (\Cref{sec:one-more}). The function \texttt{nauty\_commands} builds the commands for each model. Each entry of its result is a pipeline, a list of commands in which the output of one program is the input of the next. For hypergraphs it asks \texttt{genbgL} for bipartite graphs with the $n$ vertices on one side and one node per hyperedge on the other.
 
 \programpart{nauty}{The \texttt{nauty} commands for each model.}
 
+The function \texttt{read\_support} turns one line of output into a list of hyperedges, or into \texttt{None} if the model does not allow it.
+In the bipartite graphs of \texttt{genbgL}, the nodes $0,\dots,n-1$ are the vertices and every further node is a hyperedge. The neighbours \texttt{graph[node]} of a further node are therefore the vertices of its hyperedge.
+In the output of \texttt{directg}, an arc into a hyperedge node comes from a tail, and an arc out of it goes to a head.
+The vertices and the tails of every hyperedge are sorted, so that every hyperedge has one written form.
+
 \programpart{reading}{Reading one line of \texttt{nauty} output, and keeping only what the model allows.}
 
+The function \texttt{start\_pipeline} starts the programs of one pipeline and connects the output of each to the input of the next. The function \texttt{stop\_pipeline} stops every program that is still running.
+
 \programpart{pipeline}{Starting and stopping the \texttt{nauty} programs.}
+
+The function \texttt{supports} runs the pipelines one after the other and passes on every support that \texttt{read\_support} accepts. A timer stops the programs at the deadline, and a program that exits with an error stops the search, so that a failed list is never taken for an empty one.
 
 \programpart{supports}{Listing the supports one at a time, with a time limit.}
 
@@ -38,11 +44,15 @@ A move is a hyperedge with a change in its number of copies. The function \textt
 
 \programpart{apply}{Making a move.}
 
-The file checker \texttt{verify\_witnesses} checks a saved file, \texttt{witnesses\_tabu.json} or \texttt{witnesses\_greedy.json}, without the rest of the program (\Cref{sec:certificates}). The command \texttt{python erdos915.py verify witnesses\_tabu.json} runs it. It calls \texttt{verify\_record} on each saved graph, and \texttt{allowed\_tail\_counts} gives the allowed numbers of tails in each model. For each saved graph, \texttt{verify\_record} checks that every hyperedge is one the model allows, with a whole number of copies up to the largest multiplicity, that every hyperedge lists its vertices and its tails in increasing order, so that it has only one written form, that no hyperedge is listed twice, that the copies add up to the size, that every vertex pair has exactly one certificate entry, and that every certificate is correct.
+The file checker \texttt{verify\_witnesses} checks a saved file, \texttt{witnesses\_tabu.json} or \texttt{witnesses\_greedy.json}, without the rest of the program (\Cref{sec:certificates}). The command \texttt{python erdos915.py verify witnesses\_tabu.json} runs it. It calls \texttt{verify\_record} on each saved graph. The function \texttt{allowed\_tail\_counts} gives the allowed numbers of tails in each model: none for undirected models, one in the forward model, $r-1$ in the backward model, and any number from $1$ to $r-1$ in the general model.
 
 \programpart{verifier}{The file checker: reading the saved file, and the allowed numbers of tails.}
 
+The first part of \texttt{verify\_record} checks the graph itself. Every hyperedge must be one the model allows, with a whole number of copies up to the largest multiplicity. Every hyperedge must list its vertices and its tails in increasing order, so that it has only one written form, and no hyperedge may be listed twice. The copies must add up to the size. The dictionary \texttt{copies} then maps every hyperedge to its number of copies.
+
 \programpart{record}{The file checker, first part: the model, the hyperedges and the size of one saved graph.}
+
+The second part checks the certificates. Every vertex pair must have exactly one certificate entry, a set of vertices and a set of hyperedges to remove. For edge-disjoint routes the set of vertices must be empty, and neither $u$ nor $v$ may be removed. The removed vertices and hyperedge copies together must number at most $m-1$. A search from $u$ then follows the remaining hyperedges, entering each at a tail in the directed models, and the certificate is correct when this search does not reach $v$.
 
 \programpart{recordcheck}{The file checker, second part: the certificate of every vertex pair.}
 

@@ -247,7 +247,8 @@ def read_support(problem, line):
         if model.EDGE_SIZE == 2:
             return [Hyperedge((), tuple(sorted(edge)))
                     for edge in graph.edges()]
-        # first the n vertices, then one node per hyperedge
+        # nodes 0..n-1 are the vertices, every further node is a
+        # hyperedge, and its neighbours are the vertices it contains
         return [Hyperedge((), tuple(sorted(graph[node])))
                 for node in range(n, graph.number_of_nodes())]
     # directg: the number of nodes, the number of arcs, then the arcs
@@ -259,6 +260,8 @@ def read_support(problem, line):
                 for tail, head in arcs]
     support = []
     for node in range(n, node_count):       # one node per hyperedge
+        # an arc into the hyperedge node comes from a tail,
+        # an arc out of it goes to a head
         tails = tuple(sorted(start for start, end in arcs if end == node))
         heads = tuple(end for start, end in arcs if start == node)
         support.append(Hyperedge(tails, tuple(sorted(tails + heads))))
