@@ -680,6 +680,7 @@ Random greedy growth drops many balls and keeps the best slot, while tabu search
 Dropping every possible ball would reach every local optimum, and so also the densest graph, but there are far too many balls.
 Within its time limit the program runs one of the two searches, but a run could combine them: many fresh starts, each followed by a short tabu search.
 
+Each entry is the result of the whole run: the larger of the graphs found by the pruned search and the heuristic search, followed by the check of one edge more. The tables therefore compare complete runs, and a difference between them need not come from the heuristic search alone.
 The run with tabu search finds more edges in most of the differing entries for the general version of directed hypergraphs and directed multihypergraphs, for example $41$ against $35$ hyperedges for the general directed multihypergraph with hyperedge-disjoint routes at $n=7$, $m=7$.
 The run with random greedy growth finds more in every differing entry for multigraphs and directed multigraphs with separated routes, for example $74$ arcs against $68$ for the directed multigraph with separated routes at $n=7$, $m=6$, and in most of the differing entries for the forward and backward versions of directed multihypergraphs.
 For the forward and backward versions of directed hypergraphs the two runs differ in at most three entries per table, some in favour of each run.

@@ -29,7 +29,7 @@ I also want to express my gratitude for my family and friends who supported me t
 Finally, I thank my promotor, Stijn Cambie, and my readers, Karel Dekimpe and Jan Goedgebeur, for their guidance.
 
 This thesis asks how many edges a network can have when no two vertices may be joined by too many independent routes.
-The starting point is Erd\H{o}s Problem~915, which asks this for edge-disjoint paths in simple graphs.
+The starting point is Erd\H{o}s Problem~915, which asks this for disjoint paths in simple graphs without saying whether they must be edge-disjoint or separated. I started from edge-disjoint paths.
 After solving the assigned problem, I widened the scope towards more general networks and other kinds of disjoint routes.
 In total, sixteen problems are considered.
 
@@ -70,7 +70,10 @@ Simple directed graphs and directed hypergraphs & Upper bounds valid for every $
 \addcontentsline{toc}{chapter}{Short Summary}
 Erd\H{o}s Problem~915 asks how many edges a simple graph on $n$ vertices can
 have if no pair is joined by $m$ disjoint paths
-\cite{BollobasErdos62,ErdosProblems}. Writing the maximum as $\ell_m(n)$,
+\cite{BollobasErdos62,ErdosProblems}. The original statement does not say whether
+the paths must be edge-disjoint or separated. For edge-disjoint paths the answer
+to the original question is yes, and for separated paths it is no for every
+$m\ge5$. Writing the maximum for edge-disjoint paths as $\ell_m(n)$,
 Mader's bound is
 \[
  \ell_m(n)\le\floorfrac{m(n-1)}2.
