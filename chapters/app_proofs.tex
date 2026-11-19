@@ -616,9 +616,12 @@ By \Cref{lem:multi-vertex-split}, every pair of vertices has $\mu(u,v)+\pi(u,v)\
 
 A single vertex has no edges.
 Two vertices are joined by at most three copies of an edge.
-For three vertices, suppose first that $G_0$ is a triangle. Each pair then has a route through the third vertex, so $\pi=1$ and $\mu\le2$ on all three pairs.
-This gives at most $6$ edges.
-Otherwise $G_0$ has at most two edges, each with at most three copies, which again gives at most $6=3(3-1)$.
+For three vertices, suppose first that $G_0$ is a triangle.
+A path of length at least two between two of the vertices must pass through the third, and there is only one third vertex.
+Hence $\pi=1$ and $\mu\le2$ on all three pairs, which gives at most $6$ edges.
+Otherwise $G_0$ misses one of the three pairs, so it has at most two edges.
+Each of them has at most three copies, since every copy is a route of length one.
+This again gives at most $6=3(3-1)$ edges.
 
 Now let $n\ge4$. We consider four cases.
 
@@ -648,19 +651,27 @@ This gives $\pi(u,v)=a+b$, and $p+a+b\le3$.
 
 Now add $3-a$ copies of $uv$ to $G_1$, and $3-b$ copies to $G_2$.
 Call the results $G_1'$ and $G_2'$.
+The added copies stand for the routes from $u$ to $v$ through the other side.
 We show that $G_1'$ is feasible, and the same argument works for $G_2'$.
-In $G_1'$ the pair $u,v$ has $\mu=3-a$ and $\pi=a$, so $\kap(u,v)=3$.
-Now take another pair $x,y$ and a family of separated $x$--$y$ routes in $G_1'$.
-A route through a copy of $uv$ has $u$ or $v$ as an inner vertex.
-Hence at most one route of the family uses such a copy.
+
+For the pair $u,v$, the vertices $u$ and $v$ are the ends of every route.
+The copies of $uv$ and the $a$ paths through $C$ are therefore separated from each other.
+In $G_1'$ this gives exactly $\mu+\pi=(3-a)+a=3$ routes.
+
+For another pair $x,y$, take a family of separated $x$--$y$ routes in $G_1'$.
+A route through a copy of $uv$ contains both $u$ and $v$, and at least one of them is an inner vertex of that route.
+Two separated routes share no inner vertex.
+Hence at most one route of the family uses a copy.
 In that route, replace the copy by a $u$--$v$ path through $D$, which exists because $b\ge1$.
 The new inner vertices lie in $D$, while the other routes stay inside $C\cup\{u,v\}$.
 The result is a family of separated $x$--$y$ routes in $G$ of the same size.
 This gives $\kap_{G_1'}(x,y)\le\kap_G(x,y)\le3$.
 
-Together, $G_1'$ and $G_2'$ have $|E(G)|-p+(3-a)+(3-b)$ edges.
+It remains to count.
+The edges other than $uv$ are divided between the two sides, while the $p$ copies of $uv$ are replaced by $(3-a)+(3-b)$ copies.
+Together, $G_1'$ and $G_2'$ therefore have $|E(G)|-p+(3-a)+(3-b)$ edges.
 This is at least $|E(G)|+3$, because $p+a+b\le3$.
-They have $|C|+2$ and $|D|+2$ vertices.
+They have $|C|+2$ and $|D|+2$ vertices, since $u$ and $v$ belong to both sides.
 Both numbers are smaller than $n$, since $C$ and $D$ are not empty.
 By induction,
 \[
