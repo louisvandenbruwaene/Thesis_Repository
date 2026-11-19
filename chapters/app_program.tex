@@ -13,11 +13,11 @@ The size of the graph is calculated by \texttt{edge\_count}. Both can be found i
 
 \programpart{pairs}{The vertex pairs and the edge count.}
 
-The heuristic searches keep the value of $\lec$, or of $\kap$ for separated routes, for every pair. The exception \texttt{OutOfTime} stops a search at its time limit.
+The heuristic searches keep the value of $\lec$, or of $\kap$ for separated routes, for every pair. The function \texttt{all\_connectivities} computes these values with \texttt{build\_flow\_network} and \texttt{disjoint\_routes} of \Cref{ch:machine}. The exception \texttt{OutOfTime} stops a search at its time limit.
 
 \programpart{connectivities}{The connectivity of every pair, and the time limit.}
 
-The check of one edge more lists its supports with \texttt{nauty} (\Cref{sec:one-more}). The next four parts build the commands for each model, read one line of output, start and stop the programs, and stream the supports one at a time.
+The check of one edge more lists its supports with \texttt{nauty} (\Cref{sec:one-more}). The function \texttt{nauty\_commands} builds the commands for each model, and \texttt{read\_support} turns one line of their output into a list of hyperedges, or into \texttt{None} if the model does not allow it. The functions \texttt{start\_pipeline} and \texttt{stop\_pipeline} start and stop the \texttt{nauty} programs, and \texttt{supports} streams the supports one at a time until the deadline.
 
 \programpart{nauty}{The \texttt{nauty} commands for each model.}
 
@@ -27,15 +27,15 @@ The check of one edge more lists its supports with \texttt{nauty} (\Cref{sec:one
 
 \programpart{supports}{Listing the supports one at a time, with a time limit.}
 
-On each support the check then chooses the copies of every edge.
+On each support, \texttt{add\_copies} then chooses the copies of every edge. It gives each edge between one copy and the largest multiplicity, and uses \texttt{is\_feasible} to stop adding copies as soon as the graph is no longer feasible.
 
 \programpart{copies}{Choosing the copies on one support.}
 
-A move builds a new graph and leaves the old one unchanged.
+A move is a hyperedge with a change in its number of copies. The function \texttt{apply} makes a move on a new graph and leaves the old one unchanged.
 
 \programpart{apply}{Making a move.}
 
-The file checker checks a saved file, \texttt{witnesses\_tabu.json} or \texttt{witnesses\_greedy.json}, without the rest of the program (\Cref{sec:certificates}). For each saved graph it checks that every hyperedge is one the model allows, with a whole number of copies up to the largest multiplicity, that every hyperedge lists its vertices and its tails in increasing order, so that it has only one written form, that no hyperedge is listed twice, that the copies add up to the size, that every vertex pair has exactly one certificate entry, and that every certificate is correct.
+The file checker \texttt{verify\_witnesses} checks a saved file, \texttt{witnesses\_tabu.json} or \texttt{witnesses\_greedy.json}, without the rest of the program (\Cref{sec:certificates}). The command \texttt{python erdos915.py verify witnesses\_tabu.json} runs it. It calls \texttt{verify\_record} on each saved graph, and \texttt{allowed\_tail\_counts} gives the allowed numbers of tails in each model. For each saved graph, \texttt{verify\_record} checks that every hyperedge is one the model allows, with a whole number of copies up to the largest multiplicity, that every hyperedge lists its vertices and its tails in increasing order, so that it has only one written form, that no hyperedge is listed twice, that the copies add up to the size, that every vertex pair has exactly one certificate entry, and that every certificate is correct.
 
 \programpart{verifier}{The file checker: reading the saved file, and the allowed numbers of tails.}
 
@@ -43,11 +43,11 @@ The file checker checks a saved file, \texttt{witnesses\_tabu.json} or \texttt{w
 
 \programpart{recordcheck}{The file checker, second part: the certificate of every vertex pair.}
 
-One table is printed per problem, with one row per $n$ and one column per $m$, and every graph is saved with its certificate.
+The function \texttt{print\_table} prints one table per problem, with one row per $n$ and one column per $m$, and adds every graph with its certificate to the list \texttt{witnesses}.
 
 \programpart{table}{Printing one table and saving its graphs.}
 
-The main function first prints the versions of Python, \texttt{networkx} and \texttt{nauty}, the operating system, the number of processor cores, the time budget, the heuristic search and the date. Then it runs every case in parallel and prints the tables.
+The function \texttt{main} first prints the versions of Python, \texttt{networkx} and \texttt{nauty}, the operating system, the number of processor cores, the time budget, the heuristic search and the date. Then it runs \texttt{solve} on every case in parallel, prints the tables with \texttt{print\_table}, and writes \texttt{witnesses} to \texttt{witnesses\_tabu.json} or \texttt{witnesses\_greedy.json}.
 
 \programpart{main}{Running every case.}
 
