@@ -681,13 +681,12 @@ which gives $|E(G)|\le3(n-1)$.
 
 \emph{Removing one or two vertices never disconnects $G_0$.}
 Take an edge $uv$ of $G_0$.
-We show that $G_0-uv$ contains two separated $u$--$v$ paths.
-If it does not, Menger's theorem \cite[Corollary~3.3.5]{Diestel25} gives a set $X$ of at most one vertex whose removal separates $u$ from $v$ in $G_0-uv$.
-Since $n\ge4$, some vertex $x$ lies outside $X\cup\{u,v\}$.
-In $G_0-uv-X$, the vertex $x$ cannot reach both $u$ and $v$, since otherwise $u$ would reach $v$.
-Say that $x$ cannot reach $u$.
-Removing $X$ and $v$ from $G_0$ then separates $x$ from $u$, which contradicts the assumption of this case.
-The two paths have length at least two, because they avoid the edge $uv$.
+Suppose that $u$ and $v$ are not joined by two separated paths of length at least two.
+By Menger's theorem \cite[Corollary~3.3.5]{Diestel25}, some vertex $w$ lies on every such path.
+In $G_0-w$, every path from $u$ to $v$ then uses the edge $uv$.
+The graph $G_0-w$ is connected, so removing the edge $uv$ splits it into two sides, one containing $u$ and one containing $v$.
+$G_0-w$ has at least three vertices, so one side contains a further vertex $x$, say the side of $u$.
+Removing $w$ and $u$ from $G_0$ then separates $x$ from $v$, which contradicts the assumption of this case.
 This gives $\pi(u,v)\ge2$, and $\mu(u,v)\le1$ by \Cref{lem:multi-vertex-split}.
 Every edge of $G$ therefore has multiplicity one.
 The multigraph $G$ is a simple graph with $\kap^{\max}\le3$, and \Cref{thm:leonard} with $m=4\le n$ gives at most $2(n-1)$ edges.
