@@ -14,7 +14,7 @@ For simple graphs they give the same values for $m\le4$, and for every $m\ge5$ t
 Directed routes make the values grow quadratically in $n$.
 At $m=2$ simple directed graphs have exactly $M(n)=\max(2(n-1),\floor{n^2/4})$ arcs, for both kinds of routes (\Cref{thm:dir-arc-m2-exact,thm:dir-vertex-m2-exact}).
 Directed multigraphs with arc-disjoint routes have exactly $(m-1)M(n)$ arcs for every $m$ (\Cref{thm:dir-multi-full}).
-For simple directed graphs with $m\ge3$, for directed multigraphs with separated routes, and for directed hypergraphs in the forward, backward and general models, the upper bounds hold for every $n$, and the constructions attain their leading term.
+For simple directed graphs with $m\ge3$, for directed multigraphs with separated routes, and for directed hypergraphs in the forward, backward and general models, the upper bounds hold for every $n$, and the constructions are at most $(m-1)(n-1)$, $(m-1)^2(n-1)$ and $(c+1)(n-1)$ below them, in this order, with $c$ as in \Cref{tab:conclusion}.
 
 The program of \Cref{ch:machine} computed values for $n\le7$ and $2\le m\le7$ in all sixteen problems.
 Every value it marks as exact agrees with the results above, and every graph it reports carries a checked certificate.

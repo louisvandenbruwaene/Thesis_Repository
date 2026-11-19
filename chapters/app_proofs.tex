@@ -603,7 +603,7 @@ Compared with the multitree, the edges $ac$ and $bc$ each lose one copy, and the
 
 \subsection{The directed problem}\label{sec:multi-vertex-dir}
 
-\Cref{cor:dir-multi-incidence} below gives the exact value at $m=2$ and the leading term for every fixed $m$.
+\Cref{cor:dir-multi-incidence} below gives the exact value at $m=2$, and for every $m$ bounds that differ by at most $(m-1)^2(n-1)$.
 
 \begin{corollary}[The directed multigraph vertex value]\label{cor:dir-multi-incidence}
 For directed multigraphs and every $n \ge 2$,
@@ -616,7 +616,7 @@ and for every $m \ge 2$,
     (m-1)M(n) \;\le\; K_m^{\mathrm{dir}}(n)
     \;\le\; (m-1)\floorfrac{n^2}{4} + (m-1)^2(n-1) .
 \]
-For $n\ge7$ we have $M(n)=\floor{n^2/4}$, so the two bounds differ by $(m-1)^2(n-1)$, and the one-way bipartite directed graph with all multiplicities $m-1$ of \Cref{thm:dir-multi-full} has the right leading term here too.
+For $n\ge7$ we have $M(n)=\floor{n^2/4}$, so the two bounds differ by $(m-1)^2(n-1)$, and the one-way bipartite directed graph with all multiplicities $m-1$ of \Cref{thm:dir-multi-full} attains the lower bound.
 \end{corollary}
 
 \begin{proof}
@@ -683,7 +683,7 @@ If $d\le\binom{\beta-1}{k-1}$, we can use \Cref{lem:sparse-hypergraph} instead, 
 
 We write a directed hyperedge as $(T,H)$, with tail set $T$ and head set $H$.
 For $r\ge4$ the general model has splits with both parts of size at least two.
-We show that the backward model is the forward model reversed, and that the general model has the same leading term as the forward model.
+We show that the backward model is the forward model reversed, and that the general model has the same lower bound as the forward model and an upper bound with $\frac{(2r+1)(m-1)^2}{r-1}(n-1)$ in place of $(m-1)^2(n-1)$.
 
 \begin{lemma}[Backward is the reverse of forward]\label{lem:dir-hyper-duality}
 Reversing every hyperedge, $(T, H) \mapsto (H, T)$, turns forward hypergraphs into backward ones and keeps the number of hyperedges. The reversed hypergraph $\HH^{R}$ satisfies $\lec_{\HH}(u, v) = \lec_{\HH^{R}}(v, u)$ and $\kap_{\HH}(u, v) = \kap_{\HH^{R}}(v, u)$. The backward model therefore has the same extremal values as the forward model.
@@ -722,8 +722,7 @@ Summing over the hyperedges gives
 \]
 \end{proof}
 
-These bounds fix the order $n^2$, but not the leading constant.
-\Cref{thm:dir-hyper-constant} gives the constant for the forward model, and the rest of this section gives it for the general model. Their exact values may still differ.
+\Cref{thm:dir-hyper-constant} lowers the upper bound $\frac{(m-1)n(n-1)}{r-1}$ to $\frac{m-1}{r-1}\floor{n^2/4}+(m-1)^2(n-1)$ in the forward model, and the rest of this section lowers it to $\frac{m-1}{r-1}\floor{n^2/4}+\frac{(2r+1)(m-1)^2}{r-1}(n-1)$ in the general model. The exact values of the two models may still differ.
 
 With several tails, two routes can share a hyperedge, so the proof of \Cref{thm:dir-hyper-constant} does not show that the shadow is budgeted. Instead we choose routes greedily.
 
@@ -777,6 +776,5 @@ With $|U| \le 2|X|$ this gives $|\mathcal{T}| \le (2r+1)|X| \le (2r+1)(m-1)$, an
     &\;=\; \frac{m-1}{r-1}\floorfrac{n^2}{4} + \frac{(2r+1)(m-1)^2}{r-1}\,(n-1).
 \end{aligned}
 \]
-The construction of \Cref{prop:dir-hyper-first} also works in the general model, so the $n^2$ terms agree.
 \end{proof}
 

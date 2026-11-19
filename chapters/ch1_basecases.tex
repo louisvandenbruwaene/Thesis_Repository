@@ -1321,7 +1321,7 @@ and $S$ is $(r-1)(m-1)$-budgeted.
 \end{proof}
 
 The backward model is the forward model with every hyperedge reversed, so it has the same extremal values (\Cref{lem:dir-hyper-duality}).
-The general model has the same leading term, and its upper bound has a larger linear term (\Cref{thm:dir-hyper-general-constant}).
+The general model has the same lower bound, and its upper bound has $\frac{(2r+1)(m-1)^2}{r-1}(n-1)$ in place of $(m-1)^2(n-1)$ (\Cref{thm:dir-hyper-general-constant}).
 
 At $r=2$ a hyperedge is an arc, so \Cref{thm:dir-hyper-constant} bounds the number of arcs of a directed multigraph with $\kap^{\max}\le m-1$ by $(m-1)\floor{n^2/4}+(m-1)^2(n-1)$.
 The extremal multigraphs of \Cref{thm:dir-multi-full} have $\lec^{\max}\le m-1$, so also $\kap^{\max}\le m-1$, and $(m-1)M(n)$ arcs.
@@ -1336,5 +1336,5 @@ The main open questions are:
 \item Find $\ell_m^{\mathrm{dir}}(n)$ for $m\ge3$.
 \item Is $k_m^{\mathrm{dir}}(n)=\ell_m^{\mathrm{dir}}(n)$ for $m\ge3$?
 \item Find the simple vertex value $k_m(n)$ for $m\ge6$, and the multigraph vertex value $K_m(n)$ for $m\ge4$.
-\item Find exact values for directed hypergraphs, and compare the forward and general models (\Cref{sec:dir-hyper}) beyond the leading term.
+\item Find exact values for directed hypergraphs, and decide whether the forward and general models (\Cref{sec:dir-hyper}) have the same values.
 \end{enumerate}
