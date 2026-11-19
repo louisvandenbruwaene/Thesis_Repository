@@ -666,10 +666,9 @@ An unfinished search therefore covers a smaller part of a larger search space, a
 
 \programpart{driver}{The driver: a sixty-second budget per case, then a certificate.}
 
-\Cref{sec:output} prints the full output for $2\le m\le7$ and $n\le7$.
 
 \section{Comparing the two searches}\label{sec:compare-searches}
-\Cref{sec:output} prints the output of a run with tabu search, and \Cref{sec:output-greedy} the output of a run with random greedy growth.
+\Cref{sec:output} prints the output of a run with tabu search, and \Cref{sec:output-greedy} the output of a run with random greedy growth, both for $2\le m\le7$ and $n\le7$.
 An entry marked \texttt{*} is the true maximum, so no entry of the other run lies above it.
 The two runs can still differ in which entries they prove exact, because the check of one edge more starts from the graph the heuristic search found and has a time limit.
 For the directed multigraph with separated routes at $n=4$, $m=5$, for example, both runs find $28$ arcs, but only the run with random greedy growth proves that this is the maximum.

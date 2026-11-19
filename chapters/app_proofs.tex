@@ -724,8 +724,8 @@ A directed multigraph is a forward directed $2$-uniform multihypergraph: each ar
 \section{Directed hypergraphs}\label{sec:dir-hyper}
 
 The last four variants use directed hyperedges, in the forward, backward or general model of \Cref{sec:variants}.
-The first result gives an upper and a lower bound that differ by a factor of four.
-For the forward model, \Cref{thm:dir-hyper-constant} closes this gap.
+The first result gives an upper and a lower bound.
+For the forward model, \Cref{thm:dir-hyper-constant} lowers the upper bound to within $(m-1)^2(n-1)+\floor{n/2}$ of the lower bound, for $n\ge2r-3$.
 
 \begin{proposition}[Directed hypergraphs: first bounds]\label{prop:dir-hyper-first}
 Let $n\ge r\ge2$ and $m\ge2$, and let $\HH$ be a forward directed $r$-uniform multihypergraph on $n$ vertices. If every ordered pair of vertices has at most $m-1$ hyperedge-disjoint directed Berge routes, then
