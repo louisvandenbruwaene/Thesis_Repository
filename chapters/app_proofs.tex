@@ -702,10 +702,21 @@ The construction of \Cref{prop:dir-hyper-first} also works here, so the maximum 
 Fix an ordered pair $(u, v)$.
 Each hyperedge $(T, H)$ with $u \in T$ and $v \in H$ gives a route $u \to v$ of length one.
 Different such hyperedges give separated routes, so there are at most $m-1$ of them.
-A hyperedge $(T, H)$ joins exactly $|T|\,|H|$ ordered pairs.
-Summing over all pairs gives $\sum_{(T,H)} |T|\,|H| \le (m-1)\,n(n-1)$.
-Since $|T|+|H|=r$ with both at least one, $|T|\,|H| - (r-1) = (|T|-1)(|H|-1) \ge 0$.
-This gives $(r-1)|E| \le (m-1)n(n-1)$.
+A hyperedge $(T, H)$ joins exactly the $|T|\,|H|$ ordered pairs $(u,v)$ with $u\in T$ and $v\in H$.
+Count the pairs (hyperedge, ordered pair it joins) in two ways.
+Each hyperedge $(T,H)$ is in $|T|\,|H|$ of them, and each of the $n(n-1)$ ordered pairs is in at most $m-1$ of them. This gives
+\[
+    \sum_{(T,H)\in E(\HH)} |T|\,|H| \;\le\; (m-1)\,n(n-1).
+\]
+Since $|T|+|H|=r$,
+\[
+    |T|\,|H| \;=\; (|T|-1)(|H|-1) + |T| + |H| - 1 \;=\; (|T|-1)(|H|-1) + (r-1).
+\]
+Both $|T|$ and $|H|$ are at least one, so $(|T|-1)(|H|-1)\ge0$ and $|T|\,|H| \ge r-1$ for every hyperedge.
+Summing over the hyperedges gives
+\[
+    (r-1)\,|E(\HH)| \;\le\; \sum_{(T,H)\in E(\HH)} |T|\,|H| \;\le\; (m-1)\,n(n-1).
+\]
 \end{proof}
 
 These bounds fix the order $n^2$, but not the leading constant.
