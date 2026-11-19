@@ -442,7 +442,7 @@ def tabu_search(problem, deadline, seed):
         hyperedge = next_addition(problem, multiplicity, connectivity,
                                   blocked, tabu, best_size, generator)
         change = +1
-        if hyperedge is None:               # a local optimum
+        if hyperedge is None:
             present = [e for e, copies in multiplicity.items()
                        if copies and e not in tabu]
             if not present:
