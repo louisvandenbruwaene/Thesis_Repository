@@ -31,12 +31,12 @@ Simple graph & $\floor{m(n-1)/2}$ & $\floor{m(n-1)/2}$ for $m\le4$ \\
 Multigraph & $(m-1)(n-1)$ & $(m-1)(n-1)$ for $m\le3$ \\
 Simple hypergraph & $\floor{(m-1)(n-1)/(r-1)}$ & $\floor{(m-1)(n-1)/(r-1)}$ for $m\le3$ \\
 Multihypergraph & $\floor{(m-1)(n-1)/(r-1)}$ & $\floor{(m-1)(n-1)/(r-1)}$ for $m\le3$ \\
-Simple directed graph & $M(n)$ for $m=2$,\newline $n^2/4+\Theta_m(n)$ for $m\ge3$ & $M(n)$ for $m=2$,\newline $n^2/4+\Theta_m(n)$ for $m\ge3$ \\
-Directed multigraph & $(m-1)M(n)$ & $M(n)$ for $m=2$,\newline $(m-1)n^2/4+O_m(n)$ for $m\ge3$ \\
-Directed hypergraph & $\bigl(1+o(1)\bigr)\frac{(m-1)n^2}{4(r-1)}$ & $\bigl(1+o(1)\bigr)\frac{(m-1)n^2}{4(r-1)}$ \\
-Directed multihypergraph & $\bigl(1+o(1)\bigr)\frac{(m-1)n^2}{4(r-1)}$ & $\bigl(1+o(1)\bigr)\frac{(m-1)n^2}{4(r-1)}$ \\
+Simple directed graph & $M(n)$ for $m=2$,\newline $\floor{(n+m-2)^2/4}$ to $\floor{n^2/4}+(m-1)(n-1)$ for $m\ge3$ & $M(n)$ for $m=2$,\newline $\floor{(n+m-2)^2/4}$ to $\floor{n^2/4}+(m-1)(n-1)$ for $m\ge3$ \\
+Directed multigraph & $(m-1)M(n)$ & $M(n)$ for $m=2$,\newline $(m-1)M(n)$ to $(m-1)\floor{n^2/4}+(m-1)^2(n-1)$ for $m\ge3$ \\
+Directed hypergraph & $Q(n)-\floor{n/2}$ to $Q(n)+c\,(n-1)$ & $Q(n)-\floor{n/2}$ to $Q(n)+c\,(n-1)$ \\
+Directed multihypergraph & $Q(n)-\floor{n/2}$ to $Q(n)+c\,(n-1)$ & $Q(n)-\floor{n/2}$ to $Q(n)+c\,(n-1)$ \\
 \bottomrule
 \end{tabularx}
-\caption{The proved values, with $M(n)=\max\bigl(2(n-1),\floor{n^2/4}\bigr)$. Simple graphs for $n\ge m$, hypergraphs for $n\ge r$, simple hypergraphs with $r\ge3$ when $m-1\le\binom{n-2}{r-2}$, and at $m=3$ with separated routes when $2<r<n$. The directed hypergraph and multihypergraph values hold for fixed $m$ and $r$ in all three models, with $r\ge3$ for directed hypergraphs.}
+\caption{The proved values, with $M(n)=\max\bigl(2(n-1),\floor{n^2/4}\bigr)$. Simple graphs for $n\ge m$, hypergraphs for $n\ge r$, simple hypergraphs with $r\ge3$ when $m-1\le\binom{n-2}{r-2}$, and at $m=3$ with separated routes when $2<r<n$. Simple directed graphs for $n\ge m$. For directed hypergraphs and multihypergraphs, $Q(n)=\frac{m-1}{r-1}\floor{n^2/4}$, $n\ge2r-3$, $c=(m-1)^2$ in the forward and backward models and $c=(2r+1)(m-1)^2/(r-1)$ in the general model, and the lower bound for directed hypergraphs needs $m-1\le\binom{\ceil{n/2}-1}{r-2}$.}
 \label{tab:conclusion}
 \end{table}

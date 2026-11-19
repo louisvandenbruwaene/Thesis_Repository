@@ -85,9 +85,9 @@ The proved results include:
 \item $r$-uniform multihypergraphs with edge-disjoint routes: exactly $\floor{(m-1)(n-1)/(r-1)}$ hyperedges for every $n\ge r$. Simple hypergraphs attain the same value when $m-1\le\binom{n-2}{r-2}$.
 \item Hypergraphs with separated routes: exactly $\floor{(n-1)/(r-1)}$ at $m=2$, and exactly $\floor{2(n-1)/(r-1)}$ at $m=3$ for $n\ge r$, for simple hypergraphs when $2<r<n$.
 \item Simple directed graphs at $m=2$: exactly $\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs, for arc-disjoint and for separated routes.
-\item Directed multigraphs with arc-disjoint routes: exactly $(m-1)\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs. With separated routes the value is $(m-1)n^2/4+O_m(n)$ for fixed $m$.
-\item Simple directed graphs: $n^2/4+\Theta_m(n)$ arcs for fixed $m\ge3$, for arc-disjoint and for separated routes.
-\item Directed hypergraphs: $(1+o(1))(m-1)n^2/(4(r-1))$ hyperedges for fixed $m$ and $r$, with $r\ge3$ for simple directed hypergraphs, in the forward, backward and general models of \Cref{sec:variants}, for edge-disjoint and for separated routes.
+\item Directed multigraphs with arc-disjoint routes: exactly $(m-1)\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ arcs. With separated routes the value lies between $(m-1)\max\bigl(2(n-1),\floor{n^2/4}\bigr)$ and $(m-1)\floor{n^2/4}+(m-1)^2(n-1)$.
+\item Simple directed graphs: between $\floor{(n+m-2)^2/4}$ and $\floor{n^2/4}+(m-1)(n-1)$ arcs for $n\ge m\ge3$, for arc-disjoint and for separated routes.
+\item Directed hypergraphs: between $\frac{m-1}{r-1}\floor{n^2/4}-\floor{n/2}$ and $\frac{m-1}{r-1}\floor{n^2/4}+(m-1)^2(n-1)$ hyperedges for $n\ge2r-3$ in the forward and backward models of \Cref{sec:variants}, and the same lower bound with upper bound $\frac{m-1}{r-1}\floor{n^2/4}+\frac{(2r+1)(m-1)^2}{r-1}(n-1)$ in the general model, for edge-disjoint and for separated routes. The lower bound holds for simple directed hypergraphs when $m-1\le\binom{\ceil{n/2}-1}{r-2}$.
 \end{itemize}
 
 Chapter~2 explains how a program measures connectivity with maximum flow and searches for dense examples.
@@ -132,8 +132,6 @@ $\dist_T(e)$ & number of edges of the tree $T$ on the path between the ends of $
 $p_2(u,v)$ & number of vertices $x$ with arcs $u\to x$ and $x\to v$ \\
 $I(\HH)$ & incidence graph of $\HH$ \\
 $\pi(u,v)$ & largest number of separated $u$--$v$ paths of length at least two in the underlying simple graph \\
-$O(f)$, $\Theta(f)$ & at most a constant multiple of, or between two positive constant multiples of, $f$ for large $n$. A subscript such as $\Theta_m$ means the constants depend on $m$ \\
-$o(1)$ & a quantity that tends to $0$ \\
 \end{longtable}
 \endgroup
 

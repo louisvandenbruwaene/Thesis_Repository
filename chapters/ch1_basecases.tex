@@ -1100,9 +1100,9 @@ For all $m \ge 2$ and $n \ge 2$, every simple directed graph $D$ on $n$ vertices
 \[
     |A(D)| \;\le\; \floorfrac{n^2}{4} \;+\; (m-1)(n-1),
 \]
-so for each fixed $m$,
+and for $n\ge m$,
 \[
-    \ell_m^{\mathrm{dir}}(n) \;=\; \frac{n^2}{4} \;+\; \Theta_m(n) \quad\text{and}\quad k_m^{\mathrm{dir}}(n) \;=\; \frac{n^2}{4} \;+\; \Theta_m(n) \qquad (m\ge3)\text{.}
+    \floorfrac{(n+m-2)^2}{4} \;\le\; \ell_m^{\mathrm{dir}}(n) \;\le\; k_m^{\mathrm{dir}}(n) \;\le\; \floorfrac{n^2}{4} \;+\; (m-1)(n-1).
 \]
 \end{theorem}
 
@@ -1175,7 +1175,7 @@ The directed graph of \Cref{const:augmented-bipartite} has $\lec^{\max} \le m-1$
     \;\ge\; \frac{(n+m-2)^2}{4} - 1
     \;=\; \frac{n^2}{4} + \frac{(m-2)n}{2} + \frac{(m-2)^2}{4} - 1.
 \]
-For $m\ge3$ the term $(m-2)n/2$ is positive, and $(m-2)^2/4-1$ does not depend on $n$. Both functions are therefore $n^2/4$ plus a term that lies between two positive constant multiples of $n$.
+For $m\ge3$ both bounds are therefore $n^2/4$ plus a term that grows linearly in $n$, with slope $(m-2)/2$ in the lower bound and $m-1$ in the upper bound.
 \end{proof}
 
 The linear coefficient is not known.
@@ -1269,7 +1269,7 @@ $\HH$ on $n \ge 2$ vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
 
 \end{theorem}
 
-Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_\HH\le m-1$. \Cref{prop:dir-hyper-first} with $\alpha=\floor{n/2}$ gives a lower bound of $(m-1)n^2/(4(r-1))-O_{r,m}(n)$ hyperedges, with simple hypergraphs for $r\ge3$ and large $n$.
+Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_\HH\le m-1$. \Cref{prop:dir-hyper-first} with $\alpha=\floor{n/2}$ gives a lower bound of $\frac{m-1}{r-1}\floor{n^2/4}-\floor{n/2}$ hyperedges for $n\ge 2r-3$, with a simple hypergraph when $m-1\le\binom{\ceil{n/2}-1}{r-2}$.
 
 The proof bounds the hyperedges by the arcs of a simple directed graph, shows that this graph satisfies a two-step budget, and applies \Cref{lem:two-step-budget}.
 
@@ -1326,7 +1326,7 @@ The general model has the same leading term, and its upper bound has a larger li
 
 At $r=2$ a hyperedge is an arc, so \Cref{thm:dir-hyper-constant} bounds the number of arcs of a directed multigraph with $\kap^{\max}\le m-1$ by $(m-1)\floor{n^2/4}+(m-1)^2(n-1)$.
 The extremal multigraphs of \Cref{thm:dir-multi-full} have $\lec^{\max}\le m-1$, so also $\kap^{\max}\le m-1$, and $(m-1)M(n)$ arcs.
-Together this gives $K_m^{\mathrm{dir}}(n)=(m-1)n^2/4+O_m(n)$ (\Cref{cor:dir-multi-incidence}).
+Together this gives $(m-1)M(n)\le K_m^{\mathrm{dir}}(n)\le(m-1)\floor{n^2/4}+(m-1)^2(n-1)$ (\Cref{cor:dir-multi-incidence}).
 At $m=2$ two copies of an arc are two separated routes, so a feasible directed multigraph is simple and $K_2^{\mathrm{dir}}(n)=k_2^{\mathrm{dir}}(n)=\ell_2^{\mathrm{dir}}(n)$ by \Cref{thm:dir-vertex-m2-exact}.
 
 \section{Open questions}\label{sec:overview}

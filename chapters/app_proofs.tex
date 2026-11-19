@@ -616,7 +616,7 @@ and for every $m \ge 2$,
     (m-1)M(n) \;\le\; K_m^{\mathrm{dir}}(n)
     \;\le\; (m-1)\floorfrac{n^2}{4} + (m-1)^2(n-1) .
 \]
-In particular $K_m^{\mathrm{dir}}(n) = (m-1)n^2/4 + O_m(n)$, and the one-way bipartite directed graph with all multiplicities $m-1$ of \Cref{thm:dir-multi-full} has the right leading term here too.
+For $n\ge7$ we have $M(n)=\floor{n^2/4}$, so the two bounds differ by at most $(m-1)^2(n-1)$, and the one-way bipartite directed graph with all multiplicities $m-1$ of \Cref{thm:dir-multi-full} has the right leading term here too.
 \end{corollary}
 
 \begin{proof}
@@ -628,7 +628,6 @@ This gives $K_2^{\mathrm{dir}}(n) = k_2^{\mathrm{dir}}(n)$, which equals $\ell_2
 The extremal multigraphs of \Cref{thm:dir-multi-full} have $\lec^{\max} \le m-1$. Since $\kap\le\lec$, also $\kap^{\max} \le m-1$. This gives the lower bound.
 A directed multigraph is a forward directed $2$-uniform multihypergraph: each arc is a hyperedge with one tail and one head.
 \Cref{thm:dir-hyper-constant} at $r=2$ therefore gives the upper bound.
-For $n\ge7$ we have $M(n)=\floor{n^2/4}$. Both bounds are then $(m-1)n^2/4 + O_m(n)$.
 \end{proof}
 
 \section{Directed hypergraphs}\label{sec:dir-hyper}
@@ -647,7 +646,7 @@ multihypergraph with
 \[
     \alpha\floorfrac{(m-1)(n-\alpha)}{r-1}
 \]
-hyperedges. A simple construction of the same size exists when $m-1\le\binom{n-\alpha-1}{r-2}$. For fixed $r$ and $m$ and large $n$ we can take $\alpha=\floor{n/2}$, so the maximum is $\Theta_{r,m}(n^2)$.
+hyperedges. A simple construction of the same size exists when $m-1\le\binom{n-\alpha-1}{r-2}$. For $n\ge2r-3$ we can take $\alpha=\floor{n/2}$, which gives at least $\frac{m-1}{r-1}\floor{n^2/4}-\floor{n/2}$ hyperedges.
 \end{proposition}
 
 \begin{proof}
@@ -678,6 +677,7 @@ No vertex of $B$ is a tail, so a route can never leave $B$, and every route has 
 Hence, for $a\in A$ and $w\in B$, the routes from $a$ to $w$ are the hyperedges with tail $a$ whose heads contain $w$. There are $\deg_{\mathcal G^*}(w)\le m-1$ of them.
 There are no routes from $B$, and no routes between two vertices of $A$, since all heads lie in $B$.
 The number of hyperedges is $\alpha q=\alpha\floorfrac{(m-1)(n-\alpha)}{r-1}$.
+For $\alpha=\floor{n/2}$ we have $n-\alpha=\ceil{n/2}\ge r-1$ when $n\ge2r-3$. Since $\floor{x}\ge x-1$ and $\floor{n/2}\ceil{n/2}=\floor{n^2/4}$, this is at least $\frac{m-1}{r-1}\floor{n^2/4}-\floor{n/2}$.
 If $d\le\binom{\beta-1}{k-1}$, we can use \Cref{lem:sparse-hypergraph} instead, which gives different hyperedges, so the directed hypergraph is simple.
 \end{proof}
 
@@ -698,7 +698,7 @@ Let $\HH$ be a directed $r$-uniform multihypergraph on $n$ vertices in the gener
 \[
     |E(\HH)| \;\le\; \frac{(m-1)\,n(n-1)}{r-1}.
 \]
-The construction of \Cref{prop:dir-hyper-first} also works here, so the maximum is $\Theta_{r,m}(n^2)$.
+The construction of \Cref{prop:dir-hyper-first} also works here, so for $n\ge2r-3$ the maximum is at least $\frac{m-1}{r-1}\floor{n^2/4}-\floor{n/2}$.
 \end{proposition}
 
 \begin{proof}
@@ -734,7 +734,7 @@ vertices with $\kap^{\max}_{\HH} \le m-1$ satisfies
     |E(\HH)| \;\le\; \frac{m-1}{r-1}\floorfrac{n^2}{4}
     \;+\; \frac{(2r+1)(m-1)^2}{r-1}\,(n-1) .
 \]
-Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_{\HH} \le m-1$. For fixed $r$ and $m$ the general model therefore has the same leading term $\bigl(1+o(1)\bigr)(m-1)n^2/\bigl(4(r-1)\bigr)$ as the forward model, for hyperedge-disjoint and for separated routes.
+Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_{\HH} \le m-1$. With the lower bound $\frac{m-1}{r-1}\floor{n^2/4}-\floor{n/2}$ of \Cref{prop:dir-hyper-general} for $n\ge2r-3$, the general model has the same quadratic term $\frac{m-1}{r-1}\floor{n^2/4}$ as the forward model, for hyperedge-disjoint and for separated routes.
 \end{theorem}
 
 \begin{proof}
