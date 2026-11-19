@@ -8,7 +8,8 @@ The file starts with a short description and the imports.
 
 \programpart{header}{The description and the imports.}
 
-Two helpers list the vertex pairs that must be checked, ordered in directed models, and count the edges of a graph.
+The list of vertex pairs is created by \texttt{vertex\_pairs}, ordered in directed models.
+The size of the graph is calculated by \texttt{edge\_count}. Both can be found in \Cref{lst:pairs}.
 
 \programpart{pairs}{The vertex pairs and the edge count.}
 
@@ -64,6 +65,7 @@ For hypergraphs the rows start at $n=3$.
 Each directed hypergraph problem has three tables, one for each version of \Cref{sec:variants}.
 Wherever the searches for the forward and the backward version both finished, the two tables agree, as \Cref{lem:dir-hyper-duality} predicts.
 In the general model the search finished almost only at $n=3$. Its other entries are lower bounds, and some lie below the forward entries, although every forward hypergraph also belongs to the general model.
+For the same reason some entries for separated routes lie below the entry for edge-disjoint routes in the same model and at the same $n$ and $m$, for example $15$ against $16$ for forward directed hypergraphs at $n=7$ and $m=3$, although every graph without $m$ edge-disjoint routes also has no $m$ separated routes.
 
 % The file is read directly. First its first six lines (the run record and
 % the legend), then every table by its line range: one row per model, edge-disjoint
