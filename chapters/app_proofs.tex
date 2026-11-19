@@ -213,7 +213,7 @@ This gives $\lec^{\max} = m - 1$.
 For example, take $m = 3$ and $n = 10$.
 Then $|B| = 6$ and $|A| = 4$.
 There are $24$ arcs from $A$ to $B$, and $6$ arcs forming a cycle inside $B$.
-Each pair $a_i, b_j$ has the direct arc and one detour, and all detours share their last arc, so $\lec^{\max} = 2$.
+Each pair $a_i, b_j$ has the direct arc and five detours. All detours share their last arc, so at most one of them can be used alongside the direct arc, and $\lec^{\max} = 2$.
 This gives $30$ arcs, more than the $\max(m(n-1),\floor{n^2/4})=27$ of the first two constructions.
 The gain comes from making $B$ larger than half of the vertices.
 For $n\ge m$ the constructions therefore give
@@ -265,7 +265,7 @@ For fixed $m$ and large $n$ the augmented bipartite directed graph has more arcs
   \node[font=\scriptsize, align=center, vertexorange!75!black] at (5.6,-2.55)
     {$6$ cyclic in-arcs inside $B$};
 \end{tikzpicture}
-\caption{The augmented bipartite directed graph of \Cref{const:augmented-bipartite} at $m = 3$, $n = 10$. All arcs between the parts go from $A$ to $B$. Inside $B$, each vertex gets one arc from the previous vertex on a cycle. A pair $a_i, b_j$ has the direct arc and one detour, and all detours share their last arc, so $\lec^{\max} = 2$. The directed graph has $24 + 6 = 30$ arcs, against $27$ for the hub.}
+\caption{The augmented bipartite directed graph of \Cref{const:augmented-bipartite} at $m = 3$, $n = 10$. All arcs between the parts go from $A$ to $B$. Inside $B$, each vertex gets one arc from the previous vertex on a cycle. A pair $a_i, b_j$ has the direct arc and five detours. All detours share their last arc, so at most one of them can be used alongside the direct arc, and $\lec^{\max} = 2$. The directed graph has $24 + 6 = 30$ arcs, against $27$ for the hub.}
 \label{fig:augmented-wall}
 \end{figure}
 
