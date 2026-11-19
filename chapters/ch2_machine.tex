@@ -5,7 +5,7 @@ This chapter describes the program that computed small cases of these variants.
 For every variant it measures the connectivity of a graph, checks small graphs one by one, and searches for dense graphs where checking them all would take too long.
 Its output for $n,m\le7$ is printed in \Cref{app:program}, and \Cref{sec:certificates} explains how that output can be checked without reading the code.
 
-The program is a single Python file of about $700$ lines, \texttt{program/erdos915.py}.
+The program is a single Python file of about $750$ lines, \texttt{program/erdos915.py}.
 It leaves two tasks to existing software: the library \texttt{networkx} \cite{HagbergSchultSwart08} computes maximum flows, and the programs \texttt{geng}, \texttt{directg} and \texttt{genbgL} of \texttt{nauty} list graphs.
 The main parts of the program are printed in this chapter, each next to the idea it implements.
 The remaining parts, such as the imports and small helper functions, are printed in \Cref{app:program}.
@@ -594,7 +594,7 @@ The $n-1$ edges of the tree therefore cover all $\binom n2$ pairs.
 A Gomory--Hu tree (\Cref{thm:gomory-hu}) of a feasible graph is such a tree.
 
 The certificate is not the only thing to check.
-The graph must also fit the model criteria: it must have $n$ vertices, its tails must form a split that the model allows, and its edge multiplicities are whole numbers between $0$ and $1$ or $m-1$, depending on whether the model is simple or multi.
+The graph must also fit the model criteria: it must have $n$ vertices, its tails must form a split that the model allows, and its edge multiplicities are whole numbers between $0$ and the largest multiplicity, which is $1$ in a simple model and $m-1$ in a multi model.
 
 The program takes the certificate from a smallest cut in the flow network of \Cref{sec:transformations} (\Cref{lst:certificate}).
 A smallest cut contains only arcs of limited capacity. These are the arc inside a gate, which stands for a hyperedge, and, for separated routes, the arc inside a split vertex, which stands for a vertex.
