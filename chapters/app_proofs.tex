@@ -539,7 +539,7 @@ Apply \Cref{thm:hyper-vertex-m3,prop:hyper-vertex-lower-multi} at $r=2$.
 There the construction is the star with every edge doubled, which attains the upper bound $2(n-1)$.
 \end{proof}
 
-At $m = 3$ the vertex value therefore equals the edge value $L_3(n)$ of \Cref{thm:multigraph-edge}.
+At $m = 3$ the vertex value therefore equals the edge value $L_3(n)$ of \Cref{thm:multigraph-edge}, and \Cref{thm:multi-vertex-m4} below shows the same at $m=4$.
 At $m=5$ they differ. The multigraph on four vertices with $14$ edges in \Cref{ch:basecases} is \Cref{const:multi-bipartite} below at $m=5$ and $n=4$, while $L_5(4)=12$.
 For $m \ge 3$ there are three constructions.
 
@@ -599,6 +599,87 @@ Each pair of $a,b,c$ then has $m-2$ parallel edges and one route through the thi
 Every other edge is a tree edge, whose removal disconnects its ends, and $\kap=m-1$ there too.
 Two non-adjacent vertices are separated by any inner vertex of the tree path between them, and $\kap\le1$.
 Compared with the multitree, the edges $ac$ and $bc$ each lose one copy, and the new edge $ab$ has $m-2$ copies. The multigraph therefore has $(m-2)-2=m-4$ more edges than the multitree.
+\end{proof}
+
+At $m=4$ none of these constructions beats the multitree. The next theorem shows that no multigraph does.
+
+\begin{theorem}[The multigraph vertex value at $m = 4$]\label{thm:multi-vertex-m4}
+For multigraphs, $K_4(n) = 3(n-1)$ for every $n \ge 2$.
+\end{theorem}
+
+\begin{proof}
+\emph{Lower bound.} The multitree of \Cref{const:multi-tree} at $m=4$ has $3(n-1)$ edges. By \Cref{prop:multi-three} it has $\kap^{\max}\le3$.
+
+\emph{Upper bound.} We show by induction on $n$ that every multigraph $G$ on $n\ge1$ vertices with $\kap^{\max}_G\le3$ has at most $3(n-1)$ edges.
+Let $G_0$ be its underlying simple graph.
+By \Cref{lem:multi-vertex-split}, every pair of vertices has $\mu(u,v)+\pi(u,v)\le3$.
+
+A single vertex has no edges.
+Two vertices are joined by at most three copies of an edge.
+For three vertices, suppose first that $G_0$ is a triangle. Each pair then has a route through the third vertex, so $\pi=1$ and $\mu\le2$ on all three pairs.
+This gives at most $6$ edges.
+Otherwise $G_0$ has at most two edges, each with at most three copies, which again gives at most $6=3(3-1)$.
+
+Now let $n\ge4$. We consider four cases.
+
+\emph{$G_0$ is not connected.} Split $G$ into two parts on $n_1$ and $n_2$ vertices, with no edge between them.
+No route goes from one part to the other, so both parts are feasible.
+By induction, $G$ has at most $3(n_1-1)+3(n_2-1)\le3(n-1)$ edges.
+
+\emph{Removing one vertex $c$ disconnects $G_0$.} Then $G$ consists of two parts that share only $c$, on $n_1$ and $n_2$ vertices with $n_1+n_2=n+1$.
+A path between two vertices of one part cannot enter the other part, since it would have to pass through $c$ twice.
+Both parts are therefore feasible.
+By induction, $G$ has at most $3(n_1-1)+3(n_2-1)=3(n-1)$ edges.
+
+\emph{Removing two vertices $u$ and $v$ disconnects $G_0$, but removing one vertex does not.}
+Let $C$ be the vertex set of one component of $G_0-\{u,v\}$, and let $D$ be the set of the other vertices outside $\{u,v\}$.
+Let $G_1$ be the part of $G$ on $C\cup\{u,v\}$, and $G_2$ the part on $D\cup\{u,v\}$, both without the copies of $uv$.
+Every other edge of $G$ lies in exactly one of them.
+Write $p=\mu(u,v)$.
+Let $a$ and $b$ be the largest numbers of separated $u$--$v$ paths of length at least two in $G_1$ and in $G_2$.
+
+If no vertex of $C$ were adjacent to $v$, removing $u$ alone would separate $C$ from $v$.
+Hence $C$ contains a neighbour of $v$, and in the same way a neighbour of $u$.
+Since $C$ is connected, $G_1$ contains a $u$--$v$ path of length at least two, and $a\ge1$.
+In the same way, $b\ge1$.
+A $u$--$v$ path of length at least two cannot go from $C$ to $D$ without passing through $u$ or $v$.
+It therefore lies in $G_1$ or in $G_2$.
+This gives $\pi(u,v)=a+b$, and $p+a+b\le3$.
+
+Now add $3-a$ copies of $uv$ to $G_1$, and $3-b$ copies to $G_2$.
+Call the results $G_1'$ and $G_2'$.
+We show that $G_1'$ is feasible, and the same argument works for $G_2'$.
+In $G_1'$ the pair $u,v$ has $\mu=3-a$ and $\pi=a$, so $\kap(u,v)=3$.
+Now take another pair $x,y$ and a family of separated $x$--$y$ routes in $G_1'$.
+A route through a copy of $uv$ has $u$ or $v$ as an inner vertex.
+Hence at most one route of the family uses such a copy.
+In that route, replace the copy by a $u$--$v$ path through $D$, which exists because $b\ge1$.
+The new inner vertices lie in $D$, while the other routes stay inside $C\cup\{u,v\}$.
+The result is a family of separated $x$--$y$ routes in $G$ of the same size.
+This gives $\kap_{G_1'}(x,y)\le\kap_G(x,y)\le3$.
+
+Together, $G_1'$ and $G_2'$ have $|E(G)|-p+(3-a)+(3-b)$ edges.
+This is at least $|E(G)|+3$, because $p+a+b\le3$.
+They have $|C|+2$ and $|D|+2$ vertices.
+Both numbers are smaller than $n$, since $C$ and $D$ are not empty.
+By induction,
+\[
+    |E(G)|+3 \;\le\; 3(|C|+1)+3(|D|+1) \;=\; 3n,
+\]
+which gives $|E(G)|\le3(n-1)$.
+
+\emph{Removing one or two vertices never disconnects $G_0$.}
+Take an edge $uv$ of $G_0$.
+We show that $G_0-uv$ contains two separated $u$--$v$ paths.
+If it does not, Menger's theorem \cite[Corollary~3.3.5]{Diestel25} gives a set $X$ of at most one vertex whose removal separates $u$ from $v$ in $G_0-uv$.
+Since $n\ge4$, some vertex $x$ lies outside $X\cup\{u,v\}$.
+In $G_0-uv-X$, the vertex $x$ cannot reach both $u$ and $v$, since otherwise $u$ would reach $v$.
+Say that $x$ cannot reach $u$.
+Removing $X$ and $v$ from $G_0$ then separates $x$ from $u$, which contradicts the assumption of this case.
+The two paths have length at least two, because they avoid the edge $uv$.
+This gives $\pi(u,v)\ge2$, and $\mu(u,v)\le1$ by \Cref{lem:multi-vertex-split}.
+Every edge of $G$ therefore has multiplicity one.
+The multigraph $G$ is a simple graph with $\kap^{\max}\le3$, and \Cref{thm:leonard} with $m=4\le n$ gives at most $2(n-1)$ edges.
 \end{proof}
 
 \subsection{The directed problem}\label{sec:multi-vertex-dir}

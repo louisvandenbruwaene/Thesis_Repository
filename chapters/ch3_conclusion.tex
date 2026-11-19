@@ -8,7 +8,7 @@ A cut argument extends this to $r$-uniform multihypergraphs, with the value $\fl
 For $r\ge3$ simple hypergraphs reach the same value when $m-1\le\binom{n-2}{r-2}$ (\Cref{thm:simple-hyper-edge}).
 
 For separated routes, the values for hypergraphs and multigraphs are exact at $m=2$ and $m=3$, and there they equal the values for edge-disjoint routes (\Cref{thm:hyper-vertex-m2,thm:hyper-vertex-m3}).
-For multigraphs the two kinds of routes give different values at $m=5$ (\Cref{const:multi-bipartite}).
+For multigraphs they also agree at $m=4$ (\Cref{thm:multi-vertex-m4}), and the two kinds of routes give different values at $m=5$ (\Cref{const:multi-bipartite}).
 For simple graphs they give the same values for $m\le4$, and for every $m\ge5$ they differ for some $n$. Gluing graphs of S{\o}rensen and Thomassen at one vertex shows that the conjecture of Bollob\'{a}s and Erd\H{o}s fails at $m=5$ (\Cref{thm:bollobas-erdos-false}).
 
 Directed routes make the values grow quadratically in $n$.
@@ -28,7 +28,7 @@ Every value it marks as exact agrees with the results above, and every graph it 
 Model & Edge-disjoint routes & Separated routes \\
 \midrule
 Simple graph & $\floor{m(n-1)/2}$ & $\floor{m(n-1)/2}$ for $m\le4$ \\
-Multigraph & $(m-1)(n-1)$ & $(m-1)(n-1)$ for $m\le3$ \\
+Multigraph & $(m-1)(n-1)$ & $(m-1)(n-1)$ for $m\le4$ \\
 Simple hypergraph & $\floor{(m-1)(n-1)/(r-1)}$ & $\floor{(m-1)(n-1)/(r-1)}$ for $m\le3$ \\
 Multihypergraph & $\floor{(m-1)(n-1)/(r-1)}$ & $\floor{(m-1)(n-1)/(r-1)}$ for $m\le3$ \\
 Simple directed graph & $M(n)$ for $m=2$,\newline $\floor{(n+m-2)^2/4}$ to $\floor{n^2/4}+(m-1)(n-1)$ for $m\ge3$ & $M(n)$ for $m=2$,\newline $\floor{(n+m-2)^2/4}$ to $\floor{n^2/4}+(m-1)(n-1)$ for $m\ge3$ \\
