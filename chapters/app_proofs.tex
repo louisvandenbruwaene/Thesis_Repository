@@ -214,7 +214,7 @@ For example, take $m = 3$ and $n = 10$.
 Then $|B| = 6$ and $|A| = 4$.
 There are $24$ arcs from $A$ to $B$, and $6$ arcs forming a cycle inside $B$.
 Each pair $a_i, b_j$ has the direct arc and five detours. All detours share their last arc, so at most one of them can be used alongside the direct arc, and $\lec^{\max} = 2$.
-This gives $30$ arcs, more than the $\max(m(n-1),\floor{n^2/4})=27$ of the first two constructions.
+This augmented bipartite construction gives $30$ arcs, which is more than the $25$ arcs of the one-way bipartite construction, which is the special case $m=2$.
 The gain comes from making $B$ larger than half of the vertices.
 For $n\ge m$ the constructions therefore give
 \[
