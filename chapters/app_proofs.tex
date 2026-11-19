@@ -37,7 +37,10 @@ Since $n\ge m$, we have $0\le d\le N-1$.
 The numbers $\pm1,\dots,\pm\floor{d/2}$ are $2\floor{d/2}$ different numbers modulo $N$, because none is zero and all are smaller than $N/2$ in absolute value. Each $v_i$ is therefore joined to $2\floor{d/2}$ different vertices $v_{i\pm s}$. Every vertex gets degree $2\floor{d/2}$, and the number of edges, half the sum of the degrees, is $N\floor{d/2}$.
 If $d$ is odd, the $\floor{N/2}$ further edges share no vertex.
 They are new: going around the circle, the edges of the first kind join vertices at distance at most $\floor{d/2}$, the new edges join vertices at distance $\floor{N/2}$, and $d\le N-1$ with $d$ odd gives $\floor{d/2}<\floor{N/2}$.
-Every degree is therefore at most $d$, and the number of edges is $N\floor{d/2}$ for even $d$ and $N\floor{d/2}+\floor{N/2}$ for odd $d$. In both cases this is $\floor{dN/2}$.
+Every degree is therefore at most $d$.
+For even $d$ the number of edges is $N\floor{d/2}=dN/2$.
+For odd $d$ it is $N\floor{d/2}+\floor{N/2}=N(d-1)/2+\floor{N/2}$. If $N$ is even, this is $N(d-1)/2+N/2=dN/2$. If $N$ is odd, then $dN$ is odd, and this is $N(d-1)/2+(N-1)/2=(dN-1)/2$.
+In every case the number of edges is $\floor{dN/2}$.
 \end{proof}
 
 If $m-1$ divides $n-1$, disjoint copies of $K_{m-1}$ on $v_0,\dots,v_{N-1}$ also have $(m-2)(n-1)/2$ edges and degrees $m-2$. With these in place of the ring, $H_{m,n}$ consists of copies of $K_m$ that share the vertex $h$.
@@ -120,12 +123,14 @@ A theorem of Mader \cite{Mader71,Mader73b} states that every simple graph of min
 Consequently, every graph feasible for the vertex problem has a vertex of degree at most $m-1$.
 Since taking a subgraph cannot increase local vertex-connectivity, every non-empty subgraph of a feasible graph has such a vertex.
 
-Let $G$ be a feasible graph on $n$ vertices. Delete from $G$ a vertex of degree at most $m-1$, then such a vertex from what is left, and continue until no vertex remains. Number the vertices $x_n,x_{n-1},\dots,x_1$ in the order of deletion. When $x_i$ is deleted, only $x_1,\dots,x_i$ are left. At that moment $x_i$ has at most $m-1$ neighbours among $x_1,\dots,x_{i-1}$, and at most $i-1$ because there are only $i-1$ of them. Every edge is counted once, at its end with the larger number. This gives
+Let $G$ be a feasible graph on $n$ vertices. Delete from $G$ a vertex of degree at most $m-1$, then such a vertex from what is left, and continue until no vertex remains. Number the vertices $x_n,x_{n-1},\dots,x_1$ in the order of deletion. When $x_i$ is deleted, only $x_1,\dots,x_i$ are left. At that moment $x_i$ has at most $m-1$ neighbours among $x_1,\dots,x_{i-1}$, and at most $i-1$ because there are only $i-1$ of them. Every edge is counted once, at its end with the larger number.
+For $n\ge m-1$, the terms with $i\le m-1$ add up to $0+1+\dots+(m-2)=\binom{m-1}{2}$, and each of the other $n-m+1$ terms is $m-1$.
+With $\binom{m-1}{2}+(m-1)=\binom{m}{2}$ and $m(m-1)=2\binom{m}{2}$ this gives
 \[
 \begin{aligned}
     k_m(n) \;\le\; \sum_{i=1}^{n}\min(i-1,\,m-1) &\;=\; \binom{m-1}{2} + (n-m+1)(m-1) \\
-    &\;=\; (m-1)n - \binom{m}{2}
-    \qquad (n \ge m-1).
+    &\;=\; \binom{m}{2} + (n-m)(m-1) \\
+    &\;=\; (m-1)n - 2\binom{m}{2} + \binom{m}{2} \;=\; (m-1)n - \binom{m}{2}.
 \end{aligned}
 \]
 \end{remark}
@@ -380,7 +385,7 @@ Without the condition $m-1\le\binom{n-2}{r-2}$, simple hypergraphs may not reach
 The smallest example is $n = r = m = 3$.
 There is only one $3$-set, so a simple hypergraph has at most one hyperedge, while the bound is $\floor{2 \cdot 2 / 2} = 2$.
 Two copies of the one hyperedge do reach the bound.
-At $m - 1 = 2$ the condition reads $2 < r < n$, the range of the simple formula in \Cref{thm:hyper-vertex-m3}.
+At $m - 1 = 2$ the condition reads $2 < r < n$ (proof of \Cref{thm:hyper-vertex-m3}), the range of the simple formula there.
 \end{remark}
 
 \section{Lower bounds for the hypergraph vertex problem}\label{sec:hyper-vertex-proof}
@@ -481,8 +486,7 @@ At $m = 3$ this meets the upper bound of \Cref{thm:hyper-vertex-m3}, so
 \end{proposition}
 
 \begin{proof}
-The multihypergraph in the proof of \Cref{prop:hyper-edge} has $\floor{(m-1)(n-1)/(r-1)}$ hyperedge copies and $\lec^{\max}\le m-1$.
-Since $\kap \le \lec$, it also has $\kap^{\max}\le m-1$.
+The multihypergraph in the proof of \Cref{prop:hyper-edge} has $\floor{(m-1)(n-1)/(r-1)}$ hyperedge copies and $\lec^{\max}\le m-1$, so $\kap^{\max}\le m-1$ as in the proof of \Cref{prop:hyper-vertex-lower}.
 At $m = 3$ its size equals the upper bound of \Cref{thm:hyper-vertex-m3}.
 \end{proof}
 
@@ -584,7 +588,14 @@ Two vertices other than $x,y$ are not adjacent and have $\kap = \pi = 2 \le m-1$
 The pair $x,y$ has one route through each other vertex, which gives $\pi(x,y) = n-2$ and $\kap(x,y) = (m+1-n) + (n-2) = m-1$.
 \end{proof}
 
-For $n \le m+1$ the bipartite multigraph has $2(n-2)(m-2) + (m+1-n)$ edges and the multitree has $(m-1)(n-1)$. Their difference is $(n-2)(m-4)$. The two agree at $m=4$, and for $m\ge5$ and $n\ge3$ the bipartite multigraph has more.
+For $n \le m+1$ the bipartite multigraph has $2(n-2)(m-2) + (m+1-n)$ edges and the multitree has $(m-1)(n-1)$. Their difference is
+\[
+\begin{aligned}
+    &2(n-2)(m-2) + (m+1-n) - (m-1)(n-1) \\
+    &\quad\;=\; (2nm-4n-4m+8) + (m+1-n) - (nm-n-m+1) \\
+    &\quad\;=\; nm-4n-2m+8 \;=\; (n-2)(m-4).
+\end{aligned}
+\] The two agree at $m=4$, and for $m\ge5$ and $n\ge3$ the bipartite multigraph has more.
 For $n \ge m+2$ the other two constructions do not exist, and among the three the multitree has the most edges.
 For $m\ge5$ the multitree is not best at any $n \ge 3$.
 
@@ -667,7 +678,9 @@ Number the vertices of $B$ as $0,1,\dots,\beta-1$, and read the repeating sequen
 in segments of $k$ consecutive numbers.
 The first $q$ segments are the hyperedges of a $k$-uniform multihypergraph $\mathcal G^*$ on $B$.
 Since $k\le \beta$, each segment has $k$ different vertices.
-The segments use the first $qk$ positions of the sequence, so every vertex appears $\floor{qk/\beta}$ or $\ceil{qk/\beta}$ times.
+The segments use the first $qk$ positions of the sequence.
+These positions are $\floor{qk/\beta}$ full rounds $0,1,\dots,\beta-1$, in which every vertex appears once, followed by part of one more round, in which every vertex appears at most once, and which is empty when $\beta$ divides $qk$.
+Every vertex therefore appears at most $\ceil{qk/\beta}$ times.
 Since $qk\le d\beta$, we have $qk/\beta \le d$, and since $d$ is an integer, $\ceil{qk/\beta} \le d$. Every vertex therefore has degree at most $d$.
 
 Now, for every $a\in A$ and every $H\in\mathcal G^*$, add the hyperedge with tail $a$ and heads $H$.
@@ -738,7 +751,7 @@ Since $\kap\le\lec$, the same bound holds when $\lec^{\max}_{\HH} \le m-1$. For 
 Let $S$ be the shadow in the general model: $(u,v) \in A(S)$ when some hyperedge has $u$ among its tails and $v$ among its heads. Let $\mu_S(u,v)$ be the number of such hyperedges. Tails and heads are disjoint, so $S$ has no loops.
 
 As before, $\mu_S(u,v) \le m-1$.
-A hyperedge $(T,H)$ gives $|T|\,|H| \ge r-1$ arcs of $S$. This gives
+A hyperedge $(T,H)$ gives the $|T|\,|H|$ arcs $u\to v$ of $S$ with $u\in T$ and $v\in H$, and $|T|\,|H|\ge r-1$ as in the proof of \Cref{prop:dir-hyper-general}. This gives
 \[
     (r-1)\,|E(\HH)| \;\le\; \sum_{(T,H) \in E(\HH)} |T|\,|H|
     \;=\; \sum_{(u,v) \in A(S)} \mu_S(u,v) \;\le\; (m-1)\,|A(S)| .
@@ -767,7 +780,13 @@ Such hyperedges exist, so $t$ is a tail or a head of some hyperedge in $U$. This
 \]
 With $|U| \le 2|X|$ this gives $|\mathcal{T}| \le (2r+1)|X| \le (2r+1)(m-1)$, and $S$ is $(2r+1)(m-1)$-budgeted.
 
-\Cref{lem:two-step-budget} with $C = (2r+1)(m-1)$ gives $|A(S)| \le \floor{n^2/4} + (2r+1)(m-1)(n-1)$, and the bound on $|E(\HH)|$ above gives the theorem.
+\Cref{lem:two-step-budget} with $C = (2r+1)(m-1)$ gives $|A(S)| \le \floor{n^2/4} + (2r+1)(m-1)(n-1)$. With the bound on $|E(\HH)|$ above,
+\[
+\begin{aligned}
+    |E(\HH)| &\;\le\; \frac{m-1}{r-1}\left[\floorfrac{n^2}{4} + (2r+1)(m-1)(n-1)\right] \\
+    &\;=\; \frac{m-1}{r-1}\floorfrac{n^2}{4} + \frac{(2r+1)(m-1)^2}{r-1}\,(n-1).
+\end{aligned}
+\]
 The construction of \Cref{prop:dir-hyper-first} also works in the general model, so the $n^2$ terms agree.
 \end{proof}
 
