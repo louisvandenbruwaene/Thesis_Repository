@@ -741,35 +741,38 @@ hyperedges. A simple construction of the same size exists when $m-1\le\binom{n-\
 \end{proposition}
 
 \begin{proof}
-\emph{Upper bound.} A hyperedge with tail $u$ and heads $h_1,\dots,h_{r-1}$ joins the $r-1$ ordered pairs $(u,h_i)$.
-If $m$ hyperedges joined the same pair $(u,v)$, they would give $m$ hyperedge-disjoint routes of length one.
-Each of the $n(n-1)$ ordered pairs is therefore joined by at most $m-1$ hyperedges.
-Counting the pairs (hyperedge, joined pair) in two ways gives
+\emph{Upper bound.} A hyperedge with tail $u$ and heads $h_1,\dots,h_{r-1}$ gives a route of length one from $u$ to each $h_i$.
+Different hyperedges give different routes.
+Each ordered pair $(u,v)$ is therefore joined in this way by at most $m-1$ hyperedges.
+Each hyperedge joins $r-1$ ordered pairs, and there are $n(n-1)$ ordered pairs.
+Counting the pairs (hyperedge, ordered pair it joins) in two ways gives
 \[
     (r-1)|E| \le (m-1)\,n(n-1).
 \]
 
-\emph{Lower bound.} Split $V$ into a set $A$ of $\alpha$ tails and a set $B$ of $\beta:=n-\alpha\ge r-1$ heads.
-Let $k:=r-1$, $d:=m-1$ and $q:=\floorfrac{d\beta}{k}$.
-Number the vertices of $B$ as $0,1,\dots,\beta-1$, and read the repeating sequence
-\[
-    0,1,\dots,\beta-1,0,1,\dots
-\]
-in segments of $k$ consecutive numbers.
-The first $q$ segments are the hyperedges of a $k$-uniform multihypergraph $\mathcal G^*$ on $B$.
-Since $k\le \beta$, each segment has $k$ different vertices.
-The segments use the first $qk$ positions of the sequence.
-These positions are $\floor{qk/\beta}$ full rounds $0,1,\dots,\beta-1$, in which every vertex appears once, followed by part of one more round, in which every vertex appears at most once, and which is empty when $\beta$ divides $qk$.
-Every vertex therefore appears at most $\ceil{qk/\beta}$ times.
-Since $qk\le d\beta$, we have $qk/\beta \le d$, and since $d$ is an integer, $\ceil{qk/\beta} \le d$. Every vertex therefore has degree at most $d$.
+\emph{Lower bound.} Split $V$ into a set $A$ of $\alpha$ vertices and a set $B$ of $\beta:=n-\alpha\ge r-1$ vertices.
+Every hyperedge below has its tail in $A$ and its heads in $B$.
+No vertex of $B$ is a tail, so a route that reaches $B$ cannot continue.
+Every route therefore consists of a single hyperedge, from a vertex of $A$ to a vertex of $B$.
+For $a\in A$ and $w\in B$, the routes from $a$ to $w$ are the hyperedges with tail $a$ whose heads contain $w$.
+Other pairs have no routes at all.
 
-Now, for every $a\in A$ and every $H\in\mathcal G^*$, add the hyperedge with tail $a$ and heads $H$.
-No vertex of $B$ is a tail, so a route can never leave $B$, and every route has length one.
-Hence, for $a\in A$ and $w\in B$, the routes from $a$ to $w$ are the hyperedges with tail $a$ whose heads contain $w$. There are $\deg_{\mathcal G^*}(w)\le m-1$ of them.
-There are no routes from $B$, and no routes between two vertices of $A$, since all heads lie in $B$.
-The number of hyperedges is $\alpha q=\alpha\floorfrac{(m-1)(n-\alpha)}{r-1}$.
+It therefore suffices to choose sets of $r-1$ vertices of $B$, the \emph{head sets}, such that every vertex of $B$ lies in at most $m-1$ of them.
+Each vertex of $A$ then gets one hyperedge for each head set.
+
+Write $k:=r-1$, $d:=m-1$ and $q:=\floorfrac{d\beta}{k}$.
+Write the list $0,1,\dots,\beta-1$ of the vertices of $B$ $d$ times in a row.
+Cut the first $qk$ entries into $q$ segments of $k$ consecutive entries.
+Since $k\le\beta$, a segment never contains a vertex twice.
+Since $qk\le d\beta$, the segments stay within the $d$ copies of the list.
+Each vertex occurs once in each copy, so it lies in at most $d$ segments.
+These segments are the head sets.
+The directed multihypergraph has $\alpha q=\alpha\floorfrac{(m-1)(n-\alpha)}{r-1}$ hyperedges.
+
 For $\alpha=\floor{n/2}$ we have $n-\alpha=\ceil{n/2}\ge r-1$ when $n\ge2r-3$. Since $\floor{x}\ge x-1$ and $\floor{n/2}\ceil{n/2}=\floor{n^2/4}$, this is at least $\frac{m-1}{r-1}\floor{n^2/4}-\floor{n/2}$.
-If $d\le\binom{\beta-1}{k-1}$, we can use \Cref{lem:sparse-hypergraph} instead, which gives different hyperedges, so the directed hypergraph is simple.
+
+Two segments may have the same vertices.
+If $d\le\binom{\beta-1}{k-1}$, \Cref{lem:sparse-hypergraph} gives $q$ different head sets with the same property instead, and the directed hypergraph is simple.
 \end{proof}
 
 We write a directed hyperedge as $(T,H)$, with tail set $T$ and head set $H$.
